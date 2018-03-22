@@ -12,4 +12,4 @@ add_library(ConsolePresentExtention
         cpe/Table.cpp
         cpe/Table.h
         cpe/tools.cpp
-        cpe/tools.h)
+        cpe/tools.h cpe/StringText.cpp cpe/StringText.h)
