@@ -5,9 +5,7 @@
 #include <vector>
 #include <Windows.h>
 
-#include "Enums.h"
-
-namespace cpe {
+namespace cpe::core {
 
 
 class Menu;
@@ -220,7 +218,6 @@ public:
      */
 	std::string getWindowTitle() const;
 
-	// �������� ����� � �������
 	std::vector<std::string> layout(
 		std::string src, 
 		int width, 
@@ -231,42 +228,42 @@ public:
 	void debug(bool enabled);
 
 private:
-	// ���� ��������� ������ ������ ����������
+	// Последняя позиция курсора
 	std::vector<COORD> _lastCursorPositions;
-	// ���� ������ �������
+	// Цвет теста
 	Color _foreColor;
-	// ���� �� ���������
+	// Цвет текста по умолчанию
 	Color _defaultForeColor;
-	// ������� ���������
+	// Кодировка потока ввода
 	int _cpInput;
-	// �������� ���������
+	// Кодировка потока вывода
 	int _cpOutput;
-	// ������������� �����
+	// Последовательность символов "незавершенности" тектса
 	std::string _unfinished;
-	// ������ ���������
+	// Размер табуляции
 	int _tabSize;
-	// ��������� ����
+	// Заголовок окна
 	std::string _title;
-	// ������� 
+	// Режим отладки
 	bool _debug;
 
-	// ������������� 
+	// Кодирование
 	std::string _encode(std::string src);
-	// ������������ ������ (���� ����, ��������, �������� ��� ����� � �������)
+	// Декодирование
 	std::string _decode(std::string src);
 
-	// ������ ������� �������
-	void _cursor_position(COORD crd);
-	// �������� ������� �������
-	COORD _cursor_position() const;
-	// �������� ������� �� �������� �������
-	void _cursor_move(short x, short y);
-	// �������� ��������� ������� ������� � ����
-	void _add_last_curpos();
-	// ������ ������ ���� �������
-	int _buffer_width() const;
+	// Задает позицию курсора
+	void _setCursorPosition(COORD crd);
+	// Возвращает позицию курсора
+	COORD _getCursorPosition() const;
+	// Перемещает курсор
+	void _moveCursor(short x, short y);
+	// Добавить последнюю позицию курсора в стек
+	void _addLastCurPos();
+	// Возвращает ширину буфера (в символах)
+	int _getBufferWidth() const;
 
-	// ������� ������� �������
+	// Очищает область экрана консоли в заданном прямоугольнике
 	void _clear(COORD begin, COORD end);
 };
 

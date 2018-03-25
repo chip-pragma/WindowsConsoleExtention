@@ -1,11 +1,11 @@
 #include "Menu.h"
-#include "Console.h"
+#include "core/Console.h"
 
 #include <string>
 #include <utility>
 #include <utility>
 
-namespace cpe {
+namespace cpe::ui {
 
 Menu::Menu() :
 	_caption("Меню:"),

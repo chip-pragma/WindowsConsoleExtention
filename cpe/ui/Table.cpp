@@ -2,7 +2,7 @@
 
 #include <utility>
 
-namespace cpe {
+namespace cpe::ui {
 
 Table::Table(int maxCellLines, 
 			 int maxHeaderLines, 

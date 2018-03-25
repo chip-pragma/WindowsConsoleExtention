@@ -6,7 +6,7 @@
 
 #include "Enums.h"
 
-namespace cpe {
+namespace cpe::ui {
 
 class Console;
 

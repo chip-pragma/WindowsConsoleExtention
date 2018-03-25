@@ -4,12 +4,12 @@
 #include <string>
 #include <vector>
 
-namespace cpe {
+namespace cpe::utils::text {
 
 /**
- * Форматированный текст
+ * Форматированный текст в ограниченном прямоугольнике
  */
-class StringText {
+class TextRect {
 public:
     /**
      * Создает форматированный текст по заданным параметров из исходной строки
@@ -19,9 +19,9 @@ public:
      * @param maxHeight Максимальная допустимая высота текста (в строках). 0 - без ограничений
      * @return Объект форматированного текста {@link StringText}
      */
-    static StringText *create(std::string *const source, int tabLength, int maxWidth, int maxHeight);
+    static TextRect *create(std::string *source, int tabLength, int maxWidth, int maxHeight);
 
-    ~StringText();
+    ~TextRect();
 
     /**
      * Записывает строки текств в вектор
@@ -70,7 +70,7 @@ private:
     // Информация о пропуске строки
     class _Line;
 
-    StringText();
+    TextRect();
 
     std::string _source;
     int _width;

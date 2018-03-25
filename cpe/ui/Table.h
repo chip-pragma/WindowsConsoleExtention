@@ -1,24 +1,34 @@
 #pragma once
 
+#include <core/Console.h>
+#include "core/Color.h"
+#include <ui/style/TableBorder.h>
+#include <ui/style/DualBorder.h>
+
 #include <string>
 #include <map>
 #include <vector>
 
-#include "Enums.h"
 
-namespace cpe {
+namespace {
+typedef cpe::core::Color Color_;
+typedef cpe::ui::style::DualBorder DualBorder_;
+typedef cpe::ui::style::TableBorder TableBorder_;
+}
+
+namespace cpe::ui {
 
 class Table
 {
 	friend class Console;
 
 public:
-	Table(int maxCellLines = 1, 
-		  int maxHeaderLines = 1, 
-		  Color headerColor = cpe::COLOR_DEFAULT,
-		  Color sideColor = cpe::COLOR_DK_GRAY,
-		  Flags displayedSide = cpe::TSIDE_NONE,
-		  Flags sideStyle = cpe::DSIDE_NONE);
+	Table(int maxCellLines = 1,
+		  int maxHeaderLines = 1,
+          Color_ headerColor = Color_::DEFAULT,
+          Color_ sideColor = Color_::DK_GRAY,
+          TableBorder_ displayedSide = TableBorder_::NONE,
+          DualBorder_ sideStyle = DualBorder_::NONE);
 	~Table();
 
 	// �������� �������
@@ -26,7 +36,7 @@ public:
 	// �������� ������ ������
 	void add_row();
 	// ��������� ������ ��������� ������
-	void set_cell(std::string columnName, std::string text, Color foreColor = cpe::COLOR_DEFAULT);
+	void set_cell(std::string columnName, std::string text, Color_ foreColor = Color_::DEFAULT);
 
 	// �������� ������� (�����)
 	std::vector<std::string> get_columns() const;
@@ -51,7 +61,7 @@ private:
 		// �����
 		std::string text;
 		// ���� ������
-		Color foreColor;
+        Color_ foreColor;
 	};
 	friend class _TCell;
 	// ������
@@ -72,13 +82,13 @@ private:
 	// ������
 	std::vector<_TRow*> _rows;
 	// ���� �����
-	Color _sideColor;
+    Color_ _sideColor;
 	// ���� ���������
-	Color _headerColor;
+    Color_ _headerColor;
 	// ������������ �����
-	Flags _displayedSide;
+    TableBorder_ _displayedSide;
 	// ����� �����
-	Flags _sideStyle;
+    DualBorder_ _sideStyle;
 
 	// ����� ������ � �������� ������
 	std::vector<std::pair<std::string, _TColumn*>>::iterator _find_column(std::string name);

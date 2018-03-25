@@ -1,7 +1,7 @@
 ﻿#include "Console.h"
-#include "tools.h"
-#include "Menu.h"
-#include "Table.h"
+#include "utils/text/Text.h"
+#include "ui/Menu.h"
+#include "ui/Table.h"
 
 #include <iostream>
 #include <map>
@@ -10,9 +10,7 @@
 #include <ctime>
 #include <cmath>
 
-#define CONSOLE_EXTENTION_TOOLS_DEBUG
-
-namespace cpe {
+namespace cpe::core {
 
 Console::Console() :
         _foreColor(Color::COLOR_WHITE),
@@ -27,10 +25,10 @@ Console::~Console()
 
 
 void Console::write(std::string str) {
-    _add_last_curpos();
+    _addLastCurPos();
 
     std::string out;
-    auto curPos = _cursor_position();
+    auto curPos = _getCursorPosition();
     for (char i : str) {
         if (i == '\t') {
             // Расстояние до след. таба
@@ -55,12 +53,12 @@ void Console::writeLine(int nls) {
 }
 
 bool Console::readLine(std::string *inValue, bool required) {
-    _add_last_curpos();
+    _addLastCurPos();
 
     // Ввод
     std::string line;
     std::getline(std::cin, line);
-    tools::trim(&line);
+    Text::trim(&line);
 
     // Правка
     if (!line.empty() || required) {
@@ -71,7 +69,7 @@ bool Console::readLine(std::string *inValue, bool required) {
 }
 
 bool Console::readInt(int *inValue, std::string error, bool required) {
-    auto lastPos = _cursor_position();
+    auto lastPos = _getCursorPosition();
 
     int iNum = 0;
     while (true) {
@@ -194,7 +192,7 @@ int Console::messageBox(std::string message,
                         sideColor,
                         int dSide,
                         bool padding) {
-    _add_last_curpos();
+    _addLastCurPos();
 
     // Подготовка
     Color previousColor = getForeColor();
@@ -275,7 +273,7 @@ int Console::messageBox(std::string message,
         std::cout << _encode(*i);
         // Проверка предпоследней строки ("Выбор:", след. " (пустая строка)")
         if (items.size() > 0 && i == linesMessage.end() - 2)
-            choicePos = _cursor_position();
+            choicePos = _getCursorPosition();
 
         setForeColor(sideColor);
         std::wcout << std::wstring(widthMessage - i->size() + 1, ' ') << b["R"] << std::endl;
@@ -289,12 +287,12 @@ int Console::messageBox(std::string message,
     if (items.size() > 0) {
         setForeColor(previousColor);
         // Переход на позицию ввода
-        auto curPos = _cursor_position();
-        _cursor_position(choicePos);
+        auto curPos = _getCursorPosition();
+        _setCursorPosition(choicePos);
         // Ввод пункта
         readIntRange(&itemNum, 1, items.size(), "", true);
         // Возврат
-        _cursor_position(curPos);
+        _setCursorPosition(curPos);
         _lastCursorPositions.pop_back();
     }
 
@@ -415,7 +413,7 @@ void Console::writeMenu(Menu *const menu) {
 void Console::writeTable(Table *table) {
     // Подготовка
     Color previousColor = getForeColor();
-    int windowWidth = _buffer_width() - 2;
+    int windowWidth = _getBufferWidth() - 2;
     auto s = tools::define_side_symbols(table->_sideStyle);
     bool outerSide = (table->_displayedSide & cpe::TSIDE_OUTER);
     bool vSide = (table->_displayedSide & cpe::TSIDE_VERTICAL);
@@ -645,7 +643,7 @@ void Console::writeTable(Table *table) {
 
 
 void Console::pause() {
-    _add_last_curpos();
+    _addLastCurPos();
     system("pause");
     clear(1);
 }
@@ -664,7 +662,7 @@ void Console::clear(int parts) {
     if (last == _lastCursorPositions.end())
         return;
 
-    _clear(_cursor_position(), *last);
+    _clear(_getCursorPosition(), *last);
     _lastCursorPositions.erase(last, _lastCursorPositions.end());
 }
 
@@ -673,7 +671,7 @@ void Console::resetForeColor() {
 }
 
 void Console::addOutputPart() {
-    _add_last_curpos();
+    _addLastCurPos();
 }
 
 int Console::outputPartCount() const {
@@ -760,7 +758,7 @@ std::vector<std::string> Console::layout(
     // Если нет ограничения
     if (width <= 0) {
         if (outMaxWidth != nullptr)
-            *outMaxWidth = src.size();
+            *outMaxWidth = (int)src.size();
         lines.push_back(src);
         return lines;
     }
@@ -774,10 +772,10 @@ std::vector<std::string> Console::layout(
         // Табуляция
         if (c == '\t') {
             // Расстояние до след. таба
-            int nextTab = _tabSize - (line.size() % _tabSize);
+            int nextTab = _tabSize - ((int)line.size() % _tabSize);
             // ЕСЛИ расстояние не превышает ширину
             if (line.size() + nextTab < width)
-                line += std::string(nextTab, ' ');
+                line += std::string((size_t)nextTab, ' ');
             else
                 c = '\n';
         }
@@ -795,7 +793,7 @@ std::vector<std::string> Console::layout(
             }
             // Макс. длина
             if (mw < line.size())
-                mw = line.size();
+                mw = (int)line.size();
             // Добавление
             lines.push_back(line);
             // ЕСЛИ последняя строка
@@ -818,40 +816,40 @@ void Console::debug(bool enabled) {
 
 
 std::string Console::_encode(std::string src) {
-    return tools::encode(_cpInput, _cpOutput, src);
+    return tools::encode(_cpInput, _cpOutput, std::move(src));
 }
 
 std::string Console::_decode(std::string src) {
-    return cpe::tools::encode(_cpOutput, _cpInput, src);
+    return cpe::tools::encode(_cpOutput, _cpInput, std::move(src));
 }
 
 
-void Console::_cursor_position(COORD crd) {
+void Console::_setCursorPosition(COORD crd) {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleCursorPosition(hConsole, crd);
 }
 
-COORD Console::_cursor_position() const {
+COORD Console::_getCursorPosition() const {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    CONSOLE_SCREEN_BUFFER_INFO csbi{};
     GetConsoleScreenBufferInfo(hConsole, &csbi);
     return csbi.dwCursorPosition;
 }
 
-void Console::_cursor_move(short x, short y) {
-    auto coord = _cursor_position();
+void Console::_moveCursor(short x, short y) {
+    auto coord = _getCursorPosition();
     coord.X += x;
     coord.Y += y;
-    _cursor_position(coord);
+    _setCursorPosition(coord);
 }
 
-void Console::_add_last_curpos() {
-    _lastCursorPositions.push_back(_cursor_position());
+void Console::_addLastCurPos() {
+    _lastCursorPositions.push_back(_getCursorPosition());
 }
 
-int Console::_buffer_width() const {
+int Console::_getBufferWidth() const {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    CONSOLE_SCREEN_BUFFER_INFO csbi{};
     GetConsoleScreenBufferInfo(hConsole, &csbi);
     return csbi.dwSize.X;
 }
@@ -859,7 +857,7 @@ int Console::_buffer_width() const {
 void Console::_clear(COORD begin, COORD end) {
     // Инф. о консоли
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    CONSOLE_SCREEN_BUFFER_INFO csbi{};
     GetConsoleScreenBufferInfo(hConsole, &csbi);
 
     if (begin.Y > end.Y || begin.X > end.X) {
@@ -868,10 +866,10 @@ void Console::_clear(COORD begin, COORD end) {
         end = swaper;
     }
 
-    _cursor_position(begin);
+    _setCursorPosition(begin);
     int count = (csbi.dwSize.X - begin.X) + end.X + (end.Y - begin.Y - 1) * csbi.dwSize.X;
-    std::cout << std::string(count, ' ');
-    _cursor_position(begin);
+    std::cout << std::string((size_t)count, ' ');
+    _setCursorPosition(begin);
 }
 
 }
