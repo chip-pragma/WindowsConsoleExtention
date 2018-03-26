@@ -1,7 +1,12 @@
 #include <iostream>
 #include <string>
-#include "core/Console.h"
+#include "ui/style/Border.h"
+
+namespace {
+using cpe::ui::style::Border;
+}
 
 void main() {
-
+    Border b;
+    auto s = b[b.LB];
 }

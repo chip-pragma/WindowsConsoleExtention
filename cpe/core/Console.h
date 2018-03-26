@@ -7,9 +7,9 @@
 
 namespace cpe::core {
 
-
 class Menu;
 class Table;
+enum class Color;
 
 /**
  * Класс-обертка для удобной работы с I/O консоли
@@ -109,10 +109,10 @@ public:
                    std::string caption,
                    char iconSym,
                    std::string menuItems,
-                   Color captionColor = Color::COLOR_DEFAULT,
-                   Color iconColor = Color::COLOR_DEFAULT,
-                   Color sideColor = Color::COLOR_DK_GRAY,
-                   int dSide = DoubleSide::DSIDE_NONE,
+                   const Color& captionColor,
+                   const Color& iconColor,
+                   const Color& sideColor,
+                   int dSide,
                    bool padding = true);
 	/**
 	 * Упрощенное сообщение в рамке (уведомление)
@@ -231,9 +231,9 @@ private:
 	// Последняя позиция курсора
 	std::vector<COORD> _lastCursorPositions;
 	// Цвет теста
-	Color _foreColor;
+	extern Color _foreColor;
 	// Цвет текста по умолчанию
-	Color _defaultForeColor;
+	extern Color _defaultForeColor;
 	// Кодировка потока ввода
 	int _cpInput;
 	// Кодировка потока вывода

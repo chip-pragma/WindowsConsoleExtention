@@ -4,12 +4,12 @@
 
 namespace cpe::ui {
 
-Table::Table(int maxCellLines, 
-			 int maxHeaderLines, 
-			 Color headerColor, 
-			 Color sideColor, 
-			 Flags displayedSide, 
-			 Flags sideStyle)
+Table::Table(int maxCellLines,
+             int maxHeaderLines,
+             const Color &headerColor,
+             const Color &sideColor,
+             const TableBorder &displayedSide,
+             const DualBorder &sideStyle)
 {
 	_maxCellLines = maxCellLines;
 	_maxHeaderLines = maxHeaderLines;
@@ -64,7 +64,7 @@ void Table::add_row()
 	_rows.push_back(row);
 }
 
-void Table::set_cell(std::string columnName, std::string text, Color foreColor)
+void Table::set_cell(std::string columnName, std::string text, const Color &foreColor)
 {
 	auto column = _find_column(std::move(columnName));
 	if (column == _cols.end())

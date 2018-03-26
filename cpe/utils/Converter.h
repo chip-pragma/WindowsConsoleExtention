@@ -13,6 +13,8 @@ namespace cet::utils {
  */
 class Converter {
 public:
+    Converter() = delete;
+
     // Строку в int
     static bool stringToInt(std::string src, int *dest);
 
@@ -27,6 +29,9 @@ public:
 
     // Дату (time_t) в строку с указанным форматом
     static std::string dateToString(time_t date);
+
+private:
+
 };
 
 }

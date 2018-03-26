@@ -9,26 +9,24 @@
 #include <map>
 #include <vector>
 
-
-namespace {
-typedef cpe::core::Color Color_;
-typedef cpe::ui::style::DualBorder DualBorder_;
-typedef cpe::ui::style::TableBorder TableBorder_;
-}
-
 namespace cpe::ui {
 
+enum class Color;
+enum class DualBorder;
+enum class TableBorder;
+
+// TODO Обновить логику. Вывод из метода с параметром Console.
 class Table
 {
 	friend class Console;
 
 public:
-	Table(int maxCellLines = 1,
-		  int maxHeaderLines = 1,
-          Color_ headerColor = Color_::DEFAULT,
-          Color_ sideColor = Color_::DK_GRAY,
-          TableBorder_ displayedSide = TableBorder_::NONE,
-          DualBorder_ sideStyle = DualBorder_::NONE);
+	explicit Table(int maxCellLines = 1,
+                   int maxHeaderLines = 1,
+                   const Color &headerColor,
+                   const Color &sideColor,
+                   const TableBorder &displayedSide,
+                   const DualBorder &sideStyle);
 	~Table();
 
 	// �������� �������
@@ -36,7 +34,7 @@ public:
 	// �������� ������ ������
 	void add_row();
 	// ��������� ������ ��������� ������
-	void set_cell(std::string columnName, std::string text, Color_ foreColor = Color_::DEFAULT);
+	void set_cell(std::string columnName, std::string text, const Color &foreColor);
 
 	// �������� ������� (�����)
 	std::vector<std::string> get_columns() const;
@@ -61,7 +59,7 @@ private:
 		// �����
 		std::string text;
 		// ���� ������
-        Color_ foreColor;
+        extern Color foreColor;
 	};
 	friend class _TCell;
 	// ������
@@ -82,13 +80,13 @@ private:
 	// ������
 	std::vector<_TRow*> _rows;
 	// ���� �����
-    Color_ _sideColor;
+    extern Color _sideColor;
 	// ���� ���������
-    Color_ _headerColor;
+    extern Color _headerColor;
 	// ������������ �����
-    TableBorder_ _displayedSide;
+    extern TableBorder _displayedSide;
 	// ����� �����
-    DualBorder_ _sideStyle;
+    extern DualBorder _sideStyle;
 
 	// ����� ������ � �������� ������
 	std::vector<std::pair<std::string, _TColumn*>>::iterator _find_column(std::string name);

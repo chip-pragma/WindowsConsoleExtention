@@ -8,16 +8,19 @@ namespace cpe::ui::style {
 /**
  * Стиль отображения рамок таблицы
  */
-enum class TableBorder {
-    // Нет рамок
-    NONE = 0,
-    // Только вертикальные
-    VERTICAL = 1,
-    // Только горизонтальные
-    HORIZONTAL = 2,
-    OUTER = 4,
-    INNER = 3,
-    ALL = 7
+enum class TableBorder : char {
+    /** Нет рамок */
+            NONE = 0,
+    /** Вертикальные */
+            VERTICAL = 1,
+    /** Горизонтальные */
+            HORIZONTAL = 2,
+    /** Внешние */
+            OUTER = 4,
+    /** Внутренние */
+            INNER = 3,
+    /** Все рамки */
+            ALL = 7
 };
 
 }

@@ -1,39 +1,49 @@
 #ifndef PROJECT_BORDERSTYLE_H
 #define PROJECT_BORDERSTYLE_H
 
-#include "Style.h"
-
 namespace cpe::ui::style {
 
 /**
  * Использование двойных рамок
  */
-enum class DualBorder : FlagsByte {
+enum class DualBorder : unsigned char {
     // Нет двойных
-            NONE = 1 << 0,
+            NONE = 0,
     // Слева внешняя
-            LEFT = 1 << 1,
+            LEFT = 1 << 0,
     // Справа внешняя
-            RIGHT = 1 << 2,
+            RIGHT = 1 << 1,
     // Сверху внешняя
-            TOP = 1 << 3,
+            TOP = 1 << 2,
     // Снизу внешняя
-            BOTTOM = 1 << 4,
+            BOTTOM = 1 << 3,
     // Вертикальные (слева и справа) внешние
-            OUT_V = LEFT | RIGHT,
+            OUT_V = static_cast<int>(LEFT | RIGHT),
     // Горизонтальные (снизу и сверху) внешние
-            OUT_H = TOP | BOTTOM,
+            OUT_H = static_cast<int>(TOP | BOTTOM),
     // Двойные внешние
-            OUT_ALL = OUT_V | OUT_H,
+            OUT_ALL = static_cast<int>(OUT_V | OUT_H),
     // Вертикальные внутренние
-            IN_V = 1 << 5,
+            IN_V = 1 << 4,
     // Горизонтальные внутренние
-            IN_H = 1 << 6,
+            IN_H = 1 << 5,
     // Двойные внутренние
-            IN_ALL = IN_V | IN_H,
+            IN_ALL = static_cast<int>(IN_V | IN_H),
     // Все рамки двойные
-            ALL = OUT_ALL | IN_ALL
+            ALL = static_cast<int>(OUT_ALL | IN_ALL)
 };
+
+DualBorder operator&(const DualBorder &db1, const DualBorder &db2) {
+    return (DualBorder) ((unsigned char) db1 & (unsigned char) db2);
+}
+
+DualBorder operator|(const DualBorder &db1, const DualBorder &db2) {
+    return (DualBorder) ((unsigned char) db1 | (unsigned char) db2);
+}
+
+DualBorder operator "" db(int value) {
+    return (DualBorder) static_cast<unsigned char>(value);
+}
 
 }
 

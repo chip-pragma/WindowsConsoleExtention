@@ -187,9 +187,9 @@ int Console::messageBox(std::string message,
                         std::string caption,
                         char iconSym,
                         std::string menuItems,
-                        Color captionColor,
-                        Color iconColor, Color
-                        sideColor,
+                        const Color& captionColor,
+                        const Color& iconColor,
+                        const Color& sideColor,
                         int dSide,
                         bool padding) {
     _addLastCurPos();
