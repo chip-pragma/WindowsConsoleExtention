@@ -19,4 +19,4 @@ add_library(${LIBRARY_CPE_NAME}
             core/Color.h
             ui/style/TableBorder.h
             ui/style/Border.cpp
-            ui/style/Border.h core/Encoder.cpp core/Encoder.h)
+            ui/style/Border.h core/Encoder.cpp core/Encoder.h ui/IElementUi.h)
