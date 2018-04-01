@@ -1,5 +1,5 @@
 #include "Converter.h"
-#include "text/Text.h"
+#include "Text.h"
 
 #include <stdexcept>
 #include <utility>
@@ -108,7 +108,7 @@ std::string Converter::timeToString(time_t time, bool seconds) {
 
 std::string Converter::dateToString(time_t date) {
     // Преевод в структуру
-    std::tm stamp;
+    std::tm stamp{};
     gmtime_s(&stamp, &date);
     stamp.tm_isdst = -1;
 

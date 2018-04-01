@@ -1,12 +1,14 @@
 #include <iostream>
 #include <string>
-#include "ui/style/Border.h"
 
-namespace {
-using cpe::ui::style::Border;
-}
+#include "core/Console.h"
+#include "core/Encoder.h"
 
-void main() {
-    Border b;
-    auto s = b[b.LB];
+using namespace cpe::core;
+
+int main() {
+    Console app;
+    app.setTitle("Проверка библиотеки CPE");
+
+    return 0;
 }

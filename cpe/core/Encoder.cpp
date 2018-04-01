@@ -4,9 +4,9 @@
 
 #include <Windows.h>
 
-namespace cpe::utils {
+namespace cpe::core {
 
-Encoder::Encoder(unsigned int codePage) {
+Encoder::Encoder(uint32_t codePage) {
     _codePage = codePage;
 }
 
@@ -36,7 +36,12 @@ std::wstring Encoder::decode(const std::string &encoded) const {
     return std::wstring(result);
 }
 
-int Encoder::getCodePage() const {
+uint32_t Encoder::getCodePage() const {
     return _codePage;
 }
+
+Encoder operator "" cp(uint32_t codePage) {
+    return Encoder(codePage);
+}
+
 }

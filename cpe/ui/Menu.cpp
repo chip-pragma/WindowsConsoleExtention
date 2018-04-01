@@ -1,5 +1,5 @@
 #include "Menu.h"
-#include "core/Color.h"
+#include "ui/style/Color.h"
 
 #include <string>
 #include <utility>

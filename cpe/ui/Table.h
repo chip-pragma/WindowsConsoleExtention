@@ -1,7 +1,7 @@
 #pragma once
 
-#include <core/Console.h>
-#include "core/Color.h"
+#include <_old/Console.h>
+#include "ui/style/Color.h"
 #include <ui/style/TableBorder.h>
 #include <ui/style/DualBorder.h>
 

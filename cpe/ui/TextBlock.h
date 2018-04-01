@@ -4,24 +4,26 @@
 #include <string>
 #include <vector>
 
-namespace cpe::utils::text {
+namespace cpe::ui {
+
+namespace {
+class TextStyle;
+}
 
 /**
  * Форматированный текст в ограниченном прямоугольнике
  */
-class TextRect {
+class TextBlock {
 public:
     /**
      * Создает форматированный текст по заданным параметров из исходной строки
      * @param source Исходная строка
-     * @param tabLength Длинна табуляции (в пробелах)
+     * @param textStyle Длинна табуляции (в пробелах)
      * @param maxWidth Максимальная допустимая ширина строки текста (в символах). Должна быть больше 0
      * @param maxHeight Максимальная допустимая высота текста (в строках). 0 - без ограничений
-     * @return Объект форматированного текста {@link StringText}
+     * @return Объект форматированного текста StringText
      */
-    static TextRect *create(std::string *source, int tabLength, int maxWidth, int maxHeight);
-
-    ~TextRect();
+    TextBlock(std::string *source, const TextStyle& textStyle, int maxWidth, int maxHeight);
 
     /**
      * Записывает строки текств в вектор
@@ -43,11 +45,11 @@ public:
     /**
      * Возвращает итоговую ширину форматированного теста (в символах)
      */
-    int getWidth() const;
+    uint8_t getWidth() const;
     /**
      * Возвращает итоговую высоту форматированного текста (в строках)
      */
-    int getHeight() const;
+    uint32_t getHeight() const;
 
     /**
      * Поместилась исходная строка в заданный блок форматированного текста?
@@ -65,17 +67,23 @@ public:
      */
     void setFillToWidth(bool fillToWidth);
 
+    /**
+     * Возвращает стиль текста, используемый при форматированиии блока текста
+     */
+    const TextStyle &getTextStyle() const;
+
 
 private:
     // Информация о пропуске строки
     class _Line;
 
-    TextRect();
+    TextBlock();
 
     std::string _source;
-    int _width;
+    uint8_t _width;
     bool _placed;
     bool _fillToWidth;
+    extern TextStyle _textStyle;
 
     // Массив перевода строк текста
     std::vector<_Line> _lines;

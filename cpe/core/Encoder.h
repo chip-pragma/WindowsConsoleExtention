@@ -5,7 +5,7 @@
 
 #include <string>
 
-namespace cpe::utils {
+namespace cpe::core {
 
 /**
  * Кодирование и декодирование строк
@@ -18,7 +18,7 @@ public:
      * Создает кодировщик с заданной кодовой страницей (кодировкой)
      * @param codePage Кодировка
      */
-    explicit Encoder(unsigned int codePage);
+    explicit Encoder(uint32_t codePage);
 
     /**
      * Кодирует исходную последовательность байтов (wchar_t) в строку (string)
@@ -37,11 +37,18 @@ public:
     /**
      * Возвращает используемую кодовую страницу (кодировку)
      */
-    int getCodePage() const;
+    uint32_t getCodePage() const;
 
 private:
-    unsigned int _codePage;
+    uint32_t _codePage;
 };
+
+/**
+ * Литерал определяющий кодировку
+ * @param codePage Кодовая страница кодировки
+ * @return Кодировку с указанной кодовой страницей
+ */
+Encoder operator "" cp(uint32_t codePage);
 
 }
 

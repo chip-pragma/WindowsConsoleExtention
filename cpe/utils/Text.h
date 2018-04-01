@@ -4,11 +4,11 @@
 #include <string>
 #include <vector>
 
-namespace cpe::utils::text {
+namespace cpe::utils {
 
 class Text {
 public:
-    // Удаление начальных и конечных знаков пространства
+    // Удаление начальных и конечных знаков пробелов
     static void trim(std::string *src);
 
     // Деление строки по указанным делителям

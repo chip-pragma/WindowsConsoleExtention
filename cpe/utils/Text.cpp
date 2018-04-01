@@ -6,7 +6,7 @@
 
 #include "Text.h"
 
-namespace cpe::utils::text {
+namespace cpe::utils {
 
 void Text::trim(std::string *src) {
     auto i = src->begin();

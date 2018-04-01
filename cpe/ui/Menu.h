@@ -10,7 +10,6 @@ class Console;
 
 enum class Color;
 
-// TODO Обновить логику. Вывод из метода с параметром Console.
 class Menu {
     friend class Console;
 

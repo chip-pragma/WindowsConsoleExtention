@@ -1,8 +1,11 @@
-#include "TextRect.h"
+#include "TextBlock.h"
+#include "style/TextStyle.h"
 
-namespace cpe::utils::text {
+namespace cpe::ui {
 
-class TextRect::_Line {
+using TextStyle = style::TextStyle;
+
+class TextBlock::_Line {
 public:
     // Длина строки
     int length;
@@ -15,20 +18,17 @@ public:
     }
 };
 
-TextRect *TextRect::create(std::string *const source, int tabLength, int maxWidth, int maxHeight) {
-    if (maxWidth <= 0)
-        return nullptr;
-
+TextBlock::TextBlock(std::string *source, const TextStyle& textStyle, int maxWidth, int maxHeight = 0) {
     // Создание объекта
-    auto st = new TextRect();
-    st->_source = std::string(*source);
-    st->_placed = true;
-    st->_width = 0;
+    _source = std::string(*source);
+    _placed = true;
+    _width = 0;
+    _textStyle = textStyle;
     // Максимальная итоговая ширина
     _Line line;
 
     // Деление строки
-    for (int i = 0, n = (int)source->size(); i < n; ++i) {
+    for (int i = 0, n = (int) source->size(); i < n; ++i) {
         char c = (*source)[i];
 
         if (c != '\n' && c != '\t')
@@ -36,13 +36,13 @@ TextRect *TextRect::create(std::string *const source, int tabLength, int maxWidt
         // Табуляция
         if (c == '\t') {
             // Расстояние до след. таба
-            int nextTab = tabLength - (line.length % tabLength);
+            int nextTab = _textStyle.getTabLength() - (line.length % _textStyle.getTabLength());
             // ЕСЛИ расстояние не превышает ширину
             if (line.length + nextTab < maxWidth)
                 line.length += nextTab;
             else {
                 // ИНАЧЕ новая строка
-                st->_lines.push_back(line);
+                _lines.push_back(line);
                 line = _Line();
             }
         }
@@ -51,42 +51,40 @@ TextRect *TextRect::create(std::string *const source, int tabLength, int maxWidt
         if (c == '\n' || line.length >= maxWidth || isSrcEnd) {
             line.isWrap = (c == '\n');
             // ЕСЛИ последняя строка
-            if (maxHeight != 0 && st->_lines.size() + 1 == maxHeight && !isSrcEnd) {
-                st->_placed = false;
+            if (maxHeight != 0 && _lines.size() + 1 == maxHeight && !isSrcEnd) {
+                _placed = false;
             }
             // Макс. длина
-            if (st->_width < line.length)
-                st->_width = line.length;
+            if (_width < line.length)
+                _width = (uint8_t)line.length;
             // Добавление
-            st->_lines.push_back(line);
+            _lines.push_back(line);
             line = _Line();
             // ЕСЛИ последняя строка
-            if (st->_lines.size() == maxHeight)
+            if (_lines.size() == maxHeight)
                 break;
         }
     }
-
-    return st;
 }
 
-TextRect::TextRect() = default;
+TextBlock::TextBlock() = default;
 
-std::vector<std::string> TextRect::toVector() {
+std::vector<std::string> TextBlock::toVector() {
     // Подготовка
     std::vector<std::string> resultLines;
     int pos = 0;
     // Запись строк
-    for (int i = 0, n = (int)_lines.size(); i < n; ++i) {
+    for (int i = 0, n = (int) _lines.size(); i < n; ++i) {
         // Получение строки из исходной
-        auto formatLine = _lines[i];
+        _Line formatLine = _lines[i];
         auto line = _source.substr((size_t) pos, (size_t) formatLine.length);
         // Заполнение пробелов
         if (_fillToWidth)
             line += std::string(static_cast<size_t>(_width - formatLine.length), ' ');
         // Добавление "незавершенности"
-        if (!_placed && i+1 == n) {
-            line = line.substr(0, _width - _unfinished.size());
-            line += _unfinished;
+        if (!_placed && i + 1 == n) {
+            line = line.substr(0, _width - _textStyle.getUnfinished().size());
+            line += _textStyle.getUnfinished();
         }
         // Сдвиг курсора
         pos += formatLine.length;
@@ -98,36 +96,36 @@ std::vector<std::string> TextRect::toVector() {
     return resultLines;
 }
 
-std::string TextRect::toString() {
+std::string TextBlock::toString() {
 
 }
 
-const std::string &TextRect::getSource() const {
+const std::string &TextBlock::getSource() const {
     return _source;
 }
 
-int TextRect::getWidth() const {
+uint8_t TextBlock::getWidth() const {
     return _width;
 }
 
-int TextRect::getHeight() const {
-    return _lines.size();
+uint32_t TextBlock::getHeight() const {
+    return (uint32_t)_lines.size();
 }
 
-bool TextRect::isFillToWidth() const {
+bool TextBlock::isFillToWidth() const {
     return _fillToWidth;
 }
 
-void TextRect::setFillToWidth(bool fillToWidth) {
+void TextBlock::setFillToWidth(bool fillToWidth) {
     _fillToWidth = fillToWidth;
 }
 
-TextRect::~TextRect() {
-
+bool TextBlock::isPlaced() const {
+    return _placed;
 }
 
-bool TextRect::isPlaced() const {
-    return _placed;
+const TextStyle &TextBlock::getTextStyle() const {
+    return _textStyle;
 }
 
 
