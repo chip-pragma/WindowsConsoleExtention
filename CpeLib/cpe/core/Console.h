@@ -3,6 +3,7 @@
 #include <string>
 
 #include "Point.h"
+#include "Color.h"
 
 namespace cpe::core::console {
 
@@ -69,5 +70,13 @@ bool setCursorPosition(const Point &pos);
  * Возвращает позицию символьного курсора консоли
  */
 Point getCursorPosition();
+
+bool setForeColor(const Color& color);
+
+Color getForeColor();
+
+bool setBackColor(const Color& color);
+
+Color getBackColor();
 
 }

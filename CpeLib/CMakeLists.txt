@@ -14,7 +14,6 @@ add_library(${LIBRARY_CPE_NAME}
         #            utils/Converter.cpp
         #            utils/Converter.h
         #            ui/style/DualBorder.h
-        #            ui/style/Color.h
         #            ui/style/TableBorder.h
         #            ui/style/Border.cpp
         #            ui/style/Border.h
@@ -26,4 +25,11 @@ add_library(${LIBRARY_CPE_NAME}
         #            ui/style/TextFormat.cpp
         #            ui/style/TextFormat.h
         cpe/core/Encoding.cpp
-        cpe/core/Encoding.h cpe/core/Point.cpp cpe/core/Point.h cpe/Core.h cpe/core/Platform.cpp cpe/core/Platform.h)
+        cpe/core/Encoding.h
+        cpe/core/Point.cpp
+        cpe/core/Point.h
+        cpe/Core.h
+        cpe/core/Platform.cpp
+        cpe/core/Platform.h
+        cpe/core/Color.cpp
+        cpe/core/Color.h)

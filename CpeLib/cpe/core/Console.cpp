@@ -31,13 +31,13 @@ std::string getTitle() {
 
 bool setInputCp(uint32_t codePage) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
-    return (bool)SetConsoleCP(codePage);
+    return (bool) SetConsoleCP(codePage);
 #endif
 }
 
 bool setOutputCp(uint32_t codePage) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
-    return (bool)SetConsoleOutputCP(codePage);
+    return (bool) SetConsoleOutputCP(codePage);
 #endif
 }
 
@@ -55,15 +55,13 @@ uint32_t getOutputCp() {
 
 bool setBufferSize(const Point &size) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
-    return (bool)SetConsoleScreenBufferSize(
-            GetStdHandle(STD_OUTPUT_HANDLE),
-            platform::toPlatformPoint(size));
+    return (bool) SetConsoleScreenBufferSize(GetStdHandle(STD_OUTPUT_HANDLE), platform::toPlatformPoint(size));
 #endif
 }
 
 Point getBufferSize() {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
-    CONSOLE_SCREEN_BUFFER_INFO info{};
+    CONSOLE_SCREEN_BUFFER_INFO info;
     GetConsoleScreenBufferInfo(
             GetStdHandle(STD_OUTPUT_HANDLE),
             &info);
@@ -73,12 +71,11 @@ Point getBufferSize() {
 
 bool setCursorPosition(const Point &size) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
-    return (bool)SetConsoleCursorPosition(
+    return (bool) SetConsoleCursorPosition(
             GetStdHandle(STD_OUTPUT_HANDLE),
             platform::toPlatformPoint(size));
 #endif
 }
-
 
 Point getCursorPosition() {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
@@ -90,4 +87,49 @@ Point getCursorPosition() {
     return platform::toCpePoint(info.dwCursorPosition);
 #endif
 }
+
+bool setForeColor(const Color &color) {
+#if defined(CPE_PLATFORM_IS_WINDOWS)
+
+    return (bool) SetConsoleTextAttribute(
+            GetStdHandle(STD_OUTPUT_HANDLE),
+            platform::toPlatformColor(color));
+
+#endif
+}
+
+Color getForeColor() {
+#if defined(CPE_PLATFORM_IS_WINDOWS)
+
+    CONSOLE_SCREEN_BUFFER_INFO info;
+    auto b = (bool)GetConsoleScreenBufferInfo(
+            GetStdHandle(STD_OUTPUT_HANDLE),
+            &info);
+    return platform::toCpeColor(info.wAttributes);
+
+#endif
+}
+
+bool setBackColor(const Color &color) {
+#if defined(CPE_PLATFORM_IS_WINDOWS)
+
+    return (bool) SetConsoleTextAttribute(
+            GetStdHandle(STD_OUTPUT_HANDLE),
+            platform::toPlatformColor(color) << 4u);
+
+#endif
+}
+
+Color getBackColor() {
+#if defined(CPE_PLATFORM_IS_WINDOWS)
+
+    CONSOLE_SCREEN_BUFFER_INFO info;
+    auto b = (bool)GetConsoleScreenBufferInfo(
+            GetStdHandle(STD_OUTPUT_HANDLE),
+            &info);
+    return platform::toCpeColor(info.wAttributes >> 4u);
+
+#endif
+}
+
 }

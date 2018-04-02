@@ -641,43 +641,9 @@ void Console::writeTable(Table *table) {
 
 }
 
-
-void Console::pause() {
-    _addLastCurPos();
-    system("pause");
-    clear(1);
-}
-
-
-void Console::clear() {
-    _lastCursorPositions.clear();
-    system("cls");
-}
-
-void Console::clear(int parts) {
-    if (parts > _lastCursorPositions.size())
-        parts = _lastCursorPositions.size();
-    auto last = _lastCursorPositions.end() - parts;
-
-    if (last == _lastCursorPositions.end())
-        return;
-
-    _clear(_getCursorPosition(), *last);
-    _lastCursorPositions.erase(last, _lastCursorPositions.end());
-}
-
 void Console::resetForeColor() {
     setForeColor(_defaultForeColor);
 }
-
-void Console::addOutputPart() {
-    _addLastCurPos();
-}
-
-int Console::outputPartCount() const {
-    return _lastCursorPositions.size();
-}
-
 
 void Console::setForeColor(Color color) {
     if (color == Color::COLOR_DEFAULT)
@@ -701,48 +667,6 @@ void Console::setDefaultForeColor(Color color) {
 Color Console::getDefaultForeColor() const {
     return _defaultForeColor;
 }
-
-void Console::setCpInput(int codePage) {
-    _cpInput = codePage;
-}
-
-int Console::getCpInput() const {
-    return _cpInput;
-}
-
-void Console::setCpOutput(int codePage) {
-    _cpOutput = codePage;
-}
-
-int Console::getCpOutput() const {
-    return _cpOutput;
-}
-
-void Console::setUnfinished(std::string value) {
-    _unfinished = value;
-}
-
-std::string Console::getUnfinished() const {
-    return _unfinished;
-}
-
-void Console::setTabLength(int size) {
-    _tabSize = size;
-}
-
-int Console::getTabLength() const {
-    return _tabSize;
-}
-
-void Console::setWindowTitle(std::string title) {
-    _title = title;
-    system(std::string("title " + title).c_str());
-}
-
-std::string Console::getWindowTitle() const {
-    return _title;
-}
-
 
 std::vector<std::string> Console::layout(
         std::string src,

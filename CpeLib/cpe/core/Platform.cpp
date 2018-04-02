@@ -17,4 +17,41 @@ Point toCpePoint(const PlatformPoint &coord) {
 #endif
 }
 
+PlatformColor toPlatformColor(const Color &color) {
+#if defined(CPE_PLATFORM_IS_WINDOWS)
+    PlatformColor pc = 0;
+
+    if (color.getR())
+        pc |= 4u;
+    if (color.getG())
+        pc |= 2u;
+    if (color.getB())
+        pc |= 1u;
+    if (color.isIntensive())
+        pc |= 8u;
+
+    return pc;
+#endif
+}
+
+Color toCpeColor(const PlatformColor &color) {
+#if defined(CPE_PLATFORM_IS_WINDOWS)
+
+    const uint8_t MIN = 127u;
+    const uint8_t PLUS = 128;
+    auto i = MIN;
+    if (((unsigned)color & 8u) == 8u)
+        i += PLUS;
+    Color c;
+    if (((unsigned)color & 4u) == 4u)
+        c.setR(i);
+    if (((unsigned)color & 2u) == 2u)
+        c.setG(i);
+    if (((unsigned)color & 1u) == 1u)
+        c.setB(i);
+
+    return c;
+#endif
+}
+
 }
