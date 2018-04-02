@@ -1,9 +1,9 @@
 #include "TextBlock.h"
-#include "style/TextStyle.h"
+#include "ui/style/TextFormat.h"
 
 namespace cpe::ui {
 
-using TextStyle = style::TextStyle;
+using TextStyle = style::TextFormat;
 
 class TextBlock::_Line {
 public:

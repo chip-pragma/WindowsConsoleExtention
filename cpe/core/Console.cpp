@@ -1,59 +1,39 @@
-
-
 #include "Console.h"
-#include "Encoder.h"
 
-namespace cpe::core {
+namespace cpe::core::console {
 
-Console::Console() = default
-{
-    applyEncoderInput(1251cp);
-    applyEncoderOutput(866cp);
-}
-
-void Console::pause() {
+void pause() {
     system("pause");
 }
 
-void Console::clear() {
+void clear() {
     system("cls");
 }
 
-void Console::setTitle(std::string &&title) {
-    _title = "title " + title;
-    system(_title.c_str());
+void setTitle(const std::string &title) {
+    SetConsoleTitleA(title.c_str());
 }
 
-std::string &&Console::getTitle() const {
-    return std::move(_title);
+std::string getTitle() {
+    char title[MAX_PATH];
+    GetConsoleTitleA(title, MAX_PATH);
+    return std::string(title);
 }
 
-HANDLE Console::getOutputHandle() const {
-    return GetStdHandle(STD_OUTPUT_HANDLE);
+bool setInputCp(uint32_t codePage) {
+    return (bool)SetConsoleCP(codePage);
 }
 
-const Encoder &Console::getInputEncoder() const {
-    return _inputEncoder;
+bool setOutputCp(uint32_t codePage) {
+    return (bool)SetConsoleOutputCP(codePage);
 }
 
-const Encoder &Console::getOutputEncoder() const {
-    return _outputEncoder;
+uint32_t getInputCp() {
+    return GetConsoleCP();
 }
 
-bool Console::applyEncoderInput(Encoder &&inEnc) {
-    if (SetConsoleCP(inEnc.getCodePage())) {
-        _inputEncoder = inEnc;
-        return true;
-    }
-    return false;
-}
-
-bool Console::applyEncoderOutput(const Encoder &outEnc) {
-    if (SetConsoleCP(outEnc.getCodePage())) {
-        _outputEncoder = outEnc;
-        return true;
-    }
-    return false;
+uint32_t getOutputCp() {
+    return GetConsoleOutputCP();
 }
 
 }

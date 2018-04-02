@@ -4,67 +4,31 @@
 #include <string>
 #include <Windows.h>
 
-namespace cpe::core {
+namespace cpe::core::console {
 
-namespace {
-class Encoder;
-}
+/// Останавливает выполнение до ввода пользователя
+void pause();
 
-class Console {
-public:
+/// Очищает экран вывода
+void clear();
 
-    Console();
+/// Задает текст заголовка окна консоли
+void setTitle(const std::string &title);
 
-    /**
-	 * Останавливает выполнение до ввода пользователя
-	 */
-    void pause();
+/// Возвращает текст заголовка окна консоли
+std::string getTitle();
 
-    /**
-	 * Очищает экран вывода
-	 */
-    void clear();
+/// Задает кодировку для потока ввода
+bool setInputCp(uint32_t codePage);
 
-    /**
-	 * Задает текст заголовка окна консоли
-	 */
-    void setTitle(std::string &&title);
+/// Задает кодировку для потока вывода
+bool setOutputCp(uint32_t codePage);
 
-    /**
-    * Возвращает текст заголовка окна консоли
-    */
-    std::string &&getTitle() const;
+/// Возвращает кодировку для потока ввода
+uint32_t getInputCp();
 
-    /**
-     * Возвращает дескриптор стандартного потока вывода консоли Windows
-     */
-    HANDLE getOutputHandle() const;
-
-    /**
-     * Возвращает объект кодировки для ввода
-     */
-    const Encoder &getInputEncoder() const;
-
-    /**
-     * Возвращает объект кодировки для вывода
-     */
-    const Encoder &getOutputEncoder() const;
-
-    /**
-     * Задает и пременяет кодировку для потока ввода
-     */
-    bool applyEncoderInput(Encoder &&inEnc);
-
-    /**
-     * Задает и пременяет кодировку для потока вывода
-     */
-    bool applyEncoderOutput(const Encoder &outEnc);
-
-private:
-    std::string _title;
-    extern Encoder _inputEncoder;
-    extern Encoder _outputEncoder;
-};
+/// Возвращает кодировку для потока вывода
+uint32_t getOutputCp();
 
 }
 

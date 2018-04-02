@@ -15,7 +15,7 @@ enum class Color;
 enum class DualBorder;
 enum class TableBorder;
 
-// TODO Обновить логику. Вывод из метода с параметром Console.
+// TODO Обновить логику. Вывод из метода с параметром console.
 class Table
 {
 	friend class Console;
