@@ -2,8 +2,7 @@
 #include <string>
 #include <conio.h>
 
-#include <core/Encoding.h>
-#include "core/Console.h"
+#include "cpe/Core.h"
 
 using namespace cpe::core;
 
@@ -17,7 +16,6 @@ std::string encode(const std::string &src) {
 
 
 int main() {
-
     std::cout << "CP out: " << console::getOutputCp() << std::endl;
     std::cout << "CP in: " << console::getInputCp() << std::endl << std::endl;
 
@@ -25,7 +23,7 @@ int main() {
     console::setInputCp(866);
     console::setOutputCp(866);
 
-    std::cout << encode("Приуэт писька! HALLO") << std::endl;
+    std::cout << encode("Приуэт! HALLO") << std::endl;
 
     std::string input;
     std::getline(std::cin, input);

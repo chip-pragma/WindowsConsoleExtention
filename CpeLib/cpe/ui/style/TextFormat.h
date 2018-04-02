@@ -16,7 +16,6 @@ class Encoder;
  */
 class TextFormat {
 public:
-
     TextFormat();
 
     /// Возвращает длинну табуляции (в символах)
