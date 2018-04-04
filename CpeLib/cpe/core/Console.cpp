@@ -3,6 +3,30 @@
 
 namespace cpe::core::console {
 
+namespace {
+
+#if defined(CPE_PLATFORM_IS_WINDOWS)
+
+namespace _winapi {
+
+HANDLE getHandle() {
+    return GetStdHandle(STD_OUTPUT_HANDLE);
+}
+
+CONSOLE_SCREEN_BUFFER_INFO getBufferInfo() {
+    CONSOLE_SCREEN_BUFFER_INFO info;
+    GetConsoleScreenBufferInfo(
+            getHandle(),
+            &info);
+    return info;
+}
+
+}
+
+#endif
+
+}
+
 void pause() {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
     system("pause");
@@ -55,16 +79,15 @@ uint32_t getOutputCp() {
 
 bool setBufferSize(const Point &size) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
-    return (bool) SetConsoleScreenBufferSize(GetStdHandle(STD_OUTPUT_HANDLE), platform::toPlatformPoint(size));
+    return (bool) SetConsoleScreenBufferSize(
+            _winapi::getHandle(),
+            platform::toPlatformPoint(size));
 #endif
 }
 
 Point getBufferSize() {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
-    CONSOLE_SCREEN_BUFFER_INFO info;
-    GetConsoleScreenBufferInfo(
-            GetStdHandle(STD_OUTPUT_HANDLE),
-            &info);
+    auto info = _winapi::getBufferInfo();
     return platform::toCpePoint(info.dwSize);
 #endif
 }
@@ -72,18 +95,14 @@ Point getBufferSize() {
 bool setCursorPosition(const Point &size) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
     return (bool) SetConsoleCursorPosition(
-            GetStdHandle(STD_OUTPUT_HANDLE),
+            _winapi::getHandle(),
             platform::toPlatformPoint(size));
 #endif
 }
 
 Point getCursorPosition() {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    CONSOLE_SCREEN_BUFFER_INFO info{};
-    GetConsoleScreenBufferInfo(
-            GetStdHandle(STD_OUTPUT_HANDLE),
-            &info);
+    auto info = _winapi::getBufferInfo();
     return platform::toCpePoint(info.dwCursorPosition);
 #endif
 }
@@ -91,9 +110,11 @@ Point getCursorPosition() {
 bool setForeColor(const Color &color) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
 
+    auto info = _winapi::getBufferInfo();
+    auto attr = (info.wAttributes & ~(WORD)0b1111) | platform::toPlatformColor(color);
     return (bool) SetConsoleTextAttribute(
-            GetStdHandle(STD_OUTPUT_HANDLE),
-            platform::toPlatformColor(color));
+            _winapi::getHandle(),
+            attr);
 
 #endif
 }
@@ -101,10 +122,7 @@ bool setForeColor(const Color &color) {
 Color getForeColor() {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
 
-    CONSOLE_SCREEN_BUFFER_INFO info;
-    auto b = (bool)GetConsoleScreenBufferInfo(
-            GetStdHandle(STD_OUTPUT_HANDLE),
-            &info);
+    auto info = _winapi::getBufferInfo();
     return platform::toCpeColor(info.wAttributes);
 
 #endif
@@ -113,9 +131,11 @@ Color getForeColor() {
 bool setBackColor(const Color &color) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
 
+    auto info = _winapi::getBufferInfo();
+    auto attr = (info.wAttributes & ~((WORD)0b1111 << 4)) | (platform::toPlatformColor(color) << 4);
     return (bool) SetConsoleTextAttribute(
-            GetStdHandle(STD_OUTPUT_HANDLE),
-            platform::toPlatformColor(color) << 4u);
+            _winapi::getHandle(),
+            attr);
 
 #endif
 }
@@ -123,11 +143,8 @@ bool setBackColor(const Color &color) {
 Color getBackColor() {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
 
-    CONSOLE_SCREEN_BUFFER_INFO info;
-    auto b = (bool)GetConsoleScreenBufferInfo(
-            GetStdHandle(STD_OUTPUT_HANDLE),
-            &info);
-    return platform::toCpeColor(info.wAttributes >> 4u);
+    auto info = _winapi::getBufferInfo();
+    return platform::toCpeColor(info.wAttributes >> 4);
 
 #endif
 }
