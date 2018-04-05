@@ -22,8 +22,8 @@ add_library(${LIBRARY_CPE_NAME}
         cpe/core/Console.h
         #            ui/Scene.cpp
         #            ui/Scene.h
-        #            ui/style/WriterFormat.cpp
-        #            ui/style/WriterFormat.h
+        #            ui/style/OutputFormat.cpp
+        #            ui/style/OutputFormat.h
         cpe/core/Encoding.cpp
         cpe/core/Encoding.h
         cpe/core/Point.cpp
@@ -32,4 +32,4 @@ add_library(${LIBRARY_CPE_NAME}
         cpe/core/Platform.cpp
         cpe/core/Platform.h
         cpe/core/Color.cpp
-        cpe/core/Color.h cpe/ui/BaseReader.cpp cpe/ui/BaseReader.h)
+        cpe/core/Color.h cpe/ui/BaseInput.cpp cpe/ui/BaseInput.h cpe/core/KeyType.h cpe/ui/BaseOutput.cpp cpe/ui/BaseOutput.h cpe/ui/InputFormat.cpp cpe/ui/InputFormat.h)

@@ -2,14 +2,14 @@
 
 #include <string>
 
-namespace cpe::ui::style {
+namespace cpe::ui {
 
 /**
  * Стиль текста
  */
-class WriterFormat {
+class OutputFormat {
 public:
-    WriterFormat();
+    OutputFormat();
 
     /// Возвращает длинну табуляции (в символах)
     uint8_t getTabLength() const;

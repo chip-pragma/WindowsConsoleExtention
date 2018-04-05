@@ -6,14 +6,24 @@ namespace {
 
 #if defined(CPE_PLATFORM_IS_WINDOWS)
 
+/// функции для Windows API
 namespace _winapi {
 
+/**
+ * Компоненты цвета в WinAPI
+ */
 enum class ColorComponent : uint8_t {
     RED = 2,
     GREEN = 1,
     BLUE = 0
 };
 
+/**
+ * Получает битовое "слово" компонента цвета из значения [0..255]
+ * @param component Значение компонента цвета [0..255]
+ * @param comp Компонент цвета
+ * @return битовое "слово" компонента цвета
+ */
 PlatformColor getColorComponentBit(uint8_t component, ColorComponent comp) {
     if (component < 64)
         return 0;
@@ -75,9 +85,15 @@ Color toCpeColor(const PlatformColor &color) {
 #endif
 }
 
-bool getKey(char *keyOrChar, char *command) {
+bool getKey(KeyType &keyType, char& sym) {
+#if defined(CPE_PLATFORM_IS_WINDOWS)
 
-    int key = getch();
+    sym = (char)getch();
+    if (_kbhit())
+        keyType = (KeyType)getch();
+    return true;
+
+#endif
 }
 
 }

@@ -24,6 +24,7 @@ typedef unsigned short PlatformColor;
 
 #include "Point.h"
 #include "Color.h"
+#include "KeyType.h"
 
 namespace cpe::core::platform {
 
@@ -48,11 +49,11 @@ PlatformColor toPlatformColor(const Color &color);
 Color toCpeColor(const PlatformColor& color);
 
 /**
- * Получает символ нажатой клавиши (только <code>keyOrChar</code>) или код комманды (модификатор <code>keyOrChar</code> и код <code>command</code>), связанной с ней.
- * @param keyOrChar <i>[out]<i/> символ или модификатор
- * @param command <i>[out]<i/> код команды
- * @return Если успешно клавиша считана - true. Иначе false.
+ * Получает код ввода с клавиатуры и определяет символ или команду, связанную с данной клавишей
+ * @param keyType [<i>out</i>] Тип символ или команда клавиши
+ * @param sym [<i>out</i>] Полученный символ или команда
+ * @return В случае успеха true. Иначе false.
  */
-bool getKey(char* keyOrChar, char* command);
+bool getKey(KeyType &keyType, char& sym);
 
 }
