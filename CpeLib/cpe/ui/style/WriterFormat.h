@@ -1,22 +1,15 @@
-
-
-#ifndef PROJECT_TEXTSTYLE_H
-#define PROJECT_TEXTSTYLE_H
+#pragma once
 
 #include <string>
 
 namespace cpe::ui::style {
 
-namespace {
-class Encoder;
-}
-
 /**
  * Стиль текста
  */
-class TextFormat {
+class WriterFormat {
 public:
-    TextFormat();
+    WriterFormat();
 
     /// Возвращает длинну табуляции (в символах)
     uint8_t getTabLength() const;
@@ -25,27 +18,14 @@ public:
     void setTabLength(uint8_t tabLength);
 
     /// Возвращает строку обозначения незаконченного текста
-    const std::string &getUnfinished() const;
+    const std::wstring &getUnfinished() const;
 
     /// Задает строку обозначения незаконченного текста
-    void setUnfinished(const std::string &unfinished);
-
-    Encoder &getInputEncoder() const;
-
-    void setInputEncoder(Encoder &inputEncoder);
-
-    Encoder &getOutputEncoder() const;
-
-    void setOutputEncoder(Encoder &outputEncoder);
+    void setUnfinished(const std::wstring &unfinished);
 
 private:
     uint8_t _tabLength;
-    std::string _unfinished;
-    Encoder& _inputEncoder;
-    Encoder& _outputEncoder;
+    std::wstring _unfinished;
 };
 
 }
-
-
-#endif //PROJECT_TEXTSTYLE_H

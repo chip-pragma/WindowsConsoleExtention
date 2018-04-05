@@ -17,13 +17,13 @@ add_library(${LIBRARY_CPE_NAME}
         #            ui/style/TableBorder.h
         #            ui/style/Border.cpp
         #            ui/style/Border.h
-        #            ui/IElement.h
+        #            ui/IPrintElement.h
         cpe/core/Console.cpp
         cpe/core/Console.h
         #            ui/Scene.cpp
         #            ui/Scene.h
-        #            ui/style/TextFormat.cpp
-        #            ui/style/TextFormat.h
+        #            ui/style/WriterFormat.cpp
+        #            ui/style/WriterFormat.h
         cpe/core/Encoding.cpp
         cpe/core/Encoding.h
         cpe/core/Point.cpp
@@ -32,4 +32,4 @@ add_library(${LIBRARY_CPE_NAME}
         cpe/core/Platform.cpp
         cpe/core/Platform.h
         cpe/core/Color.cpp
-        cpe/core/Color.h)
+        cpe/core/Color.h cpe/ui/BaseReader.cpp cpe/ui/BaseReader.h)

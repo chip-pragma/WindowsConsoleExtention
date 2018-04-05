@@ -51,16 +51,6 @@ PlatformColor toPlatformColor(const Color &color) {
             _winapi::getColorComponentBit(color.getR(), _winapi::ColorComponent::RED)
             | _winapi::getColorComponentBit(color.getG(), _winapi::ColorComponent::GREEN)
             | _winapi::getColorComponentBit(color.getB(), _winapi::ColorComponent::BLUE);
-//
-//    if (color.getR())
-//        pc |= 4u;
-//    if (color.getG())
-//        pc |= 2u;
-//    if (color.getB())
-//        pc |= 1u;
-//    if (color.isIntensive())
-//        pc |= 8u;
-
     return pc;
 #endif
 }
@@ -71,18 +61,23 @@ Color toCpeColor(const PlatformColor &color) {
     const uint8_t MIN = 128u;
     const uint8_t PLUS = 127;
     auto i = MIN;
-    if (((unsigned) color & 8u) == 8u)
+    if ((color & 8u) == 8u)
         i += PLUS;
     Color c;
-    if (((unsigned) color & 4u) == 4u)
+    if ((color & 4u) == 4u)
         c.setR(i);
-    if (((unsigned) color & 2u) == 2u)
+    if ((color & 2u) == 2u)
         c.setG(i);
-    if (((unsigned) color & 1u) == 1u)
+    if ((color & 1u) == 1u)
         c.setB(i);
 
     return c;
 #endif
+}
+
+bool getKey(char *keyOrChar, char *command) {
+
+    int key = getch();
 }
 
 }

@@ -15,9 +15,10 @@
 
 #include <Windows.h>
 #include <cstdint>
+#include <conio.h>
 
 typedef COORD PlatformPoint;
-typedef uint16_t PlatformColor;
+typedef unsigned short PlatformColor;
 
 #endif
 
@@ -45,5 +46,13 @@ PlatformColor toPlatformColor(const Color &color);
  * Приведение типов цвета (Platform => CPE)
  */
 Color toCpeColor(const PlatformColor& color);
+
+/**
+ * Получает символ нажатой клавиши (только <code>keyOrChar</code>) или код комманды (модификатор <code>keyOrChar</code> и код <code>command</code>), связанной с ней.
+ * @param keyOrChar <i>[out]<i/> символ или модификатор
+ * @param command <i>[out]<i/> код команды
+ * @return Если успешно клавиша считана - true. Иначе false.
+ */
+bool getKey(char* keyOrChar, char* command);
 
 }
