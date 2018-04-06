@@ -1,29 +1,29 @@
-#ifndef CONSOLEPRESENTEXTENTION_STRINGTEXT_H
-#define CONSOLEPRESENTEXTENTION_STRINGTEXT_H
+#pragma once
 
 #include <string>
 #include <vector>
 
+#include "cpe/core/BaseOutput.h"
+
+
 namespace cpe::ui {
 
-namespace {
-class TextStyle;
-}
+using namespace cpe::core;
 
 /**
  * Форматированный текст в ограниченном прямоугольнике
  */
-class TextBlock {
+class TextBlock : public BaseOutput {
 public:
     /**
      * Создает форматированный текст по заданным параметров из исходной строки
      * @param source Исходная строка
-     * @param textStyle Длинна табуляции (в пробелах)
+     * @param outputFormat Длинна табуляции (в пробелах)
      * @param maxWidth Максимальная допустимая ширина строки текста (в символах). Должна быть больше 0
      * @param maxHeight Максимальная допустимая высота текста (в строках). 0 - без ограничений
      * @return Объект форматированного текста StringText
      */
-    TextBlock(std::string *source, const TextStyle& textStyle, int maxWidth, int maxHeight);
+    TextBlock(std::string *source, int maxWidth, int maxHeight);
 
     /**
      * Записывает строки текств в вектор
@@ -61,18 +61,6 @@ public:
      */
     bool isFillToWidth() const;
 
-    /**
-     * Задает флаг заполнения строк пробелами, если те не равны итоговой ширине
-     * @param fillToWidth true, сли необходимо заполнение. Иначе false
-     */
-    void setFillToWidth(bool fillToWidth);
-
-    /**
-     * Возвращает стиль текста, используемый при форматированиии блока текста
-     */
-    const TextStyle &getTextStyle() const;
-
-
 private:
     // Информация о пропуске строки
     class _Line;
@@ -83,13 +71,9 @@ private:
     uint8_t _width;
     bool _placed;
     bool _fillToWidth;
-    extern TextStyle _textStyle;
 
     // Массив перевода строк текста
     std::vector<_Line> _lines;
 };
 
 }
-
-
-#endif //CONSOLEPRESENTEXTENTION_LAYOUTTEXT_H

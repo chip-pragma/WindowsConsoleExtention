@@ -7,7 +7,7 @@ namespace cpe::core {
 
 OutputFormat::OutputFormat() :
         _tabLength(4),
-        _unfinished(L"...") {}
+        _unfinished("...") {}
 
 uint8_t OutputFormat::getTabLength() const {
     return _tabLength;
@@ -17,19 +17,19 @@ void OutputFormat::setTabLength(uint8_t tabLength) {
     _tabLength = tabLength;
 }
 
-const std::wstring &OutputFormat::getUnfinished() const {
+const std::string &OutputFormat::getUnfinished() const {
     return _unfinished;
 }
 
-void OutputFormat::setUnfinished(const std::wstring &unfinished) {
+void OutputFormat::setUnfinished(const std::string &unfinished) {
     _unfinished = unfinished;
 }
 
 //
 //  TODO Доделать применение формата к строке. Додумать, что делать при \n
 //
-std::string OutputFormat::apply(const std::string &src, uint32_t maxLength) {
-    std::string result;
+std::string OutputFormat::apply(const std::string &src, uint32_t maxLength = 0) {
+    /*std::string result;
     uint32_t lineLength = 0;
     for (char c : src) {
         switch (c) {
@@ -43,7 +43,7 @@ std::string OutputFormat::apply(const std::string &src, uint32_t maxLength) {
             default:
                 result += c;
         }
-    }
+    }*/
 }
 
 }

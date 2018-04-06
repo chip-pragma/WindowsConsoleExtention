@@ -149,7 +149,7 @@ Color getBackColor() {
 #endif
 }
 
-void inverseOutputColors() {
+void swapOutputColors() {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
 
     auto back = getBackColor();

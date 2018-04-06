@@ -52,8 +52,8 @@ Color toCpeColor(const PlatformColor& color);
  * Получает код ввода с клавиатуры и определяет символ или команду, связанную с данной клавишей
  * @param keyType [<i>out</i>] Тип символ или команда клавиши
  * @param sym [<i>out</i>] Полученный символ или команда
- * @return В случае успеха true. Иначе false.
+ * @return В случае успеха 0. Иначе код ошибки платформы.
  */
-bool getKey(KeyType &keyType, char& sym);
+unsigned int getKey(KeyType &keyType, char& sym);
 
 }

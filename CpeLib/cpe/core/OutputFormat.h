@@ -24,12 +24,12 @@ public:
     /**
      * Возвращает строку обозначения незаконченного текста
      */
-    const std::wstring &getUnfinished() const;
+    const std::string &getUnfinished() const;
 
     /**
      * Задает строку обозначения незаконченного текста
      */
-    void setUnfinished(const std::wstring &unfinished);
+    void setUnfinished(const std::string &unfinished);
 
     /**
      * Применяет параметры формата на строку
@@ -37,11 +37,11 @@ public:
      * @param maxLength Максимальная длинна. 0 если не задано.
      * @return Новую форматированную строку
      */
-    std::string apply(const std::string& src, uint32_t maxLength = 0);
+    std::string apply(const std::string& src, uint32_t maxLength);
 
 private:
     uint8_t _tabLength;
-    std::wstring _unfinished;
+    std::string _unfinished;
 };
 
 }

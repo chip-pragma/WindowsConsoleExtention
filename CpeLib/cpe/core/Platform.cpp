@@ -85,13 +85,16 @@ Color toCpeColor(const PlatformColor &color) {
 #endif
 }
 
-bool getKey(KeyType &keyType, char& sym) {
+unsigned int getKey(KeyType &keyType, char& sym) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
 
+    keyType = KeyType::Symbol;
+    SetLastError(0u);
     sym = (char)getch();
-    if (_kbhit())
+    auto hit = _kbhit();
+    if (hit)
         keyType = (KeyType)getch();
-    return true;
+    return GetLastError();
 
 #endif
 }

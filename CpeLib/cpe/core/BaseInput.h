@@ -27,7 +27,14 @@ public:
      */
     virtual void setInputFormat(const InputFormat &inFormat) final;
 
+    /**
+     * Удаляет форматер ввода
+     */
+    virtual void cleanInputFormat() final;
+
 protected:
+    const InputFormat *_inFormat;
+
     /**
      * Получение символа
      * @param symbol полученный символ
@@ -43,7 +50,7 @@ protected:
     /**
      * Ошибка при вводе
      */
-    virtual void onReadingError() = 0;
+    virtual void onReadingError(uint32_t errCode) = 0;
 
     /**
      * Завершить чтение
@@ -52,7 +59,6 @@ protected:
 
 private:
     bool _readFinished;
-    InputFormat _inFormat;
 };
 
 }

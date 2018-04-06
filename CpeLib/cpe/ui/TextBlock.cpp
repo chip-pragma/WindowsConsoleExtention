@@ -1,9 +1,6 @@
 #include "TextBlock.h"
-#include "ui/style/TextFormat.h"
 
 namespace cpe::ui {
-
-using TextStyle = style::TextFormat;
 
 class TextBlock::_Line {
 public:
@@ -18,12 +15,11 @@ public:
     }
 };
 
-TextBlock::TextBlock(std::string *source, const TextStyle& textStyle, int maxWidth, int maxHeight = 0) {
+TextBlock::TextBlock(std::string *source, int maxWidth, int maxHeight = 0) {
     // Создание объекта
     _source = std::string(*source);
     _placed = true;
     _width = 0;
-    _textStyle = textStyle;
     // Максимальная итоговая ширина
     _Line line;
 
@@ -36,7 +32,7 @@ TextBlock::TextBlock(std::string *source, const TextStyle& textStyle, int maxWid
         // Табуляция
         if (c == '\t') {
             // Расстояние до след. таба
-            int nextTab = _textStyle.getTabLength() - (line.length % _textStyle.getTabLength());
+            int nextTab = _outFormat.getTabLength() - (line.length % _outFormat.getTabLength());
             // ЕСЛИ расстояние не превышает ширину
             if (line.length + nextTab < maxWidth)
                 line.length += nextTab;
@@ -83,8 +79,8 @@ std::vector<std::string> TextBlock::toVector() {
             line += std::string(static_cast<size_t>(_width - formatLine.length), ' ');
         // Добавление "незавершенности"
         if (!_placed && i + 1 == n) {
-            line = line.substr(0, _width - _textStyle.getUnfinished().size());
-            line += _textStyle.getUnfinished();
+            line = line.substr(0, _width - _outFormat.getUnfinished().size());
+            line += _outFormat.getUnfinished();
         }
         // Сдвиг курсора
         pos += formatLine.length;
@@ -116,16 +112,8 @@ bool TextBlock::isFillToWidth() const {
     return _fillToWidth;
 }
 
-void TextBlock::setFillToWidth(bool fillToWidth) {
-    _fillToWidth = fillToWidth;
-}
-
 bool TextBlock::isPlaced() const {
     return _placed;
-}
-
-const TextStyle &TextBlock::getTextStyle() const {
-    return _textStyle;
 }
 
 

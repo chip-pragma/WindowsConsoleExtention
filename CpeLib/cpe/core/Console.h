@@ -94,6 +94,6 @@ Color getBackColor();
 /**
  * Меняет "местами" цвета текста и фона
  */
-void inverseOutputColors();
+void swapOutputColors();
 
 }

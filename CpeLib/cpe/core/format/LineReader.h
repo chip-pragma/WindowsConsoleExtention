@@ -11,6 +11,8 @@ class LineReader :
         public BaseInput,
         protected BaseOutput {
 public:
+    LineReader();
+
     void read(std::string &line, const OutputFormat &format);
 
 protected:
@@ -18,10 +20,12 @@ protected:
 
     void onReceiveCommand(const KeyType &command) override;
 
-    void onReadingError() override;
+    void onReadingError(uint32_t errCode) override;
+
+
 
 private:
-    std::string &_line;
+    std::string *_line;
 
     void output() override;
 };
