@@ -9,8 +9,8 @@ add_library(${LIBRARY_CPE_NAME}
         #            ui/Table.h
         #            ui/TextBlock.cpp
         #            ui/TextBlock.h
-        #            utils/Text.cpp
-        #            utils/Text.h
+        cpe/utils/Text.cpp
+        cpe/utils/Text.h
         #            utils/Converter.cpp
         #            utils/Converter.h
         #            ui/style/DualBorder.h
@@ -28,8 +28,7 @@ add_library(${LIBRARY_CPE_NAME}
         cpe/core/Encoding.h
         cpe/core/Point.cpp
         cpe/core/Point.h
-        cpe/Core.h
         cpe/core/Platform.cpp
         cpe/core/Platform.h
         cpe/core/Color.cpp
-        cpe/core/Color.h cpe/ui/BaseInput.cpp cpe/ui/BaseInput.h cpe/core/KeyType.h cpe/ui/BaseOutput.cpp cpe/ui/BaseOutput.h cpe/ui/InputFormat.cpp cpe/ui/InputFormat.h)
+        cpe/core/Color.h cpe/core/BaseInput.cpp cpe/core/BaseInput.h cpe/core/KeyType.h cpe/core/BaseOutput.cpp cpe/core/BaseOutput.h cpe/core/InputFormat.cpp cpe/core/InputFormat.h cpe/core/format/LineReader.cpp cpe/core/format/LineReader.h)

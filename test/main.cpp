@@ -2,7 +2,9 @@
 #include <string>
 #include <conio.h>
 
-#include "cpe/Core.h"
+#include "cpe/core/Platform.h"
+#include "cpe/core/Encoding.h"
+#include "cpe/core/Console.h"
 
 using namespace cpe::core;
 

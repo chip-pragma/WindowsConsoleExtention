@@ -8,13 +8,21 @@ namespace cpe::utils {
 
 class Text {
 public:
-    // Удаление начальных и конечных знаков пробелов
-    static void trim(std::string *src);
+    /**
+     * Удаление начальных и конечных знаков пробелов
+     * @param src Обрабатываемая строка
+     */
+    static void trim(std::string &src);
 
-    // Деление строки по указанным делителям
-    static void split(std::string src,
-                      std::vector<std::string> *dest,
-                      std::string anyDelim);
+    /**
+     * Деление строки по указанным делителям
+     * @param src Исходная делимая строка
+     * @param dest Конечный вектор разделенной строки
+     * @param anyDelim Последовательность делителей
+     */
+    static void split(const std::string& src,
+                      std::vector<std::string> &dest,
+                      const std::string &anyDelim);
 };
 
 }

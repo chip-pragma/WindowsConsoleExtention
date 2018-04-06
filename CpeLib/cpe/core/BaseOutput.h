@@ -2,9 +2,7 @@
 
 #include "OutputFormat.h"
 
-namespace cpe::ui {
-
-using namespace cpe::ui::style;
+namespace cpe::core {
 
 /**
  * Базовый класс вывода на консоль

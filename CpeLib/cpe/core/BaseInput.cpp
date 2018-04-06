@@ -1,15 +1,13 @@
 #include "BaseInput.h"
 #include "cpe/core/Platform.h"
 
-namespace cpe::ui {
-
-using namespace cpe::core;
+namespace cpe::core {
 
 BaseInput::BaseInput() = default {
     _readFinished = false;
 }
 
-void BaseInput::read() {
+void BaseInput::startRead() {
     for (; !_readFinished;) {
         KeyType keyType;
         char sym;

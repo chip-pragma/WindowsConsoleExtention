@@ -1,11 +1,9 @@
 #include "BaseOutput.h"
 
-namespace cpe::ui {
+namespace cpe::core {
 
 BaseOutput::BaseOutput() :
-        _outFormat() {
-
-}
+        _outFormat() {}
 
 const OutputFormat &BaseOutput::getOutputFormat() const {
     return _outFormat;

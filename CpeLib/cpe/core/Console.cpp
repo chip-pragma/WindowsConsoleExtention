@@ -149,4 +149,15 @@ Color getBackColor() {
 #endif
 }
 
+void inverseOutputColors() {
+#if defined(CPE_PLATFORM_IS_WINDOWS)
+
+    auto back = getBackColor();
+    auto fore = getForeColor();
+    setBackColor(fore);
+    setForeColor(back);
+
+#endif
+}
+
 }

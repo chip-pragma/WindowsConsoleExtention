@@ -3,9 +3,7 @@
 #include "cpe/core/KeyType.h"
 #include "InputFormat.h"
 
-namespace cpe::ui {
-
-using namespace cpe::core;
+namespace cpe::core {
 
 /**
  * Базовый класс ввода с клавиатуры
@@ -17,17 +15,17 @@ public:
     /**
      * Запуск чтения
      */
-    void read();
+    virtual void startRead() final;
 
     /**
      * Возвращает форматер ввода
      */
-    const InputFormat &getInputFormat() const;
+    virtual const InputFormat &getInputFormat() const final;
 
     /**
      * Задает форматер ввода
      */
-    void setInputFormat(const InputFormat &inFormat);
+    virtual void setInputFormat(const InputFormat &inFormat) final;
 
 protected:
     /**
@@ -50,7 +48,7 @@ protected:
     /**
      * Завершить чтение
      */
-    void finishRead();
+    virtual void finishRead() final;
 
 private:
     bool _readFinished;

@@ -71,12 +71,29 @@ bool setCursorPosition(const Point &pos);
  */
 Point getCursorPosition();
 
-bool setForeColor(const Color& color);
+/**
+ * Задает цвет текста
+ */
+bool setForeColor(const Color &color);
 
+/**
+ * Возвращает цвет текста
+ */
 Color getForeColor();
 
-bool setBackColor(const Color& color);
+/**
+ * Задает цвет фона
+ */
+bool setBackColor(const Color &color);
 
+/**
+ * Возвращает цвет фона
+ */
 Color getBackColor();
+
+/**
+ * Меняет "местами" цвета текста и фона
+ */
+void inverseOutputColors();
 
 }

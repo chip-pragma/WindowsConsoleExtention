@@ -1,6 +1,6 @@
 #include "InputFormat.h"
 
-namespace cpe::ui {
+namespace cpe::core {
 
 
 InputFormat::InputFormat() {

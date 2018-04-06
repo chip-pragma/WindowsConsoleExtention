@@ -2,10 +2,10 @@
 
 #include <string>
 
-namespace cpe::ui {
+namespace cpe::core {
 
 /**
- * Базовый класс формата ввода. В тоже время явлется простым форматом ввода, который не выполняет препроцессор ввода.
+ * Базовый класс форматера ввода.
  */
 class InputFormat {
 public:
@@ -16,7 +16,7 @@ public:
      * @param c Символ ввода
      * @return При успешном препроцессе true. Иначе false.
      */
-    virtual bool preprocess(char& c) const;
+    virtual bool preprocess(char &c) const;
 
     /**
      * Возвращает допустимые символы при вводе
@@ -36,7 +36,7 @@ protected:
      * Проверяет, разрешен ли символ
      * @param c проверяемый символ
      */
-    bool checkAllowChar(const char& c) const;
+    bool checkAllowChar(const char &c) const;
 };
 
 }
