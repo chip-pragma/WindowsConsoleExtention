@@ -1,6 +1,5 @@
 #pragma once
 
-#include "cpe/core/KeyType.h"
 #include "InputFormat.h"
 
 namespace cpe::core {
@@ -39,13 +38,7 @@ protected:
      * Получение символа
      * @param symbol полученный символ
      */
-    virtual void onReceiveSymbol(const char &symbol) = 0;
-
-    /**
-     * Получение команды
-     * @param command тип комманды
-     */
-    virtual void onReceiveCommand(const KeyType &command) = 0;
+    virtual void onKeyRead(const char &symbol) = 0;
 
     /**
      * Ошибка при вводе

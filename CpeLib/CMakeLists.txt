@@ -28,7 +28,6 @@ add_library(${LIBRARY_CPE_NAME}
             cpe/core/Encoding.h
             cpe/core/Point.cpp
             cpe/core/Point.h
-            cpe/core/Platform.cpp
             cpe/core/Platform.h
             cpe/core/Color.cpp
-            cpe/core/Color.h cpe/core/BaseInput.cpp cpe/core/BaseInput.h cpe/core/KeyType.h cpe/core/BaseOutput.cpp cpe/core/BaseOutput.h cpe/core/InputFormat.cpp cpe/core/InputFormat.h cpe/core/format/LineReader.cpp cpe/core/format/LineReader.h)
+            cpe/core/Color.h cpe/core/BaseInput.cpp cpe/core/BaseInput.h cpe/core/BaseOutput.cpp cpe/core/BaseOutput.h cpe/core/InputFormat.cpp cpe/core/InputFormat.h cpe/core/format/LineReader.cpp cpe/core/format/LineReader.h cpe/core/KeyData.cpp cpe/core/KeyData.h cpe/_platform/winapi.cpp cpe/_platform/winapi.h cpe/core/Exception.cpp cpe/core/Exception.h)

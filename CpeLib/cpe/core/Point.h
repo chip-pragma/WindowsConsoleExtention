@@ -1,8 +1,6 @@
-#ifndef PROJECT_POINT_H
-#define PROJECT_POINT_H
+#pragma once
 
-#include <cstdint>
-#include <Windows.h>
+#include "Platform.h"
 
 namespace cpe::core {
 
@@ -11,15 +9,31 @@ namespace cpe::core {
  */
 class Point {
 public:
-    Point();
-    Point(int16_t x, int16_t y);
-
     int16_t x;
     int16_t y;
 
-    Point operator +(const Point& p1);
+    Point() noexcept;
+
+    Point(int16_t x, int16_t y) noexcept;
+
+    explicit Point(const PlatformPoint &platformPoint) noexcept;
+
+    /**
+     * Преобразует в платформозависимый тип представления координат
+     */
+    PlatformPoint toPlatform() const noexcept;
+
+    Point &operator+=(const Point &p1) noexcept;
+
+    Point operator+(const Point &p1) noexcept;
+
+    Point &operator-=(const Point &p1) noexcept;
+
+    Point operator-(const Point &p1) noexcept;
+
+    Point &operator*=(int16_t k) noexcept;
+
+    Point operator*(int16_t k) noexcept;
 };
 
 }
-
-#endif //PROJECT_POINT_H

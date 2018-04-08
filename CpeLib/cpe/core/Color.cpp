@@ -2,66 +2,70 @@
 
 namespace cpe::core {
 
-const Color Color::BLACK = Color(0, 0, 0);
-const Color Color::BLUE = Color(0, 0, 128);
-const Color Color::GREEN = Color(0, 128, 0);
-const Color Color::TEAL = Color(0, 128, 128);
-const Color Color::RED = Color(128, 0, 0);
-const Color Color::PURPLE = Color(128, 0, 128);
-const Color Color::YELLOW = Color(128, 128, 0);
-const Color Color::GRAY = Color(128, 128, 128);
-const Color Color::WHITE = Color(255, 255, 255);
-const Color Color::LT_BLUE = Color(0, 0, 255);
-const Color Color::LT_GREEN = Color(0, 255, 0);
-const Color Color::LT_TEAL = Color(0, 255, 255);
-const Color Color::LT_RED = Color(255, 0, 0);
-const Color Color::LT_PURPLE = Color(255, 0, 255);
-const Color Color::LT_YELLOW = Color(255, 255, 0);
-const Color Color::LT_GRAY = Color(192, 192, 192);
-
-Color::Color(uint8_t r, uint8_t g, uint8_t b) {
-    setAll(r,g,b);
+Color::Color() noexcept {
+    r = 0;
+    g = 0;
+    b = 0;
 }
 
-uint8_t Color::getR() const {
-    return _r;
+Color::Color(uint8_t r, uint8_t g, uint8_t b) noexcept {
+    this->r = r;
+    this->g = g;
+    this->b = b;
 }
 
-void Color::setR(unsigned char r) {
-    _r = r;
+Color::Color(const PlatformColor &platformColor) noexcept {
+#if defined(CPE_PLATFORM_IS_WINDOWS)
+
+    const uint8_t MIN = 128u;
+    const uint8_t PLUS = 127;
+    auto i = MIN;
+    if ((platformColor & 8u) == 8u)
+        i += PLUS;
+    if ((platformColor & 4u) == 4u)
+        r = i;
+    if ((platformColor & 2u) == 2u)
+        g = i;
+    if ((platformColor & 1u) == 1u)
+        b = i;
+#endif
 }
 
-uint8_t Color::getG() const {
-    return _g;
+PlatformColor Color::toPlatform() const noexcept {
+#if defined(CPE_PLATFORM_IS_WINDOWS)
+    PlatformColor pc =
+            _winapi::getColorComponentBit(r, _winapi::BitColorComponent::RED)
+            | _winapi::getColorComponentBit(g, _winapi::BitColorComponent::GREEN)
+            | _winapi::getColorComponentBit(b, _winapi::BitColorComponent::BLUE);
+    return pc;
+#endif
 }
 
-void Color::setG(unsigned char g) {
-    _g = g;
-}
-
-uint8_t Color::getB() const {
-    return _b;
-}
-
-void Color::setB(unsigned char b) {
-    _b = b;
-}
-
-void Color::setAll(uint8_t r, uint8_t g, uint8_t b) {
-    _r = r;
-    _g = g;
-    _b = b;
-}
-
-bool Color::isIntensive() const {
+bool Color::isIntensive() const noexcept {
     static const int MIN = 191;
-    return (_r > MIN || _g > MIN || _b > MIN);
+    return (r > MIN || g > MIN || b > MIN);
 }
 
-Color::Color() {
-    _r = 0;
-    _g = 0;
-    _b = 0;
+namespace Colors {
+
+const Color BLACK(0, 0, 0);
+const Color BLUE(0, 0, 128);
+const Color GREEN(0, 128, 0);
+const Color TEAL(0, 128, 128);
+const Color RED(128, 0, 0);
+const Color PURPLE(128, 0, 128);
+const Color YELLOW(128, 128, 0);
+const Color GRAY(128, 128, 128);
+const Color WHITE(255, 255, 255);
+const Color LT_BLUE(0, 0, 255);
+const Color LT_GREEN(0, 255, 0);
+const Color LT_TEAL(0, 255, 255);
+const Color LT_RED(255, 0, 0);
+const Color LT_PURPLE(255, 0, 255);
+const Color LT_YELLOW(255, 255, 0);
+const Color LT_GRAY(192, 192, 192);
+
 }
 
 }
+

@@ -1,9 +1,11 @@
 #pragma once
 
 #include <string>
+#include <cstdlib>
 
 #include "Point.h"
 #include "Color.h"
+#include "KeyData.h"
 
 namespace cpe::core::console {
 
@@ -72,7 +74,15 @@ bool setCursorPosition(const Point &pos);
 Point getCursorPosition();
 
 /**
+ * Перемещает курсор на заданный вектор
+ * @param vector вектор смещения курсора от текущей позиции
+ * @return результат перемещения
+ */
+bool moveCursor(const Point &vector);
+
+/**
  * Задает цвет текста
+ * @return результат применения цвета
  */
 bool setForeColor(const Color &color);
 
@@ -83,6 +93,7 @@ Color getForeColor();
 
 /**
  * Задает цвет фона
+ * @return результат применения цвета
  */
 bool setBackColor(const Color &color);
 
@@ -95,5 +106,12 @@ Color getBackColor();
  * Меняет "местами" цвета текста и фона
  */
 void swapOutputColors();
+
+/**
+ * Ожидает нажтия клавиши и считывает ее данные
+ * @param keyData
+ * @return
+ */
+void readKey(KeyData &keyData);
 
 }

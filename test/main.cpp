@@ -1,6 +1,4 @@
 #include <iostream>
-#include <string>
-#include <conio.h>
 
 #include "cpe/core/Platform.h"
 #include "cpe/core/Encoding.h"
@@ -31,7 +29,7 @@ int main() {
         std::cout << encode("Не удалость изменить размер буфера ") << GetLastError() << std::endl;
     }
 
-    console::setForeColor(Color::LT_TEAL);
+    console::setForeColor(Colors::LT_TEAL);
     std::string input;
     OutputFormat of;
     of.setTabLength(7);
@@ -42,10 +40,10 @@ int main() {
     // TODO добавить noexcept у функций CpeLib
     // TODO добавить свой класс CpeException
 
-    console::setForeColor(Color::LT_RED);
+    console::setForeColor(Colors::LT_RED);
     std::cout << input << std::endl;
 
-    console::setForeColor(Color::LT_PURPLE);
+    console::setForeColor(Colors::LT_PURPLE);
     console::pause();
 
     return 0;
