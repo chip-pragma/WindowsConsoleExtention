@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include "cpe/core/BaseOutput.h"
+#include "cpe/core/io/AWriter.h"
 
 
 namespace cpe::ui {
@@ -13,7 +13,7 @@ using namespace cpe::core;
 /**
  * Форматированный текст в ограниченном прямоугольнике
  */
-class TextBlock : public BaseOutput {
+class TextBlock : public AbstractWriter {
 public:
     /**
      * Создает форматированный текст по заданным параметров из исходной строки

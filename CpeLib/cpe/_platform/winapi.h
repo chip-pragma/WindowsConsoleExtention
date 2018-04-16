@@ -5,6 +5,7 @@
 
 typedef COORD PlatformPoint;
 typedef unsigned short PlatformColor;
+typedef KEY_EVENT_RECORD PlatformKeyData;
 
 /// функции Windows API
 namespace _winapi {

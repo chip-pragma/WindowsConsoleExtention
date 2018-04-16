@@ -1,12 +1,11 @@
 #include <iostream>
 
-#include "cpe/core/Platform.h"
 #include "cpe/core/Encoding.h"
 #include "cpe/core/Console.h"
-#include "cpe/core/format/LineReader.h"
+#include "cpe/ui/LineReader.h"
 
 using namespace cpe::core;
-using namespace cpe::core::format;
+using namespace cpe;
 
 namespace {
 
@@ -16,34 +15,32 @@ std::string encode(const std::string &src) {
 
 }
 
+class Test : public IModel {
+public:
+    const std::string &getValue() const {
+        return mValue;
+    }
+
+    void setValue(const std::string &value) {
+        mValue = value;
+    }
+
+private:
+    std::string mValue;
+};
 
 int main() {
+    console::setTitle(encode("Текст консоли"));
     std::cout << "CP out: " << console::getOutputCp() << std::endl;
     std::cout << "CP in: " << console::getInputCp() << std::endl << std::endl;
 
-    console::setTitle(encode("Текст консоли"));
     console::setInputCp(866);
     console::setOutputCp(866);
 
-    if (!console::setBufferSize(Point(100, 150))) {
-        std::cout << encode("Не удалость изменить размер буфера ") << GetLastError() << std::endl;
-    }
+    // TODO проверка ui::View
 
-    console::setForeColor(Colors::LT_TEAL);
-    std::string input;
-    OutputFormat of;
-    of.setTabLength(7);
-    of.setUnfinished("~");
-    LineReader rl;
-    rl.read(input, of);
 
-    // TODO добавить noexcept у функций CpeLib
-    // TODO добавить свой класс CpeException
 
-    console::setForeColor(Colors::LT_RED);
-    std::cout << input << std::endl;
-
-    console::setForeColor(Colors::LT_PURPLE);
     console::pause();
 
     return 0;

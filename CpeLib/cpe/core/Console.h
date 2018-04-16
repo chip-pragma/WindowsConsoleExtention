@@ -5,7 +5,6 @@
 
 #include "Point.h"
 #include "Color.h"
-#include "KeyData.h"
 
 namespace cpe::core::console {
 
@@ -106,12 +105,5 @@ Color getBackColor();
  * Меняет "местами" цвета текста и фона
  */
 void swapOutputColors();
-
-/**
- * Ожидает нажтия клавиши и считывает ее данные
- * @param keyData
- * @return
- */
-void readKey(KeyData &keyData);
 
 }

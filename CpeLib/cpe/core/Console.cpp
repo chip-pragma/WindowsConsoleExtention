@@ -144,13 +144,4 @@ void swapOutputColors() {
 #endif
 }
 
-void readKey(KeyData &keyData) {
-#if defined(CPE_PLATFORM_IS_WINDOWS)
-    SetLastError(0u);
-
-    GetLastError();
-
-#endif
-}
-
 }
