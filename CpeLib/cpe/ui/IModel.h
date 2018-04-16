@@ -1,6 +1,6 @@
 #pragma once
 
-namespace cpe::core {
+namespace cpe::ui {
 
 class IModel {
 public:

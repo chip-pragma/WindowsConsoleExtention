@@ -34,7 +34,6 @@ void Border::apply(const DualBorder &db) {
     */
 
     using Db = DualBorder;
-    using cpe::ui::style::operator""db;
 
     _sides.clear();
 
@@ -85,13 +84,13 @@ void Border::apply(const DualBorder &db) {
     }
 
     // Углы
-    if ((db & (Db::LEFT | Db::TOP)) == 5db)
+    if ((db & (Db::LEFT | Db::TOP)) == (Db)5)
         _sides[LT] = L"\xC9";
-    if ((db & (Db::RIGHT | Db::TOP)) == 5db)
+    if ((db & (Db::RIGHT | Db::TOP)) == (Db)5)
         _sides[RT] = L"\xBB";
-    if ((db & (Db::LEFT | Db::BOTTOM)) == 5db)
+    if ((db & (Db::LEFT | Db::BOTTOM)) == (Db)5)
         _sides[LB] = L"\xC8";
-    if ((db & (Db::RIGHT | Db::BOTTOM)) == 5db)
+    if ((db & (Db::RIGHT | Db::BOTTOM)) == (Db)5)
         _sides[RB] = L"\xBC";
 
     // Прямые (внутренние)
@@ -109,17 +108,17 @@ void Border::apply(const DualBorder &db) {
     }
 
     // Тройник
-    if ((db & (Db::IN_V | Db::LEFT)) == 17db)
+    if ((db & (Db::IN_V | Db::LEFT)) == (Db)17)
         _sides[VL] = L"\xCC";
-    if ((db & (Db::IN_V | Db::RIGHT)) == 18db)
+    if ((db & (Db::IN_V | Db::RIGHT)) == (Db)18)
         _sides[VR] = L"\xB9";
-    if ((db & (Db::IN_H | Db::TOP)) == 36db)
+    if ((db & (Db::IN_H | Db::TOP)) == (Db)36)
         _sides[HT] = L"\xCB";
-    if ((db & (Db::IN_H | Db::BOTTOM)) == 40db)
+    if ((db & (Db::IN_H | Db::BOTTOM)) == (Db)40)
         _sides[HB] = L"\xCA";
 
     // Перекрестье
-    if ((db & (Db::IN_H | Db::IN_V)) == 48db)
+    if ((db & (Db::IN_H | Db::IN_V)) == (Db)48)
         _sides[C] = L"\xCA";
 
 }

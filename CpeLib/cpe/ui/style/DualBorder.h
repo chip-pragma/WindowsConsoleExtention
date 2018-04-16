@@ -1,5 +1,4 @@
-#ifndef PROJECT_BORDERSTYLE_H
-#define PROJECT_BORDERSTYLE_H
+#pragma once
 
 namespace cpe::ui::style {
 
@@ -42,5 +41,3 @@ DualBorder operator|(const DualBorder &db1, const DualBorder &db2) {
 }
 
 }
-
-#endif //PROJECT_BORDERSTYLE_H

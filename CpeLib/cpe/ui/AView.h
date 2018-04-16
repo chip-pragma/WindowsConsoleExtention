@@ -14,8 +14,6 @@ public:
 
 protected:
 
-    virtual void resetMap() final;
-
 private:
 
 };

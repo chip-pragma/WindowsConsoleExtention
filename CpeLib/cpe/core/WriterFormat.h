@@ -7,9 +7,9 @@ namespace cpe::core {
 /**
  *  Базовый класс форматера вывода
  */
-class OutputFormat {
+class WriterFormat {
 public:
-    OutputFormat();
+    WriterFormat();
 
     /**
      * Возвращает длинну табуляции (в символах)

@@ -2,8 +2,16 @@
 
 namespace cpe::ui {
 
-class Scene {
+class Buffer {
+public:
+
+
+private:
 
 };
 
 }
+
+
+
+

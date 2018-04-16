@@ -7,7 +7,7 @@ namespace cpe::core {
 /**
  * Базовый класс форматера ввода.
  */
-class InputFormat {
+class ReaderFormat {
 public:
     /**
      * Препроцессор ввода. Выполняется при каждом вводе печатного символа.

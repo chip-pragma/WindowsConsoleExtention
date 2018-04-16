@@ -3,9 +3,10 @@
 #include "cpe/core/Encoding.h"
 #include "cpe/core/Console.h"
 #include "cpe/ui/LineReader.h"
+#include "cpe/ui/IModel.h"
 
 using namespace cpe::core;
-using namespace cpe;
+using namespace cpe::ui;
 
 namespace {
 

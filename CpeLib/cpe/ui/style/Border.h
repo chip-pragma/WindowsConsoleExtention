@@ -1,5 +1,4 @@
-#ifndef PROJECT_BORDER_H
-#define PROJECT_BORDER_H
+#pragma once
 
 #include <string>
 #include <map>
@@ -67,5 +66,3 @@ private:
 };
 
 }
-
-#endif //PROJECT_BORDER_H

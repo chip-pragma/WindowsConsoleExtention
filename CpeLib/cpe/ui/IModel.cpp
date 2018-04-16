@@ -1,6 +1,6 @@
 #include "IModel.h"
 
-namespace cpe::core {
+namespace cpe::ui {
 
 IModel::~IModel() {
 

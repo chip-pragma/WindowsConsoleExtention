@@ -1,6 +1,6 @@
 #pragma once
 
-namespace cpe::core::except {
+namespace cpe::core {
 
 class Exception {
 

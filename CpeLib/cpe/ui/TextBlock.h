@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include "cpe/core/io/AWriter.h"
+#include "IWriter.h"
 
 
 namespace cpe::ui {
