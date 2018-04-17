@@ -3,7 +3,7 @@
 #include <string>
 #include <iostream>
 
-#include "IReader.h"
+#include "AReader.h"
 #include "AView.h"
 
 namespace cpe::ui {

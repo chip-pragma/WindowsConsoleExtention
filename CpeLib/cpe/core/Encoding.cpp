@@ -3,7 +3,7 @@
 
 namespace cpe::core::encoding {
 
-std::string decode(uint32_t cpTo, const std::wstring &str) {
+std::string fromWideChar(uint32_t cpTo, const std::wstring &str) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
 
     // Получение кол-ва символов
@@ -20,7 +20,7 @@ std::string decode(uint32_t cpTo, const std::wstring &str) {
 #endif
 }
 
-std::wstring toWChar(uint32_t cpFrom, const std::string &bytes) {
+std::wstring toWideChar(uint32_t cpFrom, const std::string &bytes) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
 
     // Получение кол-ва символов

@@ -38,14 +38,14 @@ inline PlatformColor getColorComponentBit(uint8_t component, BitColorComponent c
  * Возвращает дескриптор вывода консоли
  */
 inline HANDLE getOutputHandle() noexcept {
-    return GetStdHandle(STD_OUTPUT_HANDLE);
+    return ::GetStdHandle(STD_OUTPUT_HANDLE);
 }
 
 /**
  * Возвращает дескриптор ввода консоли
  */
 inline HANDLE getInputHandle() noexcept {
-    return GetStdHandle(STD_INPUT_HANDLE);
+    return ::GetStdHandle(STD_INPUT_HANDLE);
 }
 
 /**
@@ -54,7 +54,7 @@ inline HANDLE getInputHandle() noexcept {
  */
 inline CONSOLE_SCREEN_BUFFER_INFO getBufferInfo() noexcept {
     CONSOLE_SCREEN_BUFFER_INFO info;
-    GetConsoleScreenBufferInfo(
+    ::GetConsoleScreenBufferInfo(
             getOutputHandle(),
             &info);
     return info;

@@ -1,21 +1,34 @@
 #pragma once
 
 #include <cstdint>
+#include <vector>
+
+#include "cpe/core/Color.h"
 
 namespace cpe::ui {
 
+using namespace cpe;
+
+template<class TController>
 class AView {
 public:
-    virtual ~AView() = 0;
 
-    virtual void layout(uint16_t height) = 0;
-
-    virtual void write(uint16_t nLine) = 0;
 
 protected:
 
-private:
 
+private:
+    class OutChar {
+    public:
+        char symbol = 0;
+        core::Color foreColor;
+        core::Color backColor;
+    };
+
+    using OutCharList = std::vector<OutChar>;
+    using OutLineList = std::vector<OutCharList>;
+
+    OutLineList mLines;
 };
 
 

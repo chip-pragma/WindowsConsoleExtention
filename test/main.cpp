@@ -4,7 +4,7 @@
 #include "cpe/core/Console.h"
 #include "cpe/ui/LineReader.h"
 #include "cpe/ui/IModel.h"
-#include "cpe/ui/ConsoleApplication.h"
+#include "cpe/ui/ConsoleApp.h"
 
 using namespace cpe::ui;
 using namespace cpe::core;
@@ -12,7 +12,7 @@ using namespace cpe::core;
 namespace {
 
 std::string encode(const std::string &src) {
-    return encoding::decode(866, encoding::toWChar(65001, src));
+    return encoding::fromWideChar(866, encoding::toWideChar(65001, src));
 }
 
 }
@@ -20,22 +20,20 @@ std::string encode(const std::string &src) {
 int main() {
     console::setTitle(L"Текст консоли");
 
-    console::setOutputCp(65001);
-    console::setInputCp(1251);
+    std::cout << ::encode("Кодировка вывода: ") << console::getOutputCp() << "\n";
+    std::cout << ::encode("Кодировка ввода: ") << console::getInputCp() << std::endl;
+    std::cout << ::encode("\u255F");
 
-    std::cout << "Кодировка вывода: " << console::getOutputCp() << "\n";
-    std::cout << "Кодировка ввода: " << console::getInputCp() << std::endl;
-    std::cout << "Кодировка окружения: " << setlocale(LC_ALL, "") << std::endl << std::endl;
-    std::cout << "\u2566";
+    // TODO чтение с клавиатуры
+    // TODO реализация MVC
 
-
-
-    // TODO проверка ui::View
-
-    ConsoleApplication app;
+    ConsoleApp app;
     Scene main;
 
     app.run(main);
+    std::string line;
+
+    std::getline(std::cin, line);
 
     console::pause();
 

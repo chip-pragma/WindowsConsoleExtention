@@ -20,8 +20,6 @@ add_library(${LIBRARY_CPE_NAME}
             #            ui/IPrintElement.h
             cpe/core/Console.cpp
             cpe/core/Console.h
-            #            ui/Scene.cpp
-            #            ui/Scene.h
             cpe/core/WriterFormat.cpp
             cpe/core/WriterFormat.h
             cpe/core/Encoding.cpp
@@ -30,4 +28,4 @@ add_library(${LIBRARY_CPE_NAME}
             cpe/core/Point.h
             cpe/core/Platform.h
             cpe/core/Color.cpp
-            cpe/core/Color.h cpe/ui/IWriter.cpp cpe/ui/IWriter.h cpe/core/ReaderFormat.cpp cpe/core/ReaderFormat.h cpe/_platform/winapi.cpp cpe/_platform/winapi.h cpe/core/Exception.cpp cpe/core/Exception.h cpe/ui/IReader.cpp cpe/ui/IReader.h cpe/ui/IModel.h cpe/ui/LineReader.cpp cpe/ui/LineReader.h cpe/ui/AView.h cpe/ui/IModel.cpp cpe/ui/AView.cpp cpe/ui/ABinding.h cpe/ui/Buffer.cpp cpe/ui/Buffer.h cpe/ui/ConsoleApplication.cpp cpe/ui/ConsoleApplication.h)
+            cpe/core/Color.h cpe/ui/IWriter.cpp cpe/ui/IWriter.h cpe/core/ReaderFormat.cpp cpe/core/ReaderFormat.h cpe/_platform/winapi.cpp cpe/_platform/winapi.h cpe/core/Exception.cpp cpe/core/Exception.h cpe/ui/AReader.cpp cpe/ui/AReader.h cpe/ui/IModel.h cpe/ui/LineReader.cpp cpe/ui/LineReader.h cpe/ui/AView.h cpe/ui/IModel.cpp cpe/ui/AView.cpp cpe/ui/ABinding.h cpe/ui/Buffer.cpp cpe/ui/Buffer.h cpe/ui/ConsoleApp.cpp cpe/ui/ConsoleApp.h cpe/ui/IController.cpp cpe/ui/IController.h)

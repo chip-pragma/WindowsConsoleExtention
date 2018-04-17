@@ -1,4 +1,4 @@
-#include "Converter.h"
+#include "Convert.h"
 #include "Text.h"
 
 #include <stdexcept>
@@ -7,15 +7,13 @@
 #include <sstream>
 #include <iomanip>
 
-namespace {
-typedef cpe::utils::text::Text Text_;
-}
+namespace cpe::utils::convert {
 
-namespace cet::utils {
+using namespace cpe::utils;
 
-bool Converter::stringToInt(std::string src, int *dest) {
+bool toInt(const std::string &src, int &dest) {
     try {
-        *dest = std::stoi(src);
+        dest = std::stoi(src);
     }
     catch (std::invalid_argument &e) {
         return false;
@@ -23,10 +21,10 @@ bool Converter::stringToInt(std::string src, int *dest) {
     return true;
 }
 
-bool Converter::stringToTime(std::string time, bool seconds, time_t *outTime) {
+bool toTime(const std::string &time, bool seconds, time_t &outTime) {
     // Деление на компоненты времени
     std::vector<std::string> strParts;
-    Text_::split(std::move(time), &strParts, ":");
+    text::split(time, strParts, ":");
 
     // Проверка
     auto nPart = (int) strParts.size();
@@ -36,7 +34,7 @@ bool Converter::stringToTime(std::string time, bool seconds, time_t *outTime) {
     // Преобразование в int
     std::vector<int> intParts((size_t) nPart);
     for (int i = 0; i < nPart; i++) {
-        if (!stringToInt(strParts[i], &(intParts[i])) ||
+        if (!toInt(strParts[i], intParts[i]) ||
             (intParts[i] < 0 || intParts[i] >= 60))
             return false;
     }
@@ -59,14 +57,14 @@ bool Converter::stringToTime(std::string time, bool seconds, time_t *outTime) {
         return false;
 
     // Возврат
-    *outTime = timeResult;
+    outTime = timeResult;
     return true;
 }
 
-bool Converter::stringToDate(std::string date, time_t *outDate) {
+bool toDate(const std::string &date, time_t &outDate) {
     // Деление на компоненты времени
     std::vector<std::string> strParts;
-    Text_::split(date, &strParts, ".");
+    text::split(date, strParts, ".");
 
     // Проверка
     auto nPart = strParts.size();
@@ -75,7 +73,7 @@ bool Converter::stringToDate(std::string date, time_t *outDate) {
 
     // Преобразование
     std::istringstream iss(date);
-    tm stamp{};
+    tm stamp;
     time_t time = std::time(nullptr);
     localtime_s(&stamp, &time);
     stamp.tm_isdst = -1;
@@ -84,13 +82,13 @@ bool Converter::stringToDate(std::string date, time_t *outDate) {
         return false;
 
     // Возврат
-    *outDate = mktime(&stamp);
+    outDate = mktime(&stamp);
     return true;
 }
 
-std::string Converter::timeToString(time_t time, bool seconds) {
+std::string fromTime(time_t time, bool seconds) {
     // Преевод в структуру
-    std::tm stamp{};
+    std::tm stamp;
     errno_t err = gmtime_s(&stamp, &time);
     if (err)
         throw std::runtime_error("Время не преобразовано");
@@ -106,9 +104,9 @@ std::string Converter::timeToString(time_t time, bool seconds) {
     return std::string(buffer);
 }
 
-std::string Converter::dateToString(time_t date) {
+std::string fromDate(time_t date) {
     // Преевод в структуру
-    std::tm stamp{};
+    std::tm stamp;
     gmtime_s(&stamp, &date);
     stamp.tm_isdst = -1;
 

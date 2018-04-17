@@ -1,14 +1,10 @@
-//
-// Created by chip_pragma on 25.03.2018.
-//
+#include "Text.h"
 
 #include <stdexcept>
 
-#include "Text.h"
+namespace cpe::utils::text {
 
-namespace cpe::utils {
-
-void Text::trim(std::string &src) {
+void trim(std::string &src) {
     auto i = src.begin();
     for (; i != src.end(); i++) {
         char c = *i;
@@ -26,9 +22,9 @@ void Text::trim(std::string &src) {
     src.erase(j.base(), src.rbegin().base());
 }
 
-void Text::split(const std::string& src,
-                 std::vector<std::string> &dest,
-                 const std::string &anyDelim) {
+void split(const std::string &src,
+           std::vector<std::string> &dest,
+           const std::string &anyDelim) {
     if (anyDelim.empty() || src.empty())
         return;
 

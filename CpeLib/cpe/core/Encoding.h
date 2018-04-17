@@ -13,7 +13,7 @@ namespace cpe::core::encoding {
  * @param str Последовательность байтов
  * @return Кодированную строку
  */
-std::string decode(uint32_t cpTo, const std::wstring &str);
+std::string fromWideChar(uint32_t cpTo, const std::wstring &str);
 
 /**
  * Декодирует исходную строку (string) в последовательность байт (wchar_t)
@@ -21,7 +21,7 @@ std::string decode(uint32_t cpTo, const std::wstring &str);
  * @param bytes Декодируемая исходная строка
  * @return Декодированая последовательность байт
  */
-std::wstring toWChar(uint32_t cpFrom, const std::string &bytes);
+std::wstring toWideChar(uint32_t cpFrom, const std::string &bytes);
 
 }
 
