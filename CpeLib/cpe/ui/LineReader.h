@@ -8,13 +8,10 @@
 
 namespace cpe::ui {
 
-class LineReader : public cpe::core::io::AReader<std::string>,
-                   public AView {
+class LineReader {
 public:
 
-    std::string read() const override;
 
-    void run() override;
 };
 
 }

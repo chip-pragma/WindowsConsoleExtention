@@ -4,43 +4,38 @@
 #include "cpe/core/Console.h"
 #include "cpe/ui/LineReader.h"
 #include "cpe/ui/IModel.h"
+#include "cpe/ui/ConsoleApplication.h"
 
-using namespace cpe::core;
 using namespace cpe::ui;
+using namespace cpe::core;
 
 namespace {
 
 std::string encode(const std::string &src) {
-    return encoding::encode(866, encoding::decode(65001, src));
+    return encoding::decode(866, encoding::toWChar(65001, src));
 }
 
 }
-
-class Test : public IModel {
-public:
-    const std::string &getValue() const {
-        return mValue;
-    }
-
-    void setValue(const std::string &value) {
-        mValue = value;
-    }
-
-private:
-    std::string mValue;
-};
 
 int main() {
-    console::setTitle(encode("Текст консоли"));
-    std::cout << "CP out: " << console::getOutputCp() << std::endl;
-    std::cout << "CP in: " << console::getInputCp() << std::endl << std::endl;
+    console::setTitle(L"Текст консоли");
 
-    console::setInputCp(866);
-    console::setOutputCp(866);
+    console::setOutputCp(65001);
+    console::setInputCp(1251);
+
+    std::cout << "Кодировка вывода: " << console::getOutputCp() << "\n";
+    std::cout << "Кодировка ввода: " << console::getInputCp() << std::endl;
+    std::cout << "Кодировка окружения: " << setlocale(LC_ALL, "") << std::endl << std::endl;
+    std::cout << "\u2566";
+
+
 
     // TODO проверка ui::View
 
+    ConsoleApplication app;
+    Scene main;
 
+    app.run(main);
 
     console::pause();
 

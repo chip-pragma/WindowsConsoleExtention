@@ -10,18 +10,18 @@ namespace cpe::core::encoding {
 /**
  * Кодирует исходную последовательность байтов (wchar_t) в строку (string)
  * @param cpTo Кодировка, в которую кодируется последовательность байт
- * @param decoded Последовательность байтов
+ * @param str Последовательность байтов
  * @return Кодированную строку
  */
-std::string encode(uint32_t cpTo, const std::wstring &decoded);
+std::string decode(uint32_t cpTo, const std::wstring &str);
 
 /**
  * Декодирует исходную строку (string) в последовательность байт (wchar_t)
  * @param cpFrom Кодировка исходной строки
- * @param encoded Декодируемая исходная строка
+ * @param bytes Декодируемая исходная строка
  * @return Декодированая последовательность байт
  */
-std::wstring decode(uint32_t cpFrom, const std::string &encoded);
+std::wstring toWChar(uint32_t cpFrom, const std::string &bytes);
 
 }
 
