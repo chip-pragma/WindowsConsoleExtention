@@ -6,7 +6,7 @@
 #include "Point.h"
 #include "Color.h"
 
-namespace cpe::core::console {
+namespace cpe::term {
 
 /**
  * Останавливает выполнение до ввода пользователя
@@ -32,23 +32,23 @@ std::string getTitle();
  * Задает кодировку для потока ввода
  * @return результат применения новой кодировки
  */
-bool setInputCp(uint32_t codePage);
+bool setReaderCp(uint32_t codePage);
 
 /**
  * Задает кодировку для потока вывода
  * @return результат применения новой кодировки
  */
-bool setOutputCp(uint32_t codePage);
+bool setWriterCp(uint32_t codePage);
 
 /**
  * Возвращает кодировку для потока ввода
  */
-uint32_t getInputCp();
+uint32_t getReaderCp();
 
 /**
  * Возвращает кодировку для потока вывода
  */
-uint32_t getOutputCp();
+uint32_t getWriterCp();
 
 /**
  * Задает размер (в символах) буфера окна консоли
@@ -65,12 +65,12 @@ Point getBufferSize();
  * Задает позицию символьного курсора консоли
  * @return результат применения позиции
  */
-bool setCursorPosition(const Point &pos);
+bool setCursor(const Point &pos);
 
 /**
  * Возвращает позицию символьного курсора консоли
  */
-Point getCursorPosition();
+Point getCursor();
 
 /**
  * Перемещает курсор на заданный вектор
@@ -104,6 +104,6 @@ Color getBackColor();
 /**
  * Меняет "местами" цвета текста и фона
  */
-void swapOutputColors();
+void swapWriterColors();
 
 }

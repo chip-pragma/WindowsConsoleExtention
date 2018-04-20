@@ -1,8 +1,8 @@
-#include "Console.h"
+#include "Terminal.h"
 #include "cpe/utils/Text.h"
 #include "cpe/utils/Convert.h"
 
-namespace cpe::core::console {
+namespace cpe::term {
 
 void pause() {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
@@ -30,25 +30,25 @@ std::string getTitle() {
 #endif
 }
 
-bool setInputCp(uint32_t codePage) {
+bool setReaderCp(uint32_t codePage) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
     return (bool) SetConsoleCP(codePage);
 #endif
 }
 
-bool setOutputCp(uint32_t codePage) {
+bool setWriterCp(uint32_t codePage) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
     return (bool) SetConsoleOutputCP(codePage);
 #endif
 }
 
-uint32_t getInputCp() {
+uint32_t getReaderCp() {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
     return GetConsoleCP();
 #endif
 }
 
-uint32_t getOutputCp() {
+uint32_t getWriterCp() {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
     return GetConsoleOutputCP();
 #endif
@@ -69,7 +69,7 @@ Point getBufferSize() {
 #endif
 }
 
-bool setCursorPosition(const Point &size) {
+bool setCursor(const Point &size) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
     return (bool) SetConsoleCursorPosition(
             _winapi::getOutputHandle(),
@@ -77,7 +77,7 @@ bool setCursorPosition(const Point &size) {
 #endif
 }
 
-Point getCursorPosition() {
+Point getCursor() {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
     auto info = _winapi::getBufferInfo();
     return Point(info.dwCursorPosition);
@@ -87,8 +87,8 @@ Point getCursorPosition() {
 bool moveCursor(const Point &vector) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
 
-    return setCursorPosition(
-            getCursorPosition() + vector);
+    return setCursor(
+            getCursor() + vector);
 
 #endif
 }
@@ -135,7 +135,7 @@ Color getBackColor() {
 #endif
 }
 
-void swapOutputColors() {
+void swapWriterColors() {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
 
     auto back = getBackColor();

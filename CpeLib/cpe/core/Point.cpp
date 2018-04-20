@@ -1,7 +1,7 @@
-#include <cpe/_platform/winapi.h>
+#include "Platform.h"
 #include "Point.h"
 
-namespace cpe::core {
+namespace cpe {
 
 Point::Point() noexcept {
     x = 0;

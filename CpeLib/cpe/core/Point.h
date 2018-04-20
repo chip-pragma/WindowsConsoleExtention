@@ -2,7 +2,7 @@
 
 #include "Platform.h"
 
-namespace cpe::core {
+namespace cpe {
 
 /**
  * Двумерные координаты

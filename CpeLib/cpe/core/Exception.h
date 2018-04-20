@@ -1,9 +1,20 @@
 #pragma once
 
-namespace cpe::core {
+#include <exception>
+#include <string>
 
-class Exception {
+namespace cpe {
 
+class Exception : private std::exception {
+public:
+    Exception() = delete;
+
+    explicit Exception(const std::string &message);
+
+    virtual const std::string &message() const;
+
+protected:
+    std::string mMessage;
 };
 
 }

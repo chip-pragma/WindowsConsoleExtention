@@ -1,6 +1,6 @@
 #include "Color.h"
 
-namespace cpe::core {
+namespace cpe {
 
 Color::Color() noexcept {
     r = 0;
