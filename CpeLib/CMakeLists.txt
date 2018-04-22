@@ -28,4 +28,4 @@ add_library(${LIBRARY_CPE_NAME}
             cpe/core/Point.h
             cpe/core/Platform.h
             cpe/core/Color.cpp
-            cpe/core/Color.h cpe/ui/IWriter.cpp cpe/ui/IWriter.h cpe/core/ReaderFormat.cpp cpe/core/ReaderFormat.h cpe/_platform/winapi.cpp cpe/_platform/winapi.h cpe/core/Exception.cpp cpe/core/Exception.h cpe/ui/AReader.cpp cpe/ui/AReader.h cpe/ui/IModel.h cpe/ui/LineReader.cpp cpe/ui/LineReader.h cpe/ui/AView.h cpe/ui/IModel.cpp cpe/ui/AView.cpp cpe/ui/ABinding.h cpe/ui/Buffer.cpp cpe/ui/Buffer.h cpe/ui/ConsoleApp.cpp cpe/ui/ConsoleApp.h cpe/ui/IController.cpp cpe/ui/IController.h cpe/ui/IElement.cpp cpe/ui/IElement.h)
+            cpe/core/Color.h cpe/ui/IWriter.cpp cpe/ui/IWriter.h cpe/core/ReaderFormat.cpp cpe/core/ReaderFormat.h cpe/_platform/winapi.cpp cpe/_platform/winapi.h cpe/core/Exception.cpp cpe/core/Exception.h cpe/ui/AReader.cpp cpe/ui/AReader.h cpe/ui/IModel.h cpe/ui/LineReader.cpp cpe/ui/LineReader.h cpe/ui/IModel.cpp cpe/ui/ABinding.h cpe/ui/Buffer.cpp cpe/ui/Buffer.h cpe/ui/AController.cpp cpe/ui/AController.h cpe/ui/AElement.cpp cpe/ui/AElement.h cpe/ui/AScript.cpp cpe/ui/AScript.h)

@@ -13,7 +13,7 @@ namespace _winapi {
 /**
  * Компоненты цвета в WinAPI
  */
-enum class BitColorComponent : uint8_t {
+enum class BitCol : uint8_t {
     RED = 2,
     GREEN = 1,
     BLUE = 0
@@ -25,7 +25,7 @@ enum class BitColorComponent : uint8_t {
  * @param comp Компонент цвета
  * @return битовое "слово" компонента цвета
  */
-inline PlatformColor getColorComponentBit(uint8_t component, BitColorComponent comp) noexcept {
+inline PlatformColor getColorComponentBit(uint8_t component, BitCol comp) noexcept {
     if (component < 64)
         return 0;
     else if (component <= 192)

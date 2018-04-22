@@ -2,19 +2,13 @@
 
 namespace cpe {
 
-Color::Color() noexcept {
-    r = 0;
-    g = 0;
-    b = 0;
-}
-
 Color::Color(uint8_t r, uint8_t g, uint8_t b) noexcept {
     this->r = r;
     this->g = g;
     this->b = b;
 }
 
-Color::Color(const PlatformColor &platformColor) noexcept {
+Color::Color(const PlatformColor &platformColor) noexcept : Color() {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
 
     const uint8_t MIN = 128u;
@@ -34,16 +28,21 @@ Color::Color(const PlatformColor &platformColor) noexcept {
 PlatformColor Color::toPlatform() const noexcept {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
     PlatformColor pc =
-            _winapi::getColorComponentBit(r, _winapi::BitColorComponent::RED)
-            | _winapi::getColorComponentBit(g, _winapi::BitColorComponent::GREEN)
-            | _winapi::getColorComponentBit(b, _winapi::BitColorComponent::BLUE);
+            _winapi::getColorComponentBit(r, _winapi::BitCol::RED)
+            | _winapi::getColorComponentBit(g, _winapi::BitCol::GREEN)
+            | _winapi::getColorComponentBit(b, _winapi::BitCol::BLUE);
     return pc;
 #endif
 }
 
-bool Color::isIntensive() const noexcept {
-    static const int MIN = 191;
-    return (r > MIN || g > MIN || b > MIN);
+bool Color::operator==(const Color &rhs) const {
+    return r == rhs.r &&
+           g == rhs.g &&
+           b == rhs.b;
+}
+
+bool Color::operator!=(const Color &rhs) const {
+    return !(rhs == *this);
 }
 
 namespace Colors {

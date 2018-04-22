@@ -2,15 +2,13 @@
 
 #include <string>
 
-namespace cpe::core {
+namespace cpe {
 
 /**
  *  Базовый класс форматера вывода
  */
 class WriterFormat {
 public:
-    WriterFormat();
-
     /**
      * Возвращает длинну табуляции (в символах)
      */
@@ -31,17 +29,9 @@ public:
      */
     void setUnfinished(const std::string &unfinished);
 
-    /**
-     * Применяет параметры формата на строку
-     * @param src Исходная строка
-     * @param maxLength Максимальная длинна. 0 если не задано.
-     * @return Новую форматированную строку
-     */
-    std::string apply(const std::string& src, uint32_t maxLength);
-
 private:
-    uint8_t _tabLength;
-    std::string _unfinished;
+    uint8_t _tabLength = 10;
+    std::string _unfinished = "<...>";
 };
 
 }

@@ -9,11 +9,11 @@ namespace cpe {
  */
 class Color {
 public:
-    uint8_t r;
-    uint8_t g;
-    uint8_t b;
+    uint8_t r = 0;
+    uint8_t g = 0;
+    uint8_t b = 0;
 
-    Color() noexcept;
+    Color() = default;
 
     Color(uint8_t r, uint8_t g, uint8_t b) noexcept;
 
@@ -24,10 +24,9 @@ public:
      */
     PlatformColor toPlatform() const noexcept;
 
-    /**
-     * Яркий цвет? (Один или несколько из компонентов цвета больше 127)
-     */
-    bool isIntensive() const noexcept;
+    bool operator==(const Color &rhs) const;
+
+    bool operator!=(const Color &rhs) const;
 };
 
 /**
