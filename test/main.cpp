@@ -6,6 +6,7 @@
 #include "cpe/core/Terminal.h"
 #include "cpe/core/Exception.h"
 #include "cpe/ui/Buffer.h"
+#include "cpe/ui/BufferManip.h"
 #include "cpe/ui/AController.h"
 #include "cpe/ui/AElement.h"
 #include "cpe/ui/AScript.h"
@@ -135,40 +136,63 @@ int main() {
     cpe::term::pause();
 
     try {
-        // TODO расчет используемых ширины и высоты для буффера
-        // TODO запись буфера в буфер
-        // TODO передавать настройки буфера через оператор потока <<
-
         cpe::WriterFormat wf;
         wf.setTabLength(5);
 
-        cpe::Buffer buf(wf, 50, 5);
-        buf.setForeColor(cpe::Colors::LT_RED);
-        buf << encode("Проверка перехода на новую строку (автоматический и ручной):\n");
-        buf.setForeColor(cpe::Colors::LT_GREEN);
-        buf << encode("Выполнено\n");
+        cpe::Buffer buf3;
+        buf3.setFormat(wf);
+        buf3.setWidth(3);
+        buf3.setHeight(10);
+        buf3 << cpe::Colors::LT_TEAL
+             << encode("Это мини буфер номер 3. Должен поместиться в пятиклеточное поле.");
 
-        buf.setForeColor(cpe::Colors::LT_RED);
-        buf.setBackColor(cpe::Colors::RED);
-        buf << encode("Проверка сброса цвета:\n");
-        buf.unsetForeColor();
-        buf << encode("Текст - ");
-        buf.setForeColor(cpe::Colors::LT_GREEN);
-        buf << encode("Выполнено\n");
-        buf.unsetForeColor();
-        buf.unsetBackColor();
-        buf << encode("Фон - ");
-        buf.setForeColor(cpe::Colors::LT_GREEN);
-        buf << encode("Выполнено\n");
+        cpe::Buffer buf2;
+        buf2.setFormat(wf);
+        buf2.setWidth(15);
+        buf2 << cpe::Colors::LT_YELLOW
+             << encode("Проверка вывода под-2-буфера: ")
+             << buf3
+             << cpe::Colors::LT_YELLOW
+             << encode("\nЭто второй вывод с таб-отступом:\t")
+             << buf3
+             << cpe::bg
+             << cpe::Colors::GREEN
+             << "\n"
+             << encode("Вроде все.");
 
-        buf.setForeColor(cpe::Colors::LT_RED);
-        buf << encode("Проверка табуляции:\n");
-        buf.unsetForeColor();
-        buf << encode("1\t22\t333\t4444\t55555\t666666\t7777777\t\n");
-        buf.setForeColor(cpe::Colors::LT_GREEN);
-        buf << encode("Выполнено");
-
-        buf.flush();
+        cpe::Buffer buf1;
+        buf1.setFormat(wf);
+        buf1 << cpe::Colors::LT_RED
+             << encode("Проверка перехода на новую строку (автоматический и ручной):\n")
+             << cpe::Colors::LT_GREEN
+             << encode("Выполнено\n") << cpe::unset
+             << cpe::Colors::LT_RED
+             << cpe::bg
+             << cpe::Colors::RED
+             << encode("Проверка сброса цвета:\n")
+             << cpe::unset
+             << encode("Фон - ")
+             << cpe::fg
+             << cpe::Colors::LT_GREEN
+             << encode("Выполнено\n") << cpe::unset
+             << cpe::bg
+             << cpe::unset
+             << encode("Текст - ")
+             << cpe::fg
+             << cpe::Colors::LT_GREEN
+             << encode("Выполнено\n") << cpe::unset
+             << cpe::Colors::LT_RED
+             << encode("Проверка подбуфера: ")
+             << buf2
+             << "\n"
+             << cpe::Colors::LT_RED
+             << encode("Проверка табуляции:\n")
+             << cpe::unset
+             << encode("1\t22\t333\t4444\t55555\t666666\t7777777\t\n")
+             << cpe::Colors::LT_GREEN
+             << encode("Выполнено") << cpe::unset
+             << "\n"
+             << cpe::flush;
     }
     catch (std::exception &e) {
         std::cout << e.what();

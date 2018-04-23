@@ -2,99 +2,92 @@
 
 namespace cpe {
 
-Buffer::Buffer() : mMaxWidth(0),
-                   mMaxHeight(0),
-                   mFormat(WriterFormat()) {}
-
-Buffer::Buffer(const WriterFormat &format) : mMaxWidth(0),
-                                             mMaxHeight(0),
-                                             mFormat(format) {}
-
-Buffer::Buffer(int16_t mw, int16_t mh) : mMaxWidth(mw),
-                                         mMaxHeight(mh),
-                                         mFormat(WriterFormat()) {
-    if (mMaxWidth <= 0)
-        mMaxWidth = cpe::term::getBufferSize().x;
-}
-
-Buffer::Buffer(const WriterFormat &format,
-               int16_t mw, int16_t mh) : mMaxWidth(mw),
-                                         mMaxHeight(mh),
-                                         mFormat(format) {}
+Buffer::Buffer() : mFormat(WriterFormat()) {}
 
 Buffer::~Buffer() {
     clear();
 }
 
-void Buffer::resize(int16_t mw, int16_t mh) {
-    if (mMaxWidth <= 0)
-        mMaxWidth = cpe::term::getBufferSize().x;
+bool Buffer::isColorSetBg() const {
+    return mColorSetBg;
 }
 
-bool Buffer::getForeColor(cpe::Color &color) const {
-    if (mForeUsing)
-        color = mFore;
-    return mForeUsing;
+void Buffer::setColorSetBg(bool colorSetMode) {
+    mColorSetBg = colorSetMode;
 }
 
-void Buffer::setForeColor(const cpe::Color &fore) {
-    mFore = fore;
-    mForeUsing = true;
+bool Buffer::getColor(cpe::Color &color) const {
+    auto col = &mFore;
+    if (mColorSetBg)
+        col = &mBack;
+
+    if (col->mUsing)
+        color = col->mColor;
+    return col->mUsing;
 }
 
-bool Buffer::getBackColor(cpe::Color &color) const {
-    if (mBackUsing)
-        color = mBack;
-    return mBackUsing;
+void Buffer::setColor(const cpe::Color &color) {
+    auto col = &mFore;
+    if (mColorSetBg)
+        col = &mBack;
+
+    col->mUsing = true;
+    col->mColor = color;
 }
 
-void Buffer::setBackColor(const cpe::Color &back) {
-    mBack = back;
-    mBackUsing = true;
+void Buffer::unsetColor() {
+    auto col = &mFore;
+    if (mColorSetBg)
+        col = &mBack;
+    col->mUsing = false;
 }
 
-void Buffer::unsetForeColor() {
-    mForeUsing = false;
+bool Buffer::getWidth(int &width) const {
+    if (mWidth.mUsing)
+        width = mWidth.mValue;
+    return mWidth.mUsing;
 }
 
-void Buffer::unsetBackColor() {
-    mBackUsing = false;
+void Buffer::setWidth(int width) {
+    mWidth.mValue = width;
+    mWidth.mUsing = (width > 0);
 }
 
-void Buffer::write(const std::string &str) {
-    if (mMaxHeight > 0 &&
-        mMatrix.size() == mMaxHeight &&
-        mCurCol == mMaxWidth)
-        return;
+void Buffer::unsetWidth() {
+    mWidth.mUsing = false;
+}
 
-    nBufSym *last = nullptr;
-    if (mMatrix.empty())
-        last = _matrixAddLine();
-    else
-        last = mMatrix.back();
+bool Buffer::getHeight(int &height) const {
+    if (mHeight.mUsing)
+        height = mHeight.mValue;
+    return mHeight.mUsing;
+}
 
+void Buffer::setHeight(int height) {
+    mHeight.mValue = height;
+    mHeight.mUsing = (height > 0);
+}
+
+void Buffer::unsetHeight() {
+    mHeight.mUsing = false;
+}
+
+const WriterFormat &Buffer::getFormat() const {
+    return mFormat;
+}
+
+void Buffer::setFormat(const WriterFormat &format) {
+    mFormat = format;
+}
+
+void Buffer::pushBack(const std::string &str) {
     for (char c : str) {
-        if (!last)
-            break;
-
-        if (c == '\n' ||
-            c == '\r') {
-            last = _matrixAddLine();
-        } else if (c == '\t') {
-            auto tl = mFormat.getTabLength();
-            auto sc = ((mCurCol / tl + 1) * tl) - mCurCol;
-            if (mCurCol + sc >= mMaxWidth)
-                last = _matrixAddLine();
-            else
-                for (int i = 0; i < sc; i++)
-                    _matrixSetBufChar(last, mCurCol++, ' ');
-        } else {
-            _matrixSetBufChar(last, mCurCol++, c);
-        }
-
-        if (mCurCol == mMaxWidth)
-            last = _matrixAddLine();
+        mSymbols.push_back(_Symbol(_StyledChar(mFore, mBack, c)));
     }
+}
+
+void Buffer::pushBack(Buffer &buffer) {
+    mSymbols.push_back(_Symbol(&buffer));
 }
 
 void Buffer::flush() {
@@ -102,90 +95,149 @@ void Buffer::flush() {
     if (useAutoFlush)
         std::cout << std::nounitbuf;
 
-    const auto srcForeCol = cpe::term::getForeColor();
-    const auto srcBackCol = cpe::term::getBackColor();
+    const auto srcForeCol = term::getForeColor();
+    const auto srcBackCol = term::getBackColor();
 
-    for (auto line : mMatrix) {
-        for (int i = 0; i < mMaxWidth; i++) {
-            const auto &bs = line[i];
+    std::vector<_StyledChar> resultChars;
+    auto bsize = term::getBufferSize();
+    _Maximum bw(bsize.x);
+    _Maximum bh(bsize.y);
+    _simplify(resultChars, Point(), bw, bh);
 
-            if (bs.mForeUsing)
-                cpe::term::setForeColor(bs.mFore);
-            else
-                cpe::term::setForeColor(srcForeCol);
-            if (bs.mBackUsing)
-                cpe::term::setBackColor(bs.mBack);
-            else
-                cpe::term::setBackColor(srcBackCol);
-
-            std::cout << bs.mChar;
-        }
-        std::cout << "\n";
+    for (auto c : resultChars) {
+        if (c.mFore.mUsing) term::setForeColor(c.mFore.mColor);
+        else term::setForeColor(srcForeCol);
+        if (c.mBack.mUsing) term::setBackColor(c.mBack.mColor);
+        else term::setBackColor(srcBackCol);
+        std::cout << c.mChar;
     }
-    clear();
 
-    cpe::term::setForeColor(srcForeCol);
-    cpe::term::setBackColor(srcBackCol);
+    term::setForeColor(srcForeCol);
+    term::setBackColor(srcBackCol);
 
     std::cout.flush();
     if (useAutoFlush)
         std::cout << std::unitbuf;
 }
 
-void Buffer::back(uint64_t count) {
-    if (count <= 0 || mMatrix.empty())
-        return;
-
-    if (count > mMatrix.size())
-        mMatrix.clear();
+void Buffer::popBack(uint64_t count) {
+    if (count >= mSymbols.size())
+        clear();
     else {
-        auto ei = mMatrix.begin();
-        mMatrix.erase(ei - count, ei);
+        auto ei = mSymbols.end();
+        mSymbols.erase(ei - count, ei);
     }
 }
 
 void Buffer::clear() {
-    for (auto line : mMatrix)
-        delete[] line;
-    mMatrix.clear();
+    mSymbols.clear();
 }
 
 Buffer &Buffer::operator<<(const std::string &str) {
-    write(str);
+    pushBack(str);
     return *this;
 }
 
-Buffer::nBufSym *Buffer::_matrixAddLine() {
-    nBufSym *newLine = nullptr;
-    if (mMaxHeight <= 0
-        || mMatrix.size() < mMaxHeight) {
-        newLine = new nBufSym[mMaxWidth];
-        mMatrix.push_back(newLine);
-        mCurCol = 0;
-    } else {
-        auto uf = mFormat.getUnfinished();
-        auto min = uf.size() < mMaxWidth ? uf.size() : mMaxWidth;
-        auto last = mMatrix.back();
-
-        mCurCol = static_cast<int16_t>(mMaxWidth - min);
-        for (size_t i = 0; i < min; i++) {
-            _matrixSetBufChar(last, mCurCol++, uf[i]);
-        }
-    }
-    return newLine;
+Buffer &Buffer::operator<<(Buffer &(*manip)(Buffer &)) {
+    manip(*this);
+    return *this;
 }
 
-void Buffer::_matrixSetBufChar(nBufSym *line, int16_t column, char c) {
-    auto &bs = line[column];
-    bs.mChar = c;
-    if (mForeUsing) {
-        bs.mForeUsing = true;
-        bs.mFore = mFore;
+Buffer &Buffer::operator<<(Buffer &buf) {
+    pushBack(buf);
+    return *this;
+}
+
+Point Buffer::_simplify(std::vector<_StyledChar> &chars, Point outerPos,
+                        const _Maximum &outerMaxWidth, const _Maximum &outerMaxHeight) const {
+
+    _Maximum width = mWidth;
+    if (outerMaxWidth.mUsing) {
+        if (!width.mUsing || width.mValue > outerMaxWidth.mValue)
+            width = outerMaxWidth;
     }
-    if (mBackUsing) {
-        bs.mBackUsing = true;
-        bs.mBack = mBack;
+    _Maximum height = mHeight;
+    if (outerMaxHeight.mUsing) {
+        if (!height.mUsing || height.mValue > outerMaxHeight.mValue)
+            height = outerMaxHeight;
     }
+
+    Point localPosition;
+
+    bool breakForFlag = false;
+    for (auto sym : mSymbols) {
+        switch (sym.mType) {
+            case _Symbol::BUFFER_POINTER:
+                localPosition = sym.mBuffer->_simplify(
+                        chars, outerPos + localPosition,
+                        _Maximum(width.mValue - localPosition.x),
+                        _Maximum(height.mValue - localPosition.y));
+                break;
+            case _Symbol::STYLED_CHAR:
+                // NEW LINE
+                if (sym.mSChar.mChar == '\n'
+                    || sym.mSChar.mChar == '\r') {
+                    breakForFlag = !_tryAddLine(localPosition, outerPos, width, height, chars);
+                }
+                    // TAB
+                else if (sym.mSChar.mChar == '\t') {
+                    auto tl = mFormat.getTabLength();
+                    auto sc = (tl - localPosition.x % tl);
+                    if (width.mUsing && sc + localPosition.x >= width.mValue)
+                        breakForFlag = !_tryAddLine(localPosition, outerPos, width, height, chars);
+                    else {
+                        chars.insert(chars.end(), static_cast<uint64_t>(sc), _StyledChar());
+                        localPosition.x += sc;
+                    }
+                }
+                    // CHAR
+                else {
+                    chars.push_back(sym.mSChar);
+                    localPosition.x++;
+                    if (width.mUsing && localPosition.x == width.mValue) {
+                        breakForFlag = !_tryAddLine(localPosition, outerPos, width, height, chars);
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+
+        if (breakForFlag)
+            break;
+    }
+
+    return localPosition + outerPos;
+}
+
+inline bool Buffer::_tryAddLine(Point &local, const Point &outer,
+                                const _Maximum &maxWidth, const _Maximum &maxHeight,
+                                std::vector<_StyledChar> &chars) const {
+    auto limit = (maxHeight.mUsing && local.y + 1 >= maxHeight.mValue);
+    if (limit) {
+        auto uf = mFormat.getUnfinished();
+        auto sc = local.x;
+        auto ei = chars.end();
+
+        if (maxWidth.mUsing) {
+            sc = (short) maxWidth.mValue - local.x - (short) uf.size();
+            if (sc < 0) {
+                sc = -sc < (short) maxWidth.mValue ? -sc : (short) maxWidth.mValue;
+                chars.erase(ei - sc, ei);
+            }
+        }
+
+        for (int i = 0; i < sc; i++) {
+            chars.push_back(_StyledChar(mFore, mBack, uf[i]));
+            local.x++;
+        }
+    } else {
+        chars.push_back(_StyledChar(mFore, mBack, '\n'));
+        chars.insert(chars.end(), static_cast<uint64_t>(outer.x), _StyledChar());
+        local.y++;
+        local.x = 0;
+    }
+    return !limit;
 }
 
 }

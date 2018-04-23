@@ -1,6 +1,6 @@
 #pragma once
 
-#include "cpe/core/WriterFormat.h"
+#include "WriterFormat.h"
 
 namespace cpe::ui {
 

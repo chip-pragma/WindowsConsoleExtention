@@ -5,8 +5,9 @@
 #include <string>
 
 #include "cpe/core/Color.h"
+#include "cpe/core/Point.h"
 #include "cpe/core/Terminal.h"
-#include "cpe/core/WriterFormat.h"
+#include "WriterFormat.h"
 
 namespace cpe {
 
@@ -15,61 +16,123 @@ public:
 
     Buffer();
 
-    explicit Buffer(const WriterFormat &format);
-
-    Buffer(int16_t mw, int16_t mh);
-
-    Buffer(const WriterFormat &format, int16_t maxWidth, int16_t maxHeight);
-
     ~Buffer();
 
-    void resize(int16_t mw, int16_t mh);
+    bool isColorSetBg() const;
 
-    bool getForeColor(cpe::Color &color) const;
+    void setColorSetBg(bool colorSetMode);
 
-    void setForeColor(const cpe::Color &fore);
+    bool getColor(cpe::Color &color) const;
 
-    bool getBackColor(cpe::Color &color) const;
+    void setColor(const cpe::Color &color);
 
-    void setBackColor(const cpe::Color &back);
+    void unsetColor();
 
-    void unsetForeColor();
+    bool getWidth(int &width) const;
 
-    void unsetBackColor();
+    void setWidth(int width);
 
-    void write(const std::string &str);
+    void unsetWidth();
+
+    bool getHeight(int &height) const;
+
+    void setHeight(int height);
+
+    void unsetHeight();
+
+    const WriterFormat &getFormat() const;
+
+    void setFormat(const WriterFormat &format);
+
+    void pushBack(const std::string &str);
+
+    void pushBack(Buffer &buffer);
 
     void flush();
 
-    void back(uint64_t count);
+    void popBack(uint64_t count);
 
     void clear();
 
     Buffer &operator<<(const std::string &str);
 
+    Buffer &operator<<(Buffer &(*manip)(Buffer &));
+
+    Buffer &operator<<(Buffer &buf);
+
 private:
-    class nBufSym {
-    public:
-        cpe::Color mFore;
-        cpe::Color mBack;
-        bool mForeUsing = false;
-        bool mBackUsing = false;
+    struct _Color {
+        Color mColor;
+        bool mUsing = false;
+    };
+
+    struct _StyledChar {
+        _StyledChar() {
+
+        }
+
+        _StyledChar(const _Color &fore,
+                    const _Color &back,
+                    char aChar) : mFore(fore),
+                                  mBack(back),
+                                  mChar(aChar) {}
+
+        _Color mFore;
+        _Color mBack;
         char mChar = ' ';
     };
 
-    std::vector<nBufSym *> mMatrix;
-    int16_t mCurCol = 0;
-    cpe::Color mFore;
-    cpe::Color mBack;
-    bool mForeUsing = false;
-    bool mBackUsing = false;
-    int16_t mMaxWidth = 0;
-    int16_t mMaxHeight = 0;
-    cpe::WriterFormat mFormat;
+    struct _Symbol {
+        enum : int {
+            UNDEFINED,
+            BUFFER_POINTER,
+            STYLED_CHAR
+        };
 
-    Buffer::nBufSym *_matrixAddLine();
+        _Symbol() {
 
-    void _matrixSetBufChar(nBufSym *line, int16_t column, char c);
+        }
+
+        explicit _Symbol(Buffer *buffer) : mBuffer(buffer),
+                                           mType(BUFFER_POINTER) {}
+
+        explicit _Symbol(const _StyledChar &styledChar) : mSChar(styledChar),
+                                                          mType(STYLED_CHAR) {}
+
+        int mType = UNDEFINED;
+        union {
+            Buffer *mBuffer = nullptr;
+            _StyledChar mSChar;
+        };
+    };
+
+    struct _Maximum {
+        int mValue = 0;
+        bool mUsing = false;
+
+        _Maximum() {
+
+        }
+
+        explicit _Maximum(int val) : mValue(val) {
+            mUsing = true;
+        }
+    };
+
+    std::vector<_Symbol> mSymbols;
+    bool mColorSetBg = false;
+    _Color mFore;
+    _Color mBack;
+    _Maximum mWidth;
+    _Maximum mHeight;
+    WriterFormat mFormat;
+
+    Point _simplify(std::vector<_StyledChar> &chars, Point outerPos, const _Maximum &outerMaxWidth,
+                    const _Maximum &outerMaxHeight) const;
+
+    inline bool
+    _tryAddLine(Point &local, const Point &outer, const _Maximum &maxWidth, const _Maximum &maxHeight,
+                std::vector<_StyledChar> &chars) const;
 };
 
 }
