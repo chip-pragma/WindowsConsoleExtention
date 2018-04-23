@@ -138,17 +138,17 @@ int main() {
     try {
         cpe::WriterFormat wf;
         wf.setTabLength(5);
+        wf.setUnfinished("~");
 
         cpe::Buffer buf3;
         buf3.setFormat(wf);
-        buf3.setWidth(3);
-        buf3.setHeight(10);
+        buf3.setWidth(15);
+        buf3.setHeight(3);
         buf3 << cpe::Colors::LT_TEAL
-             << encode("Это мини буфер номер 3. Должен поместиться в пятиклеточное поле.");
+             << encode("Это мини буфер номер 3.\nДолжен поместиться в пятиклеточное поле.");
 
         cpe::Buffer buf2;
         buf2.setFormat(wf);
-        buf2.setWidth(15);
         buf2 << cpe::Colors::LT_YELLOW
              << encode("Проверка вывода под-2-буфера: ")
              << buf3
@@ -184,6 +184,7 @@ int main() {
              << cpe::Colors::LT_RED
              << encode("Проверка подбуфера: ")
              << buf2
+             << buf3
              << "\n"
              << cpe::Colors::LT_RED
              << encode("Проверка табуляции:\n")
