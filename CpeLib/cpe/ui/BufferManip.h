@@ -5,9 +5,9 @@
 
 namespace cpe {
 
-Buffer &bg(Buffer &buf);
+Buffer &setBack(Buffer &buf);
 
-Buffer &fg(Buffer &buf);
+Buffer &setFore(Buffer &buf);
 
 Buffer &operator<<(Buffer &buf, const Color &color);
 

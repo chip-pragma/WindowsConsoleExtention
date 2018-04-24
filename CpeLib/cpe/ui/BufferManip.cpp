@@ -2,12 +2,12 @@
 
 namespace cpe {
 
-Buffer &bg(Buffer &buf) {
+Buffer &setBack(Buffer &buf) {
     buf.setColorSetBg(true);
     return buf;
 }
 
-Buffer &fg(Buffer &buf) {
+Buffer &setFore(Buffer &buf) {
     buf.setColorSetBg(false);
     return buf;
 }

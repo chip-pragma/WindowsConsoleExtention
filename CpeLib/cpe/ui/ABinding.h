@@ -61,7 +61,7 @@ void ABinding<TValue>::bind(
         void (TModel::*setter)(const TValue &),
         const TValue &(TModel::*getter)() const) {
     if (!std::is_same<TModel, IModel>::value)
-        throw core::Exception();
+        throw cpe::Exception("");
 
     mVar = nullptr;
     mObj = &obj;

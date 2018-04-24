@@ -35,96 +35,96 @@ void Border::apply(const DualBorder &db) {
 
     using Db = DualBorder;
 
-    _sides.clear();
+    mSides.clear();
 
-    _sides[L] = L"\xB3";
-    _sides[R] = L"\xB3";
-    _sides[T] = L"\xC4";
-    _sides[B] = L"\xC4";
+    mSides[L] = "\xB3";
+    mSides[R] = "\xB3";
+    mSides[T] = "\xC4";
+    mSides[B] = "\xC4";
 
-    _sides[LT] = L"\xDA";
-    _sides[RT] = L"\xBF";
-    _sides[LB] = L"\xC0";
-    _sides[RB] = L"\xD9";
+    mSides[LT] = "\xDA";
+    mSides[RT] = "\xBF";
+    mSides[LB] = "\xC0";
+    mSides[RB] = "\xD9";
 
-    _sides[V] = L"\xB3";
-    _sides[H] = L"\xC4";
+    mSides[V] = "\xB3";
+    mSides[H] = "\xC4";
 
-    _sides[VL] = L"\xC3";
-    _sides[VR] = L"\xB4";
-    _sides[HT] = L"\xC2";
-    _sides[HB] = L"\xC1";
+    mSides[VL] = "\xC3";
+    mSides[VR] = "\xB4";
+    mSides[HT] = "\xC2";
+    mSides[HB] = "\xC1";
 
-    _sides[C] = L"\xC5";
+    mSides[C] = "\xC5";
 
     // Прямые (боковые)
     if (db & Db::LEFT) {
-        _sides[L] = L"\xBA";
-        _sides[LT] = L"\xD6";
-        _sides[LB] = L"\xD3";
-        _sides[VL] = L"\xC7";
+        mSides[L] = "\xBA";
+        mSides[LT] = "\xD6";
+        mSides[LB] = "\xD3";
+        mSides[VL] = "\xC7";
     }
     if (db & Db::RIGHT) {
-        _sides[R] = L"\xBA";
-        _sides[RT] = L"\xB7";
-        _sides[RB] = L"\xBD";
-        _sides[VR] = L"\xB6";
+        mSides[R] = "\xBA";
+        mSides[RT] = "\xB7";
+        mSides[RB] = "\xBD";
+        mSides[VR] = "\xB6";
     }
     if (db & Db::TOP) {
-        _sides[T] = L"\xCD";
-        _sides[LT] = L"\xD5";
-        _sides[RT] = L"\xB8";
-        _sides[HT] = L"\xD1";
+        mSides[T] = "\xCD";
+        mSides[LT] = "\xD5";
+        mSides[RT] = "\xB8";
+        mSides[HT] = "\xD1";
     }
     if (db & Db::BOTTOM) {
-        _sides[B] = L"\xCD";
-        _sides[LB] = L"\xD4";
-        _sides[RB] = L"\xBE";
-        _sides[HB] = L"\xCF";
+        mSides[B] = "\xCD";
+        mSides[LB] = "\xD4";
+        mSides[RB] = "\xBE";
+        mSides[HB] = "\xCF";
     }
 
     // Углы
     if ((db & (Db::LEFT | Db::TOP)) == (Db)5)
-        _sides[LT] = L"\xC9";
+        mSides[LT] = "\xC9";
     if ((db & (Db::RIGHT | Db::TOP)) == (Db)5)
-        _sides[RT] = L"\xBB";
+        mSides[RT] = "\xBB";
     if ((db & (Db::LEFT | Db::BOTTOM)) == (Db)5)
-        _sides[LB] = L"\xC8";
+        mSides[LB] = "\xC8";
     if ((db & (Db::RIGHT | Db::BOTTOM)) == (Db)5)
-        _sides[RB] = L"\xBC";
+        mSides[RB] = "\xBC";
 
     // Прямые (внутренние)
     if (db & Db::IN_V) {
-        _sides[V] = L"\xBA";
-        _sides[HT] = L"\xD2";
-        _sides[HB] = L"\xD0";
-        _sides[C] = L"\xD7";
+        mSides[V] = "\xBA";
+        mSides[HT] = "\xD2";
+        mSides[HB] = "\xD0";
+        mSides[C] = "\xD7";
     }
     if (db & Db::IN_H) {
-        _sides[H] = L"\xCD";
-        _sides[VL] = L"\xC6";
-        _sides[VR] = L"\xB5";
-        _sides[C] = L"\xD8";
+        mSides[H] = "\xCD";
+        mSides[VL] = "\xC6";
+        mSides[VR] = "\xB5";
+        mSides[C] = "\xD8";
     }
 
     // Тройник
     if ((db & (Db::IN_V | Db::LEFT)) == (Db)17)
-        _sides[VL] = L"\xCC";
+        mSides[VL] = "\xCC";
     if ((db & (Db::IN_V | Db::RIGHT)) == (Db)18)
-        _sides[VR] = L"\xB9";
+        mSides[VR] = "\xB9";
     if ((db & (Db::IN_H | Db::TOP)) == (Db)36)
-        _sides[HT] = L"\xCB";
+        mSides[HT] = "\xCB";
     if ((db & (Db::IN_H | Db::BOTTOM)) == (Db)40)
-        _sides[HB] = L"\xCA";
+        mSides[HB] = "\xCA";
 
     // Перекрестье
     if ((db & (Db::IN_H | Db::IN_V)) == (Db)48)
-        _sides[C] = L"\xCA";
+        mSides[C] = "\xCA";
 
 }
 
-const std::wstring &Border::operator[](const Border::Side &&side) const {
-    return _sides[side];
+const std::string &Border::operator[](const Side &&side) const {
+    return mSides[side];
 }
 
 }

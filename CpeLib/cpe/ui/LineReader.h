@@ -4,7 +4,7 @@
 #include <iostream>
 
 #include "AReader.h"
-#include "AScript.h"
+#include "Script.h"
 
 namespace cpe::ui {
 

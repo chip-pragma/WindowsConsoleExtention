@@ -2,7 +2,7 @@
 
 namespace cpe {
 
-class AController {
+class AProcessor {
 public:
     virtual void preprocess() = 0;
 

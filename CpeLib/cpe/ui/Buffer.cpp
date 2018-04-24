@@ -80,13 +80,13 @@ void Buffer::setFormat(const WriterFormat &format) {
     mFormat = format;
 }
 
-void Buffer::pushBack(const std::string &str) {
+Buffer & Buffer::pushBack(const std::string &str) {
     for (char c : str) {
         mSymbols.push_back(_Symbol(_StyledChar(mFore, mBack, c)));
     }
 }
 
-void Buffer::pushBack(Buffer &buffer) {
+Buffer & Buffer::pushBack(const Buffer &buffer) {
     mSymbols.push_back(_Symbol(&buffer));
 }
 
@@ -111,11 +111,12 @@ void Buffer::flush() {
         else term::setBackColor(srcBackCol);
         std::cout << c.mChar;
     }
+    std::cout << std::endl;
+    clear();
 
     term::setForeColor(srcForeCol);
     term::setBackColor(srcBackCol);
 
-    std::cout.flush();
     if (useAutoFlush)
         std::cout << std::unitbuf;
 }
@@ -134,8 +135,7 @@ void Buffer::clear() {
 }
 
 Buffer &Buffer::operator<<(const std::string &str) {
-    pushBack(str);
-    return *this;
+    return pushBack(str);
 }
 
 Buffer &Buffer::operator<<(Buffer &(*manip)(Buffer &)) {
@@ -143,8 +143,10 @@ Buffer &Buffer::operator<<(Buffer &(*manip)(Buffer &)) {
     return *this;
 }
 
-Buffer &Buffer::operator<<(Buffer &buf) {
-    pushBack(buf);
+Buffer & Buffer::operator<<(const Buffer &buf) {
+    // Исключение рекурсии
+    if (&buf != this)
+        pushBack(buf);
     return *this;
 }
 

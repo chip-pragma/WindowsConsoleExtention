@@ -44,9 +44,9 @@ public:
 
     void setFormat(const WriterFormat &format);
 
-    void pushBack(const std::string &str);
+    Buffer &pushBack(const std::string &str);
 
-    void pushBack(Buffer &buffer);
+    Buffer &pushBack(const Buffer &buffer);
 
     void flush();
 
@@ -58,7 +58,7 @@ public:
 
     Buffer &operator<<(Buffer &(*manip)(Buffer &));
 
-    Buffer &operator<<(Buffer &buf);
+    Buffer &operator<<(const Buffer &buf);
 
 private:
     struct _Color {
@@ -93,15 +93,15 @@ private:
 
         }
 
-        explicit _Symbol(Buffer *buffer) : mBuffer(buffer),
-                                           mType(BUFFER_POINTER) {}
+        explicit _Symbol(const Buffer *buffer) : mBuffer(buffer),
+                                                 mType(BUFFER_POINTER) {}
 
         explicit _Symbol(const _StyledChar &styledChar) : mSChar(styledChar),
                                                           mType(STYLED_CHAR) {}
 
         int mType = UNDEFINED;
         union {
-            Buffer *mBuffer = nullptr;
+            const Buffer *mBuffer = nullptr;
             _StyledChar mSChar;
         };
     };

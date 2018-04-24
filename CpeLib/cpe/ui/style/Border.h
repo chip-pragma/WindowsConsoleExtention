@@ -12,7 +12,7 @@ public:
     /**
      * Сторона (позиция) рамки
      */
-    static enum Side {
+    enum Side : int {
         /** Левая сторона */
         L,
         /** Правая сторона */
@@ -59,10 +59,10 @@ public:
      */
     void apply(const DualBorder &dualBorder);
 
-    const std::wstring &operator [](const Side&& side) const;
+    const std::string &operator[](const Side &&side) const;
 
 private:
-    std::map<Side, std::wstring> _sides;
+    std::map<Side, std::string> mSides;
 };
 
 }
