@@ -3,25 +3,23 @@
 #include <string>
 
 #include "ACommand.h"
+#include "IProperties.h"
 
 namespace cpe {
 
-// TODO подумать над биндингом данных. Можно сделать 2 класса BindingFrom<ResultType> И BindingTo<ResultType>
-class Message : public ACommand {
+class Message : public ACommand, public IProperties {
 public:
-    const std::string &getCaption() const;
+    Message();
 
-    Message *setCaption(const std::string &caption);
+    ~Message() override;
 
-    const std::string &getText() const;
-
-    Message *setText(const std::string &text);
+    PropertyRW<std::string> *caption;
+    PropertyRW<std::string> *text;
 
     void run() override;
 
 protected:
-    std::string mCaption;
-    std::string mText;
+
 };
 
 

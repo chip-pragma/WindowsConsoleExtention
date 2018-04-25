@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <cstdint>
 
 #include "cpe/core/Color.h"
 #include "cpe/core/Point.h"
