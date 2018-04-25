@@ -2,37 +2,17 @@
 
 #include <functional>
 
+#include "cpe/Macros.h"
 #include "ACommand.h"
 #include "Buffer.h"
 
 namespace cpe {
 
-namespace {
-
-class IScriptItem {
-public:
-    virtual ~IScriptItem() {
-
-    }
-
-    virtual ACommand *_command() = 0;
-};
-
-}
-
-//#region [ prototype ]
-
-template<class TC, class TP>
-class ScriptItem;
-
-template<class TP>
-class Script;
-
-//#endregion
-
-//# region [ declaration ]
-
-template<class TP>
+/**
+ * Выполняемый скрипт из комманд
+ * @tparam TProcessor Тип обработчика выполнения команд
+ */
+template<class TProcessor>
 class Script {
 
 public:
@@ -40,92 +20,68 @@ public:
 
     ~Script();
 
-    TP *processor() const;
+    /**
+     * Обработчик команд скрипта
+     * @return
+     */
+    TProcessor *processor() const;
 
-    template<class TC>
-    ScriptItem<TC, TP> *add();
+    /**
+     * Создает команду указанного типа, добавляет в список выполняемых команд и возвращает ее
+     * @tparam TCommand Тип команды
+     */
+    template<class TCommand>
+    TCommand *add();
 
+    /**
+     * Запускает выполнение скрипта
+     */
     void run() const;
 
 private:
-    TP *mProcessor;
-    std::vector<IScriptItem *> mItemList;
+    // Обработчик команд
+    TProcessor *mProcessor;
+    // Список выполняемых команд
+    std::vector<ACommand *> mItemList;
 };
 
-template<class TC, class TP>
-class ScriptItem : private IScriptItem {
-
-    friend class Script<TP>;
-
-public:
-    ~ScriptItem() override {
-        delete mItem;
-    }
-
-    ScriptItem<TC, TP> *bind() {
-        std::function<TC *(const ScriptItem<TC, TP> *)> fifa = &ScriptItem<TC, TP>::item;
-        return this;
-    }
-
-    TC *item() const {
-        return mItem;
-    }
-
-private:
-    ScriptItem() : mItem(new TC()) {}
-
-    ACommand *_command() override {
-        return dynamic_cast<ACommand *>(mItem);
-    }
-
-    TC *mItem;
-};
-
-//#endregion
-
-//#region [ difinition ]
-
-template<class TP>
-Script<TP>::Script() {
+template<class TProcessor>
+Script<TProcessor>::Script() {
     static_assert(
-            std::is_base_of<AProcessor, TP>::value,
-            "'AProcessor' is not base for template-param 'TP'");
+            std::is_base_of<AProcessor, TProcessor>::value,
+            "'AProcessor' is not base for template-param 'TProcessor'");
 
-    mProcessor = new TP();
+    mProcessor = new TProcessor();
 }
 
-template<class TP>
-Script<TP>::~Script() {
+template<class TProcessor>
+Script<TProcessor>::~Script() {
     for (auto item : mItemList)
         delete item;
     delete mProcessor;
 }
 
-template<class TP>
-void Script<TP>::run() const {
-    for (IScriptItem *com : mItemList) {
-        com->_command()->run();
+template<class TProcessor>
+void Script<TProcessor>::run() const {
+    for (auto com : mItemList) {
+        com->run();
     }
 }
 
-template<class TP>
-TP *Script<TP>::processor() const {
+template<class TProcessor>
+TProcessor *Script<TProcessor>::processor() const {
     return mProcessor;
 }
 
-template<class TP>
-template<class TC>
-ScriptItem<TC, TP> *Script<TP>::add() {
-    static_assert(
-            std::is_base_of<ACommand, TC>::value,
-            "'ACommand' is not base for template-param 'TC'");
+template<class TProcessor>
+template<class TCommand>
+TCommand *Script<TProcessor>::add() {
+    CPE__STATIC_CHECK_BASE_CLASS(ACommand, TCommand);
 
-    auto *item = new ScriptItem<TC, TP>();
-    mItemList.push_back(static_cast<IScriptItem *>(item));
+    auto *item = new TCommand();
+    mItemList.push_back(static_cast<ACommand *>(item));
     return item;
 }
-
-//#endregion
 
 }
 

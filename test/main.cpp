@@ -2,7 +2,7 @@
 #include <vector>
 #include <cmath>
 
-#include "cpe/ui/Message.h"
+#include "cpe/ui/command/Message.h"
 #include "cpe/core/Encoder.h"
 #include "cpe/ui/Script.h"
 
@@ -35,10 +35,13 @@ int main() {
     // TODO реализация MVC (подобие)
 
     Script<TestProcessor> script;
-    auto item = script.add<Message>()->item();
-    item->text->set(encode("ПРИУЭТ! Это МАССАДЖ!"));
+    auto item = script.add<Message>();
+    item->text->set("it's MESSAGE!");
     auto proc = script.processor();
     proc->preprocess();
+    script.run();
+    script.run();
+    item->text->set(encode("11"));
     script.run();
 
 

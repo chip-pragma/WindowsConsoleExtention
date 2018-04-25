@@ -2,12 +2,12 @@
 
 #include <string>
 
-#include "ACommand.h"
-#include "IProperties.h"
+#include "cpe/ui/ACommand.h"
+#include "cpe/ui/property/AProperties.h"
 
 namespace cpe {
 
-class Message : public ACommand, public IProperties {
+class Message : public ACommand, public AProperties {
 public:
     Message();
 
@@ -19,7 +19,9 @@ public:
     void run() override;
 
 protected:
+    void textSet(const std::string &value);
 
+    const std::string &textGet();
 };
 
 

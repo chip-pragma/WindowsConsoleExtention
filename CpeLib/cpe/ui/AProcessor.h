@@ -2,11 +2,12 @@
 
 namespace cpe {
 
+/**
+ * Базовый класс обработчика команд скрипта
+ */
 class AProcessor {
 public:
-    virtual void preprocess() = 0;
 
-    virtual void postprocess() = 0;
 };
 
 }
