@@ -4,9 +4,9 @@
 #include <cpe/ui/command/Label.h>
 
 #include "cpe/core/Encoder.h"
-#include "cpe/ui/Script.h"
+#include "cpe/ui/AScript.h"
 
-#include "TestProcessor.h"
+#include "TestScript.h"
 
 using namespace cpe;
 
@@ -32,15 +32,15 @@ int main() {
 
     term::pause();
 
-    Script<TestProcessor> script;
+    TestScript script;
     auto proc = script.processor();
-    auto item = script.add<Label>();
-    item->text->set("it's MESSAGE!");
-    item->style.fore->set(cpe::Colors::BLUE);
-    item->style.back->set(cpe::Colors::LT_TEAL);
-    script.run();
-    script.run();
-    item->text->set(encode("11"));
+    std::cout << "1. " << proc->state->get() << "\n";
+    proc->state->set(proc->state->get() + encode(" ОПА, ПОМЕНЯЛИ 1!"));
+    std::cout << "2. " << proc->state->get() << "\n";
+    proc->state->set(encode(" ОПА, ПОМЕНЯЛИ 2!"));
+    std::cout << "3. " << proc->state->get() << "\n";
+    proc->state->set(proc->state->get() + encode(" ОПА, ПОМЕНЯЛИ 3!"));
+    std::cout << "4. " << proc->state->get() << "\n";
     script.run();
 
 

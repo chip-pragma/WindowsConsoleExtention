@@ -111,7 +111,7 @@ void Buffer::flush() {
         else term::setBackColor(srcBackCol);
         std::cout << c.mChar;
     }
-    std::cout << std::endl;
+    std::cout.flush();
     clear();
 
     term::setForeColor(srcForeCol);

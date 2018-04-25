@@ -13,19 +13,17 @@ public:
      * Стиль вывода
      */
     struct {
-        PropertyRW<cpe::Color> *back;
-        PropertyRW<cpe::Color> *fore;
+        Property<cpe::Color> *back;
+        Property<cpe::Color> *fore;
     } style;
 
     Label();
 
     ~Label() override;
 
-    PropertyRW<std::string> *text;
+    Property<std::string> *text;
 
     void run() override;
-
-protected:
 };
 
 

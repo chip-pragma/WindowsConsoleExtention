@@ -3,8 +3,10 @@
 namespace cpe {
 
 void AProperties::destroyProperties() {
-    for (auto prop : mPropertyList)
+    for (auto prop : mPropertyList) {
         delete prop;
+    }
+
 }
 
 }

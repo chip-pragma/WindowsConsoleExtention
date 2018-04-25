@@ -5,36 +5,16 @@
 
 #include "cpe/Macros.h"
 #include "IProperty.h"
-#include "cpe/ui/property/AProperty.h"
 #include "Property.h"
 
-/**
- * dynamic_cast из дочернего prop в AProperty(TValue)
- */
-#define __CPE__TO_APROPERTY(TValue, prop) \
-    (dynamic_cast<AProperty<TValue> *>(prop))
-
 namespace cpe {
-
-namespace {
-
-template<class TProperty, class TValue>
-inline void checkPropertyType() {
-    static_assert(
-            std::is_base_of<AProperty<TValue>, TProperty>::value,
-            "'AProperty<TValue>' is not base for template-param 'TProperty<TValue>'");
-}
-
-}
 
 /**
  * Базовый класс для реализации работы со свойствами
  */
 class AProperties {
 public:
-    virtual ~AProperties() {
-
-    };
+    virtual ~AProperties() {};
 
 protected:
 
@@ -139,6 +119,9 @@ protected:
     template<class TValue, class TProperty>
     TValue &propValue(TProperty *&prop);
 
+    template<class TValue, class TProperty>
+    void propValue(TProperty *&prop, const TValue &);
+
     /**
      * Удаляет все созданные свойства
      */
@@ -182,9 +165,9 @@ template<
         class TValue>
 void AProperties::propAssign(TProperty *&prop,
                              CustomSetterFunc<TIPropsCommand, TValue> setter) {
-    CPE__STATIC_CHECK_BASE_CLASS(AProperty<TValue>, TProperty);
+    CPE__STATIC_CHECK_BASE_CLASS(Property<TValue>, TProperty);
 
-    auto aProp = __CPE__TO_APROPERTY(TValue, prop);
+    auto aProp = static_cast<Property<TValue> *>(prop);
     aProp->mSetter = static_cast<CustomSetterFunc<AProperties, TValue>>(setter);
 }
 
@@ -194,9 +177,9 @@ template<
         class TValue>
 void AProperties::propAssign(TProperty *&prop,
                              CustomGetterFunc<TIPropsCommand, TValue> getter) {
-    CPE__STATIC_CHECK_BASE_CLASS(AProperty<TValue>, TProperty);
+    CPE__STATIC_CHECK_BASE_CLASS(Property<TValue>, TProperty);
 
-    auto aProp = __CPE__TO_APROPERTY(TValue, prop);
+    auto aProp = static_cast<Property<TValue> *>(prop);
     aProp->mGetter = static_cast<CustomGetterFunc<AProperties, TValue>>(getter);
 };
 
@@ -207,17 +190,23 @@ template<
 void AProperties::propAssign(TProperty *&prop,
                              CustomSetterFunc<TIPropsCommand, TValue> setter,
                              CustomGetterFunc<TIPropsCommand, TValue> getter) {
-    CPE__STATIC_CHECK_BASE_CLASS(AProperty<TValue>, TProperty);
+    CPE__STATIC_CHECK_BASE_CLASS(Property<TValue>, TProperty);
 
-    auto aProp = __CPE__TO_APROPERTY(TValue, prop);
+    auto aProp = static_cast<Property<TValue> *>(prop);
     aProp->mSetter = static_cast<CustomSetterFunc<AProperties, TValue>>(setter);
     aProp->mGetter = static_cast<CustomGetterFunc<AProperties, TValue>>(getter);
 };
 
 template<class TValue, class TProperty>
 TValue &AProperties::propValue(TProperty *&prop) {
-    auto aProp = __CPE__TO_APROPERTY(TValue, prop);
-    return aProp->mValue;
+    auto aProp = static_cast<Property<TValue> *>(prop);
+    return aProp->_get();
+}
+
+template<class TValue, class TProperty>
+void AProperties::propValue(TProperty *&prop, const TValue &value) {
+    auto aProp = static_cast<Property<TValue> *>(prop);
+    aProp->_set(value, true);
 }
 
 }

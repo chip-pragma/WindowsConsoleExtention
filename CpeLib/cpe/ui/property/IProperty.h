@@ -11,7 +11,9 @@ class IProperty {
     friend class cpe::AProperties;
 
 public:
-    virtual ~IProperty() {};
+    virtual ~IProperty() {
+
+    };
 
 protected:
     explicit IProperty(AProperties *owner);
