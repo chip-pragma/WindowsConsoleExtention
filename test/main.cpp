@@ -1,8 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <cpe/ui/command/Label.h>
 
-#include "cpe/ui/command/Message.h"
 #include "cpe/core/Encoder.h"
 #include "cpe/ui/Script.h"
 
@@ -32,13 +32,12 @@ int main() {
 
     term::pause();
 
-    // TODO реализация MVC (подобие)
-
     Script<TestProcessor> script;
-    auto item = script.add<Message>();
-    item->text->set("it's MESSAGE!");
     auto proc = script.processor();
-    proc->preprocess();
+    auto item = script.add<Label>();
+    item->text->set("it's MESSAGE!");
+    item->style.fore->set(cpe::Colors::BLUE);
+    item->style.back->set(cpe::Colors::LT_TEAL);
     script.run();
     script.run();
     item->text->set(encode("11"));

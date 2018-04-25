@@ -3,17 +3,16 @@
 #include <string>
 
 #include "cpe/ui/AProcessor.h"
+#include "cpe/ui/property/AProperties.h"
 
-class TestProcessor : public cpe::AProcessor {
+class TestProcessor : public cpe::AProcessor, public cpe::AProperties {
 public:
-    void preprocess() override;
+    TestProcessor();
 
-    void postprocess() override;
+    ~TestProcessor() override;
 
-    const std::string &getState() const;
+    cpe::PropertyRW<std::string> *state;
 
-private:
-    std::string mState;
 };
 
 

@@ -1,13 +1,9 @@
 #include "TestProcessor.h"
 
-void TestProcessor::preprocess() {
-
+TestProcessor::TestProcessor() {
+    propCreate(state);
 }
 
-void TestProcessor::postprocess() {
-
-}
-
-const std::string &TestProcessor::getState() const {
-    return mState;
+TestProcessor::~TestProcessor() {
+    destroyProperties();
 }

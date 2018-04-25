@@ -7,7 +7,7 @@ namespace cpe {
  */
 class AProcessor {
 public:
-
+    virtual ~AProcessor() = 0;
 };
 
 }

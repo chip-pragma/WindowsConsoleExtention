@@ -5,37 +5,56 @@
 namespace cpe {
 
 /**
- * Свойство для чтения и записи
+ * Свойство только для записи
  * @tparam TValue Тип значения свойства
  */
 template<class TValue>
-class PropertyRW : AProperty<TValue> {
+class PropertyWO : AProperty<TValue> {
+    friend class cpe::AProperties;
+
+public:
+    // Задает значение
+    void set(const TValue &value) {
+        AProperty<TValue>::_set(value);
+    }
+
+    // TODO Закончить связку свойств (биндинг)
+    // TODO Не компилится из-за неопределения базового класса в PropertyRW
+
+protected:
+    explicit PropertyWO(AProperties *owner) : AProperty<TValue>(owner) {}
+};
+
+/**
+ * Свойство только для чтения
+ * @tparam TValue Тип значения свойства
+ */
+template<class TValue>
+class PropertyRO : AProperty<TValue> {
     friend class cpe::AProperties;
 
 public:
     // Возвращает значение
-    const TValue &get();
+    const TValue &get() {
+        return AProperty<TValue>::_get();
+    }
 
-    // Задает значение
-    void set(const TValue &value);
-
-private:
-    explicit PropertyRW(AProperties *owner);
+protected:
+    explicit PropertyRO(AProperties *owner) : AProperty<TValue>(owner) {}
 };
 
+/**
+ * Свойство для чтения и записи
+ * @tparam TValue Тип значения свойства
+ */
 template<class TValue>
-PropertyRW<TValue>::PropertyRW(AProperties *owner) : AProperty<TValue>(owner) {
-}
+class PropertyRW : public PropertyRO<TValue>, public PropertyWO<TValue> {
+    friend class cpe::AProperties;
 
-template<class TValue>
-const TValue &PropertyRW<TValue>::get() {
-    return PropertyRW<TValue>::_get();
-}
-
-template<class TValue>
-void PropertyRW<TValue>::set(const TValue &value) {
-    PropertyRW<TValue>::_set(value);
-}
+protected:
+    explicit PropertyRW(AProperties *owner) : PropertyWO<TValue>(owner),
+                                              PropertyRO<TValue>(owner) {}
+};
 
 }
 
