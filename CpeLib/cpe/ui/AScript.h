@@ -2,24 +2,24 @@
 
 #include <functional>
 
-#include "cpe/Macros.h"
-#include "cpe/ui/ACommand.h"
+#include "cpe/macros.h"
+#include "ACommand.h"
+#include "AContainer.h"
+#include "AProcessor.h"
 
 namespace cpe {
-
-class AProcessor;
 
 /**
  * Выполняемый скрипт из комманд
  * @tparam TProcessor Тип обработчика выполнения команд
  */
 template<class TProcessor>
-class AScript {
+class AScript : protected AContainer {
 
 public:
     explicit AScript();
 
-    virtual ~AScript() = 0;
+    virtual ~AScript() override;
 
     /**
      * Обработчик команд скрипта
@@ -32,19 +32,9 @@ public:
      */
     void run() const;
 
-protected:
-    /**
-* Создает команду указанного типа, добавляет в список выполняемых команд и возвращает ее
-* @tparam TCommand Тип команды
-*/
-    template<class TCommand>
-    TCommand *add();
-
 private:
     // Обработчик команд
     TProcessor *const mProcessor;
-    // Список выполняемых команд
-    std::vector<ACommand *> mItemList;
 };
 
 template<class TProcessor>
@@ -56,31 +46,22 @@ AScript<TProcessor>::AScript() : mProcessor(new TProcessor()) {
 
 template<class TProcessor>
 AScript<TProcessor>::~AScript() {
-    for (auto item : mItemList)
-        delete item;
     delete mProcessor;
 }
 
 template<class TProcessor>
 void AScript<TProcessor>::run() const {
-    for (auto com : mItemList) {
-        com->run();
+    Buffer buf;
+    std::vector<AReader *> readers;
+    for (auto com : AContainer::items()) {
+        com->run(buf, readers);
+        buf.flush();
     }
 }
 
 template<class TProcessor>
 TProcessor *AScript<TProcessor>::processor() const {
     return mProcessor;
-}
-
-template<class TProcessor>
-template<class TCommand>
-TCommand *AScript<TProcessor>::add() {
-    CPE__STATIC_CHECK_BASE_CLASS(ACommand, TCommand);
-
-    auto *item = new TCommand();
-    mItemList.push_back(static_cast<ACommand *>(item));
-    return item;
 }
 
 }

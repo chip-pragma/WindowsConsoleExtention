@@ -1,4 +1,4 @@
-#include "cpe/Platform.h"
+#include "cpe/platform.h"
 #include "Point.h"
 
 namespace cpe {

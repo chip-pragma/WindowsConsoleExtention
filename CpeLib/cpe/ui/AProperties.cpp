@@ -2,16 +2,10 @@
 
 namespace cpe {
 
-void AProperties::destroyProperties() {
+void AProperties::propDestroyAll() {
     for (auto prop : mPropertyList) {
         delete prop;
     }
-
 }
 
 }
-
-
-
-
-

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "cpe/ui/property/IProperty.h"
+#include "IProperty.h"
 
 namespace cpe {
 
@@ -29,7 +29,7 @@ class Property : public IProperty {
     friend class cpe::AProperties;
 
 public:
-    ~Property();
+    ~Property() override;
 
     /**
      * Задает значение свойства

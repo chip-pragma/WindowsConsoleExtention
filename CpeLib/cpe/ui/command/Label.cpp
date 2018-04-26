@@ -11,15 +11,13 @@ Label::Label() {
 }
 
 Label::~Label() {
-    destroyProperties();
+    propDestroyAll();
 }
 
-void Label::run() {
-    Buffer buf;
+void *Label::run(Buffer &buf, std::vector<AReader *> &readers) {
     buf << setBack << style.back->get()
         << setFore << style.fore->get()
         << text->get();
-    buf.flush();
 }
 
 }

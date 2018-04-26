@@ -1,9 +1,11 @@
 #pragma once
 
 #include <string>
+#include <cpe/ui/Buffer.h>
 
+#include "cpe/core/Color.h"
 #include "cpe/ui/ACommand.h"
-#include "cpe/ui/property/AProperties.h"
+#include "cpe/ui/AProperties.h"
 
 namespace cpe {
 
@@ -23,7 +25,7 @@ public:
 
     Property<std::string> *text;
 
-    void run() override;
+    void *run(Buffer &buf, std::vector<AReader *> &readers) override;
 };
 
 

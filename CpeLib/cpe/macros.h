@@ -5,7 +5,7 @@
  * @param base Базовый тип
  * @param child Дочерний тип
  */
-#define CPE__STATIC_CHECK_BASE_CLASS(base, child) \
+#define CPE_MACROS_StaticCheckBaseClass(base, child) \
 static_assert( \
     std::is_base_of<base, child>::value, \
     "'"#base"' is not base for '"#child"'");

@@ -3,8 +3,7 @@
 #include <functional>
 #include <vector>
 
-#include "cpe/Macros.h"
-#include "IProperty.h"
+#include "cpe/macros.h"
 #include "Property.h"
 
 namespace cpe {
@@ -27,47 +26,13 @@ protected:
     void propCreate(TProperty *&prop);
 
     /**
-     * Создает свойство и назначает пользовательский сеттер
+     * Создает свойство и задает значение по умолчанию
      * @tparam TProperty Тип создаваемого свойства
-     * @tparam TIPropsCommand Дочерний тип от AProperties
      * @tparam TValue Тип значения свойства
      * @param prop Создаваемое свойство
      */
-    template<
-            class TProperty,
-            class TIPropsCommand,
-            class TValue>
-    void propCreate(TProperty *&prop,
-                    CustomSetterFunc<TIPropsCommand, TValue> setter);
-
-    /**
-     * Создает свойство и назначает пользовательский геттер
-     * @tparam TProperty Тип создаваемого свойства
-     * @tparam TIPropsCommand Дочерний тип от AProperties
-     * @tparam TValue Тип значения свойства
-     * @param prop Создаваемое свойство
-     */
-    template<
-            class TProperty,
-            class TIPropsCommand,
-            class TValue>
-    void propCreate(TProperty *&prop,
-                    CustomGetterFunc<TIPropsCommand, TValue> getter);
-
-    /**
-     * Создает свойство и назначает пользовательский сеттер и геттер
-     * @tparam TProperty Тип создаваемого свойства
-     * @tparam TIPropsCommand Дочерний тип от AProperties
-     * @tparam TValue Тип значения свойства
-     * @param prop Создаваемое свойство
-     */
-    template<
-            class TProperty,
-            class TIPropsCommand,
-            class TValue>
-    void propCreate(TProperty *&prop,
-                    CustomSetterFunc<TIPropsCommand, TValue> setter,
-                    CustomGetterFunc<TIPropsCommand, TValue> getter);
+    template<class TProperty, class TValue>
+    void propCreate(TProperty *&prop, const TValue &defValue);
 
     /**
      * Назначает пользовательский сеттер для указанного свойства
@@ -125,7 +90,7 @@ protected:
     /**
      * Удаляет все созданные свойства
      */
-    void destroyProperties();
+    void propDestroyAll();
 
 private:
     // Созданные свойства
@@ -134,29 +99,17 @@ private:
 
 template<class TProperty>
 void AProperties::propCreate(TProperty *&prop) {
-    CPE__STATIC_CHECK_BASE_CLASS(IProperty, TProperty);
+    CPE_MACROS_StaticCheckBaseClass(IProperty, TProperty);
 
     prop = new TProperty(this);
     mPropertyList.push_back(prop);
 }
 
-template<class TProperty, class TIPropsCommand, class TValue>
-void AProperties::propCreate(TProperty *&prop, CustomSetterFunc<TIPropsCommand, TValue> setter) {
+template<class TProperty, class TValue>
+void AProperties::propCreate(TProperty *&prop, const TValue &defValue) {
     propCreate(prop);
-    propAssign(prop, setter);
-}
-
-template<class TProperty, class TIPropsCommand, class TValue>
-void AProperties::propCreate(TProperty *&prop, CustomGetterFunc<TIPropsCommand, TValue> getter) {
-    propCreate(prop);
-    propAssign(prop, getter);
-}
-
-template<class TProperty, class TIPropsCommand, class TValue>
-void AProperties::propCreate(TProperty *&prop, CustomSetterFunc<TIPropsCommand, TValue> setter,
-                             CustomGetterFunc<TIPropsCommand, TValue> getter) {
-    propCreate(prop);
-    propAssign(prop, setter, getter);
+    auto aProp = static_cast<Property<TValue> *>(prop);
+    aProp->mValue = defValue;
 }
 
 template<
@@ -165,7 +118,7 @@ template<
         class TValue>
 void AProperties::propAssign(TProperty *&prop,
                              CustomSetterFunc<TIPropsCommand, TValue> setter) {
-    CPE__STATIC_CHECK_BASE_CLASS(Property<TValue>, TProperty);
+    CPE_MACROS_StaticCheckBaseClass(Property<TValue>, TProperty);
 
     auto aProp = static_cast<Property<TValue> *>(prop);
     aProp->mSetter = static_cast<CustomSetterFunc<AProperties, TValue>>(setter);
@@ -177,7 +130,7 @@ template<
         class TValue>
 void AProperties::propAssign(TProperty *&prop,
                              CustomGetterFunc<TIPropsCommand, TValue> getter) {
-    CPE__STATIC_CHECK_BASE_CLASS(Property<TValue>, TProperty);
+    CPE_MACROS_StaticCheckBaseClass(Property<TValue>, TProperty);
 
     auto aProp = static_cast<Property<TValue> *>(prop);
     aProp->mGetter = static_cast<CustomGetterFunc<AProperties, TValue>>(getter);
@@ -190,7 +143,7 @@ template<
 void AProperties::propAssign(TProperty *&prop,
                              CustomSetterFunc<TIPropsCommand, TValue> setter,
                              CustomGetterFunc<TIPropsCommand, TValue> getter) {
-    CPE__STATIC_CHECK_BASE_CLASS(Property<TValue>, TProperty);
+    CPE_MACROS_StaticCheckBaseClass(Property<TValue>, TProperty);
 
     auto aProp = static_cast<Property<TValue> *>(prop);
     aProp->mSetter = static_cast<CustomSetterFunc<AProperties, TValue>>(setter);
@@ -210,5 +163,3 @@ void AProperties::propValue(TProperty *&prop, const TValue &value) {
 }
 
 }
-
-#undef __CPE__TO_APROPERTY

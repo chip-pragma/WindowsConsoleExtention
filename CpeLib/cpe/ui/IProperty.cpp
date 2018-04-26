@@ -7,3 +7,4 @@ IProperty::IProperty(AProperties *owner) : mOwner(owner) {
 }
 
 }
+

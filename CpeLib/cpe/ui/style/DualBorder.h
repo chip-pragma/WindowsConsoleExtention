@@ -1,6 +1,6 @@
 #pragma once
 
-namespace cpe::ui::style {
+namespace cpe {
 
 /**
  * Использование двойных рамок
@@ -32,12 +32,8 @@ enum class DualBorder : unsigned char {
             ALL = (int) (OUT_ALL | IN_ALL)
 };
 
-DualBorder operator&(const DualBorder &db1, const DualBorder &db2) {
-    return (DualBorder) ((unsigned char) db1 & (unsigned char) db2);
-}
+DualBorder operator&(const DualBorder &db1, const DualBorder &db2);
 
-DualBorder operator|(const DualBorder &db1, const DualBorder &db2) {
-    return (DualBorder) ((unsigned char) db1 | (unsigned char) db2);
-}
+DualBorder operator|(const DualBorder &db1, const DualBorder &db2);
 
 }

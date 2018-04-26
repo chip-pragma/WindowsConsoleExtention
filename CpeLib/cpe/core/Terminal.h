@@ -21,7 +21,7 @@ void clear();
 /**
  * Задает текст заголовка окна консоли
  */
-void setTitle(const std::wstring &title);
+void setTitle(const std::string &title);
 
 /**
  * Возвращает текст заголовка окна консоли

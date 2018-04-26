@@ -1,7 +1,7 @@
 #pragma once
 
-#include "cpe/ui/AProcessor.h"
-#include "cpe/ui/Buffer.h"
+#include "cpe/ui/reader/AReader.h"
+#include "Buffer.h"
 
 namespace cpe {
 
@@ -13,7 +13,7 @@ public:
     /**
      * Запускает комманду
      */
-    virtual void run() = 0;
+    virtual void *run(Buffer &buf, std::vector<AReader *> &readers) = 0;
 };
 
 }

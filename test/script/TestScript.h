@@ -2,7 +2,7 @@
 
 #include <cpe/ui/AScript.h>
 
-#include "TestProcessor.h"
+#include "processor/TestProcessor.h"
 
 class TestScript : public cpe::AScript<TestProcessor> {
 public:

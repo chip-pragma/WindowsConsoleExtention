@@ -3,8 +3,8 @@
 #include <string>
 #include <iostream>
 
-#include "AReader.h"
-#include "AScript.h"
+#include "cpe/ui/reader/AReader.h"
+#include "cpe/ui/AScript.h"
 
 namespace cpe::ui {
 

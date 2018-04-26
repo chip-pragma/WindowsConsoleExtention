@@ -2,8 +2,8 @@
 
 #include <string>
 
-#include "cpe/ui/AProcessor.h"
-#include "cpe/ui/property/AProperties.h"
+#include <cpe/ui/AProcessor.h>
+#include <cpe/ui/AProperties.h>
 
 class TestProcessor : public cpe::AProcessor,
                       public cpe::AProperties {

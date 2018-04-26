@@ -16,9 +16,9 @@ void clear() {
 #endif
 }
 
-void setTitle(const std::wstring &title) {
+void setTitle(const std::string &title) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
-    SetConsoleTitleW(title.c_str());
+    SetConsoleTitleA(title.c_str());
 #endif
 }
 

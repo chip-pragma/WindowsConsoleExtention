@@ -5,5 +5,5 @@ TestProcessor::TestProcessor() {
 }
 
 TestProcessor::~TestProcessor() {
-    destroyProperties();
+    propDestroyAll();
 }
