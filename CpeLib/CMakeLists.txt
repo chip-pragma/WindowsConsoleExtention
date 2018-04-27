@@ -2,20 +2,27 @@ project(ConsolePresentExtention)
 
 set(CMAKE_CXX_STANDARD 17)
 
-include_directories(cpe)
-
 add_library(${LIBRARY_CPE_NAME} STATIC
-            cpe/utils/Text.cpp
-            cpe/utils/Text.h
-            cpe/core/Terminal.cpp
-            cpe/core/Terminal.h
-        cpe/ui/WriterFormat.cpp
-        cpe/ui/WriterFormat.h
-            cpe/core/Encoder.cpp
-            cpe/core/Encoder.h
-            cpe/core/Point.cpp
-            cpe/core/Point.h
-        cpe/platform.h
-            cpe/core/Color.cpp
-        cpe/core/Color.cpp
-        cpe/core/Color.h cpe/core/ReaderFormat.cpp cpe/core/ReaderFormat.h cpe/_platform/winapi.cpp cpe/_platform/winapi.h cpe/core/Exception.cpp cpe/core/Exception.h cpe/ui/reader/AReader.cpp cpe/ui/reader/AReader.h cpe/ui/reader/LineReader.cpp cpe/ui/reader/LineReader.h cpe/ui/Buffer.cpp cpe/ui/Buffer.h cpe/ui/AProcessor.h cpe/ui/ACommand.h cpe/ui/AScript.h cpe/ui/BufferManip.cpp cpe/ui/BufferManip.h cpe/ui/command/Label.cpp cpe/ui/command/Label.h cpe/ui/AProperties.h cpe/ui/IProperty.h cpe/ui/Property.h cpe/macros.h cpe/ui/command/MessageBox.cpp cpe/ui/command/MessageBox.h cpe/ui/AContainer.h cpe/ui/IProperty.cpp cpe/ui/AProperties.cpp cpe/ui/AContainer.cpp cpe/ui/style/DualBorder.h.cpp)
+            src/cpe/utils/Text.cpp
+            src/cpe/utils/Text.h
+            src/cpe/core/Terminal.cpp
+            src/cpe/core/Terminal.h
+            src/cpe/ui/WriterFormat.cpp
+            src/cpe/ui/WriterFormat.h
+            src/cpe/core/Encoder.cpp
+            src/cpe/core/Encoder.h
+            src/cpe/core/Point.cpp
+            src/cpe/core/Point.h
+            src/cpe/platform.h
+            src/cpe/core/Color.cpp
+            src/cpe/core/Color.cpp
+            src/cpe/core/Color.h src/cpe/core/ReaderFormat.cpp src/cpe/core/ReaderFormat.h src/cpe/_platform/winapi.cpp src/cpe/_platform/winapi.h src/cpe/core/Exception.cpp src/cpe/core/Exception.h src/cpe/ui/reader/AReader.cpp src/cpe/ui/reader/AReader.h src/cpe/ui/reader/LineReader.cpp src/cpe/ui/reader/LineReader.h src/cpe/ui/Buffer.cpp src/cpe/ui/Buffer.h src/cpe/ui/AProcessor.h src/cpe/ui/ACommand.h src/cpe/ui/AScript.h src/cpe/ui/BufferManip.cpp src/cpe/ui/BufferManip.h src/cpe/ui/command/Label.cpp src/cpe/ui/command/Label.h src/cpe/ui/AProperties.h src/cpe/ui/IProperty.h src/cpe/ui/Property.h src/cpe/macros.h src/cpe/ui/command/MessageBox.cpp src/cpe/ui/command/MessageBox.h src/cpe/ui/AContainer.h src/cpe/ui/IProperty.cpp src/cpe/ui/AProperties.cpp src/cpe/ui/AContainer.cpp src/cpe/ui/style/DualBorder.h.cpp)
+
+#set(CMAKE_C_FLAGS
+#        "${CMAKE_C_FLAGS} -static-libgcc")
+#set(CMAKE_CXX_FLAGS
+#        "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
+
+# TODO почему не работает???
+target_compile_options(${LIBRARY_CPE_NAME} BEFORE PUBLIC -static-libgcc -static-libstdc++)
+target_include_directories(${LIBRARY_CPE_NAME} PUBLIC src)

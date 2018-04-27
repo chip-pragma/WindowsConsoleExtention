@@ -1,6 +1,6 @@
 #include "TestScript.h"
-
 #include "common.h"
+
 #include <cpe/ui/command/Label.h>
 #include <cpe/ui/command/MessageBox.h>
 

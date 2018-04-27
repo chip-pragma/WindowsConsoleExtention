@@ -1,13 +1,12 @@
 #include <iostream>
-
 #include <cpe/core/Terminal.h>
+
 #include "script/TestScript.h"
 
 using namespace cpe;
 
 namespace {
 
-// TODO разобраться с корректным включением в CMakeLists
 // TODO Добавить обертку для необязательных значений свойств
 
 }

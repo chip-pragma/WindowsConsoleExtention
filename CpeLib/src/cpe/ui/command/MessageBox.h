@@ -2,11 +2,11 @@
 
 #include <string>
 
-#include "ui/Buffer.h"
-#include "core/Color.h"
-#include "ui/ACommand.h"
-#include "ui/AProperties.h"
-#include "ui/style/DualBorder.h"
+#include "cpe/ui/Buffer.h"
+#include "cpe/core/Color.h"
+#include "cpe/ui/ACommand.h"
+#include "cpe/ui/AProperties.h"
+#include "cpe/ui/style/DualBorder.h"
 #include "Menu.h"
 
 #undef MessageBox

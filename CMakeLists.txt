@@ -8,14 +8,11 @@ set(LIBRARY_CPE_NAME CpeLib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../bin)
 
 #Статическая линковка библиотек STD MinGW
-set(CMAKE_C_FLAGS
-        "${CMAKE_C_FLAGS} -static-libgcc")
-set(CMAKE_CXX_FLAGS
-        "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
-#set(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS
-#        "${CMAKE_SHARED_LIBRARY_LINK_C_FLAGS} -static-libgcc -s")
-#set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS
-#        "${CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS} -static-libgcc -static-libstdc++ -s")
+#set(CMAKE_CXX_FLAGS
+#        "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
 
+
+#Библиотека
 add_subdirectory(CpeLib)
+#Демо приложение
 add_subdirectory(test)
