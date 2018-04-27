@@ -1,6 +1,0 @@
-[label_main_welcome]
-Программа управления Транспортным Агенством
-[label_main_version]
-1.0
-[label_main_copyright]
-ЮРГПУ (НПИ), 2018

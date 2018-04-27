@@ -1,16 +1,32 @@
 cmake_minimum_required(VERSION 3.9)
 
 #Имя исполняемого файла
-set(EXECUTABLE_NAME CPE_Test)
+set(CPE_TEST_TARGET CPE_Test)
 #Имя библиотеки CPE
-set(LIBRARY_CPE_NAME CpeLib)
+set(CPE_LIB_TARGET CpeLib)
 #Директория бинарников сборки
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../bin)
 
-#Статическая линковка библиотек STD MinGW
-#set(CMAKE_CXX_FLAGS
-#        "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
+#  ----------------------------------
+# | Добавляем параметры компилятора |
+# ----------------------------------
+message(STATUS "Compiler ID: ${CMAKE_CXX_COMPILER_ID}")
+# GNU (GCC, MinGW)
+if (${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
+    # Статическая линковка std-библиотек
+    # Похоже, что плохо использовать -Wl,-allow-multiple-definition
+    set(STATIC_STD_LINK "-static")
 
+    # TODO почему не работает???
+    # target_compile_options(${CPE_LIB_TARGET} BEFORE PUBLIC ${STATIC_STD_LINK})
+
+    set(CMAKE_CXX_FLAGS
+        "${CMAKE_CXX_FLAGS} ${STATIC_STD_LINK}")
+    message(STATUS "Add compile options: ${STATIC_STD_LINK}")
+
+else ()
+    message(FATAL_ERROR "Unknown compiler! Please? check and resolve it.")
+endif ()
 
 #Библиотека
 add_subdirectory(CpeLib)

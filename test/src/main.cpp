@@ -2,6 +2,7 @@
 #include <cpe/core/Terminal.h>
 
 #include "script/TestScript.h"
+#include "common.h"
 
 using namespace cpe;
 
