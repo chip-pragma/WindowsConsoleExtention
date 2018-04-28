@@ -1,7 +1,7 @@
 #pragma once
 
 #include "cpe/ui/reader/AReader.h"
-#include "Buffer.h"
+#include "cpe/ui/Buffer.h"
 
 namespace cpe {
 

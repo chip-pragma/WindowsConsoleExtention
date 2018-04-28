@@ -4,8 +4,8 @@
 #include <cpe/ui/Buffer.h>
 
 #include "cpe/core/Color.h"
-#include "cpe/ui/ACommand.h"
-#include "cpe/ui/AProperties.h"
+#include "ACommand.h"
+#include "cpe/utils/property/AProperties.h"
 
 namespace cpe {
 
@@ -15,15 +15,15 @@ public:
      * Стиль вывода
      */
     struct {
-        Property<cpe::Color> *back;
-        Property<cpe::Color> *fore;
+        Property<cpe::Color> back;
+        Property<cpe::Color> fore;
     } style;
 
     Label();
 
     ~Label() override;
 
-    Property<std::string> *text;
+    Property<std::string> text;
 
     void *run(Buffer &buf, std::vector<AReader *> &readers) override;
 };

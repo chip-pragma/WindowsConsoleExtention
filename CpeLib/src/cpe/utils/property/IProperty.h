@@ -8,17 +8,12 @@ class AProperties;
  * Интерфейс для реализации свойств в наследниках класса AProperties
  */
 class IProperty {
-    friend class cpe::AProperties;
+    friend class AProperties;
 
 public:
     virtual ~IProperty() {
 
     };
-
-protected:
-    explicit IProperty(AProperties *owner);
-
-    AProperties *mOwner;
 };
 
 }

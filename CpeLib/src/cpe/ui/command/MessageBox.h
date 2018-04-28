@@ -4,8 +4,8 @@
 
 #include "cpe/ui/Buffer.h"
 #include "cpe/core/Color.h"
-#include "cpe/ui/ACommand.h"
-#include "cpe/ui/AProperties.h"
+#include "ACommand.h"
+#include "cpe/utils/property/AProperties.h"
 #include "cpe/ui/style/DualBorder.h"
 #include "Menu.h"
 
@@ -20,17 +20,17 @@ public:
     ~MessageBox() override;
 
     struct {
-        Property<Color> *fore;
-        Property<Color> *back;
-        Property<std::string> *text;
-        Property<char> *icon;
+        Property<Color> fore;
+        Property<Color> back;
+        Property<std::string> text;
+        Property<char> icon;
     } caption;
 
     struct {
-        Property<Color> *fore;
-        Property<Color> *back;
-        Property<std::string> *text;
-        Property<Menu *> *menu;
+        Property<Color> fore;
+        Property<Color> back;
+        Property<std::string> text;
+        Property<Menu> menu;
     } message;
 
     struct {

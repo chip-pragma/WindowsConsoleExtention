@@ -3,7 +3,7 @@
 #include <string>
 
 #include <cpe/ui/AProcessor.h>
-#include <cpe/ui/AProperties.h>
+#include <cpe/utils/property/AProperties.h>
 
 class TestProcessor : public cpe::AProcessor,
                       public cpe::AProperties {
@@ -12,7 +12,7 @@ public:
 
     ~TestProcessor() override;
 
-    cpe::Property<std::string> *state;
+    cpe::Property<std::string> state;
 
 };
 

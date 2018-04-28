@@ -1,7 +1,7 @@
 #pragma once
 
 #include "cpe/macros.h"
-#include "ACommand.h"
+#include "cpe/ui/command/ACommand.h"
 
 namespace cpe {
 
@@ -18,7 +18,7 @@ public:
     * @tparam TCommand Тип команды
     */
     template<class TCommand>
-    TCommand *add();
+    TCommand & add();
 
 protected:
     /**
@@ -32,12 +32,12 @@ private:
 };
 
 template<class TCommand>
-TCommand *AContainer::add() {
+TCommand & AContainer::add() {
     CPE_MACROS_StaticCheckBaseClass(ACommand, TCommand);
 
-    auto *item = new TCommand();
+    auto item = new TCommand();
     mItemList.push_back(static_cast<ACommand *>(item));
-    return item;
+    return *item;
 }
 
 }

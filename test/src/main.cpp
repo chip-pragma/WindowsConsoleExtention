@@ -8,7 +8,7 @@ using namespace cpe;
 
 namespace {
 
-// TODO Добавить обертку для необязательных значений свойств
+// TODO Реализовать Property без sync и Property с возможностью задавать nullptr
 
 }
 
@@ -18,8 +18,10 @@ int main() {
     term::setBackColor(Colors::BLACK);
 
     TestScript script;
-    auto proc = script.processor();
-    proc->state->set(" ОПА, ПОМЕНЯЛИ 1! "_dos);
+    auto &proc = script.processor();
+    proc.state = " ОПА, ПОМЕНЯЛИ 1! "_dos;
+    std::string str = proc.state;
+    proc.state->clear();
     script.run();
 
     term::pause();

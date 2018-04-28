@@ -3,7 +3,7 @@
 #include <functional>
 
 #include "cpe/macros.h"
-#include "ACommand.h"
+#include "cpe/ui/command/ACommand.h"
 #include "AContainer.h"
 #include "AProcessor.h"
 
@@ -19,13 +19,13 @@ class AScript : protected AContainer {
 public:
     explicit AScript();
 
-    virtual ~AScript() override;
+    ~AScript() override;
 
     /**
      * Обработчик команд скрипта
      * @return
      */
-    virtual TProcessor *processor() const final;
+    virtual TProcessor &processor() const final;
 
     /**
      * Запускает выполнение скрипта
@@ -60,8 +60,8 @@ void AScript<TProcessor>::run() const {
 }
 
 template<class TProcessor>
-TProcessor *AScript<TProcessor>::processor() const {
-    return mProcessor;
+TProcessor &AScript<TProcessor>::processor() const {
+    return *mProcessor;
 }
 
 }
