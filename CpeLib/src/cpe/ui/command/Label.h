@@ -6,6 +6,7 @@
 #include "cpe/core/Color.h"
 #include "ACommand.h"
 #include "cpe/utils/property/AProperties.h"
+#include "cpe/utils/property/PropertyRW.h"
 
 namespace cpe {
 
@@ -14,18 +15,20 @@ public:
     /**
      * Стиль вывода
      */
-    struct {
-        Property<cpe::Color> back;
-        Property<cpe::Color> fore;
-    } style;
 
     Label();
 
     ~Label() override;
 
-    Property<std::string> text;
+    PropertyRW<std::string> text;
+    PropertyRW<cpe::Color> back;
+    PropertyRW<cpe::Color> fore;
 
     void *run(Buffer &buf, std::vector<AReader *> &readers) override;
+
+protected:
+
+    void textSetter(const std::string &value);
 };
 
 

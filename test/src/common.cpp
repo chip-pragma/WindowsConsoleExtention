@@ -1,7 +1,11 @@
 #include "common.h"
 
+namespace {
+
 cpe::Encoder<cpe::Encoding::UTF8> encUtf8;
 cpe::Encoder<cpe::Encoding::CP866> encCp866;
+
+}
 
 /**
  * Кодирует строку из UTF8 в CP866

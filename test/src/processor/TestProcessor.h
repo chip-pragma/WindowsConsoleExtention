@@ -4,6 +4,7 @@
 
 #include <cpe/ui/AProcessor.h>
 #include <cpe/utils/property/AProperties.h>
+#include <cpe/utils/property/BindProperty.h>
 
 class TestProcessor : public cpe::AProcessor,
                       public cpe::AProperties {
@@ -12,7 +13,7 @@ public:
 
     ~TestProcessor() override;
 
-    cpe::Property<std::string> state;
+    cpe::BindProperty<std::string> state;
 
 };
 

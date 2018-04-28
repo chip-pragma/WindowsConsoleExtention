@@ -11,9 +11,7 @@ class IProperty {
     friend class AProperties;
 
 public:
-    virtual ~IProperty() {
-
-    };
+    virtual ~IProperty() { ; };
 };
 
 }

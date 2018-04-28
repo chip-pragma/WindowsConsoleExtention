@@ -2,13 +2,12 @@
 #include <cpe/core/Terminal.h>
 
 #include "script/TestScript.h"
-#include "common.h"
 
 using namespace cpe;
 
 namespace {
 
-// TODO Реализовать Property без sync и Property с возможностью задавать nullptr
+// TODO Реализовать BindProperty без bind и BindProperty с возможностью задавать nullptr
 
 }
 
@@ -17,11 +16,16 @@ int main() {
     term::setForeColor(Colors::WHITE);
     term::setBackColor(Colors::BLACK);
 
+    term::pause();
+
     TestScript script;
-    auto &proc = script.processor();
-    proc.state = " ОПА, ПОМЕНЯЛИ 1! "_dos;
-    std::string str = proc.state;
-    proc.state->clear();
+    std::cout << "\nScript created:\n\t"
+              << script.processor().state() << "\n\t";
+    script.run();
+
+    script.processor().state("It's changed 3!"_dos);
+    std::cout << "\nState '()':\n\t"
+              << script.processor().state() << "\n\t";
     script.run();
 
     term::pause();

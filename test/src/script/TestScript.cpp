@@ -7,10 +7,10 @@
 TestScript::TestScript() {
     auto &proc = processor();
     auto &l1 = add<cpe::Label>();
-    l1.text = "Программа управления Транспортным Агенством"_dos;
-    l1.style.back = cpe::Colors::BLUE;
-    l1.style.fore = cpe::Colors::LT_TEAL;
-    l1.text.sync(proc.state);
+    l1.text("This text from TestScript!"_dos);
+    l1.back(cpe::Colors::BLUE);
+    l1.fore(cpe::Colors::LT_TEAL);
+    l1.text.bind(proc.state);
     auto &m1 = add<cpe::MessageBox>();
-    m1.caption.text = "ЗАХАЛОВОКЪ"_dos;
+    m1.caption.text("ЗАХАЛОВОКЪ"_dos);
 }

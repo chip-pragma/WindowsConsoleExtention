@@ -4,7 +4,8 @@
 #include <vector>
 
 #include "cpe/macros.h"
-#include "Property.h"
+#include "IProperty.h"
+#include "AProperty.h"
 
 namespace cpe {
 
@@ -95,9 +96,6 @@ protected:
     TValue &propValue(TProperty &prop);
 
     template<class TValue, class TProperty>
-    void propValue(TProperty &prop, TValue &&value);
-
-    template<class TValue, class TProperty>
     void propValue(TProperty &prop, const TValue &value);
 
 private:
@@ -111,11 +109,10 @@ template<
         class TValue>
 void AProperties::propAssign(TProperty &prop,
                              CustomSetterFunc<TAProps, TValue> setter) {
-    CPE_MACROS_StaticCheckBaseClass(Property<TValue>, TProperty);
+    CPE_MACROS_StaticCheckBaseClass(AProperty<TValue>, TProperty);
 
-    auto aProp = static_cast<Property<TValue> &>(prop);
-    aProp.mOwner = this;
-    aProp.mSetter = static_cast<CustomSetterFunc<AProperties, TValue>>(setter);
+    prop.mOwner = this;
+    prop.mSetter = static_cast<CustomSetterFunc<AProperties, TValue>>(setter);
 }
 
 template<
@@ -124,11 +121,10 @@ template<
         class TValue>
 void AProperties::propAssign(TProperty &prop,
                              CustomGetterFunc<TAProps, TValue> getter) {
-    CPE_MACROS_StaticCheckBaseClass(Property<TValue>, TProperty);
+    CPE_MACROS_StaticCheckBaseClass(AProperty<TValue>, TProperty);
 
-    auto aProp = static_cast<Property<TValue> &>(prop);
-    aProp.mOwner = this;
-    aProp.mGetter = static_cast<CustomGetterFunc<AProperties, TValue>>(getter);
+    prop.mOwner = this;
+    prop.mGetter = static_cast<CustomGetterFunc<AProperties, TValue>>(getter);
 };
 
 template<
@@ -138,54 +134,47 @@ template<
 void AProperties::propAssign(TProperty &prop,
                              CustomSetterFunc<TAProps, TValue> setter,
                              CustomGetterFunc<TAProps, TValue> getter) {
-    CPE_MACROS_StaticCheckBaseClass(Property<TValue>, TProperty);
+    CPE_MACROS_StaticCheckBaseClass(AProperty<TValue>, TProperty);
 
-    auto aProp = static_cast<Property<TValue> &>(prop);
-    aProp.mOwner = this;
-    aProp.mSetter = static_cast<CustomSetterFunc<AProperties, TValue>>(setter);
-    aProp.mGetter = static_cast<CustomGetterFunc<AProperties, TValue>>(getter);
+    prop.mOwner = this;
+    prop.mSetter = static_cast<CustomSetterFunc<AProperties, TValue>>(setter);
+    prop.mGetter = static_cast<CustomGetterFunc<AProperties, TValue>>(getter);
 };
 
 template<class TValue, template<class> class TProperty>
 void AProperties::propUnsetSetter(TProperty<TValue> &prop) {
-    auto aProp = static_cast<Property<TValue> &>(prop);
-    aProp.mSetter = nullptr;
-    if (aProp.mGetter == nullptr)
-        aProp.mOwner = nullptr;
+    CPE_MACROS_StaticCheckBaseClass(AProperty<TValue>, TProperty<TValue>);
+    prop.mSetter = nullptr;
+    if (prop.mGetter == nullptr)
+        prop.mOwner = nullptr;
 }
 
 template<class TValue, template<class> class TProperty>
 void AProperties::propUnsetGetter(TProperty<TValue> &prop) {
-    auto aProp = static_cast<Property<TValue> &>(prop);
-    aProp.mGetter = nullptr;
-    if (aProp.mSetter == nullptr)
-        aProp.mOwner = nullptr;
+    CPE_MACROS_StaticCheckBaseClass(AProperty<TValue>, TProperty<TValue>);
+    prop.mGetter = nullptr;
+    if (prop.mSetter == nullptr)
+        prop.mOwner = nullptr;
 }
 
 template<class TValue, template<class> class TProperty>
 void AProperties::propUnsetAll(TProperty<TValue> &prop) {
-    auto aProp = static_cast<Property<TValue> &>(prop);
-    aProp.mSetter = nullptr;
-    aProp.mGetter = nullptr;
-    aProp.mOwner = nullptr;
+    CPE_MACROS_StaticCheckBaseClass(AProperty<TValue>, TProperty<TValue>);
+    prop.mSetter = nullptr;
+    prop.mGetter = nullptr;
+    prop.mOwner = nullptr;
 }
 
 template<class TValue, class TProperty>
 TValue &AProperties::propValue(TProperty &prop) {
-    auto aProp = static_cast<Property<TValue> &>(prop);
-    return *(aProp._get(false));
-}
-
-template<class TValue, class TProperty>
-void AProperties::propValue(TProperty &prop, TValue &&value) {
-    auto aProp = static_cast<Property<TValue> &>(prop);
-    aProp._set(false, value, true);
+    CPE_MACROS_StaticCheckBaseClass(AProperty<TValue>, TProperty);
+    return *(prop._get(false));
 }
 
 template<class TValue, class TProperty>
 void AProperties::propValue(TProperty &prop, const TValue &value) {
-    auto aProp = static_cast<Property<TValue> &>(prop);
-    aProp._set(false, value, true);
+    CPE_MACROS_StaticCheckBaseClass(AProperty<TValue>, TProperty);
+    prop._set(false, value);
 }
 
 }
