@@ -7,11 +7,10 @@ namespace cpe {
 
 class Exception : private std::exception {
 public:
-    Exception() = delete;
-
     explicit Exception(const std::string &message);
 
-    virtual const std::string &message() const;
+private:
+    const char *what() const noexcept override;
 
 protected:
     std::string mMessage;

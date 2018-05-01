@@ -7,7 +7,7 @@
 
 #include "cpe/core/Color.h"
 #include "cpe/core/Point.h"
-#include "cpe/core/Terminal.h"
+#include "cpe/core/terminal.h"
 #include "WriterFormat.h"
 
 namespace cpe {
@@ -22,133 +22,54 @@ public:
 
     ~Buffer();
 
-    /**
-     * Режим назначения цвета. True для фона, false для текста.
-     */
-    bool isColorSetBg() const;
+    bool colorMode() const;
 
-    /**
-     * Задает режим назначения цвета
-     * @param colorSetMode True для фона, false для текста.
-     */
-    void setColorSetBg(bool colorSetMode);
+    void colorMode(bool settingBackground);
 
-    /**
-     * Возвращает цвет заданного режима, если используется
-     * @param color <i>[out]<i/> Ссылка для возврата используемого цвета
-     * @return true, если цвет используется и возвращен. Иначе false.
-     */
-    bool getColor(cpe::Color &color) const;
+    bool color(cpe::Color &color) const;
 
-    /**
-     * Назначает цвет заданного режима
-     */
-    void setColor(const cpe::Color &color);
+    void color(const cpe::Color &color);
 
-    /**
-     * Отключить использование цвета заданного режима
-     */
-    void unsetColor();
+    void clearColor();
 
-    /**
-     * Возвращает максимальную ширину буфера, если назначена
-     * @param width <i>[out]<i/> Ссылка для возврата ширины
-     * @return  true, если ширина назначена и возвращена. Иначе false.
-     */
-    bool getWidth(int &width) const;
+    bool maxWidth(int &width) const;
 
-    /**
-     * Задает максимальную ширину буфера
-     */
-    void setWidth(int width);
+    void maxWidth(int width);
 
-    /**
-     * Отключает использование максимальной ширины
-     */
-    void unsetWidth();
+    void clearMaxWidth();
 
-    /**
-     * Возвращает максимальную высоту буфера, если назначена
-     * @param width <i>[out]<i/> Ссылка для возврата высоты
-     * @return  true, если высоту назначена и возвращена. Иначе false.
-     */
-    bool getHeight(int &height) const;
+    bool maxHeight(int &height) const;
 
-    /**
-     * Задает максимальную высоту буфера
-     */
-    void setHeight(int height);
+    void maxHeight(int height);
 
-    /**
-     * Отключает использование максимальной высоту
-     */
-    void unsetHeight();
+    void clearMaxHeight();
 
-    /**
-     * Возвращает форматер вывода
-     */
-    const WriterFormat &getFormat() const;
+    const WriterFormat &format() const;
 
-    /**
-     * Задает форматер вывода
-     */
-    void setFormat(const WriterFormat &format);
+    void format(const WriterFormat &format);
 
-    /**
-     * Добавляет в буфер строку
-     * @return *this
-     */
     Buffer &pushBack(const std::string &str);
 
-    /**
-     * Добавляет в буфер подбуфер. Если добавляется этот же буфер, то функция ничего не выполняет.
-     * @return *this
-     */
     Buffer &pushBack(const Buffer &buffer);
 
-    /**
-     * Выводит все содержимое буфера в стандартный поток вывода
-     */
     void flush();
 
-    /**
-     * Удаляет заданное кол-во последних символов буфера
-     * @param count Кол-во удаляемых символов
-     */
     void popBack(uint64_t count);
 
-    /**
-     * Очищает буфер
-     */
     void clear();
 
-    /**
-     * Аналогично pushBack
-     */
     Buffer &operator<<(const std::string &str);
 
-    /**
-     * Применяет манипулятор буфера
-     */
     Buffer &operator<<(Buffer &(*manip)(Buffer &));
 
-    /**
-     * Аналогично pushBack
-     */
     Buffer &operator<<(const Buffer &buf);
 
 private:
-    /**
-     * Обертка цвета с флагом использования
-     */
     struct _Color {
         Color mColor;
         bool mUsing = false;
     };
 
-    /**
-     * Стилизованный символ с заданным цветом фона и текста
-     */
     struct _StyledChar {
         _StyledChar() {
 
@@ -165,9 +86,6 @@ private:
         char mChar = ' ';
     };
 
-    /**
-     * Специальный сивол буфера
-     */
     struct _Symbol {
         enum : int {
             UNDEFINED,
@@ -192,9 +110,6 @@ private:
         };
     };
 
-    /**
-     * Обертка числового значения с флагом использования
-     */
     struct _Maximum {
         int mValue = 0;
         bool mUsing = false;

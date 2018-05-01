@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-namespace cpe::utils::text {
+namespace cpe::text {
 
 /**
  * Удаление начальных и конечных знаков пробелов

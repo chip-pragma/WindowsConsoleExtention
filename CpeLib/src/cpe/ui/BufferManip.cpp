@@ -2,23 +2,23 @@
 
 namespace cpe {
 
-Buffer &setBack(Buffer &buf) {
-    buf.setColorSetBg(true);
+Buffer &backColorMode(Buffer &buf) {
+    buf.colorMode(true);
     return buf;
 }
 
-Buffer &setFore(Buffer &buf) {
-    buf.setColorSetBg(false);
+Buffer &foreColorMode(Buffer &buf) {
+    buf.colorMode(false);
     return buf;
 }
 
 Buffer &operator<<(Buffer &buf, const Color &color) {
-    buf.setColor(color);
+    buf.color(color);
     return buf;
 }
 
-Buffer &unset(Buffer &buf) {
-    buf.unsetColor();
+Buffer &clearColor(Buffer &buf) {
+    buf.clearColor();
     return buf;
 }
 

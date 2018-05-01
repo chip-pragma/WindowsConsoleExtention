@@ -7,9 +7,10 @@ Exception::Exception(const std::string &message) : std::exception(),
 
 }
 
-const std::string &Exception::message() const {
-    return mMessage;
+const char *Exception::what() const noexcept {
+    return mMessage.c_str();
 }
+
 
 }
 

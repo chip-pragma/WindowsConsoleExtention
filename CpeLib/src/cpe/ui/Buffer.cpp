@@ -8,15 +8,15 @@ Buffer::~Buffer() {
     clear();
 }
 
-bool Buffer::isColorSetBg() const {
+bool Buffer::colorMode() const {
     return mColorSetBg;
 }
 
-void Buffer::setColorSetBg(bool colorSetMode) {
-    mColorSetBg = colorSetMode;
+void Buffer::colorMode(bool settingBackground) {
+    mColorSetBg = settingBackground;
 }
 
-bool Buffer::getColor(cpe::Color &color) const {
+bool Buffer::color(cpe::Color &color) const {
     auto col = &mFore;
     if (mColorSetBg)
         col = &mBack;
@@ -26,7 +26,7 @@ bool Buffer::getColor(cpe::Color &color) const {
     return col->mUsing;
 }
 
-void Buffer::setColor(const cpe::Color &color) {
+void Buffer::color(const cpe::Color &color) {
     auto col = &mFore;
     if (mColorSetBg)
         col = &mBack;
@@ -35,48 +35,48 @@ void Buffer::setColor(const cpe::Color &color) {
     col->mColor = color;
 }
 
-void Buffer::unsetColor() {
+void Buffer::clearColor() {
     auto col = &mFore;
     if (mColorSetBg)
         col = &mBack;
     col->mUsing = false;
 }
 
-bool Buffer::getWidth(int &width) const {
+bool Buffer::maxWidth(int &width) const {
     if (mWidth.mUsing)
         width = mWidth.mValue;
     return mWidth.mUsing;
 }
 
-void Buffer::setWidth(int width) {
+void Buffer::maxWidth(int width) {
     mWidth.mValue = width;
     mWidth.mUsing = (width > 0);
 }
 
-void Buffer::unsetWidth() {
+void Buffer::clearMaxWidth() {
     mWidth.mUsing = false;
 }
 
-bool Buffer::getHeight(int &height) const {
+bool Buffer::maxHeight(int &height) const {
     if (mHeight.mUsing)
         height = mHeight.mValue;
     return mHeight.mUsing;
 }
 
-void Buffer::setHeight(int height) {
+void Buffer::maxHeight(int height) {
     mHeight.mValue = height;
     mHeight.mUsing = (height > 0);
 }
 
-void Buffer::unsetHeight() {
+void Buffer::clearMaxHeight() {
     mHeight.mUsing = false;
 }
 
-const WriterFormat &Buffer::getFormat() const {
+const WriterFormat &Buffer::format() const {
     return mFormat;
 }
 
-void Buffer::setFormat(const WriterFormat &format) {
+void Buffer::format(const WriterFormat &format) {
     mFormat = format;
 }
 
@@ -95,27 +95,27 @@ void Buffer::flush() {
     if (useAutoFlush)
         std::cout << std::nounitbuf;
 
-    const auto srcForeCol = term::getForeColor();
-    const auto srcBackCol = term::getBackColor();
+    const auto srcForeCol = term::foreground();
+    const auto srcBackCol = term::background();
 
     std::vector<_StyledChar> resultChars;
-    auto bsize = term::getBufferSize();
+    auto bsize = term::outputBufferSize();
     _Maximum bw(bsize.x);
     _Maximum bh(bsize.y);
     _simplify(resultChars, Point(), bw, bh);
 
     for (auto c : resultChars) {
-        if (c.mFore.mUsing) term::setForeColor(c.mFore.mColor);
-        else term::setForeColor(srcForeCol);
-        if (c.mBack.mUsing) term::setBackColor(c.mBack.mColor);
-        else term::setBackColor(srcBackCol);
+        if (c.mFore.mUsing) term::foreground(c.mFore.mColor);
+        else term::foreground(srcForeCol);
+        if (c.mBack.mUsing) term::background(c.mBack.mColor);
+        else term::background(srcBackCol);
         std::cout << c.mChar;
     }
     std::cout.flush();
     clear();
 
-    term::setForeColor(srcForeCol);
-    term::setBackColor(srcBackCol);
+    term::foreground(srcForeCol);
+    term::background(srcBackCol);
 
     if (useAutoFlush)
         std::cout << std::unitbuf;

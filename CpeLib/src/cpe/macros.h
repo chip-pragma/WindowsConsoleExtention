@@ -10,4 +10,4 @@
 #define CPE_MACROS_StaticCheckBaseClass(base, child) \
 static_assert( \
     std::is_base_of<base, child>::value, \
-    "'"#base"' is not base for '"#child"'");
+    "'"#base"' is not base for '"#child"'")

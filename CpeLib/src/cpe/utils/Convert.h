@@ -3,7 +3,7 @@
 #include <string>
 #include <ctime>
 
-namespace cpe::utils::convert {
+namespace cpe::convert {
 
 // Строку в int
 bool toInt(const std::string &src, int &dest);

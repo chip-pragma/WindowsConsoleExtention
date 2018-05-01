@@ -7,9 +7,7 @@
 #include <sstream>
 #include <iomanip>
 
-namespace cpe::utils::convert {
-
-using namespace cpe::utils;
+namespace cpe::convert {
 
 bool toInt(const std::string &src, int &dest) {
     try {

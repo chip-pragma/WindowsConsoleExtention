@@ -1,32 +1,30 @@
 #include <iostream>
-#include <cpe/core/Terminal.h>
+#include <cpe/core/terminal.h>
 
-#include "script/TestScript.h"
+#include "common.h"
+#include "controller/MainController.h"
+#include "view/MainView.h"
 
 using namespace cpe;
 
 namespace {
 
-// TODO Реализовать BindProperty без bind и BindProperty с возможностью задавать nullptr
+// TODO Реализовать Property с возможностью задавать nullptr
+// TODO Переработать Property
 
 }
 
 int main() {
-    term::setTitle("Текст консоли"_dos);
-    term::setForeColor(Colors::WHITE);
-    term::setBackColor(Colors::BLACK);
+    term::title("Текст консоли"_dos);
+    term::foreground(Colors::WHITE);
+    term::background(Colors::BLACK);
 
     term::pause();
 
-    TestScript script;
-    std::cout << "\nScript created:\n\t"
-              << script.processor().state() << "\n\t";
-    script.run();
+    MainController ctrl;
+    MainView(ctrl).run();
 
-    script.processor().state("It's changed 3!"_dos);
-    std::cout << "\nState '()':\n\t"
-              << script.processor().state() << "\n\t";
-    script.run();
+    std::cout << "Введено: "_dos << ctrl.testProperty() << std::endl;
 
     term::pause();
 

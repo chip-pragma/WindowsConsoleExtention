@@ -2,7 +2,7 @@
 
 #include <stdexcept>
 
-namespace cpe::utils::text {
+namespace cpe::text {
 
 void trim(std::string &src) {
     auto i = src.begin();

@@ -5,13 +5,13 @@
 
 namespace cpe {
 
-Buffer &setBack(Buffer &buf);
+Buffer &backColorMode(Buffer &buf);
 
-Buffer &setFore(Buffer &buf);
+Buffer &foreColorMode(Buffer &buf);
 
 Buffer &operator<<(Buffer &buf, const Color &color);
 
-Buffer &unset(Buffer &buf);
+Buffer &clearColor(Buffer &buf);
 
 Buffer &flush(Buffer &buf);
 
