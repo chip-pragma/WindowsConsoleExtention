@@ -1,4 +1,4 @@
-#include "Text.h"
+#include "text.h"
 
 #include <stdexcept>
 
@@ -45,6 +45,16 @@ void split(const std::string &src,
                 dest.push_back(line);
             line.clear();
         }
+    }
+}
+
+int replace(std::string &source, const std::string &from, const std::string &to) {
+    if(from.empty())
+        return 0;
+    size_t start_pos = 0;
+    while((start_pos = source.find(from, start_pos)) != std::string::npos) {
+        source.replace(start_pos, from.length(), to);
+        start_pos += to.length();
     }
 }
 

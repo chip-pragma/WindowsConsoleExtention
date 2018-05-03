@@ -12,11 +12,7 @@ namespace cpe {
 
 class LineReader : public ElementAbstract, public ReaderAbstract<std::string> {
 public:
-    explicit LineReader(ViewInterface &parent, PropertyWriteInterface <std::string> &readInto);
-
-    explicit LineReader(ViewInterface &parent, PropertyWriteInterface <std::string> &readInto, const std::string &hint);
-
-    Buffer & run() override;
+    void run(ControllerInterface &controller) override;
 };
 
 }

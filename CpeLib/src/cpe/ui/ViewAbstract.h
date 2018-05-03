@@ -4,49 +4,39 @@
 #include <list>
 #include <algorithm>
 
-#include "ViewInterface.h"
 #include "cpe/macros.h"
-#include "property/PropertyObserverInterface.h"
-#include "property/PropertyInterface.h"
-#include "ControllerAbstract.h"
+#include "ViewInterface.h"
+#include "ControllerInterface.h"
 #include "cpe/ui/element/ElementAbstract.h"
+#include "ViewException.h"
 
 namespace cpe {
 
 template<class TController>
 class ViewAbstract : public ViewInterface {
 public:
-    explicit ViewAbstract(ControllerAbstract &controller);
+    ViewAbstract();
 
     ~ViewAbstract();
 
-    void handlePropertyChanged(PropertyInterface &changedProperty) override;
+    TController& initialize();
 
     void run() override;
 
 protected:
-    TController & controller();
+    template<class TElement>
+    TElement &addElement();
 
-    std::vector<ElementAbstract *> & elements();
-
-    void bind(PropertyInterface &controllerProp,
-              PropertyInterface &elementProp);
-
-    void unbind(PropertyInterface &controllerProp,
-                PropertyInterface &elementProp);
+    virtual void initElements() = 0;
 
 private:
     TController *_mController = nullptr;
     std::vector<ElementAbstract *> _mElements;
-    bool _mChangingPropertyValues = false;
-    std::map<PropertyInterface *, std::list<PropertyInterface *> *> _mBindingProps;
 };
 
 template<class TController>
-ViewAbstract<TController>::ViewAbstract(ControllerAbstract &controller) :
-        _mController(&dynamic_cast<TController &>(controller)) {
-    CPE_MACROS_StaticCheckBaseClass(ControllerAbstract, TController);
-    controller.assignObserver(*this);
+ViewAbstract<TController>::ViewAbstract() {
+    CPE_MACROS_StaticCheckBaseClass(ControllerInterface, TController);
 }
 
 template<class TController>
@@ -54,52 +44,37 @@ ViewAbstract<TController>::~ViewAbstract() {
     for (auto elem : _mElements)
         delete elem;
     _mElements.clear();
+    delete _mController;
 }
 
 template<class TController>
-void ViewAbstract<TController>::handlePropertyChanged(PropertyInterface &changedProperty) {
-    if (!_mChangingPropertyValues) {
-        _mChangingPropertyValues = true;
-
-        _mChangingPropertyValues = false;
+TController &ViewAbstract<TController>::initialize() {
+    if (!_mController) {
+        _mController = new TController();
+        initElements();
     }
-}
-
-template<class TController>
-void ViewAbstract<TController>::run() {
-    for (auto elem : _mElements) {
-        if (elem)
-            elem->run().flush();
-    }
-}
-
-template<class TController>
-TController &ViewAbstract<TController>::controller() {
     return *_mController;
 }
 
 template<class TController>
-std::vector<ElementAbstract *> &ViewAbstract<TController>::elements() {
-    return _mElements;
-}
+void ViewAbstract<TController>::run() {
+    if (!_mController)
+        throw ViewException("Controller has not been created");
 
-template<class TController>
-void ViewAbstract<TController>::bind(PropertyInterface &controllerProp, PropertyInterface &elementProp) {
-    if (_mBindingProps.find(&controllerProp) == _mBindingProps.end()) {
-        auto list = new std::list<PropertyInterface*>();
-        list->push_back(&elementProp);
-        _mBindingProps.emplace(&controllerProp, list);
-    } else {
-        auto list = _mBindingProps[&controllerProp];
-        if (std::find(list->cbegin(), list->cend(), &elementProp) == list->cend()) {
-            list->push_back(&elementProp);
-        }
+    for (auto elem : _mElements) {
+        elem->run(*_mController);
+        elem->buffer().flush();
     }
 }
 
 template<class TController>
-void ViewAbstract<TController>::unbind(PropertyInterface &controllerProp, PropertyInterface &elementProp) {
+template<class TElement>
+TElement &ViewAbstract<TController>::addElement() {
+    CPE_MACROS_StaticCheckBaseClass(ElementAbstract, TElement);
 
+    auto elem = new TElement();
+    _mElements.push_back(elem);
+    return *elem;
 }
 
 }

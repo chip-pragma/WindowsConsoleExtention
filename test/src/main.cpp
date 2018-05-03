@@ -1,4 +1,6 @@
 #include <iostream>
+#include <string>
+
 #include <cpe/core/terminal.h>
 
 #include "common.h"
@@ -7,11 +9,23 @@
 
 using namespace cpe;
 
-namespace {
+void testView() {
+    MainView view;
+    auto &ctrl = view.initialize();
+    ctrl.setHintParam("Проверка ХинтПарама (аля 1С)"_dos);
+    view.run();
 
-// TODO Реализовать Property с возможностью задавать nullptr
-// TODO Переработать Property
+    std::cout << "Введено: "_dos << ctrl.value() << std::endl;
+}
 
+void testBufferSize() {
+    term::outputBufferSize(Point(150, 200));
+
+    while (true) {
+        auto p = term::outputBufferSize();
+        std::cout << "X:" << p.x << " Y:" << p.y << std::endl;
+        term::pause();
+    }
 }
 
 int main() {
@@ -21,12 +35,7 @@ int main() {
 
     term::pause();
 
-    MainController ctrl;
-    MainView(ctrl).run();
-
-    std::cout << "Введено: "_dos << ctrl.testProperty() << std::endl;
-
-    term::pause();
+    testView();
 
     return 0;
 }

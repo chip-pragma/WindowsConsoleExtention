@@ -1,27 +1,17 @@
+#include <cpe/ui/ControllerInterface.h>
 #include "LineReader.h"
 
 namespace cpe {
 
-LineReader::LineReader(ViewInterface &parent,
-                       PropertyWriteInterface<std::string> &readInto) : ElementAbstract(parent),
-                                                                        ReaderAbstract(readInto) {}
-
-LineReader::LineReader(ViewInterface &parent,
-                       PropertyWriteInterface <std::string> &readInto,
-                       const std::string &hint) : ElementAbstract(parent),
-                                                  ReaderAbstract(readInto, hint) {}
-
-Buffer & LineReader::run() {
-    startRead();
+void LineReader::run(ControllerInterface &controller) {
+    startRead(controller);
 
     std::string lineRead;
     std::getline(std::cin, lineRead);
 
-    finishRead(lineRead, false);
+    finishRead(controller, lineRead, true);
 
     mBuffer << foreColorMode << Colors::LT_RED << "Readed! Check buffer return.\n";
-
-    return mBuffer;
 }
 
 }

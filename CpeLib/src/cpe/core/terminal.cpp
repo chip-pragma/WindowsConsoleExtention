@@ -1,5 +1,5 @@
 #include "terminal.h"
-#include "cpe/utils/Text.h"
+#include "cpe/utils/text.h"
 #include "cpe/utils/Convert.h"
 
 namespace cpe::term {

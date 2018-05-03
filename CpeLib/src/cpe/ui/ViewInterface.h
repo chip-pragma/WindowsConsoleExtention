@@ -1,10 +1,8 @@
 #pragma once
 
-#include <cpe/ui/property/PropertyObserverInterface.h>
-
 namespace cpe {
 
-class ViewInterface : public PropertyObserverInterface {
+class ViewInterface {
 public:
     virtual void run() = 0;
 };

@@ -6,11 +6,7 @@
 
 class MainView : public cpe::ViewAbstract<MainController> {
 protected:
-public:
-    explicit MainView(cpe::ControllerAbstract &controller);
-
-protected:
-    void initialize();
+    void initElements() override;
 };
 
 

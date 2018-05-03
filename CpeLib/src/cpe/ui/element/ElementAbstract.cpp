@@ -2,8 +2,6 @@
 
 namespace cpe {
 
-ElementAbstract::ElementAbstract(ViewInterface &parent) {
-    assignObserver(parent);
-}
+
 
 }

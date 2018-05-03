@@ -1,5 +1,5 @@
 #include "Convert.h"
-#include "Text.h"
+#include "text.h"
 
 #include <stdexcept>
 #include <utility>
