@@ -44,7 +44,7 @@ protected:
 
     std::string getHint(const ProviderInterface &provider);
 
-    virtual bool validateRead(ObserverInterface &observer, const TValue &value);
+    virtual bool applyValueRead(ObserverInterface &observer, const TValue &value);
 
 private:
     PureValueReadFunc _mValueReadFunc = nullptr;
@@ -100,7 +100,7 @@ std::string ReaderAbstract<TValue>::getHint(const ProviderInterface &provider) {
 }
 
 template<class TValue>
-bool ReaderAbstract<TValue>::validateRead(ObserverInterface &observer, const TValue &value) {
+bool ReaderAbstract<TValue>::applyValueRead(ObserverInterface &observer, const TValue &value) {
     if (_mValueReadFunc)
         return (observer.*_mValueReadFunc)(value);
     return true;

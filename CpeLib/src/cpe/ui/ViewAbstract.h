@@ -61,7 +61,7 @@ void ViewAbstract<TController>::run() {
     if (!_mController)
         throw ViewException("Controller has not been created");
 
-    Buffer buffer;
+    BufferOld buffer;
     for (auto elem : _mElements) {
         elem->run(*_mController, buffer);
         buffer.flush();

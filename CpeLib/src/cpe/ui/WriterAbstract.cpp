@@ -7,6 +7,9 @@ void WriterAbstract::saveState() {
 }
 
 Point WriterAbstract::clearBack() {
+    if (_mStates.empty())
+        return Point();
+
     auto &last = _mStates.top();
     auto width = term::windowSize().x;
     auto curPos = term::cursorPosition();
