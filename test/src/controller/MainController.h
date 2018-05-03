@@ -6,14 +6,23 @@
 #include <algorithm>
 #include <ctime>
 
+#include <cpe/core/terminal.h>
 #include <cpe/ui/ControllerInterface.h>
 
+#include "common.h"
 
 class MainController : public cpe::ControllerInterface {
 public:
-    void onLineRead(const std::string &value) {
+    bool onLineRead(const std::string &value) {
         _mValue = value;
-        std::cout << "[onLineRead {value: " << value << "}]" << std::endl;
+        bool valid = (value == "yes");
+        if (!valid) {
+            std::cout << "НЕ тО! ЕптА"_dos << std::endl;
+            cpe::term::pause();
+        }
+        return valid;
+
+        // TODO вызывать "модальное View", если валидация не прошла.
     }
 
     const std::string &value() const {

@@ -8,14 +8,15 @@
 #include "cpe/utils/text.h"
 #include "cpe/ui/ObserverInterface.h"
 #include "cpe/ui/ProviderInterface.h"
+#include "cpe/ui/WriterAbstract.h"
 
 namespace cpe {
 
 template<class TValue>
-class ReaderAbstract {
+class ReaderAbstract : public WriterAbstract {
 public:
     template <class TObserver>
-    using ValueReadFunc = void (TObserver::*)(const TValue &);
+    using ValueReadFunc = bool (TObserver::*)(const TValue &);
     template <class TProvider>
     using HintParamFunc = std::string (TProvider::*)() const;
 
@@ -36,14 +37,14 @@ public:
     void hint(const std::string &text);
 
 protected:
-    using PureValueReadFunc = void (ObserverInterface::*)(const TValue &);
+    using PureValueReadFunc = bool (ObserverInterface::*)(const TValue &);
     using PureHintParamFunc = std::string (ProviderInterface::*)() const;
 
     std::string mHint;
 
-    void startRead(const ProviderInterface &provider);
+    std::string getHint(const ProviderInterface &provider);
 
-    void finishRead(ObserverInterface &observer, const TValue &valueRead, bool clearBefore);
+    virtual bool validateRead(ObserverInterface &observer, const TValue &value);
 
 private:
     PureValueReadFunc _mValueReadFunc = nullptr;
@@ -52,7 +53,6 @@ private:
     struct {
         Color prevBack;
         Color prevFore;
-        Point prevCursor;
     } _mOutputBufferRead;
 
 };
@@ -90,35 +90,20 @@ void ReaderAbstract<TValue>::hint(const std::string &text) {
 }
 
 template<class TValue>
-void ReaderAbstract<TValue>::startRead(const ProviderInterface &provider) {
-    _mOutputBufferRead.prevBack = term::background();
-    _mOutputBufferRead.prevFore = term::foreground();
-    _mOutputBufferRead.prevCursor = term::cursorPosition();
-
+std::string ReaderAbstract<TValue>::getHint(const ProviderInterface &provider) {
     auto hintFull = mHint;
     if (_mHintParamFunc) {
         auto hintParam = (provider.*_mHintParamFunc)();
         text::replace(hintFull, HINT_PARAM_TEMPLATE, hintParam);
     }
-
-    term::background(Colors::BLUE);
-    term::foreground(Colors::LT_TEAL);
-    std::cout << "[" << hintFull << "]\n> ";
-    term::foreground(Colors::WHITE);
+    return hintFull;
 }
 
 template<class TValue>
-void ReaderAbstract<TValue>::finishRead(ObserverInterface &observer, const TValue &valueRead, bool clearBefore) {
+bool ReaderAbstract<TValue>::validateRead(ObserverInterface &observer, const TValue &value) {
     if (_mValueReadFunc)
-        (observer.*_mValueReadFunc)(valueRead);
-
-    term::background(_mOutputBufferRead.prevBack);
-    term::foreground(_mOutputBufferRead.prevFore);
-
-    if (clearBefore) {
-        // TODO очистка текста ввода
-        // TODO переработка Buffer
-    }
+        return (observer.*_mValueReadFunc)(value);
+    return true;
 }
 
 }

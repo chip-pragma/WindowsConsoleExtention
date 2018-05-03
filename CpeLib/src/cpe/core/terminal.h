@@ -24,9 +24,9 @@ uint32_t inputCp();
 
 uint32_t outputCp();
 
-bool outputBufferSize(const Point &size);
+bool windowSize(const Point &size);
 
-Point outputBufferSize();
+Point windowSize();
 
 bool cursorPosition(const Point &pos);
 

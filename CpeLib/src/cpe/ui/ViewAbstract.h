@@ -7,7 +7,7 @@
 #include "cpe/macros.h"
 #include "ViewInterface.h"
 #include "ControllerInterface.h"
-#include "cpe/ui/element/ElementAbstract.h"
+#include "cpe/ui/element/ElementInterface.h"
 #include "ViewException.h"
 
 namespace cpe {
@@ -31,7 +31,7 @@ protected:
 
 private:
     TController *_mController = nullptr;
-    std::vector<ElementAbstract *> _mElements;
+    std::vector<ElementInterface *> _mElements;
 };
 
 template<class TController>
@@ -61,16 +61,17 @@ void ViewAbstract<TController>::run() {
     if (!_mController)
         throw ViewException("Controller has not been created");
 
+    Buffer buffer;
     for (auto elem : _mElements) {
-        elem->run(*_mController);
-        elem->buffer().flush();
+        elem->run(*_mController, buffer);
+        buffer.flush();
     }
 }
 
 template<class TController>
 template<class TElement>
 TElement &ViewAbstract<TController>::addElement() {
-    CPE_MACROS_StaticCheckBaseClass(ElementAbstract, TElement);
+    CPE_MACROS_StaticCheckBaseClass(ElementInterface, TElement);
 
     auto elem = new TElement();
     _mElements.push_back(elem);

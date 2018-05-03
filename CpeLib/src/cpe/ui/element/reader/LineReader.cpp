@@ -3,15 +3,22 @@
 
 namespace cpe {
 
-void LineReader::run(ControllerInterface &controller) {
-    startRead(controller);
-
+void LineReader::run(ControllerInterface &controller, Buffer &out) {
     std::string lineRead;
-    std::getline(std::cin, lineRead);
+    auto valid = false;
+    Buffer buf;
+    buf.color(Colors::LT_YELLOW);
+    while (!valid) {
+        saveState();
+        buf << getHint(controller);
+        buf.flush();
+        std::getline(std::cin, lineRead);
+        valid = validateRead(controller, lineRead);
+        clearBack();
+    }
 
-    finishRead(controller, lineRead, true);
-
-    mBuffer << foreColorMode << Colors::LT_RED << "Readed! Check buffer return.\n";
+    out << foreColorMode << Colors::LT_RED
+        << "Readed! Check buffer return.\n";
 }
 
 }

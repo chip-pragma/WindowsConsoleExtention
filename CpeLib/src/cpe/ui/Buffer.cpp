@@ -99,7 +99,7 @@ void Buffer::flush() {
     const auto srcBackCol = term::background();
 
     std::vector<_StyledChar> resultChars;
-    auto bsize = term::outputBufferSize();
+    auto bsize = term::windowSize();
     _Maximum bw(bsize.x);
     _Maximum bh(bsize.y);
     _simplify(resultChars, Point(), bw, bh);

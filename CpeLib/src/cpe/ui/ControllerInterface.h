@@ -9,6 +9,7 @@ class ControllerInterface : public ObserverInterface,
                            public ProviderInterface {
 public:
     ~ControllerInterface() override {};
+
 };
 
 }

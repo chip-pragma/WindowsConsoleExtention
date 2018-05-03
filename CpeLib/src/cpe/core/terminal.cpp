@@ -54,7 +54,7 @@ uint32_t outputCp() {
 #endif
 }
 
-bool outputBufferSize(const Point &size) {
+bool windowSize(const Point &size) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
     return (bool) SetConsoleScreenBufferSize(
             _winapi::getOutputHandle(),
@@ -62,7 +62,7 @@ bool outputBufferSize(const Point &size) {
 #endif
 }
 
-Point outputBufferSize() {
+Point windowSize() {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
     auto info = _winapi::getBufferInfo();
     return Point(info.dwSize);
