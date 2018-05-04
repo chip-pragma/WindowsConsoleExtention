@@ -7,7 +7,7 @@ namespace cpe {
 /**
  *  Базовый класс форматера вывода
  */
-class WriterFormat {
+class TextFormat {
 public:
     /**
      * Возвращает длинну табуляции (в символах)

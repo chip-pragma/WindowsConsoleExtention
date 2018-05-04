@@ -1,6 +1,6 @@
 #include "terminal.h"
-#include "cpe/utils/text.h"
-#include "cpe/utils/Convert.h"
+#include "cpe/tool/text.h"
+#include "cpe/tool/Convert.h"
 
 namespace cpe::term {
 

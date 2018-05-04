@@ -5,7 +5,7 @@
 #include "cpe/core/terminal.h"
 #include "cpe/core/Point.h"
 #include "cpe/core/Color.h"
-#include "cpe/utils/text.h"
+#include "cpe/tool/text.h"
 #include "cpe/ui/ObserverInterface.h"
 #include "cpe/ui/ProviderInterface.h"
 #include "cpe/ui/WriterAbstract.h"

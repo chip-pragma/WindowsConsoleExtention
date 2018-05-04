@@ -11,7 +11,7 @@ namespace cpe {
 
 class LineReader : public ElementInterface, public ReaderAbstract<std::string> {
 public:
-    void run(ControllerInterface &controller, BufferOld &out) override;
+    void run(ControllerInterface &controller, TextCanvas &out) override;
 };
 
 }

@@ -3,9 +3,12 @@
 
 namespace cpe {
 
-void LineReader::run(ControllerInterface &controller, BufferOld &out) {
+void LineReader::run(ControllerInterface &controller, TextCanvas &out) {
     std::string lineRead;
-    BufferOld buf;
+    TextCanvas buf;
+    std::cout << buf;
+    buf.width(nullptr);
+
     buf.color(Colors::LT_YELLOW);
     auto valid = false;
     while (!valid) {
