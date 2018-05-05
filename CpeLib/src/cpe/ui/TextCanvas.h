@@ -61,17 +61,17 @@ public:
 
     TextCanvas &print(const std::string &str);
 
-    TextCanvas &print(const TextCanvas &buffer);
+    TextCanvas &print(const TextCanvas &canvas);
 
-    void outputTo(std::basic_ostream<char> &outStream) const;
+    void outputTo(std::ostream &outStream) const;
 
     void clear();
 
-    const Point &moveCursor(const Point &vector);
+    void moveCursor(const Point &vector);
 
     TextCanvas &operator<<(const std::string &str);
 
-    TextCanvas &operator<<(const TextCanvas &buf);
+    TextCanvas &operator<<(const TextCanvas &canvas);
 
 private:
     struct {
@@ -95,14 +95,26 @@ private:
     };
 
     std::vector<_StyledChar *> mLines;
+    bool mEof = false;
 
     Point mActualSize;
-    Point mMaxSize = Point(DEFAULT_MAX_WIDTH, DEFAULT_MAX_HEIGHT);
+    Point mMaxSize;
     TextFormat mFormat;
 
+    inline void _printSymbol(char c);
+
+    inline void _newLine();
+
+    inline void _layoutCursor();
+
+    inline void _addLines();
+
+    int16_t _max(const int16_t &v1, const int16_t &v2) const;
+
+    int16_t _min(const int16_t &v1, const int16_t &v2) const;
 };
 
-std::basic_ostream<char> &operator<<(std::basic_ostream<char> &stream, const TextCanvas &buffer);
+std::ostream &operator<<(std::ostream &stream, const TextCanvas &buffer);
 
 }
 

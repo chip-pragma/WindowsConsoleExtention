@@ -61,10 +61,11 @@ void ViewAbstract<TController>::run() {
     if (!_mController)
         throw ViewException("Controller has not been created");
 
-    TextCanvas buffer;
+    // TODO вывод
+//    TextCanvas buffer;
     for (auto elem : _mElements) {
-        elem->run(*_mController, buffer);
-        buffer.flush();
+//        elem->run(*_mController, buffer);
+//        buffer.flush();
     }
 }
 

@@ -60,4 +60,13 @@ Point Point::operator*(int16_t k) noexcept {
     return Point(x * k, y * k);
 }
 
+bool Point::operator==(const Point &rhs) const {
+    return x == rhs.x &&
+           y == rhs.y;
+}
+
+bool Point::operator!=(const Point &rhs) const {
+    return !(rhs == *this);
+}
+
 }

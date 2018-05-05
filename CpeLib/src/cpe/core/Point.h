@@ -34,6 +34,10 @@ public:
     Point &operator*=(int16_t k) noexcept;
 
     Point operator*(int16_t k) noexcept;
+
+    bool operator==(const Point &rhs) const;
+
+    bool operator!=(const Point &rhs) const;
 };
 
 }
