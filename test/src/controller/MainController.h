@@ -7,11 +7,11 @@
 #include <ctime>
 
 #include <cpe/core/terminal.h>
-#include <cpe/ui/ControllerInterface.h>
+#include <cpe/ui/ControllerAbstract.h>
 
 #include "common.h"
 
-class MainController : public cpe::ControllerInterface {
+class MainController : public cpe::ControllerAbstract {
 public:
     bool onLineRead(const std::string &value) {
         _mValue = value;

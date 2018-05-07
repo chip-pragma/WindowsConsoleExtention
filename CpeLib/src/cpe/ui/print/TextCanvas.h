@@ -4,40 +4,31 @@
 #include <vector>
 #include <string>
 #include <cstdint>
+#include <algorithm>
 
 #include "cpe/core/Color.h"
 #include "cpe/core/Point.h"
 #include "cpe/core/terminal.h"
-
+#include "cpe/tool/property/Nullable.h"
 #include "TextFormat.h"
+#include "TextChar.h"
+#include "TextLine.h"
 
 namespace cpe {
 
 class TextCanvas {
 public:
-    TextCanvas(uint16_t maxWidth, uint16_t maxHeight);
+    TextCanvas(const Point &maxSize);
 
     ~TextCanvas();
 
-    //region pen
+    Nullable <Color> & foreground() const;
 
-    void setPen(const Color &color);
+    void foreground(const Nullable<Color> &fore);
 
-    void getPen(std::nullptr_t);
+    Nullable <Color> & background() const;
 
-    const Color &unsetPen(const Color &defColor) const;
-
-    //endregion
-
-    //region brush
-
-    void setBrush(const Color &color);
-
-    void getBrush(std::nullptr_t);
-
-    const Color &unsetBrush(const Color &defColor) const;
-
-    //endregion
+    void background(const Nullable<Color> &back);
 
     //region cursor
 
@@ -74,27 +65,11 @@ public:
     TextCanvas &operator<<(const TextCanvas &canvas);
 
 private:
-    struct {
-        Color *fore = nullptr;
-        Color *back = nullptr;
-        Point position;
-    } mPrintCursor;
+    Nullable<Color> mFore;
+    Nullable<Color> mBack;
+    Point mCursor;
 
-    struct _StyledChar {
-        _StyledChar() {}
-
-        _StyledChar(Color *fore,
-                    Color *back,
-                    char aChar) : fore(fore),
-                                  back(back),
-                                  character(aChar) {}
-
-        Color *fore = nullptr;
-        Color *back = nullptr;
-        char character = ' ';
-    };
-
-    std::vector<_StyledChar *> mLines;
+    std::vector<TextLine> mLines;
     bool mEof = false;
 
     Point mActualSize;
@@ -108,10 +83,6 @@ private:
     inline void _layoutCursor();
 
     inline void _addLines();
-
-    int16_t _max(const int16_t &v1, const int16_t &v2) const;
-
-    int16_t _min(const int16_t &v1, const int16_t &v2) const;
 };
 
 std::ostream &operator<<(std::ostream &stream, const TextCanvas &buffer);

@@ -1,63 +1,49 @@
 #include <ntdef.h>
+#include <sstream>
+
+#include "cpe/core/Exception.h"
 #include "TextCanvas.h"
 
 namespace cpe {
 
-TextCanvas::TextCanvas(uint16_t maxWidth, uint16_t maxHeight) : mMaxSize(maxWidth, maxHeight) {}
+TextCanvas::TextCanvas(const Point &maxSize) : mMaxSize(maxSize) {
+    if (maxSize.x == 0 || maxSize.y == 0) {
+        std::stringstream ss;
+        ss << "Invalid max size (X:"
+              << maxSize.x << "; Y:" << maxSize.y << ")";
+        throw cpe::Exception(ss.str());
+    }
+}
 
 TextCanvas::~TextCanvas() {
     clear();
 }
 
-//region pen
-
-void TextCanvas::setPen(const Color &color) {
-    delete mPrintCursor.fore;
-    mPrintCursor.fore = new Color(color);
+Nullable <Color> & TextCanvas::foreground() const {
+    return mFore;
 }
 
-void TextCanvas::getPen(std::nullptr_t) {
-    delete mPrintCursor.fore;
-    mPrintCursor.fore = nullptr;
+void TextCanvas::foreground(const Nullable<Color> &fore) {
+    mFore = fore;
 }
 
-const Color &TextCanvas::unsetPen(const Color &defColor) const {
-    if (mPrintCursor.fore)
-        return *mPrintCursor.fore;
-    return defColor;
+Nullable <Color> & TextCanvas::background() const {
+    return mBack;
 }
 
-//endregion
-
-//region brush
-
-void TextCanvas::setBrush(const Color &color) {
-    delete mPrintCursor.back;
-    mPrintCursor.back = new Color(color);
+void TextCanvas::background(const Nullable<Color> &back) {
+    mBack = back;
 }
-
-void TextCanvas::getBrush(std::nullptr_t) {
-    delete mPrintCursor.back;
-    mPrintCursor.back = nullptr;
-}
-
-const Color &TextCanvas::unsetBrush(const Color &defColor) const {
-    if (mPrintCursor.back)
-        return *mPrintCursor.back;
-    return defColor;
-}
-
-//endregion
 
 //region cursor
 
 void TextCanvas::setCursor(const Point &pos) {
-    mPrintCursor.position = pos;
+    mCursor = pos;
     _layoutCursor();
 }
 
 const Point &TextCanvas::getCursor() {
-    return mPrintCursor.position;
+    return mCursor;
 }
 
 //endregion
@@ -89,13 +75,14 @@ TextCanvas &TextCanvas::print(const std::string &str) {
             _newLine();
         } else if (c == '\t') {
             auto tl = getFormat().getTabLength();
-            auto sc = tl - mPrintCursor.position.x % tl;
+            auto sc = tl - mCursor.x % tl;
             for (int16_t i = 0; i < sc; i++)
                 _printSymbol(' ');
         } else {
             _printSymbol(c);
         }
     }
+    return *this;
 }
 
 TextCanvas &TextCanvas::print(const TextCanvas &canvas) {
@@ -103,7 +90,10 @@ TextCanvas &TextCanvas::print(const TextCanvas &canvas) {
     if (&canvas == this)
         return *this;
 
-    // TODO запись буфера в буфер
+
+    // TODO запись холста в холст
+
+    return *this;
 }
 
 void TextCanvas::outputTo(std::ostream &outStream) const {
@@ -114,16 +104,23 @@ void TextCanvas::outputTo(std::ostream &outStream) const {
     const auto srcForeCol = term::foreground();
     const auto srcBackCol = term::background();
 
+    Color tmp;
     for (int i = 0; i < mActualSize.y; i++) {
         auto line = mLines[i];
+
+        if (mActualSize.y < mLines.size() &&
+            i + 1 == mActualSize.y)
+            line.setAsUnfinished(mFormat.getUnfinished());
+
         for (int j = 0; j < mActualSize.x; j++) {
             auto c = line[j];
-            if (c.fore) term::foreground(*c.fore);
+            if (c.foreground().get(tmp)) term::foreground(tmp);
             else term::foreground(srcForeCol);
-            if (c.back) term::background(*c.back);
+            if (c.background().get(tmp)) term::background(tmp);
             else term::background(srcBackCol);
-            outStream << c.character;
+            outStream << c.getChar();
         }
+
         outStream << std::endl;
     }
 
@@ -135,16 +132,13 @@ void TextCanvas::outputTo(std::ostream &outStream) const {
 }
 
 void TextCanvas::clear() {
-    for (auto line : mLines) {
-        delete[] line;
-    }
     mLines.clear();
     mActualSize = Point();
-    mPrintCursor.position = Point();
+    mCursor = Point();
 }
 
 void TextCanvas::moveCursor(const Point &vector) {
-    mPrintCursor.position += vector;
+    mCursor += vector;
     _layoutCursor();
 }
 
@@ -160,51 +154,43 @@ void TextCanvas::_printSymbol(char c) {
     if (mEof)
         return;
 
-    auto &sym = mLines[mPrintCursor.position.y][mPrintCursor.position.x++];
-    mActualSize.x = _min(_max(mActualSize.x, mPrintCursor.position.x), mMaxSize.x);
-    sym.character = c;
-    sym.fore = mPrintCursor.fore;
-    sym.back = mPrintCursor.back;
+    auto &sym = mLines[mCursor.y][mCursor.x];
+    sym.setChar(c);
+    sym.foreground(mFore);
+    sym.background(mBack);
 
+    mActualSize.x = std::min(std::max(mActualSize.x, ++mCursor.x), mMaxSize.x);
     _layoutCursor();
 }
 
 void TextCanvas::_newLine() {
-    mPrintCursor.position.y++;
-    mPrintCursor.position.x = 0;
+    mCursor.y++;
+    mCursor.x = 0;
 
     _layoutCursor();
 }
 
 void TextCanvas::_layoutCursor() {
-    mPrintCursor.position.y += mPrintCursor.position.x / mMaxSize.x;
-    mPrintCursor.position.x = mPrintCursor.position.x % mMaxSize.x;
+    mCursor.y += mCursor.x / mMaxSize.x;
+    mCursor.x = mCursor.x % mMaxSize.x;
 
-    if (mPrintCursor.position.x < 0) {
-        mPrintCursor.position.y -= 1;
-        mPrintCursor.position.x += mMaxSize.x;
+    if (mCursor.x < 0) {
+        mCursor.y -= 1;
+        mCursor.x += mMaxSize.x;
     }
 
-    mPrintCursor.position.y = _max(0, mPrintCursor.position.y);
+    mCursor.y = std::max(static_cast<int16_t>(0), mCursor.y);
 
-    mEof = (mPrintCursor.position.y >= mMaxSize.y);
+    mEof = (mCursor.y >= mMaxSize.y);
 
     _addLines();
 }
 
 void TextCanvas::_addLines() {
-    while (mPrintCursor.position.y >= mLines.size())
-        mLines.push_back(new _StyledChar[mMaxSize.x]);
+    while (mCursor.y >= mLines.size())
+        mLines.push_back(TextLine(static_cast<TextLine::size_type>(mMaxSize.x)));
 
-    mActualSize.y = _min(static_cast<int16_t>(mLines.size()), mMaxSize.y);
-}
-
-int16_t TextCanvas::_max(const int16_t &v1, const int16_t &v2) const {
-    return v1 > v2 ? v1 : v2;
-}
-
-int16_t TextCanvas::_min(const int16_t &v1, const int16_t &v2) const {
-    return v1 < v2 ? v1 : v2;
+    mActualSize.y = std::min(static_cast<int16_t>(mLines.size()), mMaxSize.y);
 }
 
 std::ostream &operator<<(std::ostream &stream, const TextCanvas &buffer) {

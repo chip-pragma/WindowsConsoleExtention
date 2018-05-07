@@ -4,7 +4,7 @@ namespace cpe {
 
 class ViewInterface {
 public:
-    virtual void run() = 0;
+    virtual void run(bool beforeClear, bool afterClear) = 0;
 };
 
 }

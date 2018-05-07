@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include <cpe/core/terminal.h>
-#include <cpe/ui/TextCanvas.h>
+#include <cpe/ui/print/TextCanvas.h>
 
 #include "controller/MainController.h"
 #include "view/MainView.h"
@@ -17,20 +17,24 @@ void testView() {
     MainView view;
     auto &ctrl = view.initialize();
     ctrl.setHintParam("Проверка ХинтПарама (аля 1С)"_dos);
-    view.run();
+    view.run(true, false);
 
     std::cout << "Введено: "_dos << ctrl.value() << std::endl;
 }
 
 void testCanvas() {
     cpe::TextFormat tf;
-    tf.setTabLength(2);
+    tf.setTabLength(5);
+    tf.setUnfinished("<~>");
 
-    cpe::TextCanvas tc(50, 10);
+    cpe::TextCanvas tc(Point(20,10));
     tc.setPen(cpe::Colors::LT_PURPLE);
     tc.setBrush(cpe::Colors::BLUE);
     tc.setFormat(tf);
-    tc << "j\n\to\n\t\tp\n\n\t\t\t\tA\nfirst\t\n\t\tsecond\t\tthird\t\n\tfourth\t\tfiveth\t\tsixth EPTA";
+    tc << "j\n\to\n\t\tp\n\n\t\t\t\tA\nfirst\t\n\t\t";
+    tc.setPen(cpe::Colors::LT_YELLOW);
+    tc.setBrush(cpe::Colors::GREEN);
+    tc << "second\t\tthird\t\n\tfourth\t\tfiveth\t\tsixth EPTA";
     std::cout << tc
               << " AW:" << tc.getActualSize().x
               << " AH:" << tc.getActualSize().y

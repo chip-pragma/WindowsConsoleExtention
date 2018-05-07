@@ -3,25 +3,34 @@
 #include <map>
 #include <list>
 #include <algorithm>
+#include <iostream>
 
 #include "cpe/macros.h"
+#include "cpe/core/Exception.h"
 #include "ViewInterface.h"
-#include "ControllerInterface.h"
+#include "ControllerAbstract.h"
+#include "WriterAbstract.h"
 #include "cpe/ui/element/ElementInterface.h"
-#include "ViewException.h"
 
 namespace cpe {
 
 template<class TController>
-class ViewAbstract : public ViewInterface {
+class ViewAbstract : public ViewInterface,
+                     public WriterAbstract {
 public:
+    using ControllerType = TController;
+
     ViewAbstract();
 
     ~ViewAbstract();
 
-    TController& initialize();
+    ControllerType &initialize();
 
-    void run() override;
+    void run(bool beforeClear, bool afterClear) final;
+
+    const Point &getElementSize() const;
+
+    void setElementSize(const Point &size);
 
 protected:
     template<class TElement>
@@ -30,43 +39,63 @@ protected:
     virtual void initElements() = 0;
 
 private:
-    TController *_mController = nullptr;
-    std::vector<ElementInterface *> _mElements;
+    ControllerType *mController = nullptr;
+    std::vector<ElementInterface *> mElements;
+    Point mElemSize;
 };
 
+//region [ DEFINITION ]
+
 template<class TController>
-ViewAbstract<TController>::ViewAbstract() {
-    CPE_MACROS_StaticCheckBaseClass(ControllerInterface, TController);
+ViewAbstract<TController>::ViewAbstract() : mElemSize(100, 150) {
+    CPE_MACROS_StaticCheckBaseClass(ControllerAbstract, ControllerType);
 }
 
 template<class TController>
 ViewAbstract<TController>::~ViewAbstract() {
-    for (auto elem : _mElements)
+    for (auto elem : mElements)
         delete elem;
-    _mElements.clear();
-    delete _mController;
+    mElements.clear();
+    delete mController;
 }
 
 template<class TController>
 TController &ViewAbstract<TController>::initialize() {
-    if (!_mController) {
-        _mController = new TController();
+    if (!mController) {
+        mController = new ControllerType();
         initElements();
     }
-    return *_mController;
+    return *mController;
 }
 
 template<class TController>
-void ViewAbstract<TController>::run() {
-    if (!_mController)
-        throw ViewException("Controller has not been created");
+void ViewAbstract<TController>::run(bool beforeClear, bool afterClear) {
+    if (!mController)
+        throw Exception("Controller has not been created");
+    if (beforeClear)
+        term::clear();
 
-    // TODO вывод
-//    TextCanvas buffer;
-    for (auto elem : _mElements) {
-//        elem->run(*_mController, buffer);
-//        buffer.flush();
+    if (afterClear)
+        saveState();
+
+    TextCanvas canvas(mElemSize);
+    for (auto elem : mElements) {
+        elem->run(*mController, canvas, <#initializer#>);
+        canvas.outputTo(std::cout);
     }
+
+    if (afterClear)
+        clearBack();
+}
+
+template<class TController>
+const Point &ViewAbstract<TController>::getElementSize() const {
+    return mElemSize;
+}
+
+template<class TController>
+void ViewAbstract<TController>::setElementSize(const Point &size) {
+    mElemSize = size;
 }
 
 template<class TController>
@@ -75,9 +104,11 @@ TElement &ViewAbstract<TController>::addElement() {
     CPE_MACROS_StaticCheckBaseClass(ElementInterface, TElement);
 
     auto elem = new TElement();
-    _mElements.push_back(elem);
+    mElements.push_back(elem);
     return *elem;
 }
+
+//endregion
 
 }
 

@@ -45,6 +45,7 @@ bool Color::operator!=(const Color &rhs) const {
     return !(rhs == *this);
 }
 
+
 namespace Colors {
 
 const Color BLACK(0, 0, 0);
