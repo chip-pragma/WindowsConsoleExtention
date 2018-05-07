@@ -1,4 +1,4 @@
-#include <ntdef.h>
+#include <cstddef>
 #include <sstream>
 
 #include "cpe/core/Exception.h"
@@ -19,36 +19,22 @@ TextCanvas::~TextCanvas() {
     clear();
 }
 
-Nullable <Color> & TextCanvas::foreground() const {
-    return mFore;
+Point &TextCanvas::cursorPosition() {
+    return mCursorPos;
 }
 
-void TextCanvas::foreground(const Nullable<Color> &fore) {
-    mFore = fore;
-}
-
-Nullable <Color> & TextCanvas::background() const {
-    return mBack;
-}
-
-void TextCanvas::background(const Nullable<Color> &back) {
-    mBack = back;
-}
-
-//region cursor
-
-void TextCanvas::setCursor(const Point &pos) {
-    mCursor = pos;
+void TextCanvas::cursorPosition(const Point &pos) {
+    mCursorPos = pos;
     _layoutCursor();
 }
 
-const Point &TextCanvas::getCursor() {
-    return mCursor;
+TextCharStyle &TextCanvas::cursorStyle() {
+    return mCursorStyle;
 }
 
-//endregion
-
-//region format
+void TextCanvas::cursorStyle(const TextCharStyle &cursorStyle) {
+    mCursorStyle = cursorStyle;
+}
 
 void TextCanvas::setFormat(const TextFormat &wf) {
     mFormat = wf;
@@ -57,8 +43,6 @@ void TextCanvas::setFormat(const TextFormat &wf) {
 const TextFormat &TextCanvas::getFormat() {
     return mFormat;
 }
-
-//endregion
 
 const Point &TextCanvas::getMaxSize() const {
     return mMaxSize;
@@ -75,7 +59,7 @@ TextCanvas &TextCanvas::print(const std::string &str) {
             _newLine();
         } else if (c == '\t') {
             auto tl = getFormat().getTabLength();
-            auto sc = tl - mCursor.x % tl;
+            auto sc = tl - mCursorPos.x % tl;
             for (int16_t i = 0; i < sc; i++)
                 _printSymbol(' ');
         } else {
@@ -114,9 +98,9 @@ void TextCanvas::outputTo(std::ostream &outStream) const {
 
         for (int j = 0; j < mActualSize.x; j++) {
             auto c = line[j];
-            if (c.foreground().get(tmp)) term::foreground(tmp);
+            if (c.style().foreground().get(tmp)) term::foreground(tmp);
             else term::foreground(srcForeCol);
-            if (c.background().get(tmp)) term::background(tmp);
+            if (c.style().background().get(tmp)) term::background(tmp);
             else term::background(srcBackCol);
             outStream << c.getChar();
         }
@@ -134,11 +118,11 @@ void TextCanvas::outputTo(std::ostream &outStream) const {
 void TextCanvas::clear() {
     mLines.clear();
     mActualSize = Point();
-    mCursor = Point();
+    mCursorPos = Point();
 }
 
 void TextCanvas::moveCursor(const Point &vector) {
-    mCursor += vector;
+    mCursorPos += vector;
     _layoutCursor();
 }
 
@@ -154,40 +138,39 @@ void TextCanvas::_printSymbol(char c) {
     if (mEof)
         return;
 
-    auto &sym = mLines[mCursor.y][mCursor.x];
+    auto &sym = mLines[mCursorPos.y][mCursorPos.x];
     sym.setChar(c);
-    sym.foreground(mFore);
-    sym.background(mBack);
+    sym.style(mCursorStyle);
 
-    mActualSize.x = std::min(std::max(mActualSize.x, ++mCursor.x), mMaxSize.x);
+    mActualSize.x = std::min(std::max(mActualSize.x, ++mCursorPos.x), mMaxSize.x);
     _layoutCursor();
 }
 
 void TextCanvas::_newLine() {
-    mCursor.y++;
-    mCursor.x = 0;
+    mCursorPos.y++;
+    mCursorPos.x = 0;
 
     _layoutCursor();
 }
 
 void TextCanvas::_layoutCursor() {
-    mCursor.y += mCursor.x / mMaxSize.x;
-    mCursor.x = mCursor.x % mMaxSize.x;
+    mCursorPos.y += mCursorPos.x / mMaxSize.x;
+    mCursorPos.x = mCursorPos.x % mMaxSize.x;
 
-    if (mCursor.x < 0) {
-        mCursor.y -= 1;
-        mCursor.x += mMaxSize.x;
+    if (mCursorPos.x < 0) {
+        mCursorPos.y -= 1;
+        mCursorPos.x += mMaxSize.x;
     }
 
-    mCursor.y = std::max(static_cast<int16_t>(0), mCursor.y);
+    mCursorPos.y = std::max(static_cast<int16_t>(0), mCursorPos.y);
 
-    mEof = (mCursor.y >= mMaxSize.y);
+    mEof = (mCursorPos.y >= mMaxSize.y);
 
     _addLines();
 }
 
 void TextCanvas::_addLines() {
-    while (mCursor.y >= mLines.size())
+    while (mCursorPos.y >= mLines.size())
         mLines.push_back(TextLine(static_cast<TextLine::size_type>(mMaxSize.x)));
 
     mActualSize.y = std::min(static_cast<int16_t>(mLines.size()), mMaxSize.y);

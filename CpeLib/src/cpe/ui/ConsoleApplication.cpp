@@ -2,8 +2,8 @@
 
 namespace cpe {
 
-ConsoleApplication::ConsoleApplication(std::basic_ostream &out, std::basic_istream &in) : mOut(out),
-                                                                                          mIn(in) {
+ConsoleApplication::ConsoleApplication(std::ostream &out, std::istream &in) : mOut(out),
+                                                                              mIn(in) {
     if (mExist)
         throw Exception("Application context already exists");
     mExist = true;
@@ -13,11 +13,11 @@ ConsoleApplication::~ConsoleApplication() {
     mExist = false;
 }
 
-std::basic_ostream &ConsoleApplication::getOut() {
+std::ostream &ConsoleApplication::getOut() {
     return mOut;
 }
 
-std::basic_istream &ConsoleApplication::getIn() {
+std::istream &ConsoleApplication::getIn() {
     return mIn;
 }
 

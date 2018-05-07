@@ -9,7 +9,7 @@ namespace cpe {
 
 class ConsoleApplication {
 public:
-    ConsoleApplication(std::basic_ostream &out, std::basic_istream &in);
+    ConsoleApplication(std::ostream &out, std::istream &in);
 
     ConsoleApplication(const ConsoleApplication&) = delete;
 
@@ -17,15 +17,15 @@ public:
 
     ~ConsoleApplication();
 
-    std::basic_ostream &getOut();
+    std::ostream &getOut();
 
-    std::basic_istream &getIn();
+    std::istream &getIn();
 
 private:
     static bool mExist = false;
 
-    std::basic_ostream &mOut;
-    std::basic_istream &mIn;
+    std::ostream &mOut;
+    std::istream &mIn;
 };
 
 }

@@ -10,31 +10,22 @@
 #include "cpe/tool/property/ProviderInterface.h"
 #include "cpe/tool/property/Property.h"
 #include "cpe/tool/property/Nullable.h"
+#include "cpe/tool/property/PropertyManagerAbstract.h"
+#include "cpe/ui/style/TextCharStyle.h"
 #include "ReaderInterface.h"
 
 namespace cpe {
 
 template<class TValue>
-class ReaderAbstract : public ReaderInterface {
+class ReaderAbstract : public ReaderInterface,
+                       public PropertyManagerAbstract {
 public:
     using ValueType = TValue;
 
-    template<class TObserver>
-    using ValueReadFunc = bool (TObserver::*)(const ValueType &);
-
-    constexpr static const char *HINT_PARAM_TEMPLATE = "%{getReplacedHint}";
+    Property<ValueType> value;
+    Property<TextCharStyle> readStyle;
 
 protected:
-    using PureValueReadFunc = bool (ObserverInterface::*)(const ValueType &);
-
-    Property<std::string> mHint;
-    Property<Nullable<Color>> mHintFore;
-    Property<Nullable<Color>> mHintBack;
-    Property<Nullable<Color>> mInputFore;
-    Property<Nullable<Color>> mInputBack;
-
-private:
-    PureValueReadFunc mValueReadFunc = nullptr;
 };
 
 }

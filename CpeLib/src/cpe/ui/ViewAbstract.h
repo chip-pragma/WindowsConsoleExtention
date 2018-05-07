@@ -80,7 +80,7 @@ void ViewAbstract<TController>::run(bool beforeClear, bool afterClear) {
 
     TextCanvas canvas(mElemSize);
     for (auto elem : mElements) {
-        elem->run(*mController, canvas, <#initializer#>);
+        elem->run(*mController);
         canvas.outputTo(std::cout);
     }
 

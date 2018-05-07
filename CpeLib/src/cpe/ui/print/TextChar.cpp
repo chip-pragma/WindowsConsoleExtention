@@ -4,30 +4,33 @@ namespace cpe {
 
 TextChar::TextChar(char c) : mChar(c) {}
 
-TextChar::TextChar(char c, const Color &fore, const Color &back) : mChar(c),
-                                                                   mFore(Nullable<Color>(fore)),
-                                                                   mBack(Nullable<Color>(back)) {}
+TextChar::TextChar(char c, const TextCharStyle &style) : mChar(c),
+                                                         mStyle(style) {}
 
 TextChar::TextChar(const TextChar &c) {
     mChar = c.mChar;
-    mFore = c.mFore;
-    mBack = c.mBack;
+    mStyle = c.mStyle;
 }
 
 TextChar::TextChar(TextChar &&c) noexcept {
     mChar = c.mChar;
     c.mChar = ' ';
-    mFore = c.mFore;
-    mBack = c.mBack;
-    c.mFore.set(nullptr);
-    c.mBack.set(nullptr);
+    mStyle = c.mStyle;
+    c.mStyle.foreground(nullptr);
+    c.mStyle.background(nullptr);
 }
 
 TextChar::~TextChar() {
 
 }
 
-//region char
+TextCharStyle &TextChar::style() {
+    return mStyle;
+}
+
+void TextChar::style(const TextCharStyle &style) {
+    mStyle = style;
+}
 
 char TextChar::getChar() const {
     return mChar;
@@ -37,31 +40,20 @@ void TextChar::setChar(char aChar) {
     mChar = aChar;
 }
 
-//endregion
-
 TextChar &TextChar::operator=(const TextChar &c) {
     mChar = c.mChar;
-    mFore = c.mFore;
-    mBack = c.mBack;
+    mStyle = c.mStyle;
     return *this;
 }
 
-Nullable<Color> &TextChar::foreground() const {
-    return mFore;
+
+char TextChar::getAChar() const {
+    return mChar;
 }
 
-void TextChar::foreground(const Nullable<Color> &fore) {
-    mFore = fore;
+void TextChar::setAChar(char aChar) {
+    mChar = aChar;
 }
-
-Nullable<Color> &TextChar::background() const {
-    return mBack;
-}
-
-void TextChar::background(const Nullable<Color> &back) {
-    mBack = back;
-}
-
 
 }
 

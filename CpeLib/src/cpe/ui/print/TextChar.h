@@ -2,6 +2,7 @@
 
 #include "cpe/core/Color.h"
 #include "cpe/tool/property/Nullable.h"
+#include "cpe/ui/style/TextCharStyle.h"
 
 namespace cpe {
 
@@ -11,7 +12,7 @@ public:
 
     explicit TextChar(char c);
 
-    TextChar(char c, const Color &fore, const Color &back);
+    TextChar(char c, const TextCharStyle &style);
 
     TextChar(const TextChar &c);
 
@@ -19,13 +20,13 @@ public:
 
     ~TextChar();
 
-    Nullable<Color> &foreground() const;
+    TextCharStyle &style();
 
-    void foreground(const Nullable<Color> &fore);
+    void style(const TextCharStyle &style);
 
-    Nullable<Color> &background() const;
+    char getAChar() const;
 
-    void background(const Nullable<Color> &back);
+    void setAChar(char aChar);
 
     char getChar() const;
 
@@ -34,8 +35,7 @@ public:
     TextChar &operator=(const TextChar &c);
 
 private:
-    Nullable<Color> mFore;
-    Nullable<Color> mBack;
+    TextCharStyle mStyle;
     char mChar = ' ';
 
 };

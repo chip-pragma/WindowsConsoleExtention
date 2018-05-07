@@ -10,6 +10,7 @@
 #include "cpe/core/Point.h"
 #include "cpe/core/terminal.h"
 #include "cpe/tool/property/Nullable.h"
+#include "cpe/ui/style/TextCharStyle.h"
 #include "TextFormat.h"
 #include "TextChar.h"
 #include "TextLine.h"
@@ -22,29 +23,17 @@ public:
 
     ~TextCanvas();
 
-    Nullable <Color> & foreground() const;
+    Point &cursorPosition();
 
-    void foreground(const Nullable<Color> &fore);
+    void cursorPosition(const Point &pos);
 
-    Nullable <Color> & background() const;
+    TextCharStyle &cursorStyle();
 
-    void background(const Nullable<Color> &back);
-
-    //region cursor
-
-    void setCursor(const Point &pos);
-
-    const Point &getCursor();
-
-    //endregion
-
-    //region format
+    void cursorStyle(const TextCharStyle &cursorStyle);
 
     void setFormat(const TextFormat &wf);
 
     const TextFormat &getFormat();
-
-    //endregion
 
     const Point &getMaxSize() const;
 
@@ -65,9 +54,8 @@ public:
     TextCanvas &operator<<(const TextCanvas &canvas);
 
 private:
-    Nullable<Color> mFore;
-    Nullable<Color> mBack;
-    Point mCursor;
+    TextCharStyle mCursorStyle;
+    Point mCursorPos;
 
     std::vector<TextLine> mLines;
     bool mEof = false;

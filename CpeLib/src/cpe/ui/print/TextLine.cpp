@@ -23,8 +23,8 @@ void TextLine::setAsUnfinished(const std::string &unfinished) {
 
     for (size_t i = begin, j = 0; j < unfLength; i++, j++) {
         at(i).setChar(unfinished[j]);
-        at(i).foreground(sym.foreground());
-        at(i).background(sym.background());
+        at(i).style().foreground(sym.style().foreground());
+        at(i).style().background(sym.style().background());
     }
 }
 

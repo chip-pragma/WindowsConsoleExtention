@@ -10,11 +10,10 @@
 
 namespace cpe {
 
-class LineReader : public ElementInterface,
-                   public ReaderAbstract<std::string>,
+class LineReader : public ReaderAbstract<std::string>,
                    public WriterAbstract {
 public:
-    void run(ControllerAbstract &controller, TextCanvas &out, ReaderManager &readers) override;
+    void runRead(ConsoleApplication &app, ControllerAbstract &ctrl) override;
 };
 
 }

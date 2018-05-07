@@ -7,7 +7,7 @@ namespace cpe {
 
 class ReaderInterface {
 public:
-    virtual void runRead(ConsoleApplication &app, ObserverInterface &observer) = 0;
+    virtual void runRead(ConsoleApplication &app, ControllerAbstract &ctrl) = 0;
 };
 
 }

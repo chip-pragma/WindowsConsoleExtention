@@ -8,6 +8,9 @@
 
 using namespace cpe;
 
+// TODO Реализация комманд при выполнении элементов в представлении
+// TODO Продумать вывод сообщения о не правильном вводе в ридерах (возможно отдельным классом диалогового сообщения)
+
 void testView() {
     std::cout << "[View test]\n" << std::endl;
 
@@ -28,12 +31,12 @@ void testCanvas() {
     tf.setUnfinished("<~>");
 
     cpe::TextCanvas tc(Point(20,10));
-    tc.setPen(cpe::Colors::LT_PURPLE);
-    tc.setBrush(cpe::Colors::BLUE);
+    tc.cursorStyle().foreground().set(cpe::Colors::LT_PURPLE);
+    tc.cursorStyle().background().set(cpe::Colors::BLUE);
     tc.setFormat(tf);
     tc << "j\n\to\n\t\tp\n\n\t\t\t\tA\nfirst\t\n\t\t";
-    tc.setPen(cpe::Colors::LT_YELLOW);
-    tc.setBrush(cpe::Colors::GREEN);
+    tc.cursorStyle().foreground().set(cpe::Colors::LT_YELLOW);
+    tc.cursorStyle().background().set(cpe::Colors::GREEN);
     tc << "second\t\tthird\t\n\tfourth\t\tfiveth\t\tsixth EPTA";
     std::cout << tc
               << " AW:" << tc.getActualSize().x
