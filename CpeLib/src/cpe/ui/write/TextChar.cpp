@@ -16,8 +16,8 @@ TextChar::TextChar(TextChar &&c) noexcept {
     mChar = c.mChar;
     c.mChar = ' ';
     mStyle = c.mStyle;
-    c.mStyle.foreground(nullptr);
-    c.mStyle.background(nullptr);
+    c.mStyle.foreground().set(nullptr);
+    c.mStyle.background().set(nullptr);
 }
 
 TextChar::~TextChar() {

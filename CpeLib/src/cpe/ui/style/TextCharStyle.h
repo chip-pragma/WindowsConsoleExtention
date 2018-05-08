@@ -1,7 +1,7 @@
 #pragma once
 
 #include "cpe/core/Color.h"
-#include "cpe/tool/property/Nullable.h"
+#include "cpe/tool/Nullable.h"
 
 namespace cpe {
 
@@ -9,13 +9,19 @@ class TextCharStyle {
 public:
     TextCharStyle() = default;
 
+    TextCharStyle(const TextCharStyle& style);
+
     TextCharStyle(Nullable<Color> fore, Nullable<Color> back);
 
-    Nullable<Color> &foreground() const;
+    const Nullable<Color> &foreground() const;
+
+    Nullable<Color> &foreground();
 
     void foreground(const Nullable<Color> &fore);
 
-    Nullable<Color> &background() const;
+    const Nullable<Color> &background() const;
+
+    Nullable<Color> &background();
 
     void background(const Nullable<Color> &back);
 

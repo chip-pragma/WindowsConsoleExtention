@@ -1,10 +1,12 @@
 #pragma once
 
+#include "WriteHelper.h"
+
 namespace cpe {
 
 class ViewInterface {
 public:
-    virtual void run(bool beforeClear, bool afterClear) = 0;
+    virtual void show() = 0;
 };
 
 }

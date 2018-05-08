@@ -20,7 +20,7 @@ Point::Point(const PlatformPoint &platformPoint) noexcept {
 #endif
 }
 
-PlatformPoint Point::toPlatform() const noexcept {
+PlatformPoint Point::to_platform() const noexcept {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
     COORD coord{
             .X = x,

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "cpe/core/Color.h"
-#include "cpe/tool/property/Nullable.h"
+#include "cpe/tool/Nullable.h"
 #include "cpe/ui/style/TextCharStyle.h"
 
 namespace cpe {

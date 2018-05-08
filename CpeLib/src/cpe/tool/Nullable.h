@@ -4,28 +4,32 @@
 
 namespace cpe {
 
-template <class TValue>
+template<class TValue>
 class Nullable {
 public:
     using ValueType = TValue;
 
     Nullable() = default;
 
-    Nullable(const Nullable& n);
+    Nullable(const Nullable &n) = delete;
 
-    Nullable(Nullable&& n) noexcept;
+    Nullable(Nullable &&n) = delete;
 
-    explicit Nullable(const ValueType& value);
+    explicit Nullable(const ValueType &value);
 
     ~Nullable();
 
-    void set(const ValueType& value);
+    void set(const ValueType &value);
 
     void set(std::nullptr_t);
 
-    bool get(ValueType& outValue) const;
+    void set(const Nullable<ValueType> &nullable);
+
+    bool get(ValueType &outValue) const;
 
     operator bool() const; // NOLINT
+
+    Nullable<ValueType> &operator=(Nullable<ValueType> &) = delete;
 
     bool operator==(const Nullable<ValueType> &nval) const;
 
@@ -36,19 +40,19 @@ public:
     bool operator!=(std::nullptr_t) const;
 
 private:
-    ValueType* mValue = nullptr;
+    ValueType *mValue = nullptr;
 };
 
-template<class TValue>
-Nullable<TValue>::Nullable(const Nullable &n) {
-    mValue = new TValue(n.mValue);
-}
-
-template<class TValue>
-Nullable<TValue>::Nullable(Nullable &&n) noexcept {
-    mValue = n.mValue;
-    n.mValue = nullptr;
-}
+//template<class TValue>
+//Nullable<TValue>::Nullable(const Nullable &n) {
+//    mValue = new TValue(n.mValue);
+//}
+//
+//template<class TValue>
+//Nullable<TValue>::Nullable(Nullable &&n) noexcept {
+//    mValue = n.mValue;
+//    n.mValue = nullptr;
+//}
 
 template<class TValue>
 Nullable<TValue>::Nullable(const ValueType &value) {
@@ -70,6 +74,14 @@ template<class TValue>
 void Nullable<TValue>::set(std::nullptr_t) {
     delete mValue;
     mValue = nullptr;
+}
+
+template<class TValue>
+void Nullable<TValue>::set(const Nullable<ValueType> &nullable) {
+    delete mValue;
+    mValue = nullptr;
+    if (nullable.mValue)
+        mValue = new ValueType(*nullable.mValue);
 }
 
 template<class TValue>

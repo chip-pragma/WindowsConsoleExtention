@@ -18,10 +18,7 @@ public:
 
     explicit Point(const PlatformPoint &platformPoint) noexcept;
 
-    /**
-     * Преобразует в платформозависимый тип представления координат
-     */
-    PlatformPoint toPlatform() const noexcept;
+    PlatformPoint to_platform() const noexcept;
 
     Point &operator+=(const Point &p1) noexcept;
 

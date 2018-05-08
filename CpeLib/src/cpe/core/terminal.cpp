@@ -58,26 +58,26 @@ bool windowSize(const Point &size) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
     return (bool) SetConsoleScreenBufferSize(
             _winapi::getOutputHandle(),
-            size.toPlatform());
+            size.to_platform());
 #endif
 }
 
-Point windowSize() {
+Point window_size() {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
     auto info = _winapi::getBufferInfo();
     return Point(info.dwSize);
 #endif
 }
 
-bool cursorPosition(const Point &size) {
+bool cursor_position(const Point &size) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
     return (bool) SetConsoleCursorPosition(
             _winapi::getOutputHandle(),
-            size.toPlatform());
+            size.to_platform());
 #endif
 }
 
-Point cursorPosition() {
+Point cursor_position() {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
     auto info = _winapi::getBufferInfo();
     return Point(info.dwCursorPosition);
@@ -87,8 +87,8 @@ Point cursorPosition() {
 bool moveCursor(const Point &vector) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
 
-    return cursorPosition(
-            cursorPosition() + vector);
+    return cursor_position(
+            cursor_position() + vector);
 
 #endif
 }

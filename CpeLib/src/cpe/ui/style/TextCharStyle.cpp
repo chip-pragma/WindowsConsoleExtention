@@ -2,30 +2,43 @@
 
 namespace cpe {
 
-TextCharStyle::TextCharStyle(Nullable<Color> fore, Nullable<Color> back) {
-    mFore = fore;
-    mBack = back;
+TextCharStyle::TextCharStyle(const Nullable<Color> fore, const Nullable<Color> back) {
+    mFore.set(fore);
+    mBack.set(back);
 }
 
-Nullable<Color> &TextCharStyle::foreground() const {
+TextCharStyle::TextCharStyle(const TextCharStyle &style) {
+    mFore.set(style.mFore);
+    mBack.set(style.mBack);
+}
+
+const Nullable<Color> &TextCharStyle::foreground() const {
+    return mFore;
+}
+
+Nullable<Color> &TextCharStyle::foreground() {
     return mFore;
 }
 
 void TextCharStyle::foreground(const Nullable<Color> &fore) {
-    mFore = fore;
+    mFore.set(fore);
 }
 
-Nullable<Color> &TextCharStyle::background() const {
+const Nullable<Color> &TextCharStyle::background() const {
+    return mBack;
+}
+
+Nullable<Color> &TextCharStyle::background() {
     return mBack;
 }
 
 void TextCharStyle::background(const Nullable<Color> &back) {
-    mBack = back;
+    mBack.set(back);
 }
 
 TextCharStyle &TextCharStyle::operator=(const TextCharStyle &style) {
-    mFore = style.mFore;
-    mBack = style.mBack;
+    mFore.set(style.mFore);
+    mBack.set(style.mBack);
     return *this;
 }
 

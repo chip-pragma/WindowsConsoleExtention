@@ -26,11 +26,11 @@ uint32_t outputCp();
 
 bool windowSize(const Point &size);
 
-Point windowSize();
+Point window_size();
 
-bool cursorPosition(const Point &pos);
+bool cursor_position(const Point &pos);
 
-Point cursorPosition();
+Point cursor_position();
 
 bool moveCursor(const Point &vector);
 
