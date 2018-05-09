@@ -4,16 +4,16 @@
 #include <iostream>
 
 #include "cpe/core/terminal.h"
-#include "ReaderAbstract.h"
+#include "ReaderBase.h"
 #include "cpe/ui/element/ElementAbstract.h"
 #include "cpe/ui/WriteHelper.h"
 
 namespace cpe {
 
-class LineReader : public ReaderAbstract<std::string>,
+class LineReader : public ReaderBase<std::string>,
                    public WriteHelper {
 public:
-    void read(ValueType &valueRead) override;
+    bool read(std::string &outValue) override;
 };
 
 }

@@ -1,13 +1,20 @@
-#include "cpe/core/Exception.h"
 #include "WriteHelper.h"
+#include "cpe/ui/style/TextCharStyle.h"
+#include "cpe/core/Point.h"
+#include "cpe/core/Exception.h"
 
 namespace cpe {
 
-void WriteHelper::save_state() {
+std::ostream* WriteHelper::mOutStream;
+bool WriteHelper::mOutputAutoFlush;
+Color WriteHelper::mOutputFore;
+Color WriteHelper::mOutputBack;
+
+void WriteHelper::state_save() {
     mStates.push(term::cursor_position());
 }
 
-Point WriteHelper::back_state() {
+Point WriteHelper::state_clear_back() {
     if (mStates.empty())
         return Point();
 
@@ -25,7 +32,7 @@ Point WriteHelper::back_state() {
     return last;
 }
 
-void WriteHelper::begin_output(std::ostream &outStream) const {
+void WriteHelper::output_begin(std::ostream &outStream) const {
     if (mOutStream)
         throw cpe::Exception("Output has already begined");
     mOutStream = &outStream;
@@ -38,9 +45,8 @@ void WriteHelper::begin_output(std::ostream &outStream) const {
     mOutputBack = term::background();
 }
 
-void WriteHelper::end_output() const {
-    term::foreground(mOutputFore);
-    term::background(mOutputBack);
+void WriteHelper::output_end() const {
+    output_reset_style();
 
     if (mOutputAutoFlush)
         (*mOutStream) << std::unitbuf;
@@ -48,12 +54,17 @@ void WriteHelper::end_output() const {
     mOutStream = nullptr;
 }
 
-void WriteHelper::apply_style(const TextCharStyle &style) const {
+void WriteHelper::output_apply_style(const TextCharStyle &style) const {
     Color tmp;
-    if (style.foreground().get(tmp)) term::foreground(tmp);
+    if (style.get_foreground().get(tmp)) term::foreground(tmp);
     else term::foreground(mOutputFore);
-    if (style.background().get(tmp)) term::background(tmp);
+    if (style.get_background().get(tmp)) term::background(tmp);
     else term::background(mOutputBack);
+}
+
+void WriteHelper::output_reset_style() const {
+    term::foreground(mOutputFore);
+    term::background(mOutputBack);
 }
 
 }

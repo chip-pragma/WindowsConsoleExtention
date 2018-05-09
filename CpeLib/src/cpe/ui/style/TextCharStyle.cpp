@@ -1,5 +1,7 @@
 #include "TextCharStyle.h"
 
+#include <utility>
+
 namespace cpe {
 
 TextCharStyle::TextCharStyle(const Nullable<Color> fore, const Nullable<Color> back) {
@@ -12,27 +14,34 @@ TextCharStyle::TextCharStyle(const TextCharStyle &style) {
     mBack.set(style.mBack);
 }
 
-const Nullable<Color> &TextCharStyle::foreground() const {
+TextCharStyle::TextCharStyle(TextCharStyle &&style) noexcept {
+    mFore.set(style.mFore);
+    mFore.set(style.mBack);
+    style.mFore.set(nullptr);
+    style.mBack.set(nullptr);
+}
+
+const Nullable<Color> &TextCharStyle::get_foreground() const {
     return mFore;
 }
 
-Nullable<Color> &TextCharStyle::foreground() {
+Nullable<Color> &TextCharStyle::mod_foreground() {
     return mFore;
 }
 
-void TextCharStyle::foreground(const Nullable<Color> &fore) {
+void TextCharStyle::set_foreground(const Nullable<Color> &fore) {
     mFore.set(fore);
 }
 
-const Nullable<Color> &TextCharStyle::background() const {
+const Nullable<Color> &TextCharStyle::get_background() const {
     return mBack;
 }
 
-Nullable<Color> &TextCharStyle::background() {
+Nullable<Color> &TextCharStyle::mod_background() {
     return mBack;
 }
 
-void TextCharStyle::background(const Nullable<Color> &back) {
+void TextCharStyle::set_background(const Nullable<Color> &back) {
     mBack.set(back);
 }
 

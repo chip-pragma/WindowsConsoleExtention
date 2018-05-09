@@ -25,7 +25,7 @@ Color::Color(const PlatformColor &platformColor) noexcept : Color() {
 #endif
 }
 
-PlatformColor Color::toPlatform() const noexcept {
+PlatformColor Color::to_platform() const noexcept {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
     PlatformColor pc =
             _winapi::getColorComponentBit(r, _winapi::BitCol::RED)

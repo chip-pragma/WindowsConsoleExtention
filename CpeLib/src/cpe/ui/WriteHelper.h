@@ -4,22 +4,27 @@
 #include <stack>
 
 #include "cpe/core/terminal.h"
-#include "cpe/core/Point.h"
-#include "cpe/ui/style/TextCharStyle.h"
+
 
 namespace cpe {
 
+class TextCharStyle;
+class Point;
+
 class WriteHelper {
 protected:
-    void save_state();
 
-    Point back_state();
+    void state_save();
 
-    void begin_output(std::ostream& outStream) const;
+    Point state_clear_back();
 
-    void end_output() const;
+    void output_begin(std::ostream &outStream) const;
 
-    void apply_style(const TextCharStyle& style) const;
+    void output_end() const;
+
+    void output_apply_style(const TextCharStyle &style) const;
+
+    void output_reset_style() const;
 
 private:
     std::stack<Point> mStates;

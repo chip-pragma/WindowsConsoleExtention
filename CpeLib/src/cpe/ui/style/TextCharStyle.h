@@ -1,5 +1,6 @@
 #pragma once
 
+#include "cpe/ui/style/TextCharStyle.h"
 #include "cpe/core/Color.h"
 #include "cpe/tool/Nullable.h"
 
@@ -11,19 +12,21 @@ public:
 
     TextCharStyle(const TextCharStyle& style);
 
+    TextCharStyle(TextCharStyle&& style) noexcept;
+
     TextCharStyle(Nullable<Color> fore, Nullable<Color> back);
 
-    const Nullable<Color> &foreground() const;
+    const Nullable<Color> &get_foreground() const;
 
-    Nullable<Color> &foreground();
+    Nullable<Color> &mod_foreground();
 
-    void foreground(const Nullable<Color> &fore);
+    void set_foreground(const Nullable <Color> &fore);
 
-    const Nullable<Color> &background() const;
+    const Nullable<Color> &get_background() const;
 
-    Nullable<Color> &background();
+    Nullable<Color> &mod_background();
 
-    void background(const Nullable<Color> &back);
+    void set_background(const Nullable <Color> &back);
 
     TextCharStyle &operator=(const TextCharStyle &style);
 

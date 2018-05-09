@@ -22,7 +22,7 @@ public:
     /**
      * Преобразует в платформозависимый тип представления цвета
      */
-    PlatformColor toPlatform() const noexcept;
+    PlatformColor to_platform() const noexcept;
 
     bool operator==(const Color &rhs) const;
 

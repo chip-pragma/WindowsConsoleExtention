@@ -3,7 +3,9 @@
 namespace cpe {
 
 void ElementAbstract::show() {
-    show(term::window_size());
+    auto ws = term::window_size();
+    ws.x--;
+    show(ws);
 }
 
 void ElementAbstract::show(const Point &maxSize) {

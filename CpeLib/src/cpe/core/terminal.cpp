@@ -30,31 +30,31 @@ std::string title() {
 #endif
 }
 
-bool inputCp(uint32_t codePage) {
+bool input_cp(uint32_t codePage) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
     return (bool) SetConsoleCP(codePage);
 #endif
 }
 
-bool outputCp(uint32_t codePage) {
+bool output_cp(uint32_t codePage) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
     return (bool) SetConsoleOutputCP(codePage);
 #endif
 }
 
-uint32_t inputCp() {
+uint32_t input_cp() {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
     return GetConsoleCP();
 #endif
 }
 
-uint32_t outputCp() {
+uint32_t output_cp() {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
     return GetConsoleOutputCP();
 #endif
 }
 
-bool windowSize(const Point &size) {
+bool window_size(const Point &size) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
     return (bool) SetConsoleScreenBufferSize(
             _winapi::getOutputHandle(),
@@ -84,20 +84,20 @@ Point cursor_position() {
 #endif
 }
 
-bool moveCursor(const Point &vector) {
-#if defined(CPE_PLATFORM_IS_WINDOWS)
+bool move_cursor(const Point &vector) {
 
+#if defined(CPE_PLATFORM_IS_WINDOWS)
     return cursor_position(
             cursor_position() + vector);
-
 #endif
+
 }
 
 bool foreground(const Color &color) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
 
     auto info = _winapi::getBufferInfo();
-    auto attr = (info.wAttributes & ~(WORD) 0b1111) | color.toPlatform();
+    auto attr = (info.wAttributes & ~(WORD) 0b1111) | color.to_platform();
     return (bool) SetConsoleTextAttribute(
             _winapi::getOutputHandle(),
             attr);
@@ -118,7 +118,7 @@ bool background(const Color &color) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
 
     auto info = _winapi::getBufferInfo();
-    auto attr = (info.wAttributes & ~((WORD) 0b1111 << 4)) | (color.toPlatform() << 4);
+    auto attr = (info.wAttributes & ~((WORD) 0b1111 << 4)) | (color.to_platform() << 4);
     return (bool) SetConsoleTextAttribute(
             _winapi::getOutputHandle(),
             attr);
@@ -135,7 +135,7 @@ Color background() {
 #endif
 }
 
-void swapWriterColors() {
+void swap_writer_colors() {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
 
     auto back = background();

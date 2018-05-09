@@ -11,9 +11,9 @@ public:
 
     Nullable() = default;
 
-    Nullable(const Nullable &n) = delete;
+    Nullable(const Nullable &n);
 
-    Nullable(Nullable &&n) = delete;
+    Nullable(Nullable &&n) noexcept;
 
     explicit Nullable(const ValueType &value);
 
@@ -29,30 +29,34 @@ public:
 
     operator bool() const; // NOLINT
 
-    Nullable<ValueType> &operator=(Nullable<ValueType> &) = delete;
-
     bool operator==(const Nullable<ValueType> &nval) const;
 
     bool operator!=(const Nullable<ValueType> &nval) const;
+
+    bool operator==(const ValueType &val) const;
+
+    bool operator!=(const ValueType &val) const;
 
     bool operator==(std::nullptr_t) const;
 
     bool operator!=(std::nullptr_t) const;
 
+    Nullable<ValueType> &operator=(Nullable<ValueType> &) = delete;
+
 private:
     ValueType *mValue = nullptr;
 };
 
-//template<class TValue>
-//Nullable<TValue>::Nullable(const Nullable &n) {
-//    mValue = new TValue(n.mValue);
-//}
-//
-//template<class TValue>
-//Nullable<TValue>::Nullable(Nullable &&n) noexcept {
-//    mValue = n.mValue;
-//    n.mValue = nullptr;
-//}
+template<class TValue>
+Nullable<TValue>::Nullable(const Nullable &n) {
+    mValue = new TValue(n.mValue);
+}
+
+template<class TValue>
+Nullable<TValue>::Nullable(Nullable &&n) noexcept {
+    mValue = n.mValue;
+    n.mValue = nullptr;
+}
 
 template<class TValue>
 Nullable<TValue>::Nullable(const ValueType &value) {
@@ -104,6 +108,17 @@ bool Nullable<TValue>::operator==(const Nullable<ValueType> &nval) const {
 template<class TValue>
 bool Nullable<TValue>::operator!=(const Nullable<ValueType> &nval) const {
     return !(nval == *this);
+}
+
+template<class TValue>
+bool Nullable<TValue>::operator==(const ValueType &val) const {
+    return (mValue != nullptr) &&
+           (*mValue == val);
+}
+
+template<class TValue>
+bool Nullable<TValue>::operator!=(const ValueType &val) const {
+    return !(val == *this);
 }
 
 template<class TValue>

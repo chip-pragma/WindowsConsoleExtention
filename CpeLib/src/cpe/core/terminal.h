@@ -16,15 +16,15 @@ void title(const std::string &title);
 
 std::string title();
 
-bool inputCp(uint32_t codePage);
+bool input_cp(uint32_t codePage);
 
-bool outputCp(uint32_t codePage);
+bool output_cp(uint32_t codePage);
 
-uint32_t inputCp();
+uint32_t input_cp();
 
-uint32_t outputCp();
+uint32_t output_cp();
 
-bool windowSize(const Point &size);
+bool window_size(const Point &size);
 
 Point window_size();
 
@@ -32,7 +32,7 @@ bool cursor_position(const Point &pos);
 
 Point cursor_position();
 
-bool moveCursor(const Point &vector);
+bool move_cursor(const Point &vector);
 
 bool foreground(const Color &color);
 
@@ -42,6 +42,6 @@ bool background(const Color &color);
 
 Color background();
 
-void swapWriterColors();
+void swap_writer_colors();
 
 }

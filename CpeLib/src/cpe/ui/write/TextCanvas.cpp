@@ -81,7 +81,7 @@ TextCanvas &TextCanvas::draw(const TextCanvas &canvas) {
 }
 
 void TextCanvas::output_to(std::ostream &outStream) const {
-    begin_output(outStream);
+    output_begin(outStream);
     for (int i = 0; i < mActualSize.y; i++) {
         auto line = mLines[i];
         if (mActualSize.y < mLines.size() &&
@@ -89,12 +89,12 @@ void TextCanvas::output_to(std::ostream &outStream) const {
             line.setAsUnfinished(mFormat.getUnfinished());
         for (int j = 0; j < mActualSize.x; j++) {
             auto c = line[j];
-            apply_style(c.style());
+            output_apply_style(c.style());
             outStream << c.getChar();
         }
         outStream << std::endl;
     }
-    end_output();
+    output_end();
 }
 
 void TextCanvas::clear() {
