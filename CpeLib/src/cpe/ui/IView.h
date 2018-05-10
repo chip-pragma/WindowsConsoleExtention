@@ -1,10 +1,10 @@
 #pragma once
 
-#include "WriteHelper.h"
+#include "cpe/ui/write/WriteHelper.h"
 
 namespace cpe {
 
-class ViewInterface {
+class IView {
 public:
     virtual void show() = 0;
 };

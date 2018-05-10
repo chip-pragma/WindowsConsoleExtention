@@ -2,19 +2,19 @@
 
 namespace cpe {
 
-TextLine::TextLine(size_type length) : std::vector<TextChar>(length) {
+TextLine::TextLine(size_type length) : std::vector<StyledChar>(length) {
 
 }
 
-TextLine::TextLine(const TextLine &line) : std::vector<TextChar>(line) {
+TextLine::TextLine(const TextLine &line) : std::vector<StyledChar>(line) {
     mLast = line.mLast;
 }
 
-TextLine::size_type TextLine::getLast() const {
+TextLine::size_type TextLine::get_last() const {
     return mLast;
 }
 
-void TextLine::setAsUnfinished(const std::string &unfinished) {
+void TextLine::set_as_unfinished(const std::string &unfinished) {
     auto length = this->size();
     auto unfLength = std::min(unfinished.length(), length);
     auto unfBegin = length - unfLength;
@@ -22,13 +22,13 @@ void TextLine::setAsUnfinished(const std::string &unfinished) {
     auto sym = this->at(begin);
 
     for (size_t i = begin, j = 0; j < unfLength; i++, j++) {
-        at(i).setChar(unfinished[j]);
-        at(i).style().set_foreground(sym.style().mod_foreground());
-        at(i).style().set_background(sym.style().mod_background());
+        at(i).character(unfinished[j]);
+        at(i).style().foreground(sym.style().foreground());
+        at(i).style().background(sym.style().background());
     }
 }
 
-TextChar &TextLine::operator[](size_type index) {
+StyledChar &TextLine::operator[](size_type index) {
     mLast = std::max(mLast, index);
     return this->at(index);
 }

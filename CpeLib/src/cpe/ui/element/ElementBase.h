@@ -8,7 +8,7 @@
 
 namespace cpe {
 
-class ElementAbstract {
+class ElementBase {
 public:
     virtual void draw(TextCanvas& canvas) = 0;
 

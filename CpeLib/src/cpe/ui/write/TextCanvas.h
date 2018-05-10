@@ -11,9 +11,9 @@
 #include "cpe/core/terminal.h"
 #include "cpe/tool/Nullable.h"
 #include "cpe/ui/style/TextCharStyle.h"
-#include "cpe/ui/WriteHelper.h"
+#include "WriteHelper.h"
 #include "TextFormat.h"
-#include "TextChar.h"
+#include "StyledChar.h"
 #include "TextLine.h"
 
 namespace cpe {
@@ -24,25 +24,31 @@ public:
 
     ~TextCanvas();
 
+    const Point &cursor_position() const;
+
     Point &cursor_position();
 
     void cursor_position(const Point &pos);
+
+    const TextCharStyle &cursor_style() const;
 
     TextCharStyle &cursor_style();
 
     void cursor_style(const TextCharStyle &cursorStyle);
 
-    void format(const TextFormat &wf);
+    const TextFormat &format() const;
 
-    const TextFormat &format();
+    TextFormat &format();
+
+    void format(const TextFormat &wf);
 
     const Point &max_size() const;
 
     const Point &actual_size() const;
 
-    TextCanvas &draw(const std::string &str);
+    void draw(const std::string &str);
 
-    TextCanvas &draw(const TextCanvas &canvas);
+    void draw(const TextCanvas& canvas);
 
     void output_to(std::ostream &outStream) const;
 

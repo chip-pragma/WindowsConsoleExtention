@@ -16,17 +16,17 @@ public:
 
     TextCharStyle(Nullable<Color> fore, Nullable<Color> back);
 
-    const Nullable<Color> &get_foreground() const;
+    const Nullable<Color> &foreground() const;
 
-    Nullable<Color> &mod_foreground();
+    Nullable<Color> &foreground();
 
-    void set_foreground(const Nullable <Color> &fore);
+    void foreground(const Nullable <Color> &fore);
 
-    const Nullable<Color> &get_background() const;
+    const Nullable<Color> &background() const;
 
-    Nullable<Color> &mod_background();
+    Nullable<Color> &background();
 
-    void set_background(const Nullable <Color> &back);
+    void background(const Nullable <Color> &back);
 
     TextCharStyle &operator=(const TextCharStyle &style);
 

@@ -56,9 +56,9 @@ void WriteHelper::output_end() const {
 
 void WriteHelper::output_apply_style(const TextCharStyle &style) const {
     Color tmp;
-    if (style.get_foreground().get(tmp)) term::foreground(tmp);
+    if (style.foreground().get(tmp)) term::foreground(tmp);
     else term::foreground(mOutputFore);
-    if (style.get_background().get(tmp)) term::background(tmp);
+    if (style.background().get(tmp)) term::background(tmp);
     else term::background(mOutputBack);
 }
 

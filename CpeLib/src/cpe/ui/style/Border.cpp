@@ -1,9 +1,8 @@
 #include "Border.h"
-#include "DualBorder.h"
 
-namespace cpe::ui::style {
+namespace cpe {
 
-Border::Border() = default {
+Border::Border() {
     apply(DualBorder::NONE);
 }
 
@@ -14,117 +13,124 @@ Border::Border(const DualBorder &dualBorder) {
 void Border::apply(const DualBorder &db) {
     // Коды рамок:
     /*
-    ╔ \xC9	╦ \xCB	╗ \xBB
-    ╠ \xCC	╬ \xCE	╣ \xB9	║ \xBA
-    ╚ \xC8	╩ \xCA	╝ \xBC
-    ═ \xCD
+      DOS   UTF-8
+    ╔ \xC9  \u2554  ╦ \xCB  \u2566	╗ \xBB  \u2557
+    ╠ \xCC  \u2560  ╬ \xCE  \u256C	╣ \xB9  \u2563	║ \xBA  \u2551
+    ╚ \xC8	\u255A  ╩ \xCA  \u2569	╝ \xBC  \u255D
+    ═ \xCD  \u2550
 
-    ┌ \xDA	┬ \xC2	┐ \xBF
-    ├ \xC3	┼ \xC5	┤ \xB4	│ - \xB3
-    └ \xC0	┴ \xC1	┘ \xD9
-    ─ \xC4
+    ┌ \xDA  \u250C	┬ \xC2  \u252C	┐ \xBF  \u2510
+    ├ \xC3  \u251C	┼ \xC5  \u253C	┤ \xB4  \u2524	│ \xB3  \u2502
+    └ \xC0  \u2514	┴ \xC1  \u2534	┘ \xD9  \u2518
+    ─ \xC4  \u2500
 
-    ╓ \xD6	╥ \xD2	╖ \xB7
-    ╟ \xC7	╫ \xD7	╢ \xB6
-    ╙ \xD3	╨ \xD0	╜ \xBD
+    ╓ \xD6  \u2553	╥ \xD2  \u2562	╖ \xB7  \u2556
+    ╟ \xC7  \u255F	╫ \xD7  \u256B	╢ \xB6  \u2562
+    ╙ \xD3  \u2559	╨ \xD0  \u2568	╜ \xBD  \u255C
 
-    ╒ \xD5	╤ \xD1	╕ \xB8
-    ╞ \xC6	╪ \xD8	╡ \xB5
-    ╘ \xD4	╧ \xCF	╛ \xBE
+    ╒ \xD5  \u2552	╤ \xD1  \u2564	╕ \xB8  \u2555
+    ╞ \xC6  \u255E	╪ \xD8  \u256A	╡ \xB5  \u2561
+    ╘ \xD4  \u2558	╧ \xCF  \u2567	╛ \xBE  \u255B
     */
 
     using Db = DualBorder;
 
-    mSides.clear();
+    // TODO неправильные символы псевдографики
 
-    mSides[L] = "\xB3";
-    mSides[R] = "\xB3";
-    mSides[T] = "\xC4";
-    mSides[B] = "\xC4";
+    mLastApplied = db;
 
-    mSides[LT] = "\xDA";
-    mSides[RT] = "\xBF";
-    mSides[LB] = "\xC0";
-    mSides[RB] = "\xD9";
+    mSides[L] = "\u2502";
+    mSides[R] = "\u2502";
+    mSides[T] = "\u2500";
+    mSides[B] = "\u2500";
 
-    mSides[V] = "\xB3";
-    mSides[H] = "\xC4";
+    mSides[LT] = "\u250C";
+    mSides[RT] = "\u2510";
+    mSides[LB] = "\u2514";
+    mSides[RB] = "\u2518";
 
-    mSides[VL] = "\xC3";
-    mSides[VR] = "\xB4";
-    mSides[HT] = "\xC2";
-    mSides[HB] = "\xC1";
+    mSides[V] = "\u2502";
+    mSides[H] = "\u2500";
 
-    mSides[C] = "\xC5";
+    mSides[VL] = "\u251C";
+    mSides[VR] = "\u2524";
+    mSides[HT] = "\u252C";
+    mSides[HB] = "\u2534";
+
+    mSides[C] = "\u253C";
 
     // Прямые (боковые)
-    if (db & Db::LEFT) {
-        mSides[L] = "\xBA";
-        mSides[LT] = "\xD6";
-        mSides[LB] = "\xD3";
-        mSides[VL] = "\xC7";
+    if ((db & Db::LEFT) == 0) {
+        mSides[L] = "\u2551";
+        mSides[LT] = "\u2553";
+        mSides[LB] = "\u2559";
+        mSides[VL] = "\u255F";
     }
-    if (db & Db::RIGHT) {
-        mSides[R] = "\xBA";
-        mSides[RT] = "\xB7";
-        mSides[RB] = "\xBD";
-        mSides[VR] = "\xB6";
+    if ((db & Db::RIGHT) == 0) {
+        mSides[R] = "\u2551";
+        mSides[RT] = "\u2556";
+        mSides[RB] = "\u255C";
+        mSides[VR] = "\u2562";
     }
-    if (db & Db::TOP) {
-        mSides[T] = "\xCD";
-        mSides[LT] = "\xD5";
-        mSides[RT] = "\xB8";
-        mSides[HT] = "\xD1";
+    if ((db & Db::TOP) == 0) {
+        mSides[T] = "\u2550";
+        mSides[LT] = "\u2552";
+        mSides[RT] = "\u2555";
+        mSides[HT] = "\u2564";
     }
-    if (db & Db::BOTTOM) {
-        mSides[B] = "\xCD";
-        mSides[LB] = "\xD4";
-        mSides[RB] = "\xBE";
-        mSides[HB] = "\xCF";
+    if ((db & Db::BOTTOM) == 0) {
+        mSides[B] = "\u2550";
+        mSides[LB] = "\u2558";
+        mSides[RB] = "\u255B";
+        mSides[HB] = "\u2567";
     }
 
     // Углы
-    if ((db & (Db::LEFT | Db::TOP)) == (Db)5)
-        mSides[LT] = "\xC9";
-    if ((db & (Db::RIGHT | Db::TOP)) == (Db)5)
-        mSides[RT] = "\xBB";
-    if ((db & (Db::LEFT | Db::BOTTOM)) == (Db)5)
-        mSides[LB] = "\xC8";
-    if ((db & (Db::RIGHT | Db::BOTTOM)) == (Db)5)
-        mSides[RB] = "\xBC";
+    if ((db & (Db::LEFT | Db::TOP)) == 5)
+        mSides[LT] = "\u2554";
+    if ((db & (Db::RIGHT | Db::TOP)) == 5)
+        mSides[RT] = "\u2557";
+    if ((db & (Db::LEFT | Db::BOTTOM)) == 5)
+        mSides[LB] = "\u255A";
+    if ((db & (Db::RIGHT | Db::BOTTOM)) == 5)
+        mSides[RB] = "\u255D";
 
     // Прямые (внутренние)
-    if (db & Db::IN_V) {
-        mSides[V] = "\xBA";
-        mSides[HT] = "\xD2";
-        mSides[HB] = "\xD0";
-        mSides[C] = "\xD7";
+    if ((db & Db::IN_V) == 0) {
+        mSides[V] = "\u2551";
+        mSides[HT] = "\u2562";
+        mSides[HB] = "\u2568";
+        mSides[C] = "\u256B";
     }
-    if (db & Db::IN_H) {
-        mSides[H] = "\xCD";
-        mSides[VL] = "\xC6";
-        mSides[VR] = "\xB5";
-        mSides[C] = "\xD8";
+    if ((db & Db::IN_H) == 0) {
+        mSides[H] = "\u2550";
+        mSides[VL] = "\u255E";
+        mSides[VR] = "\u2561";
+        mSides[C] = "\u256A";
     }
 
     // Тройник
-    if ((db & (Db::IN_V | Db::LEFT)) == (Db)17)
-        mSides[VL] = "\xCC";
-    if ((db & (Db::IN_V | Db::RIGHT)) == (Db)18)
-        mSides[VR] = "\xB9";
-    if ((db & (Db::IN_H | Db::TOP)) == (Db)36)
-        mSides[HT] = "\xCB";
-    if ((db & (Db::IN_H | Db::BOTTOM)) == (Db)40)
-        mSides[HB] = "\xCA";
+    if ((db & (Db::IN_V | Db::LEFT)) == 17)
+        mSides[VL] = "\u2560";
+    if ((db & (Db::IN_V | Db::RIGHT)) == 18)
+        mSides[VR] = "\u2563";
+    if ((db & (Db::IN_H | Db::TOP)) == 36)
+        mSides[HT] = "\u2566";
+    if ((db & (Db::IN_H | Db::BOTTOM)) == 40)
+        mSides[HB] = "\u2569";
 
     // Перекрестье
-    if ((db & (Db::IN_H | Db::IN_V)) == (Db)48)
-        mSides[C] = "\xCA";
+    if ((db & (Db::IN_H | Db::IN_V)) == 48)
+        mSides[C] = "\u256C";
 
 }
 
-const std::string &Border::operator[](const Side &&side) const {
-    return mSides[side];
+const DualBorder &Border::last_applied() const {
+    return mLastApplied;
+}
+
+const std::string &Border::operator[](const Side &side) const {
+    return mSides.at(side);
 }
 
 }

@@ -15,36 +15,36 @@ public:
 
     Nullable(Nullable &&n) noexcept;
 
-    explicit Nullable(const ValueType &value);
+    explicit Nullable(const TValue &value);
 
     ~Nullable();
 
-    void set(const ValueType &value);
+    void set(const TValue &value);
 
     void set(std::nullptr_t);
 
-    void set(const Nullable<ValueType> &nullable);
+    void set(const Nullable<TValue> &nullable);
 
-    bool get(ValueType &outValue) const;
+    bool get(TValue &outValue) const;
 
     operator bool() const; // NOLINT
 
-    bool operator==(const Nullable<ValueType> &nval) const;
+    bool operator==(const Nullable<TValue> &nval) const;
 
-    bool operator!=(const Nullable<ValueType> &nval) const;
+    bool operator!=(const Nullable<TValue> &nval) const;
 
-    bool operator==(const ValueType &val) const;
+    bool operator==(const TValue &val) const;
 
-    bool operator!=(const ValueType &val) const;
+    bool operator!=(const TValue &val) const;
 
     bool operator==(std::nullptr_t) const;
 
     bool operator!=(std::nullptr_t) const;
 
-    Nullable<ValueType> &operator=(Nullable<ValueType> &) = delete;
+    Nullable<TValue> &operator=(Nullable<TValue> &) = delete;
 
 private:
-    ValueType *mValue = nullptr;
+    TValue *mValue = nullptr;
 };
 
 template<class TValue>
@@ -59,7 +59,7 @@ Nullable<TValue>::Nullable(Nullable &&n) noexcept {
 }
 
 template<class TValue>
-Nullable<TValue>::Nullable(const ValueType &value) {
+Nullable<TValue>::Nullable(const TValue &value) {
     mValue = new TValue(value);
 }
 
@@ -69,7 +69,7 @@ Nullable<TValue>::~Nullable() {
 }
 
 template<class TValue>
-void Nullable<TValue>::set(const ValueType &value) {
+void Nullable<TValue>::set(const TValue &value) {
     delete mValue;
     mValue = new TValue(value);
 }
@@ -81,15 +81,15 @@ void Nullable<TValue>::set(std::nullptr_t) {
 }
 
 template<class TValue>
-void Nullable<TValue>::set(const Nullable<ValueType> &nullable) {
+void Nullable<TValue>::set(const Nullable<TValue> &nullable) {
     delete mValue;
     mValue = nullptr;
     if (nullable.mValue)
-        mValue = new ValueType(*nullable.mValue);
+        mValue = new TValue(*nullable.mValue);
 }
 
 template<class TValue>
-bool Nullable<TValue>::get(ValueType &outValue) const {
+bool Nullable<TValue>::get(TValue &outValue) const {
     if (mValue)
         outValue = *mValue;
     return static_cast<bool>(mValue);
@@ -101,23 +101,23 @@ Nullable<TValue>::operator bool() const {
 }
 
 template<class TValue>
-bool Nullable<TValue>::operator==(const Nullable<ValueType> &nval) const {
+bool Nullable<TValue>::operator==(const Nullable<TValue> &nval) const {
     return (mValue && nval.mValue && *mValue == *nval.mValue);
 }
 
 template<class TValue>
-bool Nullable<TValue>::operator!=(const Nullable<ValueType> &nval) const {
+bool Nullable<TValue>::operator!=(const Nullable<TValue> &nval) const {
     return !(nval == *this);
 }
 
 template<class TValue>
-bool Nullable<TValue>::operator==(const ValueType &val) const {
+bool Nullable<TValue>::operator==(const TValue &val) const {
     return (mValue != nullptr) &&
            (*mValue == val);
 }
 
 template<class TValue>
-bool Nullable<TValue>::operator!=(const ValueType &val) const {
+bool Nullable<TValue>::operator!=(const TValue &val) const {
     return !(val == *this);
 }
 

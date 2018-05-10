@@ -11,38 +11,38 @@
 #include "cpe/tool/text.h"
 #include "cpe/tool/Nullable.h"
 #include "cpe/ui/style/TextCharStyle.h"
-#include "cpe/ui/WriteHelper.h"
+#include "cpe/ui/write/WriteHelper.h"
 #include "IValidator.h"
-#include "ConverterBase.h"
+#include "IConverter.h"
 
 namespace cpe {
 
 template<class TValue>
 class Reader : public WriteHelper {
 public:
-    explicit Reader(const ConverterBase<TValue> &converter);
-
     using ValueType = TValue;
+
+    explicit Reader(const IConverter<TValue> & converter);
 
     void read(TValue &outValue);
 
-    const Nullable<std::string> &get_required() const;
+    const Nullable<std::string> &requirement() const;
 
-    Nullable<std::string> &mod_required();
+    Nullable<std::string> &requirement();
 
-    void set_required(const Nullable<std::string> &text);
+    void requirement(const Nullable<std::string> &text);
 
-    const TextCharStyle &get_read_style() const;
+    const TextCharStyle &read_style() const;
 
-    TextCharStyle &mod_read_style();
+    TextCharStyle &read_style();
 
-    void set_read_style(const TextCharStyle &readStyle);
+    void read_style(const TextCharStyle &readStyle);
 
-    const TextCharStyle &get_error_style() const;
+    const TextCharStyle &error_style() const;
 
-    TextCharStyle &mod_error_style();
+    TextCharStyle &error_style();
 
-    void set_error_style(const TextCharStyle &errorStyle);
+    void error_style(const TextCharStyle &errorStyle);
 
     template<class TValidator>
     void add_validator(const TValidator &validator);
@@ -51,7 +51,7 @@ public:
     void remove_validator(const TValidator &validator);
 
 private:
-    const ConverterBase<TValue> *mConverter;
+    const IConverter<TValue> *mConverter;
     Nullable<std::string> mRequiredText;
     TextCharStyle mReadStyle;
     TextCharStyle mErrorStyle;
@@ -61,22 +61,22 @@ private:
 //region [ definition ]
 
 template<class TValue>
-Reader<TValue>::Reader(const ConverterBase<TValue> &converter) {
+Reader<TValue>::Reader(const IConverter<TValue> &converter) {
     mConverter = &converter;
 }
 
 template<class TValue>
-const Nullable<std::string> &Reader<TValue>::get_required() const {
+const Nullable<std::string> &Reader<TValue>::requirement() const {
     return mRequiredText;
 }
 
 template<class TValue>
-Nullable<std::string> &Reader<TValue>::mod_required() {
+Nullable<std::string> &Reader<TValue>::requirement() {
     return mRequiredText;
 }
 
 template<class TValue>
-void Reader<TValue>::set_required(const Nullable<std::string> &text) {
+void Reader<TValue>::requirement(const Nullable<std::string> &text) {
     mRequiredText = text;
 }
 
@@ -95,22 +95,25 @@ void Reader<TValue>::read(TValue &outValue) {
         std::getline(std::cin, lineValue);
 
         ReaderErrorVector errors;
+        std::string error;
 
         if (lineValue.empty()) {
-            std::string error;
             if (mRequiredText.get(error))
                 errors.push_back(error);
         } else {
-            if (!mConverter->operator()(lineValue, convertedValue))
-                errors.push_back(mConverter->get_error_text());
-            else
-                for (const IValidator<TValue> *validator : mValidators)
-                    validator->operator()(convertedValue, errors);
+            if (!mConverter->convert(lineValue, convertedValue, error))
+                errors.push_back(error);
+            else {
+                for (const IValidator<TValue> * validator : mValidators)
+                    validator->validate(convertedValue, errors);
+            }
         }
 
         if (!errors.empty()) {
             output_apply_style(mErrorStyle);
-            errors.output();
+            for (const auto &err : errors)
+                std::cout << err << "\n";
+            std::cout.flush();
             output_reset_style();
             term::pause();
         } else {
@@ -127,39 +130,39 @@ void Reader<TValue>::read(TValue &outValue) {
 }
 
 template<class TValue>
-const TextCharStyle &Reader<TValue>::get_read_style() const {
+const TextCharStyle &Reader<TValue>::read_style() const {
     return mReadStyle;
 }
 
 template<class TValue>
-TextCharStyle &Reader<TValue>::mod_read_style() {
+TextCharStyle &Reader<TValue>::read_style() {
     return mReadStyle;
 }
 
 template<class TValue>
-void Reader<TValue>::set_read_style(const TextCharStyle &readStyle) {
+void Reader<TValue>::read_style(const TextCharStyle &readStyle) {
     mReadStyle = readStyle;
 }
 
 template<class TValue>
-const TextCharStyle &Reader<TValue>::get_error_style() const {
+const TextCharStyle &Reader<TValue>::error_style() const {
     return mErrorStyle;
 }
 
 template<class TValue>
-TextCharStyle &Reader<TValue>::mod_error_style() {
+TextCharStyle &Reader<TValue>::error_style() {
     return mErrorStyle;
 }
 
 template<class TValue>
-void Reader<TValue>::set_error_style(const TextCharStyle &errorStyle) {
+void Reader<TValue>::error_style(const TextCharStyle &errorStyle) {
     mErrorStyle = errorStyle;
 }
 
 template<class TValue>
 template<class TValidator>
 void Reader<TValue>::add_validator(const TValidator &validator) {
-    mValidators.push_back(static_cast<const IValidator<TValue> *>(&validator));
+    mValidators.push_back(&validator);
 }
 
 template<class TValue>

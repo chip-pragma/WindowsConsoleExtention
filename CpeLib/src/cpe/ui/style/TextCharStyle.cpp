@@ -21,27 +21,27 @@ TextCharStyle::TextCharStyle(TextCharStyle &&style) noexcept {
     style.mBack.set(nullptr);
 }
 
-const Nullable<Color> &TextCharStyle::get_foreground() const {
+const Nullable<Color> &TextCharStyle::foreground() const {
     return mFore;
 }
 
-Nullable<Color> &TextCharStyle::mod_foreground() {
+Nullable<Color> &TextCharStyle::foreground() {
     return mFore;
 }
 
-void TextCharStyle::set_foreground(const Nullable<Color> &fore) {
+void TextCharStyle::foreground(const Nullable<Color> &fore) {
     mFore.set(fore);
 }
 
-const Nullable<Color> &TextCharStyle::get_background() const {
+const Nullable<Color> &TextCharStyle::background() const {
     return mBack;
 }
 
-Nullable<Color> &TextCharStyle::mod_background() {
+Nullable<Color> &TextCharStyle::background() {
     return mBack;
 }
 
-void TextCharStyle::set_background(const Nullable<Color> &back) {
+void TextCharStyle::background(const Nullable<Color> &back) {
     mBack.set(back);
 }
 

@@ -3,14 +3,14 @@
 #include <vector>
 #include <string>
 
-#include "ReaderErrorVector.h"
-
 namespace cpe {
+
+using ReaderErrorVector = std::vector<std::string>;
 
 template <class TValue>
 class IValidator {
 public:
-    virtual void operator()(const TValue &value, ReaderErrorVector &outErrors) const = 0;
+    virtual void validate(const TValue &value, ReaderErrorVector &outErrors) const = 0;
 };
 
 }

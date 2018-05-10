@@ -3,30 +3,32 @@
 #include <cpe/core/terminal.h>
 #include <cpe/ui/write/TextCanvas.h>
 #include <cpe/ui/element/reader/IValidator.h>
-#include <cpe/ui/element/reader/ConverterBase.h>
+#include <cpe/ui/element/reader/IConverter.h>
 #include <cpe/ui/element/reader/Reader.h>
+#include <cpe/ui/element/MessageBox.h>
 
 #include "common.h"
 
 using namespace cpe;
 
-class LineConverter : public ConverterBase<std::string> {
+class Int32Converter : public IConverter<int32_t> {
 public:
-    explicit LineConverter() : ConverterBase("") {}
-
-    bool operator()(const std::string &lineValue, std::string &outValue) const override {
-        outValue = lineValue;
+    bool convert(const std::string &lineValue, int32_t &outValue, std::string &errorText) const override {
+        try {
+            outValue = std::stoi(lineValue);
+        } catch (std::logic_error &except) {
+            errorText = "Введите целое число"_dos;
+            return false;
+        }
         return true;
     }
 };
 
-class LengthValidator : public IValidator<std::string> {
+class Int32Validator : public IValidator<int32_t> {
 public:
-    void operator()(const std::string &value, ReaderErrorVector &outErrors) const override {
-        if (value.length() > 5)
-            outErrors.push_back("Длина текста больше 5 символов!"_dos);
-        if (value.find("Ъ"_dos) != std::string::npos)
-            outErrors.push_back("Строка содержит странный символ 'Ъ'!"_dos);
+    void validate(const int32_t &value, ReaderErrorVector &outErrors) const override {
+        if ((value < 0 || value > 9) && value != 13)
+            outErrors.push_back("Число должно быть в диапазоне [0; 9] или равным 13"_dos);
     }
 };
 
@@ -37,18 +39,35 @@ int main() {
 
     term::pause();
 
-    LineConverter lc;
-    Reader<std::string> reader(lc);
-    reader.mod_read_style().mod_foreground().set(Colors::LT_GREEN);
-    reader.mod_read_style().mod_background().set(Colors::BLUE);
-    reader.mod_error_style().mod_foreground().set(Colors::BLACK);
-    reader.mod_error_style().mod_background().set(Colors::WHITE);
-    LengthValidator valid;
-    reader.add_validator(valid);
 
-    std::string value = "Старуха"_dos;
-    reader.read(value);
-    std::cout << "Введено: "_dos << value << std::endl;
+
+    MessageBox mb;
+    mb.border_style(DualBorder::NONE);
+    mb.show();
+    mb.border_style(DualBorder::LEFT);
+    mb.show();
+    mb.border_style(DualBorder::RIGHT);
+    mb.show();
+    mb.border_style(DualBorder::TOP);
+    mb.show();
+    mb.border_style(DualBorder::BOTTOM);
+    mb.show();
+
+    mb.border_style(DualBorder::OUT_ALL);
+    mb.show();
+    mb.border_style(DualBorder::IN_ALL);
+    mb.show();
+
+    mb.border_style(DualBorder::IN_V);
+    mb.show();
+    mb.border_style(DualBorder::IN_H);
+    mb.show();
+
+    mb.border_style(DualBorder::OUT_V);
+    mb.show();
+    mb.border_style(DualBorder::OUT_H);
+    mb.show();
+
 
     term::pause();
 

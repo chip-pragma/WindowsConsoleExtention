@@ -5,21 +5,21 @@
 #include <algorithm>
 #include <vector>
 
-#include "TextChar.h"
+#include "StyledChar.h"
 
 namespace cpe {
 
 // TODO избавиться от изменения значений (убрать наследование от vector и добавить динамический массив)
 
-class TextLine : public std::vector<TextChar>{
+class TextLine : public std::vector<StyledChar>{
 public:
     explicit TextLine(size_type length);
 
     TextLine(const TextLine &line);
 
-    size_type getLast() const;
+    size_type get_last() const;
 
-    void setAsUnfinished(const std::string &unfinished);
+    void set_as_unfinished(const std::string &unfinished);
 
     value_type &operator[](size_type index);
 
