@@ -32,6 +32,13 @@ public:
     }
 };
 
+#undef MessageBox
+
+inline void show_message(MessageBox& mb, const DualBorder& db) {
+    mb.border_style(db);
+    mb.show();
+}
+
 int main() {
     term::title("Текст консоли"_dos);
     term::foreground(Colors::WHITE);
@@ -39,34 +46,34 @@ int main() {
 
     term::pause();
 
-
-
     MessageBox mb;
-    mb.border_style(DualBorder::NONE);
-    mb.show();
-    mb.border_style(DualBorder::LEFT);
-    mb.show();
-    mb.border_style(DualBorder::RIGHT);
-    mb.show();
-    mb.border_style(DualBorder::TOP);
-    mb.show();
-    mb.border_style(DualBorder::BOTTOM);
-    mb.show();
+    std::cout << "NONE:\n";
+    show_message(mb, DualBorder::NONE);
+    std::cout << "LEFT:\n";
+    show_message(mb, DualBorder::LEFT);
+    std::cout << "RIGHT:\n";
+    show_message(mb, DualBorder::RIGHT);
+    std::cout << "TOP:\n";
+    show_message(mb, DualBorder::TOP);
+    std::cout << "BOTTOM:\n";
+    show_message(mb, DualBorder::BOTTOM);
+    std::cout << "OUT_ALL:\n";
+    show_message(mb, DualBorder::OUT_ALL);
+    std::cout << "IN_ALL:\n";
+    show_message(mb, DualBorder::IN_ALL);
+    std::cout << "IN_V:\n";
+    show_message(mb, DualBorder::IN_V);
+    std::cout << "IN_H:\n";
+    show_message(mb, DualBorder::IN_H);
+    std::cout << "OUT_V:\n";
+    show_message(mb, DualBorder::OUT_V);
+    std::cout << "OUT_H:\n";
+    show_message(mb, DualBorder::OUT_H);
 
-    mb.border_style(DualBorder::OUT_ALL);
-    mb.show();
-    mb.border_style(DualBorder::IN_ALL);
-    mb.show();
-
-    mb.border_style(DualBorder::IN_V);
-    mb.show();
-    mb.border_style(DualBorder::IN_H);
-    mb.show();
-
-    mb.border_style(DualBorder::OUT_V);
-    mb.show();
-    mb.border_style(DualBorder::OUT_H);
-    mb.show();
+    std::cout << "LEFT | TOP | IN_V:\n";
+    show_message(mb, DualBorder::RIGHT | DualBorder::TOP | DualBorder::IN_V);
+    std::cout << "LEFT | TOP | IN_H:\n";
+    show_message(mb, DualBorder::LEFT | DualBorder::BOTTOM | DualBorder::IN_H);
 
 
     term::pause();

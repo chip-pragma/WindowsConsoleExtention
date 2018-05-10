@@ -48,7 +48,7 @@ public:
 
     void draw(const std::string &str);
 
-    void draw(const TextCanvas& canvas);
+    void draw(const TextCanvas &canvas);
 
     void output_to(std::ostream &outStream) const;
 

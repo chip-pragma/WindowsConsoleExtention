@@ -24,7 +24,7 @@ void Border::apply(const DualBorder &db) {
     └ \xC0  \u2514	┴ \xC1  \u2534	┘ \xD9  \u2518
     ─ \xC4  \u2500
 
-    ╓ \xD6  \u2553	╥ \xD2  \u2562	╖ \xB7  \u2556
+    ╓ \xD6  \u2553	╥ \xD2  \u2565	╖ \xB7  \u2556
     ╟ \xC7  \u255F	╫ \xD7  \u256B	╢ \xB6  \u2562
     ╙ \xD3  \u2559	╨ \xD0  \u2568	╜ \xBD  \u255C
 
@@ -60,25 +60,25 @@ void Border::apply(const DualBorder &db) {
     mSides[C] = "\u253C";
 
     // Прямые (боковые)
-    if ((db & Db::LEFT) == 0) {
+    if ((db & Db::LEFT) != 0) {
         mSides[L] = "\u2551";
         mSides[LT] = "\u2553";
         mSides[LB] = "\u2559";
         mSides[VL] = "\u255F";
     }
-    if ((db & Db::RIGHT) == 0) {
+    if ((db & Db::RIGHT) != 0) {
         mSides[R] = "\u2551";
         mSides[RT] = "\u2556";
         mSides[RB] = "\u255C";
         mSides[VR] = "\u2562";
     }
-    if ((db & Db::TOP) == 0) {
+    if ((db & Db::TOP) != 0) {
         mSides[T] = "\u2550";
         mSides[LT] = "\u2552";
         mSides[RT] = "\u2555";
         mSides[HT] = "\u2564";
     }
-    if ((db & Db::BOTTOM) == 0) {
+    if ((db & Db::BOTTOM) != 0) {
         mSides[B] = "\u2550";
         mSides[LB] = "\u2558";
         mSides[RB] = "\u255B";
@@ -88,21 +88,21 @@ void Border::apply(const DualBorder &db) {
     // Углы
     if ((db & (Db::LEFT | Db::TOP)) == 5)
         mSides[LT] = "\u2554";
-    if ((db & (Db::RIGHT | Db::TOP)) == 5)
+    if ((db & (Db::RIGHT | Db::TOP)) == 6)
         mSides[RT] = "\u2557";
-    if ((db & (Db::LEFT | Db::BOTTOM)) == 5)
+    if ((db & (Db::LEFT | Db::BOTTOM)) == 9)
         mSides[LB] = "\u255A";
-    if ((db & (Db::RIGHT | Db::BOTTOM)) == 5)
+    if ((db & (Db::RIGHT | Db::BOTTOM)) == 10)
         mSides[RB] = "\u255D";
 
     // Прямые (внутренние)
-    if ((db & Db::IN_V) == 0) {
+    if ((db & Db::IN_V) != 0) {
         mSides[V] = "\u2551";
-        mSides[HT] = "\u2562";
+        mSides[HT] = "\u2565";
         mSides[HB] = "\u2568";
         mSides[C] = "\u256B";
     }
-    if ((db & Db::IN_H) == 0) {
+    if ((db & Db::IN_H) != 0) {
         mSides[H] = "\u2550";
         mSides[VL] = "\u255E";
         mSides[VR] = "\u2561";
@@ -110,14 +110,14 @@ void Border::apply(const DualBorder &db) {
     }
 
     // Тройник
-    if ((db & (Db::IN_V | Db::LEFT)) == 17)
-        mSides[VL] = "\u2560";
-    if ((db & (Db::IN_V | Db::RIGHT)) == 18)
-        mSides[VR] = "\u2563";
-    if ((db & (Db::IN_H | Db::TOP)) == 36)
+    if ((db & (Db::IN_V | Db::TOP)) == 20)
         mSides[HT] = "\u2566";
-    if ((db & (Db::IN_H | Db::BOTTOM)) == 40)
+    if ((db & (Db::IN_V | Db::BOTTOM)) == 24)
         mSides[HB] = "\u2569";
+    if ((db & (Db::IN_H | Db::LEFT)) == 33)
+        mSides[VL] = "\u2560";
+    if ((db & (Db::IN_H | Db::RIGHT)) == 34)
+        mSides[VR] = "\u2563";
 
     // Перекрестье
     if ((db & (Db::IN_H | Db::IN_V)) == 48)

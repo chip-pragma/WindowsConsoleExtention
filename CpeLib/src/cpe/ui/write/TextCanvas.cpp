@@ -80,7 +80,7 @@ void TextCanvas::draw(const std::string &str) {
     }
 }
 
-void TextCanvas::draw(const TextCanvas& canvas) {
+void TextCanvas::draw(const TextCanvas &canvas) {
     // Исключение рекурсии
     if (&canvas == this)
         return;

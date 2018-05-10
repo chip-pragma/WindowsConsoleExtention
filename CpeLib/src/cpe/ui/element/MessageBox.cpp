@@ -44,11 +44,11 @@ void MessageBox::draw(TextCanvas &canvas) {
 
     std::string s;
     
-    s += mBorder[Br::LT] + mBorder[Br::H] + mBorder[Br::HT] + mBorder[Br::H] + mBorder[Br::RT] + "\n";
-    s += mBorder[Br::V] + " " + mBorder[Br::V] + " " + mBorder[Br::V] + "\n";
+    s += mBorder[Br::LT] + mBorder[Br::T] + mBorder[Br::HT] + mBorder[Br::T] + mBorder[Br::RT] + "\n";
+    s += mBorder[Br::L] + " " + mBorder[Br::V] + " " + mBorder[Br::R] + "\n";
     s += mBorder[Br::VL] + mBorder[Br::H] + mBorder[Br::C] + mBorder[Br::H] + mBorder[Br::VR] + "\n";
-    s += mBorder[Br::V] + " " + mBorder[Br::V] + " " + mBorder[Br::V] + "\n";
-    s += mBorder[Br::LB] + mBorder[Br::H] + mBorder[Br::HB] + mBorder[Br::H] + mBorder[Br::RB] + "\n";
+    s += mBorder[Br::L] + " " + mBorder[Br::V] + " " + mBorder[Br::R] + "\n";
+    s += mBorder[Br::LB] + mBorder[Br::B] + mBorder[Br::HB] + mBorder[Br::B] + mBorder[Br::RB] + "\n";
 
     // TODO преобразование из UTF-8 в DOS оптимизировать
 
