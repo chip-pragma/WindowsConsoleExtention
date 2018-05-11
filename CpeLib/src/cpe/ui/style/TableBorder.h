@@ -1,28 +1,14 @@
+#pragma once
 
+namespace cpe {
 
-#ifndef PROJECT_TABLEBORDER_H
-#define PROJECT_TABLEBORDER_H
-
-namespace cpe::ui::style {
-
-/**
- * Стиль отображения рамок таблицы
- */
 enum class TableBorder : char {
-    /** Нет рамок */
-            NONE = 0,
-    /** Вертикальные */
-            VERTICAL = 1,
-    /** Горизонтальные */
-            HORIZONTAL = 2,
-    /** Внешние */
-            OUTER = 4,
-    /** Внутренние */
-            INNER = 3,
-    /** Все рамки */
-            ALL = 7
+    NONE = 0,
+    VERTICAL = 1,
+    HORIZONTAL = 2,
+    OUTER = 4,
+    INNER = 3,
+    ALL = 7
 };
 
 }
-
-#endif //PROJECT_TABLEBORDER_H

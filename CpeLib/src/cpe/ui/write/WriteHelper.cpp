@@ -1,6 +1,6 @@
 #include "WriteHelper.h"
 #include "cpe/ui/style/TextCharStyle.h"
-#include "cpe/core/Point.h"
+#include "cpe/core/draw/Point.h"
 #include "cpe/core/Exception.h"
 
 namespace cpe {
@@ -19,10 +19,10 @@ Point WriteHelper::state_clear_back() {
         return Point();
 
     auto &last = mStates.top();
-    auto width = term::window_size().x;
+    auto width = term::buffer_size().width();
     auto curPos = term::cursor_position();
-    auto yDiff = curPos.y - last.y;
-    int count = (width - last.x) + width * (yDiff - 1) + curPos.x;
+    auto yDiff = curPos.coord_y() - last.coord_y();
+    int count = (width - last.coord_x()) + width * (yDiff - 1) + curPos.coord_x();
 
     term::cursor_position(last);
     std::cout << std::string(static_cast<unsigned int>(count), ' ');

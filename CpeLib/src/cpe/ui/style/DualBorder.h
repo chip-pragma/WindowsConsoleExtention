@@ -23,9 +23,9 @@ enum class DualBorder : uint8_t {
 };
 
 
-bool operator==(const DualBorder &db, int32_t i);
+bool operator==(const DualBorder &db, uint8_t i);
 
-bool operator!=(const DualBorder &db, int32_t i);
+bool operator!=(const DualBorder &db, uint8_t i);
 
 DualBorder operator&(const DualBorder &db1, const DualBorder &db2);
 

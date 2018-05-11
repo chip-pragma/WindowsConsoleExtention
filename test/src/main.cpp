@@ -2,10 +2,6 @@
 #include <utility>
 #include <cpe/core/terminal.h>
 #include <cpe/ui/write/TextCanvas.h>
-#include <cpe/ui/element/reader/IValidator.h>
-#include <cpe/ui/element/reader/IConverter.h>
-#include <cpe/ui/element/reader/Reader.h>
-#include <cpe/ui/element/MessageBox.h>
 #include <cassert>
 
 #include "common.h"
@@ -26,7 +22,7 @@ int main() {
 //    mb.border_style(DualBorder::OUT_V);
 //    mb.show(Point(30,5));
 
-    TextCanvas tc(Point(7, 3));
+    TextCanvas tc(Size(7, 3));
     assert(tc.cursor_position() == Point());
 
     tc.cursor_position(Point(7, 1));

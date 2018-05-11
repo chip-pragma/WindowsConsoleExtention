@@ -1,37 +1,38 @@
 #pragma once
 
-#include "cpe/platform.h"
+#include <cstdint>
 
 namespace cpe {
 
-/**
- * Цвета, доступные в консоли
- */
 class Color {
 public:
-    uint8_t r = 0;
-    uint8_t g = 0;
-    uint8_t b = 0;
-
     Color() = default;
 
     Color(uint8_t r, uint8_t g, uint8_t b) noexcept;
 
-    explicit Color(const PlatformColor &platformColor) noexcept;
+    uint8_t red() const;
 
-    /**
-     * Преобразует в платформозависимый тип представления цвета
-     */
-    PlatformColor to_platform() const noexcept;
+    void red(uint8_t r);
+
+    uint8_t green() const;
+
+    void green(uint8_t g);
+
+    uint8_t blue() const;
+
+    void blue(uint8_t b);
 
     bool operator==(const Color &rhs) const;
 
     bool operator!=(const Color &rhs) const;
+
+protected:
+    uint8_t mRed = 0;
+    uint8_t mGreen = 0;
+    uint8_t mBlue = 0;
+
 };
 
-/**
- * Предопределенные цвета
- */
 namespace Colors {
 
 extern const Color BLACK;

@@ -1,10 +1,13 @@
 #pragma once
 
+#include "cpe/platform.h"
+
 #include <string>
 #include <cstdlib>
 
-#include "Point.h"
-#include "Color.h"
+#include "cpe/core/draw/Point.h"
+#include "cpe/core/draw/Size.h"
+#include "cpe/core/draw/Color.h"
 
 namespace cpe::term {
 
@@ -24,9 +27,9 @@ uint32_t input_cp();
 
 uint32_t output_cp();
 
-bool window_size(const Point &size);
+bool buffer_size(const Size &size);
 
-Point window_size();
+Size buffer_size();
 
 bool cursor_position(const Point &pos);
 
@@ -41,7 +44,5 @@ Color foreground();
 bool background(const Color &color);
 
 Color background();
-
-void swap_writer_colors();
 
 }

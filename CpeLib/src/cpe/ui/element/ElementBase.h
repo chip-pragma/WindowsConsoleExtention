@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include "cpe/core/terminal.h"
-#include "cpe/core/Point.h"
+#include "cpe/core/draw/Point.h"
 #include "cpe/ui/write/TextCanvas.h"
 
 namespace cpe {

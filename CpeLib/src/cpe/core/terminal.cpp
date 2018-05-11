@@ -54,33 +54,33 @@ uint32_t output_cp() {
 #endif
 }
 
-bool window_size(const Point &size) {
+bool buffer_size(const Size &size) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
-    return (bool) SetConsoleScreenBufferSize(
-            _winapi::getOutputHandle(),
-            size.to_platform());
+    return static_cast<bool>(SetConsoleScreenBufferSize(
+                _winapi::output_handle(),
+                _winapi::from_point(size.to_point())));
 #endif
 }
 
-Point window_size() {
+Size buffer_size() {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
-    auto info = _winapi::getBufferInfo();
-    return Point(info.dwSize);
+    auto info = _winapi::buffer_info();
+    return _winapi::to_point(info.dwSize).to_size();
 #endif
 }
 
-bool cursor_position(const Point &size) {
+bool cursor_position(const Point &point) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
     return (bool) SetConsoleCursorPosition(
-            _winapi::getOutputHandle(),
-            size.to_platform());
+            _winapi::output_handle(),
+            _winapi::from_point(point));
 #endif
 }
 
 Point cursor_position() {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
-    auto info = _winapi::getBufferInfo();
-    return Point(info.dwCursorPosition);
+    auto info = _winapi::buffer_info();
+    return _winapi::to_point(info.dwCursorPosition);
 #endif
 }
 
@@ -96,10 +96,10 @@ bool move_cursor(const Point &vector) {
 bool foreground(const Color &color) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
 
-    auto info = _winapi::getBufferInfo();
-    auto attr = (info.wAttributes & ~(WORD) 0b1111) | color.to_platform();
+    auto info = _winapi::buffer_info();
+    auto attr = (info.wAttributes & ~uint16_t(0b1111)) | _winapi::from_color(color);
     return (bool) SetConsoleTextAttribute(
-            _winapi::getOutputHandle(),
+            _winapi::output_handle(),
             attr);
 
 #endif
@@ -108,8 +108,8 @@ bool foreground(const Color &color) {
 Color foreground() {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
 
-    auto info = _winapi::getBufferInfo();
-    return Color(info.wAttributes);
+    auto info = _winapi::buffer_info();
+    return _winapi::to_color(info.wAttributes);
 
 #endif
 }
@@ -117,10 +117,10 @@ Color foreground() {
 bool background(const Color &color) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
 
-    auto info = _winapi::getBufferInfo();
-    auto attr = (info.wAttributes & ~((WORD) 0b1111 << 4)) | (color.to_platform() << 4);
+    auto info = _winapi::buffer_info();
+    auto attr = (info.wAttributes & (~uint16_t(0b1111) << 4)) | (_winapi::from_color(color) << 4);
     return (bool) SetConsoleTextAttribute(
-            _winapi::getOutputHandle(),
+            _winapi::output_handle(),
             attr);
 
 #endif
@@ -129,19 +129,8 @@ bool background(const Color &color) {
 Color background() {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
 
-    auto info = _winapi::getBufferInfo();
-    return Color(info.wAttributes >> 4);
-
-#endif
-}
-
-void swap_writer_colors() {
-#if defined(CPE_PLATFORM_IS_WINDOWS)
-
-    auto back = background();
-    auto fore = foreground();
-    background(fore);
-    foreground(back);
+    auto info = _winapi::buffer_info();
+    return _winapi::to_color(info.wAttributes >> 4);
 
 #endif
 }
