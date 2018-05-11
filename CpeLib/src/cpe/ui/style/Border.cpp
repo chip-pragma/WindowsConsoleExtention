@@ -1,12 +1,13 @@
+#include <cpe/tool/Nullable.h>
 #include "Border.h"
 
 namespace cpe {
 
-Border::Border() {
+Border::Border() : mEncFrom(Encoder::UTF8) {
     apply(DualBorder::NONE);
 }
 
-Border::Border(const DualBorder &dualBorder) {
+Border::Border(const DualBorder &dualBorder) : mEncFrom(Encoder::UTF8) {
     apply(dualBorder);
 }
 
@@ -129,8 +130,23 @@ const DualBorder &Border::last_applied() const {
     return mLastApplied;
 }
 
-const std::string &Border::operator[](const Side &side) const {
-    return mSides.at(side);
+std::string Border::operator[](const Side &side) const {
+    auto sym = mSides.at(side);
+    if (mEncTo)
+        return mEncTo.get().to(mEncFrom.from(sym));
+    return sym;
+}
+
+const cpe::Nullable<Encoder> &Border::final_encoding() const {
+    return mEncTo;
+}
+
+Nullable<Encoder> &Border::final_encoding() {
+    return mEncTo;
+}
+
+void Border::final_encoding(const cpe::Nullable<Encoder> &encTo) {
+    mEncTo.set(encTo);
 }
 
 }

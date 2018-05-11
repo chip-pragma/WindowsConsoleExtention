@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "cpe/platform.h"
 
 namespace cpe {
@@ -12,25 +14,31 @@ public:
     int16_t x;
     int16_t y;
 
-    Point() noexcept;
+    Point();
 
-    Point(int16_t x, int16_t y) noexcept;
+    Point(int16_t x, int16_t y);
 
-    explicit Point(const PlatformPoint &platformPoint) noexcept;
+    explicit Point(const PlatformPoint &platformPoint);
 
-    PlatformPoint to_platform() const noexcept;
+    PlatformPoint to_platform() const;
 
-    Point &operator+=(const Point &p1) noexcept;
+    std::string to_string() const;
 
-    Point operator+(const Point &p1) noexcept;
+    Point &operator+=(const Point &p1);
 
-    Point &operator-=(const Point &p1) noexcept;
+    Point operator+(const Point &p1) const;
 
-    Point operator-(const Point &p1) noexcept;
+    Point &operator-=(const Point &p1);
 
-    Point &operator*=(int16_t k) noexcept;
+    Point operator-(const Point &p1) const;
 
-    Point operator*(int16_t k) noexcept;
+    Point &operator*=(int16_t k);
+
+    Point operator*(int16_t k) const;
+
+    Point &operator/=(int16_t k);
+
+    Point operator/(int16_t k) const;
 
     bool operator==(const Point &rhs) const;
 

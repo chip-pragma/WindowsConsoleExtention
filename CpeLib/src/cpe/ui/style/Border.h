@@ -3,6 +3,7 @@
 #include <string>
 #include <map>
 #include "DualBorder.h"
+#include "cpe/tool/Encoder.h"
 
 namespace cpe {
 
@@ -24,11 +25,19 @@ public:
 
     const DualBorder& last_applied() const;
 
-    const std::string &operator[](const Side &side) const;
+    std::string operator[](const Side &side) const;
+
+    const Nullable<Encoder> &final_encoding() const;
+
+    Nullable<Encoder> &final_encoding();
+
+    void final_encoding(const Nullable<Encoder> &encTo);
 
 private:
     std::map<Side, std::string> mSides;
     DualBorder mLastApplied;
+    Encoder mEncFrom;
+    Nullable<Encoder> mEncTo;
 };
 
 }

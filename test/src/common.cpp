@@ -2,8 +2,8 @@
 
 namespace {
 
-cpe::Encoder<cpe::Encoding::UTF8> encUtf8;
-cpe::Encoder<cpe::Encoding::CP866> encCp866;
+cpe::Encoder encUtf8(cpe::Encoder::UTF8);
+cpe::Encoder encCp866(cpe::Encoder::CP866);
 
 }
 

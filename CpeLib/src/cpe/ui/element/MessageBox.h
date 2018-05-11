@@ -12,6 +12,8 @@ namespace cpe {
 
 class MessageBox : public ElementBase {
 public:
+    MessageBox();
+
     const DualBorder& border_style() const;
 
     void border_style(const DualBorder& db);

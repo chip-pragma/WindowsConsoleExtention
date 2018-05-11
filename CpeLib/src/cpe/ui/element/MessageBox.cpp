@@ -3,6 +3,12 @@
 
 namespace cpe {
 
+MessageBox::MessageBox() {
+    mBorder.final_encoding().set(
+            Encoder(static_cast<Encoder::Encoding>(
+                            term::output_cp())));
+}
+
 const DualBorder &MessageBox::border_style() const {
     return mBorder.last_applied();
 }
@@ -40,22 +46,39 @@ void MessageBox::icon(const Nullable<StyledChar> &icon) {
 }
 
 void MessageBox::draw(TextCanvas &canvas) {
-    using Br = Border;
+    using brd = Border;
 
-    std::string s;
-    
-    s += mBorder[Br::LT] + mBorder[Br::T] + mBorder[Br::HT] + mBorder[Br::T] + mBorder[Br::RT] + "\n";
-    s += mBorder[Br::L] + " " + mBorder[Br::V] + " " + mBorder[Br::R] + "\n";
-    s += mBorder[Br::VL] + mBorder[Br::H] + mBorder[Br::C] + mBorder[Br::H] + mBorder[Br::VR] + "\n";
-    s += mBorder[Br::L] + " " + mBorder[Br::V] + " " + mBorder[Br::R] + "\n";
-    s += mBorder[Br::LB] + mBorder[Br::B] + mBorder[Br::HB] + mBorder[Br::B] + mBorder[Br::RB] + "\n";
+    Point innerSize = canvas.max_size() - Point(2, 2);
+    Point margin(2, 0);
+    Point textBlockSize = innerSize - margin;
+    if (textBlockSize.x < 1 || textBlockSize.y < 1) {
+        canvas.draw("[NO PLACE]");
+        return;
+    }
 
-    // TODO преобразование из UTF-8 в DOS оптимизировать
+    TextCanvas text(textBlockSize);
+    text.draw(mText);
+    Point actualSize = text.actual_size() + margin;
 
-    Encoder<Encoding::UTF8> encUtf8;
-    Encoder<Encoding::CP866> encCp866;
+    canvas.draw(mBorder[brd::LT]);
+    canvas.draw(std::string(actualSize.x, mBorder[brd::T][0]));
+    canvas.draw(mBorder[brd::RT]);
+    // TODO предотвратить автоматическтий переход на новую строку (добавить типа политики перехода и т.п.)
+    canvas.draw_line();
 
-    canvas << encCp866.to(encUtf8.from(s));
+    for (int i = 0; i < text.actual_size().y; i++) {
+        canvas.draw(mBorder[brd::L]);
+        canvas.move_cursor(Point(actualSize.x, 0));
+        canvas.draw(mBorder[brd::R]);
+        canvas.draw_line();
+    }
+
+    canvas.draw(mBorder[brd::LB]);
+    canvas.draw(std::string(actualSize.x, mBorder[brd::B][0]));
+    canvas.draw(mBorder[brd::RB]);
+
+    canvas.cursor_position(margin / 2 + Point(1, 1));
+    canvas.draw(text, true);
 }
 
 }

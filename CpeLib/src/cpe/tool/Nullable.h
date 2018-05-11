@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstddef>
+#include "NullableException.h"
 
 namespace cpe {
 
@@ -26,6 +27,10 @@ public:
     void set(const Nullable<TValue> &nullable);
 
     bool get(TValue &outValue) const;
+
+    const TValue& get() const;
+
+    TValue& get();
 
     operator bool() const; // NOLINT
 
@@ -93,6 +98,20 @@ bool Nullable<TValue>::get(TValue &outValue) const {
     if (mValue)
         outValue = *mValue;
     return static_cast<bool>(mValue);
+}
+
+template<class TValue>
+const TValue &Nullable<TValue>::get() const {
+    if (!mValue)
+        throw NullableException("Nullable-object's value is undefined (nullptr)");
+    return *mValue;
+}
+
+template<class TValue>
+TValue &Nullable<TValue>::get() {
+    if (!mValue)
+        throw NullableException("Nullable-object's value is undefined (nullptr)");
+    return *mValue;
 }
 
 template<class TValue>

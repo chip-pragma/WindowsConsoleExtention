@@ -10,6 +10,9 @@ namespace cpe {
 
 class ElementBase {
 public:
+    static int16_t MAX_WIDTH;
+    static int16_t MAX_HEIGHT;
+
     virtual void draw(TextCanvas& canvas) = 0;
 
     virtual void show() final;
