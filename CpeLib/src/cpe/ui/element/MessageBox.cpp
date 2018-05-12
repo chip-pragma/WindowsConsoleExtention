@@ -68,7 +68,7 @@ void MessageBox::draw(TextCanvas &canvas) {
 
     canvas.draw_line();
 
-    for (int i = 0; i < text.used_size().mY; i++) {
+    for (int i = 0; i < text.calc_used_size().mY; i++) {
         canvas.draw(mBorder[brd::L]);
         canvas.move_cursor(Point(actualSize.mX, 0));
         canvas.draw(mBorder[brd::R]);

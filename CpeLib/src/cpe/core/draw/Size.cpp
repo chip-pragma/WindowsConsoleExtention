@@ -61,6 +61,26 @@ Size Size::operator-(const Size &p1) const {
     return Size(mWidth - p1.mWidth, mHeight - p1.mHeight);
 }
 
+Size &Size::operator+=(uint32_t k) {
+    mWidth += k;
+    mHeight += k;
+    return *this;
+}
+
+Size Size::operator+(uint32_t k) const {
+    return Size(mWidth + k, mHeight + k);
+}
+
+Size &Size::operator-=(uint32_t k) {
+    mWidth -= k;
+    mHeight -= k;
+    return *this;
+}
+
+Size Size::operator-(uint32_t k) const {
+    return Size(mWidth - k, mHeight - k);
+}
+
 Size &Size::operator*=(uint32_t k) {
     mWidth *= k;
     mHeight *= k;

@@ -32,6 +32,14 @@ public:
 
     Point operator-(const Point &p1) const;
 
+    Point &operator+=(int32_t k);
+
+    Point operator+(int32_t k) const;
+
+    Point &operator-=(int32_t k);
+
+    Point operator-(int32_t k) const;
+
     Point &operator*=(int32_t k);
 
     Point operator*(int32_t k) const;

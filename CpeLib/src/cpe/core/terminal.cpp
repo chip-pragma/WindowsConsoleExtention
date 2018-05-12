@@ -97,7 +97,7 @@ bool foreground(const Color &color) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
 
     auto info = _winapi::buffer_info();
-    auto attr = (info.wAttributes & ~uint16_t(0b1111)) | _winapi::from_color(color);
+    auto attr = (info.wAttributes & ~(uint16_t(0b1111))) | _winapi::from_color(color);
     return (bool) SetConsoleTextAttribute(
             _winapi::output_handle(),
             attr);
@@ -118,7 +118,7 @@ bool background(const Color &color) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
 
     auto info = _winapi::buffer_info();
-    auto attr = (info.wAttributes & (~uint16_t(0b1111) << 4)) | (_winapi::from_color(color) << 4);
+    auto attr = (info.wAttributes & (~(uint16_t(0b1111) << 4))) | (_winapi::from_color(color) << 4);
     return (bool) SetConsoleTextAttribute(
             _winapi::output_handle(),
             attr);

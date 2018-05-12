@@ -22,16 +22,21 @@ int main() {
 //    mb.border_style(DualBorder::OUT_V);
 //    mb.show(Point(30,5));
 
-    TextCanvas tc(Size(7, 3));
-    assert(tc.cursor_position() == Point());
+    std::string message = "Привет! Это проверка сраного канваса... Ой. Холста. "
+                          "Нужно чтобы он не выходил за гребанные границы."_dos;
+    Size beginSize = Size(15, 5);
 
-    tc.cursor_position(Point(7, 1));
-    std::cout << tc.cursor_position().to_string() << std::endl;
-    assert(tc.cursor_position() == Point(0, 2));
+    for (int i = 0; i <= 10; i++) {
+        auto s = Size(beginSize.width() - i, beginSize.height() + i);
+        TextCanvas tc(s);
+        tc.draw(message);
+        tc.output_to(std::cout << "\n[" << i << ":" << s.height() * s.width() << "]\n");
+    }
 
-    tc.cursor_position(Point(-7, -1));
-    std::cout << tc.cursor_position().to_string() << std::endl;
-    assert(tc.cursor_position() == Point(0, 2));
+//    TextCanvas tc(Size(10, 10));
+//    tc.cursor_style().foreground().set(Colors::LT_RED);
+//    tc.draw(message);
+//    tc.output_to(std::cout);
 
     term::pause();
 

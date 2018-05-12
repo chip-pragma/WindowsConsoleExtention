@@ -48,6 +48,8 @@ public:
 
     void cursor_position(const Point &pos);
 
+    void move_cursor(const Point &vector);
+
     const TextCharStyle &cursor_style() const;
 
     TextCharStyle &cursor_style();
@@ -62,48 +64,45 @@ public:
 
     const Size & size() const;
 
-    const Size & used_size() const;
+    Size calc_used_size() const;
 
-    bool have_parent() const;
+    bool have_owner() const;
 
-    const TextCanvas& get_parent() const;
+    const TextCanvas& owner() const;
 
-    TextCanvas& get_parent();
+    TextCanvas& owner();
 
-    TextCanvas extract(const Point& begin, const Point& size);
+    TextCanvas extract(const Point &begin, const Size &size);
 
     void draw(const std::string &str);
 
     void draw(const TextCanvas &canvas, bool useActualSize);
 
-    void draw(char character, const CursorMoving& moving = CursorMoving::STANDART);
+    void draw(char character, uint32_t count, const CursorMoving &moving);
 
     void output_to(std::ostream &outStream) const;
 
     void clear();
 
-    void move_cursor(const Point &vector);
-
 private:
     Point mCursorPos;
+    bool mOut = false;
     TextCharStyle mCursorStyle;
-    TextCharStyle** mMatrix;
-    TextCanvas* mParent = nullptr;
+    StyledChar** mMatrix;
+    TextCanvas* mOwner = nullptr;
     TextFormat mFormat;
     Size mSize;
-    Size mUsedSize;
+    Point mMaxCurPos;
 
     explicit TextCanvas(TextCanvas* parent);
 
     inline void _check_size(const Size &size);
 
-    inline void _print_symbol(char c);
+    inline void _print_char(char c);
 
-    inline void _wrap();
+    inline void _new_line();
 
-    inline void _layout_cursor();
-
-    inline void _add_lines();
+    inline bool _check_size_limits() const;
 };
 
 }

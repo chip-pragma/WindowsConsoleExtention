@@ -62,6 +62,26 @@ Point Point::operator-(const Point &p1) const {
     return Point(mX - p1.mX, mY - p1.mY);
 }
 
+Point &Point::operator+=(int32_t k) {
+    mX += k;
+    mY += k;
+    return *this;
+}
+
+Point Point::operator+(int32_t k) const {
+    return Point(mX + k, mY + k);
+}
+
+Point &Point::operator-=(int32_t k) {
+    mX -= k;
+    mY -= k;
+    return *this;
+}
+
+Point Point::operator-(int32_t k) const {
+    return Point(mX - k, mY - k);
+}
+
 Point &Point::operator*=(int32_t k) {
     mX *= k;
     mY *= k;

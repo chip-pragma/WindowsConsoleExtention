@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+#include <string>
 
 namespace cpe {
 
@@ -30,6 +32,14 @@ public:
     Size &operator-=(const Size &p1);
 
     Size operator-(const Size &p1) const;
+
+    Size &operator+=(uint32_t k);
+
+    Size operator+(uint32_t k) const;
+
+    Size &operator-=(uint32_t k);
+
+    Size operator-(uint32_t k) const;
 
     Size &operator*=(uint32_t k);
 
