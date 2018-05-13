@@ -92,7 +92,6 @@ public:
 
 private:
     Point mCursorPos;
-    bool mOut = false;
     TextCharStyle mCursorStyle;
     StyledChar** mMatrix;
     TextCanvas* mOwner = nullptr;

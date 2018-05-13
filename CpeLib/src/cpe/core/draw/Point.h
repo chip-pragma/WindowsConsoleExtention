@@ -12,13 +12,13 @@ public:
 
     Point(int32_t x, int32_t y);
 
-    int32_t coord_x() const;
+    int32_t x_crd() const;
 
-    void coord_x(int32_t x);
+    void x_crd(int32_t x);
 
-    int32_t coord_y() const;
+    int32_t y_crd() const;
 
-    void coord_y(int32_t y);
+    void y_crd(int32_t y);
 
     Size to_size() const;
 

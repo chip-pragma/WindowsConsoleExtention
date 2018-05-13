@@ -33,8 +33,8 @@ inline cpe::Point to_point(const COORD &coord) {
 
 inline COORD from_point(const cpe::Point &point) {
     return COORD{
-            .X = static_cast<SHORT>(point.coord_x()),
-            .Y = static_cast<SHORT>(point.coord_y())
+            .X = static_cast<SHORT>(point.x_crd()),
+            .Y = static_cast<SHORT>(point.y_crd())
     };
 }
 

@@ -15,19 +15,19 @@ Point::Point(int32_t x, int32_t y) {
     this->mY = y;
 }
 
-int32_t Point::coord_x() const {
+int32_t Point::x_crd() const {
     return mX;
 }
 
-void Point::coord_x(int32_t x) {
+void Point::x_crd(int32_t x) {
     mX = x;
 }
 
-int32_t Point::coord_y() const {
+int32_t Point::y_crd() const {
     return mY;
 }
 
-void Point::coord_y(int32_t y) {
+void Point::y_crd(int32_t y) {
     mY = y;
 }
 

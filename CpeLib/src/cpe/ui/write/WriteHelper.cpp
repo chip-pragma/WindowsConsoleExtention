@@ -21,8 +21,8 @@ Point WriteHelper::state_clear_back() {
     auto &last = mStates.top();
     auto width = term::buffer_size().width();
     auto curPos = term::cursor_position();
-    auto yDiff = curPos.coord_y() - last.coord_y();
-    int count = (width - last.coord_x()) + width * (yDiff - 1) + curPos.coord_x();
+    auto yDiff = curPos.y_crd() - last.y_crd();
+    int count = (width - last.x_crd()) + width * (yDiff - 1) + curPos.x_crd();
 
     term::cursor_position(last);
     std::cout << std::string(static_cast<unsigned int>(count), ' ');
