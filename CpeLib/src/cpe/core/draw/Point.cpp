@@ -1,5 +1,4 @@
 #include "Point.h"
-#include "Size.h"
 
 #include <sstream>
 
@@ -31,9 +30,19 @@ void Point::y_crd(int32_t y) {
     mY = y;
 }
 
-Size Point::to_size() const {
-    return Size(static_cast<uint32_t>(mX),
-                static_cast<uint32_t>(mY));
+Point::Dimension Point::dimension() const {
+    int8_t result = DIM_POINT;
+    if (mX != 0) {
+        result |= DIM_X;
+        if (mX < 0)
+            result |= DIM_NEGATIVE_X;
+    }
+    if (mY != 0) {
+        result |= DIM_Y;
+        if (mY < 0)
+            result |= DIM_NEGATIVE_Y;
+    }
+    return static_cast<Dimension>(result);
 }
 
 std::string Point::to_string() const {

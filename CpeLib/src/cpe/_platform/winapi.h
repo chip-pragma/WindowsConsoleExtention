@@ -8,6 +8,7 @@
 
 namespace _winapi {
 
+
 namespace {
 
 enum class BitColor : uint8_t {
@@ -16,7 +17,7 @@ enum class BitColor : uint8_t {
     BLUE = 0
 };
 
-inline SHORT buffer_attribute_color_component(uint8_t component, BitColor comp) noexcept {
+SHORT buffer_attribute_color_component(uint8_t component, BitColor comp) noexcept {
     if (component < 64)
         return 0;
     else if (component <= 192)
@@ -77,5 +78,4 @@ inline CONSOLE_SCREEN_BUFFER_INFO buffer_info() noexcept {
             &info);
     return info;
 }
-
 }

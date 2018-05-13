@@ -1,6 +1,9 @@
 #include "terminal.h"
+#include "Exception.h"
 #include "cpe/tool/text.h"
 #include "cpe/tool/Convert.h"
+
+#include <cstdlib>
 
 namespace cpe::term {
 
@@ -54,18 +57,21 @@ uint32_t output_cp() {
 #endif
 }
 
-bool buffer_size(const Size &size) {
+bool buffer_size(const Point &size) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
+    if (size.dimension() != Point::DIM_SECTOR_I)
+        throw Exception("Invalid size");
+
     return static_cast<bool>(SetConsoleScreenBufferSize(
                 _winapi::output_handle(),
-                _winapi::from_point(size.to_point())));
+                _winapi::from_point(size)));
 #endif
 }
 
-Size buffer_size() {
+Point buffer_size() {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
     auto info = _winapi::buffer_info();
-    return _winapi::to_point(info.dwSize).to_size();
+    return _winapi::to_point(info.dwSize);
 #endif
 }
 

@@ -48,39 +48,34 @@ void MessageBox::icon(const Nullable<StyledChar> &icon) {
 void MessageBox::draw(TextCanvas &canvas) {
     using brd = Border;
 
-    // TODO предотвратить автоматическтий переход на новую строку (добавить типа политики перехода и т.п.)
-
-    /*Point innerSize = canvas.size() - Point(2, 2);
+    Point innerSize = canvas.size() - Point(2, 2);
     Point margin(2, 0);
     Point textBlockSize = innerSize - margin;
-    if (textBlockSize.mX < 1 || textBlockSize.mY < 1) {
+    if (textBlockSize.dimension() != Point::DIM_SECTOR_I) {
         canvas.draw("[NO PLACE]");
         return;
     }
 
     TextCanvas text(textBlockSize);
     text.draw(mText);
-    Point actualSize = text.used_size() + margin;
+    Point textBlockUsedSize = text.calc_used_size() + margin;
 
     canvas.draw(mBorder[brd::LT]);
-    canvas.draw(std::string(actualSize.mX, mBorder[brd::T][0]));
+    canvas.draw(mBorder[brd::T][0], textBlockUsedSize.x_crd(), false);
     canvas.draw(mBorder[brd::RT]);
 
-    canvas.draw_line();
+    canvas.cursor_position(Point(0, 1));
+    canvas.draw(mBorder[brd::L][0], textBlockUsedSize.y_crd(), true);
+    canvas.cursor_position(Point(canvas.size().x_crd() - 1, 1));
+    canvas.draw(mBorder[brd::R][0], textBlockUsedSize.y_crd(), true);
 
-    for (int i = 0; i < text.calc_used_size().mY; i++) {
-        canvas.draw(mBorder[brd::L]);
-        canvas.move_cursor(Point(actualSize.mX, 0));
-        canvas.draw(mBorder[brd::R]);
-        canvas.draw_line();
-    }
-
+    canvas.cursor_position(Point(0, textBlockUsedSize.y_crd() + 1));
     canvas.draw(mBorder[brd::LB]);
-    canvas.draw(std::string(actualSize.mX, mBorder[brd::B][0]));
+    canvas.draw(mBorder[brd::B][0], textBlockUsedSize.x_crd(), false);
     canvas.draw(mBorder[brd::RB]);
 
     canvas.cursor_position(margin / 2 + Point(1, 1));
-    canvas.draw(text, true);*/
+    canvas.draw(text, true);
 }
 
 }

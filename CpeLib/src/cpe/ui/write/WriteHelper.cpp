@@ -19,7 +19,7 @@ Point WriteHelper::state_clear_back() {
         return Point();
 
     auto &last = mStates.top();
-    auto width = term::buffer_size().width();
+    auto width = term::buffer_size().x_crd();
     auto curPos = term::cursor_position();
     auto yDiff = curPos.y_crd() - last.y_crd();
     int count = (width - last.x_crd()) + width * (yDiff - 1) + curPos.x_crd();

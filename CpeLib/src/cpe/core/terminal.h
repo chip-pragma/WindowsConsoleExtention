@@ -3,10 +3,9 @@
 #include "cpe/platform.h"
 
 #include <string>
-#include <cstdlib>
+#include <cstdint>
 
 #include "cpe/core/draw/Point.h"
-#include "cpe/core/draw/Size.h"
 #include "cpe/core/draw/Color.h"
 
 namespace cpe::term {
@@ -27,9 +26,9 @@ uint32_t input_cp();
 
 uint32_t output_cp();
 
-bool buffer_size(const Size &size);
+bool buffer_size(const Point &size);
 
-Size buffer_size();
+Point buffer_size();
 
 bool cursor_position(const Point &pos);
 
