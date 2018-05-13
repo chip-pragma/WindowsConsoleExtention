@@ -19,7 +19,7 @@ if (${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
     # Похоже, что плохо использовать -Wl,-allow-multiple-definition
     set(STATIC_STD_LINK "-static")
 
-    # TODO почему не работает???
+    # !!! Почему не работает???
     # target_compile_options(${CPE_LIB_TARGET} BEFORE PUBLIC ${STATIC_STD_LINK})
 
     set(CMAKE_CXX_FLAGS

@@ -76,13 +76,19 @@ public:
 
     void draw(const std::string &str);
 
-    void draw(const TextCanvas &canvas, bool useActualSize);
+    void draw(const TextCanvas &sub, bool useActualSize);
 
-    void draw(char character, uint32_t count, const CursorMoving &moving);
+    void draw(char character, int32_t count = 1, bool vertical = true);
 
     void output_to(std::ostream &outStream) const;
 
     void clear();
+
+    const StyledChar &at(const Point &pos) const;
+
+    StyledChar &at(const Point &pos);
+
+    StyledChar &operator[](const Point &pos);
 
 private:
     Point mCursorPos;
@@ -94,15 +100,21 @@ private:
     Size mSize;
     Point mMaxCurPos;
 
-    explicit TextCanvas(TextCanvas* parent);
+    explicit TextCanvas(TextCanvas *parent, const Size &size);
 
-    inline void _check_size(const Size &size);
+    inline void __check_size(const Size &size);
 
-    inline void _print_char(char c);
+    inline void __print_char(char c);
 
-    inline void _new_line();
+    inline void __print_text_char(char c);
 
-    inline bool _check_size_limits() const;
+    inline void __new_line();
+
+    inline void __max_cursor_position();
+
+    inline Point __get_clamped_max_cur_pos() const;
+
+    inline bool __check_size_limits(const Point &point) const;
 };
 
 }

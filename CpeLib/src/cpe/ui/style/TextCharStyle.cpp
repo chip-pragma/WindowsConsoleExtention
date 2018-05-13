@@ -29,20 +29,12 @@ Nullable<Color> &TextCharStyle::foreground() {
     return mFore;
 }
 
-void TextCharStyle::foreground(const Nullable<Color> &fore) {
-    mFore.set(fore);
-}
-
 const Nullable<Color> &TextCharStyle::background() const {
     return mBack;
 }
 
 Nullable<Color> &TextCharStyle::background() {
     return mBack;
-}
-
-void TextCharStyle::background(const Nullable<Color> &back) {
-    mBack.set(back);
 }
 
 TextCharStyle &TextCharStyle::operator=(const TextCharStyle &style) {

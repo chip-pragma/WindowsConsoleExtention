@@ -23,20 +23,20 @@ int main() {
 //    mb.show(Point(30,5));
 
     std::string message = "Привет! Это проверка сраного канваса... Ой. Холста. "
-                          "Нужно чтобы он не выходил за гребанные границы."_dos;
-    Size beginSize = Size(15, 5);
+                          "Нужно чтобы он не выходил за гребанные границы.\n"_dos;
 
-    for (int i = 0; i <= 10; i++) {
-        auto s = Size(beginSize.width() - i, beginSize.height() + i);
-        TextCanvas tc(s);
-        tc.draw(message);
-        tc.output_to(std::cout << "\n[" << i << ":" << s.height() * s.width() << "]\n");
-    }
+    TextCanvas tc1({15, 15});
+    tc1.cursor_style().foreground().set(Colors::LT_YELLOW);
+    tc1.draw(message);
+    tc1.output_to(std::cout);
 
-//    TextCanvas tc(Size(10, 10));
-//    tc.cursor_style().foreground().set(Colors::LT_RED);
-//    tc.draw(message);
-//    tc.output_to(std::cout);
+    TextCanvas tc2({5, 5});
+    tc2.cursor_style().foreground().set(Colors::LT_PURPLE);
+    tc2.draw(message);
+
+    tc1.cursor_position({-2, 4});
+    tc1.draw(tc2, true);
+    tc1.output_to(std::cout);
 
     term::pause();
 

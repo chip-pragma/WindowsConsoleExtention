@@ -20,13 +20,9 @@ public:
 
     Nullable<Color> &foreground();
 
-    void foreground(const Nullable <Color> &fore);
-
     const Nullable<Color> &background() const;
 
     Nullable<Color> &background();
-
-    void background(const Nullable <Color> &back);
 
     TextCharStyle &operator=(const TextCharStyle &style);
 

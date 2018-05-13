@@ -5,7 +5,7 @@
 
 namespace cpe {
 
-uint8_t TextFormat::getTabLength() const {
+uint8_t TextFormat::tab_length() const {
     return _tabLength;
 }
 

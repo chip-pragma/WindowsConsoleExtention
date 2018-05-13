@@ -6,7 +6,7 @@ namespace cpe {
 
 class TextFormat {
 public:
-    uint8_t getTabLength() const;
+    uint8_t tab_length() const;
 
     void setTabLength(uint8_t tabLength);
 

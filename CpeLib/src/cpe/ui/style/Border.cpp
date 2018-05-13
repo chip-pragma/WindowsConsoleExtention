@@ -36,8 +36,6 @@ void Border::apply(const DualBorder &db) {
 
     using Db = DualBorder;
 
-    // TODO неправильные символы псевдографики
-
     mLastApplied = db;
 
     mSides[L] = "\u2502";

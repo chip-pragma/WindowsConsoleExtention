@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include <sstream>
+#include <cmath>
 
 namespace cpe {
 
@@ -29,7 +30,7 @@ CursorMoving operator|(const CursorMoving &cm1, const CursorMoving &cm2) {
 //endregion
 
 TextCanvas::TextCanvas(const Size &size) {
-    _check_size(size);
+    __check_size(size);
     mSize = size;
 
     mMatrix = new StyledChar *[size.height()];
@@ -106,61 +107,79 @@ TextCanvas &TextCanvas::owner() {
 }
 
 TextCanvas TextCanvas::extract(const Point &begin, const Size &size) {
-    // TODO получить вложенный холст
+    auto end = begin + size.to_point();
 
+    if (!__check_size_limits(begin) ||
+        !__check_size_limits(end))
+        throw Exception("Invalid begin position and/or size");
 
+    TextCanvas result(this, size);
+
+    result.mMatrix = new StyledChar*[size.height()];
+    for (int i = 0; i < size.height(); i++) {
+        result.mMatrix[i] = &mMatrix[begin.coord_y() + i][begin.coord_x()];
+    }
+
+    return result;
 }
 
 void TextCanvas::draw(const std::string &str) {
     for (char c : str) {
         if (c == '\n' || c == '\r') {
-            _new_line();
+            __new_line();
         } else if (c == '\t') {
-            auto tl = format().getTabLength();
+            auto tl = format().tab_length();
             auto sc = tl - mCursorPos.coord_x() % tl;
             for (int16_t i = 0; i < sc; i++)
-                _print_char(' ');
+                __print_text_char(' ');
         } else {
-            _print_char(c);
+            __print_text_char(c);
         }
     }
 }
 
-void TextCanvas::draw(const TextCanvas &canvas, bool useActualSize) {
+void TextCanvas::draw(const TextCanvas &sub, bool useActualSize) {
     // Исключение рекурсии
-    if (&canvas == this)
+    if (&sub == this)
         return;
 
-    // TODO рисование холста в золст проверить
-
-    /*const Point srcCurPos = mCursorPos;
-    Size maxSize = mSize - srcCurPos.to_size();
-    Size usingSize = canvas.mSize;
+    const Point srcCurPos = mCursorPos;
+    Point thisMaxSize = mSize.to_point() - srcCurPos;
+    Point subUsedSize = sub.mSize.to_point();
     if (useActualSize)
-        usingSize = canvas.mMaxCurPos;
-    const Size size(std::min(maxSize.width(), usingSize.width()),
-                     std::min(maxSize.height(), usingSize.height()));
+        subUsedSize = sub.__get_clamped_max_cur_pos() + 1;
+    const Point size(std::min(thisMaxSize.coord_x(), subUsedSize.coord_x()),
+                     std::min(thisMaxSize.coord_y(), subUsedSize.coord_y()));
 
-    for (int i = 0; i < size.height(); i++) {
-        for (int j = 0; j < size.width(); j++) {
-            mMatrix[i + srcCurPos.coord_y()][j + srcCurPos.coord_x()]
-                    = canvas.mMatrix[i][j];
+    for (int i = 0; i < size.coord_y(); i++) {
+        for (int j = 0; j < size.coord_x(); j++) {
+            Point coord(j + srcCurPos.coord_x(), i + srcCurPos.coord_y());
+            if (__check_size_limits(coord)) {
+                mMatrix[coord.coord_y()][coord.coord_x()]
+                        = sub.mMatrix[i][j];
+            }
             cursor_position(Point(srcCurPos.coord_x(), srcCurPos.coord_y() + i));
+            __max_cursor_position();
         }
-    }*/
+    }
 }
 
-void TextCanvas::draw(char character, uint32_t count, const CursorMoving &moving) {
+void TextCanvas::draw(char character, int32_t count, bool vertical) {
+    Point direct(1, 0);
+    if (vertical)
+        direct = {0, 1};
+    if (std::signbit(count))
+        direct *= -1;
 
+    for (int i = 0, n = std::abs(count); i < n; i++) {
+        __max_cursor_position();
+        __print_char(character);
+        mCursorPos += direct;
+    }
 }
 
 void TextCanvas::output_to(std::ostream &outStream) const {
-    auto maxCurPosToSize = (mMaxCurPos + 1).to_size();
-    Size maxSize(
-            std::clamp(maxCurPosToSize.width(),
-                       uint32_t(0), mSize.width()),
-            std::clamp(maxCurPosToSize.height(),
-                       uint32_t(0), mSize.height()));
+    auto maxSize = (__get_clamped_max_cur_pos() + 1).to_size();
 
     output_begin(outStream);
     for (int i = 0; i < maxSize.height(); i++) {
@@ -179,11 +198,28 @@ void TextCanvas::clear() {
     mMaxCurPos = mCursorPos = Point();
 }
 
-TextCanvas::TextCanvas(TextCanvas *parent) {
-    mOwner = parent;
+const StyledChar &TextCanvas::at(const Point &pos) const {
+    if (!__check_size_limits(pos))
+        throw Exception("Out of range");
+    return mMatrix[pos.coord_y()][pos.coord_x()];
 }
 
-inline void TextCanvas::_check_size(const Size &size) {
+StyledChar &TextCanvas::at(const Point &pos) {
+    if (!__check_size_limits(pos))
+        throw Exception("Out of range");
+    return mMatrix[pos.coord_y()][pos.coord_x()];
+}
+
+StyledChar &TextCanvas::operator[](const Point &pos) {
+    return at(pos);
+}
+
+TextCanvas::TextCanvas(TextCanvas *parent, const Size &size) : mOwner(parent),
+                                                               mSize(size) {
+
+}
+
+inline void TextCanvas::__check_size(const Size &size) {
     if (size.width() <= 0 || size.height() <= 0) {
         std::stringstream ss;
         ss << "Invalid size " + size.to_string();
@@ -191,30 +227,44 @@ inline void TextCanvas::_check_size(const Size &size) {
     }
 }
 
-inline void TextCanvas::_print_char(char c) {
-    if (mCursorPos.coord_x() >= mSize.width())
-        _new_line();
-
-    if (_check_size_limits()) {
+inline void TextCanvas::__print_char(char c) {
+    if (__check_size_limits(mCursorPos)) {
         auto &sym = mMatrix[mCursorPos.coord_y()][mCursorPos.coord_x()];
         sym.character(c);
         sym.style(mCursorStyle);
     }
+}
 
+inline void TextCanvas::__print_text_char(char c) {
+    if (mCursorPos.coord_x() >= mSize.to_point().coord_x())
+        __new_line();
+    __max_cursor_position();
+    __print_char(c);
     mCursorPos += Point(1, 0);
+}
+
+inline void TextCanvas::__new_line() {
+    mCursorPos.coord_x(0);
+    mCursorPos += Point(0, 1);
+}
+
+inline void TextCanvas::__max_cursor_position() {
     mMaxCurPos.coord_x(std::max(mMaxCurPos.coord_x(), mCursorPos.coord_x()));
     mMaxCurPos.coord_y(std::max(mMaxCurPos.coord_y(), mCursorPos.coord_y()));
 }
 
-inline void TextCanvas::_new_line() {
-    mCursorPos += Point(0, 1);
-    mCursorPos.coord_x(0);
-
+Point TextCanvas::__get_clamped_max_cur_pos() const {
+    Point clamped(
+            std::clamp(mMaxCurPos.coord_x(),
+                       int32_t(0), mSize.to_point().coord_x() - 1),
+            std::clamp(mMaxCurPos.coord_y(),
+                       int32_t(0), mSize.to_point().coord_y() - 1));
+    return clamped;
 }
 
-inline bool TextCanvas::_check_size_limits() const {
-    return (mCursorPos.coord_x() >= 0 && mCursorPos.coord_x() < mSize.width() &&
-            mCursorPos.coord_y() >= 0 && mCursorPos.coord_y() < mSize.height());
+inline bool TextCanvas::__check_size_limits(const Point &point) const {
+    return (point.coord_x() >= 0 && point.coord_x() < mSize.to_point().coord_x() &&
+            point.coord_y() >= 0 && point.coord_y() < mSize.to_point().coord_y());
 }
 
 }
