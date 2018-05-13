@@ -15,7 +15,7 @@ void ElementBase::show() {
 }
 
 void ElementBase::show(const Point &maxSize) {
-    TextCanvas canvas(maxSize);
+    Buffer canvas(maxSize);
     draw(canvas);
     canvas.output_to(std::cout);
 }

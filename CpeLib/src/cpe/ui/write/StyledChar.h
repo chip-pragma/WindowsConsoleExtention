@@ -2,7 +2,7 @@
 
 #include "cpe/core/draw/Color.h"
 #include "cpe/tool/Nullable.h"
-#include "cpe/ui/style/TextCharStyle.h"
+#include "cpe/ui/style/TextColor.h"
 
 namespace cpe {
 
@@ -12,30 +12,21 @@ public:
 
     explicit StyledChar(char c);
 
-    StyledChar(char c, const TextCharStyle &style);
+    StyledChar(char c, const TextColor& color);
 
-    StyledChar(const StyledChar &c);
+    const TextColor &color() const;
 
-    StyledChar(StyledChar &&c) noexcept;
+    TextColor &color();
 
-    ~StyledChar();
-
-    const TextCharStyle &style() const;
-
-    TextCharStyle &style();
-
-    void style(const TextCharStyle &style);
+    void color(const TextColor &color);
 
     char character() const;
 
     void character(char aChar);
 
-    StyledChar &operator=(const StyledChar &c);
-
 private:
-    TextCharStyle mStyle;
+    TextColor mColor;
     char mChar = ' ';
-
 };
 
 }

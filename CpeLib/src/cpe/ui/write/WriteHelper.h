@@ -8,7 +8,7 @@
 
 namespace cpe {
 
-class TextCharStyle;
+class TextColor;
 class Point;
 
 class WriteHelper {
@@ -22,7 +22,7 @@ protected:
 
     void output_end() const;
 
-    void output_apply_style(const TextCharStyle &style) const;
+    void output_apply_style(const TextColor &style) const;
 
     void output_reset_style() const;
 

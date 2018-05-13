@@ -1,20 +1,19 @@
 #pragma once
 
-#include "cpe/ui/style/TextCharStyle.h"
 #include "cpe/core/draw/Color.h"
 #include "cpe/tool/Nullable.h"
 
 namespace cpe {
 
-class TextCharStyle {
+class TextColor {
 public:
-    TextCharStyle() = default;
+    TextColor() = default;
 
-    TextCharStyle(const TextCharStyle& style);
+    TextColor(const TextColor& style);
 
-    TextCharStyle(TextCharStyle&& style) noexcept;
+    TextColor(TextColor&& style) noexcept;
 
-    TextCharStyle(Nullable<Color> fore, Nullable<Color> back);
+    TextColor(Nullable<Color> fore, Nullable<Color> back);
 
     const Nullable<Color> &foreground() const;
 
@@ -24,7 +23,7 @@ public:
 
     Nullable<Color> &background();
 
-    TextCharStyle &operator=(const TextCharStyle &style);
+    TextColor &operator=(const TextColor &style);
 
 private:
     Nullable<Color> mFore;

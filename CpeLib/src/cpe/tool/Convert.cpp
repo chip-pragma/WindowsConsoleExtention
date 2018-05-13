@@ -93,7 +93,7 @@ std::string fromTime(time_t time, bool seconds) {
     stamp.tm_isdst = -1;
 
     // Формат
-    std::string format = "%H:%M";
+    std::string format = "%SH:%M";
     if (seconds) format += ":%S";
 
     // Преобразование

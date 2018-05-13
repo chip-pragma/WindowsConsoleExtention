@@ -12,11 +12,13 @@ public:
 
     Nullable() = default;
 
+    Nullable(std::nullptr_t);
+
+    Nullable(const TValue &value);
+
     Nullable(const Nullable &n);
 
     Nullable(Nullable &&n) noexcept;
-
-    explicit Nullable(const TValue &value);
 
     ~Nullable();
 
@@ -53,19 +55,25 @@ private:
 };
 
 template<class TValue>
+Nullable<TValue>::Nullable(std::nullptr_t) : Nullable<TValue>() {
+
+}
+
+template<class TValue>
+Nullable<TValue>::Nullable(const TValue &value) {
+    mValue = new TValue(value);
+}
+
+template<class TValue>
 Nullable<TValue>::Nullable(const Nullable &n) {
-    mValue = new TValue(n.mValue);
+    if (n.mValue)
+        mValue = new TValue(*n.mValue);
 }
 
 template<class TValue>
 Nullable<TValue>::Nullable(Nullable &&n) noexcept {
     mValue = n.mValue;
     n.mValue = nullptr;
-}
-
-template<class TValue>
-Nullable<TValue>::Nullable(const TValue &value) {
-    mValue = new TValue(value);
 }
 
 template<class TValue>

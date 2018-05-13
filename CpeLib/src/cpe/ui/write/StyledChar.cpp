@@ -1,39 +1,22 @@
 #include "StyledChar.h"
+#include "Buffer.h"
 
 namespace cpe {
 
 StyledChar::StyledChar(char c) : mChar(c) {}
 
-StyledChar::StyledChar(char c, const TextCharStyle &style) : mChar(c),
-                                                         mStyle(style) {}
+StyledChar::StyledChar(char c, const TextColor &color) : mChar(c), mColor(color) {}
 
-StyledChar::StyledChar(const StyledChar &c) {
-    mChar = c.mChar;
-    mStyle = c.mStyle;
+const TextColor &StyledChar::color() const {
+    return mColor;
 }
 
-StyledChar::StyledChar(StyledChar &&c) noexcept {
-    mChar = c.mChar;
-    c.mChar = ' ';
-    mStyle = c.mStyle;
-    c.mStyle.foreground().set(nullptr);
-    c.mStyle.background().set(nullptr);
+TextColor &StyledChar::color() {
+    return mColor;
 }
 
-StyledChar::~StyledChar() {
-
-}
-
-const TextCharStyle &StyledChar::style() const{
-    return mStyle;
-}
-
-TextCharStyle &StyledChar::style() {
-    return mStyle;
-}
-
-void StyledChar::style(const TextCharStyle &style) {
-    mStyle = style;
+void StyledChar::color(const TextColor &color) {
+    mColor = color;
 }
 
 char StyledChar::character() const {
@@ -42,12 +25,6 @@ char StyledChar::character() const {
 
 void StyledChar::character(char aChar) {
     mChar = aChar;
-}
-
-StyledChar &StyledChar::operator=(const StyledChar &c) {
-    mChar = c.mChar;
-    mStyle = c.mStyle;
-    return *this;
 }
 
 }

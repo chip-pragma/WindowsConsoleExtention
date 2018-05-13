@@ -10,7 +10,7 @@
 #include "cpe/core/draw/Color.h"
 #include "cpe/tool/text.h"
 #include "cpe/tool/Nullable.h"
-#include "cpe/ui/style/TextCharStyle.h"
+#include "cpe/ui/style/TextColor.h"
 #include "cpe/ui/write/WriteHelper.h"
 #include "IValidator.h"
 #include "IConverter.h"
@@ -32,17 +32,17 @@ public:
 
     void requirement(const Nullable<std::string> &text);
 
-    const TextCharStyle &read_style() const;
+    const TextColor &read_style() const;
 
-    TextCharStyle &read_style();
+    TextColor &read_style();
 
-    void read_style(const TextCharStyle &readStyle);
+    void read_style(const TextColor &readStyle);
 
-    const TextCharStyle &error_style() const;
+    const TextColor &error_style() const;
 
-    TextCharStyle &error_style();
+    TextColor &error_style();
 
-    void error_style(const TextCharStyle &errorStyle);
+    void error_style(const TextColor &errorStyle);
 
     template<class TValidator>
     void add_validator(const TValidator &validator);
@@ -53,8 +53,8 @@ public:
 private:
     const IConverter<TValue> *mConverter;
     Nullable<std::string> mRequiredText;
-    TextCharStyle mReadStyle;
-    TextCharStyle mErrorStyle;
+    TextColor mReadStyle;
+    TextColor mErrorStyle;
     std::vector<const IValidator<TValue> *> mValidators;
 };
 
@@ -130,32 +130,32 @@ void Reader<TValue>::read(TValue &outValue) {
 }
 
 template<class TValue>
-const TextCharStyle &Reader<TValue>::read_style() const {
+const TextColor &Reader<TValue>::read_style() const {
     return mReadStyle;
 }
 
 template<class TValue>
-TextCharStyle &Reader<TValue>::read_style() {
+TextColor &Reader<TValue>::read_style() {
     return mReadStyle;
 }
 
 template<class TValue>
-void Reader<TValue>::read_style(const TextCharStyle &readStyle) {
+void Reader<TValue>::read_style(const TextColor &readStyle) {
     mReadStyle = readStyle;
 }
 
 template<class TValue>
-const TextCharStyle &Reader<TValue>::error_style() const {
+const TextColor &Reader<TValue>::error_style() const {
     return mErrorStyle;
 }
 
 template<class TValue>
-TextCharStyle &Reader<TValue>::error_style() {
+TextColor &Reader<TValue>::error_style() {
     return mErrorStyle;
 }
 
 template<class TValue>
-void Reader<TValue>::error_style(const TextCharStyle &errorStyle) {
+void Reader<TValue>::error_style(const TextColor &errorStyle) {
     mErrorStyle = errorStyle;
 }
 

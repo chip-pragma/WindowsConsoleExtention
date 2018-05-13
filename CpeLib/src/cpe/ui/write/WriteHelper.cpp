@@ -1,5 +1,5 @@
 #include "WriteHelper.h"
-#include "cpe/ui/style/TextCharStyle.h"
+#include "cpe/ui/style/TextColor.h"
 #include "cpe/core/draw/Point.h"
 #include "cpe/core/Exception.h"
 
@@ -54,7 +54,7 @@ void WriteHelper::output_end() const {
     mOutStream = nullptr;
 }
 
-void WriteHelper::output_apply_style(const TextCharStyle &style) const {
+void WriteHelper::output_apply_style(const TextColor &style) const {
     Color tmp;
     if (style.foreground().get(tmp)) term::foreground(tmp);
     else term::foreground(mOutputFore);
