@@ -13,7 +13,7 @@ public:
     static int32_t MAX_WIDTH;
     static int32_t MAX_HEIGHT;
 
-    virtual void draw(Buffer& canvas) = 0;
+    virtual void draw(Buffer& cvs) = 0;
 
     virtual void show() final;
 

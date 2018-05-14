@@ -13,19 +13,10 @@ namespace {
 // Проверяет значение точки как значения размера
 inline void __point_as_size(const Point &size);
 
-// "Печатает" символ в допустимой области холста
-inline void
-__print_char(const StyledChar &schar, StyledChar **matrix, const Point &cursorPos, const Point &size);
-
-// Печатает текстовый символ (с пропуском строки и т.п.)
-inline void
-__print_text(const StyledChar &schar, StyledChar **matrix, Point &cursorPos, const Point &size, Point &maxCursorPos);
-
 // Новая строка
 inline void __new_line(Point &cursorPos);
 
-// Расчет максимальной позиции курсора
-inline Point __point_with_max_crd(const Point &point1, const Point &point2);
+
 
 // Максимальная позиция курсора в рамках холста
 inline Point __clamp_point(const Point &point, const Point &size);
@@ -42,32 +33,9 @@ inline void __point_as_size(const Point &size) {
     }
 }
 
-inline void
-__print_char(const StyledChar &schar, StyledChar **matrix, const Point &cursorPos, const Point &size) {
-    if (__is_point_in_bounds(cursorPos, size)) {
-        matrix[cursorPos.y_crd()][cursorPos.x_crd()] = schar;
-    }
-}
-
-inline void
-__print_text(const StyledChar &schar, StyledChar **matrix, Point &cursorPos, const Point &size, Point &maxCursorPos) {
-    if (cursorPos.x_crd() >= size.x_crd())
-        __new_line(cursorPos);
-    maxCursorPos = __point_with_max_crd(cursorPos, maxCursorPos);
-    __print_char(schar, matrix, cursorPos, size);
-    cursorPos += Point(1, 0);
-}
-
 inline void __new_line(Point &cursorPos) {
     cursorPos.x_crd(0);
     cursorPos += Point(0, 1);
-}
-
-inline Point __point_with_max_crd(const Point &point1, const Point &point2) {
-    Point max;
-    max.x_crd(std::max(point2.x_crd(), point1.x_crd()));
-    max.y_crd(std::max(point2.y_crd(), point1.y_crd()));
-    return max;
 }
 
 Point __clamp_point(const Point &point, const Point &size) {
@@ -119,7 +87,7 @@ const Point &Buffer::size() const {
 }
 
 Point Buffer::calc_used_size() const {
-    return (mMaxCurPos + 1);
+    return (__clamp_point(mMaxCurPos, mSize) + 1);
 }
 
 bool Buffer::have_owner() const {
@@ -138,18 +106,22 @@ Buffer &Buffer::owner() {
     return *mOwner;
 }
 
-Buffer Buffer::extract(const Point &begin, const Point &size) {
+Buffer Buffer::extract(const Point &begin, const Point &size, bool clean) {
     auto end = begin + size;
 
     if (!__is_point_in_bounds(begin, mSize) ||
         !__is_point_in_bounds(end, mSize))
         throw Exception("Invalid begin position and/or size");
 
-    Buffer result(this, size);
+    Buffer result(this, begin, size);
 
     result.mBuffer = new StyledChar *[size.y_crd()];
     for (int i = 0; i < size.y_crd(); i++) {
-        result.mBuffer[i] = &mBuffer[begin.y_crd() + i][begin.x_crd()];
+        auto row = &mBuffer[begin.y_crd() + i][begin.x_crd()];
+        if (clean)
+            for (int j = 0; j < size.x_crd(); j++)
+                row[j] = StyledChar();
+        result.mBuffer[i] = row;
     }
 
     return result;
@@ -163,9 +135,9 @@ void Buffer::draw(const StyledText &text) {
             auto tl = text.tab_length();
             auto sc = tl - mCursorPos.x_crd() % tl;
             for (int16_t i = 0; i < sc; i++)
-                __print_text(StyledChar(' ', text.color()), mBuffer, mCursorPos, mSize, mMaxCurPos);
+                __print_text(StyledChar(' ', text.color()));
         } else {
-            __print_text(StyledChar(c, text.color()), mBuffer, mCursorPos, mSize, mMaxCurPos);
+            __print_text(StyledChar(c, text.color()));
         }
     }
 }
@@ -195,8 +167,8 @@ void Buffer::draw(const Buffer &sub, bool useActualSize) {
                 mBuffer[coord.y_crd()][coord.x_crd()]
                         = sub.mBuffer[i][j];
             }
+            __point_with_max_crd();
             cursor_position(Point(srcCurPos.x_crd(), srcCurPos.y_crd() + i));
-            mMaxCurPos = __point_with_max_crd(mCursorPos, mMaxCurPos);
         }
     }
 }
@@ -212,8 +184,8 @@ void Buffer::draw(StyledChar schar, int32_t count, bool vertical) {
         schar.character(' ');
 
     for (int i = 0, n = std::abs(count); i < n; i++) {
-        mMaxCurPos = __point_with_max_crd(mCursorPos, mMaxCurPos);
-        __print_char(schar, mBuffer, mCursorPos, mSize);
+        __point_with_max_crd();
+        __print_char(schar);
         mCursorPos += direct;
     }
 }
@@ -235,6 +207,9 @@ void Buffer::output_to(std::ostream &outStream) const {
 }
 
 void Buffer::clear() {
+    for (int i = 0; i < mSize.y_crd(); i++)
+        for (int j = 0; j < mSize.x_crd(); j++)
+            mBuffer[i][j] = StyledChar();
     mMaxCurPos = mCursorPos = Point();
 }
 
@@ -254,10 +229,36 @@ StyledChar &Buffer::operator[](const Point &pos) {
     return at(pos);
 }
 
-Buffer::Buffer(Buffer *parent, const Point &size) : mOwner(parent),
-                                                                mSize(size) {
+Buffer::Buffer(Buffer *parent, const Point &beginPos, const Point &size) : mOwner(parent),
+                                                                           mSize(size),
+                                                                           mBeginPosFromOwner(beginPos) {
 
 }
 
+void Buffer::__print_char(const StyledChar &schar) {
+    if (__is_point_in_bounds(mCursorPos, mSize)) {
+        mBuffer[mCursorPos.y_crd()][mCursorPos.x_crd()] = schar;
+    }
+}
+
+void Buffer::__print_text(const StyledChar &schar) {
+    if (mCursorPos.x_crd() >= mSize.x_crd())
+        __new_line(mCursorPos);
+    __point_with_max_crd();
+    __print_char(schar);
+    mCursorPos += Point(1, 0);
+}
+
+void Buffer::__point_with_max_crd() {
+    mMaxCurPos.x_crd(std::max(mMaxCurPos.x_crd(), mCursorPos.x_crd()));
+    mMaxCurPos.y_crd(std::max(mMaxCurPos.y_crd(), mCursorPos.y_crd()));
+
+    if (mOwner) {
+        Point& ownerMaxPos = mOwner->mMaxCurPos;
+        Point thisMaxPos = __clamp_point(mMaxCurPos, mSize) + mBeginPosFromOwner;
+        ownerMaxPos.x_crd(std::max(ownerMaxPos.x_crd(), thisMaxPos.x_crd()));
+        ownerMaxPos.y_crd(std::max(ownerMaxPos.y_crd(), thisMaxPos.y_crd()));
+    }
+}
 
 }

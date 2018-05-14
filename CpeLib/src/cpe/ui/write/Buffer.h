@@ -40,7 +40,7 @@ public:
 
     Buffer& owner();
 
-    Buffer extract(const Point &begin, const Point &size);
+    Buffer extract(const Point &begin, const Point &size, bool clean = true);
 
     void draw(const StyledText &text);
 
@@ -64,10 +64,18 @@ private:
     Point mCursorPos;
     StyledChar** mBuffer;
     Buffer* mOwner = nullptr;
+    Point mBeginPosFromOwner;
     Point mSize;
     Point mMaxCurPos;
 
-    explicit Buffer(Buffer *parent, const Point &size);
+    explicit Buffer(Buffer *parent, const Point &beginPos, const Point &size);
+
+    // "Печатает" символ в допустимой области холста
+    void __print_char(const StyledChar &schar);
+    // Печатает текстовый символ (с пропуском строки и т.п.)
+    void __print_text(const StyledChar &schar);
+    // Расчет максимальной позиции курсора
+    void __point_with_max_crd();
 };
 
 }

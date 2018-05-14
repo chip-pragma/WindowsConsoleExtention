@@ -18,9 +18,9 @@ public:
 
     StyledBorder& border();
 
-    const StyledText& caption() const;
+    const Nullable<StyledText>& caption() const;
 
-    StyledText& caption();
+    Nullable<StyledText>& caption();
 
     const StyledText& message() const;
 
@@ -30,12 +30,12 @@ public:
 
     Nullable<StyledChar>& icon();
 
-    void draw(Buffer &canvas) override;
+    void draw(Buffer &cvs) override;
 
 private:
     StyledBorder mBorder;
     Nullable<StyledChar> mIcon;
-    StyledText mCaption;
+    Nullable<StyledText> mCaption;
     StyledText mMessage;
 };
 
