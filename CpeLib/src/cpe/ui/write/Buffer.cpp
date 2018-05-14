@@ -39,10 +39,10 @@ inline void __new_line(Point &cursorPos) {
 }
 
 Point __clamp_point(const Point &point, const Point &size) {
-    Point clamped(std::clamp(point.x_crd(),
-                             int32_t(0), size.x_crd() - 1),
-                  std::clamp(point.y_crd(),
-                             int32_t(0), size.y_crd() - 1));
+    Point clamped(std::min(std::max(point.x_crd(),
+                                    int32_t(0)), size.x_crd() - 1),
+                  std::min(std::max(point.y_crd(),
+                                    int32_t(0)), size.y_crd() - 1));
     return clamped;
 }
 

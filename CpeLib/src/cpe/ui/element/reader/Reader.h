@@ -30,8 +30,6 @@ public:
 
     Nullable<std::string> &requirement();
 
-    void requirement(const Nullable<std::string> &text);
-
     const TextColor &read_style() const;
 
     TextColor &read_style();
@@ -73,11 +71,6 @@ const Nullable<std::string> &Reader<TValue>::requirement() const {
 template<class TValue>
 Nullable<std::string> &Reader<TValue>::requirement() {
     return mRequiredText;
-}
-
-template<class TValue>
-void Reader<TValue>::requirement(const Nullable<std::string> &text) {
-    mRequiredText = text;
 }
 
 template<class TValue>
