@@ -9,16 +9,16 @@ TextColor::TextColor(const Nullable<Color> fore, const Nullable<Color> back) {
     mBack.set(back);
 }
 
-TextColor::TextColor(const TextColor &style) {
-    mFore.set(style.mFore);
-    mBack.set(style.mBack);
+TextColor::TextColor(const TextColor &tc) {
+    mFore.set(tc.mFore);
+    mBack.set(tc.mBack);
 }
 
-TextColor::TextColor(TextColor &&style) noexcept {
-    mFore.set(style.mFore);
-    mFore.set(style.mBack);
-    style.mFore.set(nullptr);
-    style.mBack.set(nullptr);
+TextColor::TextColor(TextColor &&tc) noexcept {
+    mFore.set(tc.mFore);
+    mFore.set(tc.mBack);
+    tc.mFore.set(nullptr);
+    tc.mBack.set(nullptr);
 }
 
 const Nullable<Color> &TextColor::foreground() const {
@@ -37,9 +37,14 @@ Nullable<Color> &TextColor::background() {
     return mBack;
 }
 
-TextColor &TextColor::operator=(const TextColor &style) {
-    mFore.set(style.mFore);
-    mBack.set(style.mBack);
+void TextColor::set(const TextColor &tc) {
+    mFore.set(tc.mFore);
+    mFore.set(tc.mBack);
+}
+
+TextColor &TextColor::operator=(const TextColor &tc) {
+    mFore.set(tc.mFore);
+    mBack.set(tc.mBack);
     return *this;
 }
 

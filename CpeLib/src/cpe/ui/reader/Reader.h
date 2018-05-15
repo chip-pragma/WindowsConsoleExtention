@@ -2,8 +2,9 @@
 
 #include <iostream>
 #include <string>
-#include <list>
 #include <algorithm>
+#include <vector>
+#include <map>
 
 #include "cpe/core/terminal.h"
 #include "cpe/core/draw/Point.h"
@@ -14,33 +15,36 @@
 #include "cpe/ui/write/WriteHelper.h"
 #include "IValidator.h"
 #include "IConverter.h"
+#include "ReaderResult.h"
 
 namespace cpe {
 
 template<class TValue>
 class Reader : public WriteHelper {
 public:
+    static constexpr const char *COMMAND_PREFIX = "!:";
+
     using ValueType = TValue;
 
-    explicit Reader(const IConverter<TValue> & converter);
+    explicit Reader(const IConverter<TValue> &converter);
 
-    void read(TValue &outValue);
+    ReaderResult<TValue> read();
 
     const Nullable<std::string> &requirement() const;
 
     Nullable<std::string> &requirement();
 
-    const TextColor &read_style() const;
+    const TextColor &read_color() const;
 
-    TextColor &read_style();
+    TextColor &read_color();
 
-    void read_style(const TextColor &readStyle);
+    const TextColor &error_color() const;
 
-    const TextColor &error_style() const;
+    TextColor &error_color();
 
-    TextColor &error_style();
+    void add_command(uint32_t comId, const std::string &comText);
 
-    void error_style(const TextColor &errorStyle);
+    void remove_command(uint32_t comId);
 
     template<class TValidator>
     void add_validator(const TValidator &validator);
@@ -53,6 +57,7 @@ private:
     Nullable<std::string> mRequiredText;
     TextColor mReadStyle;
     TextColor mErrorStyle;
+    std::map<uint32_t, std::string> mCommands;
     std::vector<const IValidator<TValue> *> mValidators;
 };
 
@@ -74,10 +79,10 @@ Nullable<std::string> &Reader<TValue>::requirement() {
 }
 
 template<class TValue>
-void Reader<TValue>::read(TValue &outValue) {
-
+ReaderResult<TValue> Reader<TValue>::read() {
     std::string lineValue;
     TValue convertedValue;
+    ReaderResult<TValue> result;
 
     output_begin(std::cout);
 
@@ -86,6 +91,7 @@ void Reader<TValue>::read(TValue &outValue) {
         state_save();
         output_apply_style(mReadStyle);
         std::getline(std::cin, lineValue);
+        text::trim(lineValue);
 
         ReaderErrorVector errors;
         std::string error;
@@ -94,10 +100,16 @@ void Reader<TValue>::read(TValue &outValue) {
             if (mRequiredText.get(error))
                 errors.push_back(error);
         } else {
-            if (!mConverter->convert(lineValue, convertedValue, error))
+            if (lineValue.size() > 2 && lineValue.substr(0, 2) == COMMAND_PREFIX) {
+                auto command = lineValue.substr(2);
+                for (auto it = mCommands.cbegin(); it != mCommands.cend(); ++it) {
+                    if (it->second == command)
+                        result.set(it->first);
+                }
+            } else if (!mConverter->convert(lineValue, convertedValue, error))
                 errors.push_back(error);
             else {
-                for (const IValidator<TValue> * validator : mValidators)
+                for (const IValidator<TValue> *validator : mValidators)
                     validator->validate(convertedValue, errors);
             }
         }
@@ -111,7 +123,7 @@ void Reader<TValue>::read(TValue &outValue) {
             term::pause();
         } else {
             if (!lineValue.empty())
-                outValue = convertedValue;
+                result.set(convertedValue);
             breaking = true;
         }
 
@@ -123,33 +135,33 @@ void Reader<TValue>::read(TValue &outValue) {
 }
 
 template<class TValue>
-const TextColor &Reader<TValue>::read_style() const {
+const TextColor &Reader<TValue>::read_color() const {
     return mReadStyle;
 }
 
 template<class TValue>
-TextColor &Reader<TValue>::read_style() {
+TextColor &Reader<TValue>::read_color() {
     return mReadStyle;
 }
 
 template<class TValue>
-void Reader<TValue>::read_style(const TextColor &readStyle) {
-    mReadStyle = readStyle;
-}
-
-template<class TValue>
-const TextColor &Reader<TValue>::error_style() const {
+const TextColor &Reader<TValue>::error_color() const {
     return mErrorStyle;
 }
 
 template<class TValue>
-TextColor &Reader<TValue>::error_style() {
+TextColor &Reader<TValue>::error_color() {
     return mErrorStyle;
 }
 
 template<class TValue>
-void Reader<TValue>::error_style(const TextColor &errorStyle) {
-    mErrorStyle = errorStyle;
+void Reader<TValue>::add_command(uint32_t comId, const std::string &comText) {
+    mCommands.insert_or_assign(comId, comText);
+}
+
+template<class TValue>
+void Reader<TValue>::remove_command(uint32_t comId) {
+    mCommands.erase(comId);
 }
 
 template<class TValue>

@@ -9,9 +9,9 @@ class TextColor {
 public:
     TextColor() = default;
 
-    TextColor(const TextColor& style);
+    TextColor(const TextColor &tc);
 
-    TextColor(TextColor&& style) noexcept;
+    TextColor(TextColor &&tc) noexcept;
 
     TextColor(Nullable<Color> fore, Nullable<Color> back);
 
@@ -23,7 +23,9 @@ public:
 
     Nullable<Color> &background();
 
-    TextColor &operator=(const TextColor &style);
+    void set(const TextColor &tc);
+
+    TextColor &operator=(const TextColor &tc);
 
 private:
     Nullable<Color> mFore;

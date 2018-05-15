@@ -1,6 +1,11 @@
 project(ConsolePresentExtention)
 
+#set(TARGET ${CPE_LIB_TARGET} PROPERTY CXX_STANDARD 17)
+
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 
 add_library(${CPE_LIB_TARGET} STATIC
             src/cpe/tool/text.cpp
@@ -20,15 +25,13 @@ add_library(${CPE_LIB_TARGET} STATIC
             src/cpe/ui/style/Border.cpp
             src/cpe/core/draw/Color.h src/cpe/_platform/winapi.h src/cpe/core/Exception.cpp src/cpe/core/Exception.h
             src/cpe/ui/write/Buffer.cpp src/cpe/ui/write/Buffer.h src/cpe/ui/element/ElementBase.h src/cpe/macros.h
-            src/cpe/ui/element/ElementBase.cpp src/cpe/ui/ViewBase.h src/cpe/ui/element/reader/Reader.h
+            src/cpe/ui/element/ElementBase.cpp src/cpe/ui/ViewBase.h src/cpe/ui/reader/Reader.h
             src/cpe/ui/write/WriteHelper.cpp src/cpe/ui/write/WriteHelper.h src/cpe/ui/write/StyledChar.cpp
             src/cpe/ui/write/StyledChar.h src/cpe/tool/Nullable.h src/cpe/ui/style/TextColor.cpp
-            src/cpe/ui/style/TextColor.h src/cpe/ui/element/reader/IValidator.h src/cpe/ui/element/reader/IConverter.h
+            src/cpe/ui/style/TextColor.h src/cpe/ui/reader/IValidator.h src/cpe/ui/reader/IConverter.h
             src/cpe/ui/element/MessageBox.cpp src/cpe/ui/element/MessageBox.h src/cpe/tool/NullableException.h
             src/cpe/ui/write/StyledBorder.cpp src/cpe/ui/write/StyledBorder.h src/cpe/ui/ViewBase.cpp)
 
 target_include_directories(${CPE_LIB_TARGET} PUBLIC src)
 set_target_properties(${CPE_LIB_TARGET} PROPERTIES
-                      OUTPUT_NAME "Cpe"
-                      VERSION 0.1.0
-                      SOVERSION 0)
+                      OUTPUT_NAME "Cpe")

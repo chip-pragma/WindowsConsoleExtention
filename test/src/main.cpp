@@ -3,8 +3,7 @@
 #include <cassert>
 
 #include <cpe/core/terminal.h>
-#include <cpe/ui/write/Buffer.h>
-#include <cpe/ui/element/MessageBox.h>
+#include <cpe/ui/reader/LineReader.h>
 
 #include "common.h"
 
@@ -19,31 +18,41 @@ int main() {
 
     term::pause();
 
-    std::string message = "Привет! Это проверка сраного канваса... Ой. Холста. "
-                          "Нужно чтобы он не выходил за гребанные границы.\n"_dos;
+    // TODO комманды при работе ввода в ридерах
+    // TODO Реализация MVC
+    // TODO Каждому элементу/ридеру назначен свой Work'ер
+    // TODO Выполнение View-элементов как Work (паттерн Command)
 
-    Buffer tc1({20, 20});
-    tc1.draw({message, {Colors::LT_YELLOW, nullptr}});
-    tc1.output_to(std::cout);
+    LineReader reader;
+    reader.add_command(1, "first");
+    reader.add_command(2, "second");
+    reader.add_command(3, "break");
 
-    MessageBox mb;
-    mb.message().text("Это проверка вместимости текста в диалоговое 'окно' сообщения. "
-                      "Текст должен быть укомплектован и обрезан в случае необходимости."_dos);
-    mb.border().border().apply(Border::DB_TOP | Border::DB_RIGHT);
-    mb.border().color().foreground().set(Colors::LT_TEAL);
-    mb.caption().set({"Заголовок супер сообщения"_dos, {Colors::RED, Colors::BLUE}});
-//    mb.icon().set({'&', {Colors::LT_RED, Colors::GREEN}});
-
-    auto tc3 = tc1.extract({2, 2}, {10, 10});
-    mb.draw(tc3);
-    tc1.output_to(std::cout);
-
-    Buffer tc2({25, 25});
-    tc2.draw({std::string(25 * 25, 'X'), {Colors::LT_PURPLE, nullptr}});
-
-    tc1.cursor_position({-5, -5});
-    tc1.draw(tc2, true);
-    tc1.output_to(std::cout);
+    bool breaking = false;
+    while (!breaking) {
+        auto result = reader.read();
+        if (result.type() == ReaderResultType::VALUE) {
+            std::cout << "Введено значение: "_dos << "\n";
+        } else if (result.type() == ReaderResultType::COMMAND) {
+            std::cout << "Команда: "_dos;
+            switch (result.command()) {
+                case 1:
+                    std::cout << "первача";
+                    break;
+                case 2:
+                    std::cout << "вторяча";
+                    break;
+                case 3:
+                    std::cout << "прерывание цикла";
+                    breaking = true;
+                    break;
+                default:
+                    std::cout << "[ИД НЕ ЗАДАН]";
+                    break;
+            }
+            std::cout << "\n";
+        }
+    }
 
     term::pause();
 
