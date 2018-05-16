@@ -19,13 +19,11 @@ int main() {
     term::pause();
 
     // TODO комманды при работе ввода в ридерах
-    // TODO Реализация MVC
-    // TODO Каждому элементу/ридеру назначен свой Work'ер, который выполняется в View
-    // TODO Выполнение View-элементов как Work (паттерн Command)
+    // TODO Реализация MVC (см. Mvc.puml)
+    // TODO Выполнение View-элементов c помощью ElementItem оберток
+    // TODO Ридеры как наследникики ElementBase
 
-
-    //todo Не нравится ссылка (???)
-    LineReader reader;
+    /*LineReader reader;
     reader.add_command("first");
     reader.add_command("second");
     reader.add_command("break");
@@ -50,7 +48,7 @@ int main() {
 
             std::cout << "\n";
         }
-    }
+    }*/
 
     term::pause();
 
