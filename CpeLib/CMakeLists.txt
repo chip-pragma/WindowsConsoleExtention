@@ -1,11 +1,6 @@
 project(ConsolePresentExtention)
 
-#set(TARGET ${CPE_LIB_TARGET} PROPERTY CXX_STANDARD 17)
-
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
-
 
 add_library(${CPE_LIB_TARGET} STATIC
             src/cpe/tool/text.cpp

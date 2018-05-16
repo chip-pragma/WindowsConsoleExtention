@@ -20,9 +20,11 @@ int main() {
 
     // TODO комманды при работе ввода в ридерах
     // TODO Реализация MVC
-    // TODO Каждому элементу/ридеру назначен свой Work'ер
+    // TODO Каждому элементу/ридеру назначен свой Work'ер, который выполняется в View
     // TODO Выполнение View-элементов как Work (паттерн Command)
 
+
+    //fixme Не нравится ссылка (???)
     LineReader reader;
     reader.add_command(1, "first");
     reader.add_command(2, "second");

@@ -37,31 +37,27 @@ private:
     ReaderResultType mType = ReaderResultType::ERROR;
     // TODO поработать с Variant
     std::variant<uint32_t, TValue> mResult;
-    union {
-        uint32_t mCommandId;
-        TValue mValue;
-    };
 };
 
 template<class TValue>
 ReaderResult<TValue>::ReaderResult(const ReaderResult<TValue> &result) {
     mType = result.mType;
     if (mType == ReaderResultType::COMMAND)
-        mCommandId = result.mCommandId;
+        mResult = result.mResult;
     else if (mType == ReaderResultType::VALUE)
-        mValue = result.mValue;
+        mResult = result.mResult;
 }
 
 template<class TValue>
 void ReaderResult<TValue>::set(uint32_t commandId) {
     mType = ReaderResultType::COMMAND;
-    mCommandId = commandId;
+    mResult = commandId;
 }
 
 template<class TValue>
 void ReaderResult<TValue>::set(const TValue &value) {
     mType = ReaderResultType::VALUE;
-    mValue = value;
+    mResult = value;
 }
 
 template<class TValue>
@@ -73,14 +69,14 @@ template<class TValue>
 uint32_t ReaderResult<TValue>::command() const {
     if (mType != ReaderResultType::COMMAND)
         throw Exception("Result is not command");
-    return mCommandId;
+    return std::get<uint32_t>(mResult);
 }
 
 template<class TValue>
 const TValue &ReaderResult<TValue>::value() const {
     if (mType != ReaderResultType::COMMAND)
         throw Exception("Result is not value");
-    return mValue;
+    return std::get<TValue>(mResult);
 }
 
 }
