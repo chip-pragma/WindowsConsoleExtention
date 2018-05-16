@@ -7,7 +7,7 @@ namespace cpe {
 template <class TValue>
 class IConverter {
 public:
-    IConverter() = default;
+    using ValueType = TValue;
 
     virtual bool convert(const std::string& lineValue, TValue &outValue, std::string& errorText) const = 0;
 };

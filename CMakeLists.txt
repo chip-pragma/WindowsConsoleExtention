@@ -27,7 +27,7 @@ if (${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
     message(STATUS "Add compile options: ${STATIC_STD_LINK}")
 
 else ()
-    message(FATAL_ERROR "Unknown compiler! Please? check and resolve it.")
+    message(FATAL_ERROR "Unknown compiler! Please check and resolve it.")
 endif ()
 
 #Библиотека
@@ -35,4 +35,4 @@ add_subdirectory(CpeLib)
 #Демо приложение
 add_subdirectory(test)
 #Курсовые
-add_subdirectory(Task20)
+#add_subdirectory(Task20)

@@ -7,8 +7,6 @@
 
 namespace cpe {
 
-
-
 class LineReader : public Reader<std::string> {
 public:
     LineReader();

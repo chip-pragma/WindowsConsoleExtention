@@ -24,34 +24,30 @@ int main() {
     // TODO Выполнение View-элементов как Work (паттерн Command)
 
 
-    //fixme Не нравится ссылка (???)
+    //todo Не нравится ссылка (???)
     LineReader reader;
-    reader.add_command(1, "first");
-    reader.add_command(2, "second");
-    reader.add_command(3, "break");
+    reader.add_command("first");
+    reader.add_command("second");
+    reader.add_command("break");
 
     bool breaking = false;
     while (!breaking) {
         auto result = reader.read();
         if (result.type() == ReaderResultType::VALUE) {
-            std::cout << "Введено значение: "_dos << "\n";
+            std::cout << "Введено значение: "_dos << result.value() << "\n";
         } else if (result.type() == ReaderResultType::COMMAND) {
             std::cout << "Команда: "_dos;
-            switch (result.command()) {
-                case 1:
-                    std::cout << "первача";
-                    break;
-                case 2:
-                    std::cout << "вторяча";
-                    break;
-                case 3:
-                    std::cout << "прерывание цикла";
-                    breaking = true;
-                    break;
-                default:
-                    std::cout << "[ИД НЕ ЗАДАН]";
-                    break;
+            if (result.command() == "first")
+                std::cout << "первача";
+            else if (result.command() == "second")
+                std::cout << "вторяча";
+            else if (result.command() == "break") {
+                std::cout << "прерывание цикла";
+                breaking = true;
+            } else {
+                std::cout << "[неизвестная команда]";
             }
+
             std::cout << "\n";
         }
     }

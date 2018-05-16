@@ -4,7 +4,7 @@
 #include <string>
 #include <algorithm>
 #include <vector>
-#include <map>
+#include <set>
 
 #include "cpe/core/terminal.h"
 #include "cpe/core/draw/Point.h"
@@ -22,8 +22,6 @@ namespace cpe {
 template<class TValue>
 class Reader : public WriteHelper {
 public:
-    static constexpr const char *COMMAND_PREFIX = "!:";
-
     using ValueType = TValue;
 
     explicit Reader(const IConverter<TValue> &converter);
@@ -42,9 +40,9 @@ public:
 
     TextColor &error_color();
 
-    void add_command(uint32_t comId, const std::string &comText);
+    void add_command(const std::string &command);
 
-    void remove_command(uint32_t comId);
+    void remove_command(const std::string &command);
 
     template<class TValidator>
     void add_validator(const TValidator &validator);
@@ -57,7 +55,7 @@ private:
     Nullable<std::string> mRequiredText;
     TextColor mReadStyle;
     TextColor mErrorStyle;
-    std::map<uint32_t, std::string> mCommands;
+    std::set<std::string> mCommands;
     std::vector<const IValidator<TValue> *> mValidators;
 };
 
@@ -83,6 +81,7 @@ ReaderResult<TValue> Reader<TValue>::read() {
     std::string lineValue;
     TValue convertedValue;
     ReaderResult<TValue> result;
+    bool notCommand;
 
     output_begin(std::cout);
 
@@ -96,21 +95,29 @@ ReaderResult<TValue> Reader<TValue>::read() {
         ReaderErrorVector errors;
         std::string error;
 
+        notCommand = (!lineValue.empty() && lineValue[0] == '@');
+        if (notCommand)
+            lineValue.erase(0, 1);
+
         if (lineValue.empty()) {
             if (mRequiredText.get(error))
                 errors.push_back(error);
         } else {
-            if (lineValue.size() > 2 && lineValue.substr(0, 2) == COMMAND_PREFIX) {
-                auto command = lineValue.substr(2);
-                for (auto it = mCommands.cbegin(); it != mCommands.cend(); ++it) {
-                    if (it->second == command)
-                        result.set(it->first);
+            if (notCommand) {
+                if (!mConverter->convert(lineValue, convertedValue, error))
+                    errors.push_back(error);
+                else {
+                    for (const IValidator<TValue> *validator : mValidators)
+                        validator->validate(convertedValue, errors);
                 }
-            } else if (!mConverter->convert(lineValue, convertedValue, error))
-                errors.push_back(error);
-            else {
-                for (const IValidator<TValue> *validator : mValidators)
-                    validator->validate(convertedValue, errors);
+            } else {
+                for (auto it = mCommands.cbegin();
+                     it != mCommands.cend(); ++it) {
+                    if (lineValue == *it) {
+                        result.set(*it);
+                        break;
+                    }
+                }
             }
         }
 
@@ -122,7 +129,7 @@ ReaderResult<TValue> Reader<TValue>::read() {
             output_reset_style();
             term::pause();
         } else {
-            if (!lineValue.empty())
+            if (!lineValue.empty() && result.type() == ReaderResultType::ERROR)
                 result.set(convertedValue);
             breaking = true;
         }
@@ -132,6 +139,8 @@ ReaderResult<TValue> Reader<TValue>::read() {
     }
 
     output_end();
+
+    return result;
 }
 
 template<class TValue>
@@ -155,13 +164,13 @@ TextColor &Reader<TValue>::error_color() {
 }
 
 template<class TValue>
-void Reader<TValue>::add_command(uint32_t comId, const std::string &comText) {
-    mCommands.insert_or_assign(comId, comText);
+void Reader<TValue>::add_command(const std::string &command) {
+    mCommands.insert(command);
 }
 
 template<class TValue>
-void Reader<TValue>::remove_command(uint32_t comId) {
-    mCommands.erase(comId);
+void Reader<TValue>::remove_command(const std::string &command) {
+    mCommands.erase(command);
 }
 
 template<class TValue>

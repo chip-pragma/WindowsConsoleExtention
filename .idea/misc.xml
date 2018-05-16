@@ -9,6 +9,7 @@
     </sourceRoots>
     <excludeRoots>
       <file path="$PROJECT_DIR$/CpeLib/_old" />
+      <file path="$PROJECT_DIR$/CpeLib/src/cpe/ui/uml" />
     </excludeRoots>
   </component>
 </project>

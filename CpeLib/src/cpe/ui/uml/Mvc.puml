@@ -1,0 +1,29 @@
+@startuml
+
+abstract ViewBase <<TController>> {
+    -vector<IViewRunableItem> items
+    {abstract} +draw(TextCanvas)
+    +show()
+}
+
+interface IViewRunableItem {
+    #ElementBase element
+    {abstract} + run()
+}
+
+interface IElementInitializer {
+
+}
+
+IViewRunableItem o-- ElementItemBase
+class ElementItemBase {
+    #ElementBase element
+    -IElementInitializer initializer
+    ElementItemBase(IElementInitializer)
+    {abstract} + run()
+    
+}
+
+
+
+@enduml

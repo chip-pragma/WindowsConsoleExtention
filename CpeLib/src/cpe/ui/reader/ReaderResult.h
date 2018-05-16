@@ -9,6 +9,7 @@ namespace cpe {
 
 #undef ERROR
 enum class ReaderResultType : uint8_t {
+    UNDEFINED,
     ERROR,
     COMMAND,
     VALUE
@@ -23,41 +24,43 @@ public:
 
     ~ReaderResult() { };
 
-    void set(uint32_t commandId);
+    void set(const std::string &command);
 
     void set(const TValue &value);
 
     ReaderResultType type() const;
 
-    uint32_t command() const;
+    const std::string &command() const;
 
     const TValue &value() const;
 
 private:
     ReaderResultType mType = ReaderResultType::ERROR;
-    // TODO поработать с Variant
-    std::variant<uint32_t, TValue> mResult;
+    union {
+        TValue mValue;
+        std::string mCommand;
+    };
 };
 
 template<class TValue>
 ReaderResult<TValue>::ReaderResult(const ReaderResult<TValue> &result) {
     mType = result.mType;
     if (mType == ReaderResultType::COMMAND)
-        mResult = result.mResult;
+        mCommand = result.mCommand;
     else if (mType == ReaderResultType::VALUE)
-        mResult = result.mResult;
+        mValue = result.mValue;
 }
 
 template<class TValue>
-void ReaderResult<TValue>::set(uint32_t commandId) {
+void ReaderResult<TValue>::set(const std::string &command) {
     mType = ReaderResultType::COMMAND;
-    mResult = commandId;
+    mCommand = command;
 }
 
 template<class TValue>
 void ReaderResult<TValue>::set(const TValue &value) {
     mType = ReaderResultType::VALUE;
-    mResult = value;
+    mValue = value;
 }
 
 template<class TValue>
@@ -66,17 +69,17 @@ ReaderResultType ReaderResult<TValue>::type() const {
 }
 
 template<class TValue>
-uint32_t ReaderResult<TValue>::command() const {
+const std::string &ReaderResult<TValue>::command() const {
     if (mType != ReaderResultType::COMMAND)
         throw Exception("Result is not command");
-    return std::get<uint32_t>(mResult);
+    return mCommand;
 }
 
 template<class TValue>
 const TValue &ReaderResult<TValue>::value() const {
-    if (mType != ReaderResultType::COMMAND)
+    if (mType != ReaderResultType::VALUE)
         throw Exception("Result is not value");
-    return std::get<TValue>(mResult);
+    return mValue;
 }
 
 }
