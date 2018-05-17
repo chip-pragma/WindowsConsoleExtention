@@ -1,10 +1,10 @@
 #pragma once
 
-#include "cpe/ui/ElementBase.h"
+#include "WriterBase.h"
 
 namespace cpe {
 
-class DataTable : public ElementBase {
+class DataTable : public WriterBase {
 public:
     void draw(Buffer &cvs) override;
 };

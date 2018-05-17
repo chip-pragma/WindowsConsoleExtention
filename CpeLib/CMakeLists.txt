@@ -4,19 +4,19 @@ project(ConsolePresentExtention)
 
 add_library(${CPE_LIB_TARGET} STATIC
             src/cpe/tool/text.cpp src/cpe/tool/text.h src/cpe/core/terminal.cpp src/cpe/core/terminal.h
-            src/cpe/ui/write/StyledText.cpp src/cpe/ui/write/StyledText.h src/cpe/tool/Encoder.cpp
+            src/cpe/ui/output/StyledText.cpp src/cpe/ui/output/StyledText.h src/cpe/tool/Encoder.cpp
             src/cpe/tool/Encoder.h src/cpe/core/draw/Point.cpp src/cpe/core/draw/Point.h src/cpe/platform.h
             src/cpe/core/draw/Color.cpp src/cpe/core/draw/Color.cpp src/cpe/ui/style/Border.h src/cpe/ui/style/Border.cpp
             src/cpe/core/draw/Color.h src/cpe/_platform/winapi.h src/cpe/core/Exception.cpp src/cpe/core/Exception.h
-            src/cpe/ui/write/Buffer.cpp src/cpe/ui/write/Buffer.h src/cpe/ui/ElementBase.h src/cpe/macros.h
-            src/cpe/ui/ElementBase.cpp src/cpe/ui/ViewBase.h src/cpe/ui/reader/Reader.h
-            src/cpe/ui/write/WriteHelper.cpp src/cpe/ui/write/WriteHelper.h src/cpe/ui/write/StyledChar.cpp
-            src/cpe/ui/write/StyledChar.h src/cpe/tool/Nullable.h src/cpe/ui/style/TextColor.cpp
+            src/cpe/ui/output/Buffer.cpp src/cpe/ui/output/Buffer.h src/cpe/macros.h
+            src/cpe/ui/view/ViewBase.h src/cpe/ui/reader/Reader.h
+            src/cpe/ui/output/OutputHelper.cpp src/cpe/ui/output/OutputHelper.h src/cpe/ui/output/StyledChar.cpp
+            src/cpe/ui/output/StyledChar.h src/cpe/tool/Nullable.h src/cpe/ui/style/TextColor.cpp
             src/cpe/ui/style/TextColor.h src/cpe/ui/reader/IValidator.h src/cpe/ui/reader/IConverter.h
-            src/cpe/ui/element/MessageBox.cpp src/cpe/ui/element/MessageBox.h src/cpe/tool/NullableException.h
-            src/cpe/ui/write/StyledBorder.cpp src/cpe/ui/write/StyledBorder.h src/cpe/ui/ViewBase.cpp
-            src/cpe/ui/reader/LineReader.cpp src/cpe/ui/reader/LineReader.h src/cpe/ui/reader/ReaderResult.h
-            src/cpe/ui/IController.h src/cpe/ui/IElementInitializer.h)
+            src/cpe/ui/writer/Notification.cpp src/cpe/ui/writer/Notification.h src/cpe/tool/NullableException.h
+            src/cpe/ui/output/StyledBorder.cpp src/cpe/ui/output/StyledBorder.h
+            src/cpe/ui/reader/LineReader.cpp src/cpe/ui/reader/LineReader.h src/cpe/ui/ResultRead.h
+            src/cpe/ui/IController.h src/cpe/ui/IInitializer.h src/cpe/ui/IResultRead.h src/cpe/ui/writer/IWriter.h src/cpe/ui/ICuiElement.h src/cpe/ui/reader/IReader.h src/cpe/ui/view/IView.h src/cpe/ui/view/IViewItem.h src/cpe/ui/view/WriterViewItem.h src/cpe/ui/view/ViewItemBase.h src/cpe/ui/view/ReaderViewItem.h)
 
 target_include_directories(${CPE_LIB_TARGET} PUBLIC src)
 target_compile_features(${CPE_LIB_TARGET} PUBLIC cxx_std_17)

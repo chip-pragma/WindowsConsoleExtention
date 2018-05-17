@@ -6,10 +6,9 @@
 #include <cpe/ui/reader/LineReader.h>
 
 #include "common.h"
+#include "TestView.h"
 
 using namespace cpe;
-
-#undef MessageBox
 
 int main() {
     term::title("Текст консоли"_dos);
@@ -21,7 +20,7 @@ int main() {
     // TODO комманды при работе ввода в ридерах
     // TODO Реализация MVC (см. Mvc.puml)
     // TODO Выполнение View-элементов c помощью ElementItem оберток
-    // TODO Ридеры как наследникики ElementBase
+    // TODO Ридеры как наследникики WriterBase
 
     /*LineReader reader;
     reader.add_command("first");
@@ -31,9 +30,9 @@ int main() {
     bool breaking = false;
     while (!breaking) {
         auto result = reader.read();
-        if (result.type() == ReaderResultType::VALUE) {
+        if (result.type() == ResultReadType::VALUE) {
             std::cout << "Введено значение: "_dos << result.value() << "\n";
-        } else if (result.type() == ReaderResultType::COMMAND) {
+        } else if (result.type() == ResultReadType::COMMAND) {
             std::cout << "Команда: "_dos;
             if (result.command() == "first")
                 std::cout << "первача";
@@ -49,6 +48,11 @@ int main() {
             std::cout << "\n";
         }
     }*/
+
+    TestView view;
+    auto ctrl = view.create_controller();
+    ctrl.test_func();
+    view.show(true, false);
 
     term::pause();
 

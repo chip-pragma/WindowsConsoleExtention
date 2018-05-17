@@ -8,7 +8,7 @@
 namespace cpe {
 
 #undef ERROR
-enum class ReaderResultType : uint8_t {
+enum class ResultReadType : uint8_t {
     UNDEFINED,
     ERROR,
     COMMAND,
@@ -16,26 +16,26 @@ enum class ReaderResultType : uint8_t {
 };
 
 template<class TValue>
-class ReaderResult {
+class ResultRead {
 public:
-    ReaderResult() { };
+    ResultRead() { };
 
-    ReaderResult(const ReaderResult<TValue> &result);
+    ResultRead(const ResultRead<TValue> &result);
 
-    ~ReaderResult() { };
+    ~ResultRead() { };
 
     void set(const std::string &command);
 
     void set(const TValue &value);
 
-    ReaderResultType type() const;
+    ResultReadType type() const;
 
     const std::string &command() const;
 
     const TValue &value() const;
 
 private:
-    ReaderResultType mType = ReaderResultType::ERROR;
+    ResultReadType mType = ResultReadType::ERROR;
     union {
         TValue mValue;
         std::string mCommand;
@@ -43,41 +43,41 @@ private:
 };
 
 template<class TValue>
-ReaderResult<TValue>::ReaderResult(const ReaderResult<TValue> &result) {
+ResultRead<TValue>::ResultRead(const ResultRead<TValue> &result) {
     mType = result.mType;
-    if (mType == ReaderResultType::COMMAND)
+    if (mType == ResultReadType::COMMAND)
         mCommand = result.mCommand;
-    else if (mType == ReaderResultType::VALUE)
+    else if (mType == ResultReadType::VALUE)
         mValue = result.mValue;
 }
 
 template<class TValue>
-void ReaderResult<TValue>::set(const std::string &command) {
-    mType = ReaderResultType::COMMAND;
+void ResultRead<TValue>::set(const std::string &command) {
+    mType = ResultReadType::COMMAND;
     mCommand = command;
 }
 
 template<class TValue>
-void ReaderResult<TValue>::set(const TValue &value) {
-    mType = ReaderResultType::VALUE;
+void ResultRead<TValue>::set(const TValue &value) {
+    mType = ResultReadType::VALUE;
     mValue = value;
 }
 
 template<class TValue>
-ReaderResultType ReaderResult<TValue>::type() const {
+ResultReadType ResultRead<TValue>::type() const {
     return mType;
 }
 
 template<class TValue>
-const std::string &ReaderResult<TValue>::command() const {
-    if (mType != ReaderResultType::COMMAND)
+const std::string &ResultRead<TValue>::command() const {
+    if (mType != ResultReadType::COMMAND)
         throw Exception("Result is not command");
     return mCommand;
 }
 
 template<class TValue>
-const TValue &ReaderResult<TValue>::value() const {
-    if (mType != ReaderResultType::VALUE)
+const TValue &ResultRead<TValue>::value() const {
+    if (mType != ResultReadType::VALUE)
         throw Exception("Result is not value");
     return mValue;
 }

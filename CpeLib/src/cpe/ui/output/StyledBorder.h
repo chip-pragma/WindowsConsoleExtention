@@ -2,7 +2,7 @@
 
 #include "cpe/ui/style/TextColor.h"
 #include "cpe/ui/style/Border.h"
-#include "cpe/ui/write/StyledChar.h"
+#include "StyledChar.h"
 
 namespace cpe {
 

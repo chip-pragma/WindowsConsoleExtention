@@ -11,13 +11,13 @@
 #include "cpe/core/draw/Point.h"
 #include "cpe/tool/Nullable.h"
 #include "cpe/ui/style/TextColor.h"
-#include "WriteHelper.h"
+#include "OutputHelper.h"
 #include "StyledText.h"
 #include "StyledChar.h"
 
 namespace cpe {
 
-class Buffer : public WriteHelper {
+class Buffer {
 public:
 
     explicit Buffer(const Point &size);

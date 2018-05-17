@@ -192,18 +192,19 @@ void Buffer::draw(StyledChar schar, int32_t count, bool vertical) {
 
 void Buffer::output_to(std::ostream &outStream) const {
     auto maxSize = (__clamp_point(mMaxCurPos, mSize) + 1);
+    OutputHelper outHelp;
 
-    output_begin(outStream);
+    outHelp.begin_colorized(outStream);
     for (int i = 0; i < maxSize.y_crd(); i++) {
         auto line = mBuffer[i];
         for (int j = 0; j < maxSize.x_crd(); j++) {
             auto c = line[j];
-            output_apply_style(c.color());
+            outHelp.apply_color(c.color());
             outStream << c.character();
         }
         outStream << std::endl;
     }
-    output_end();
+    outHelp.end_colorized();
 }
 
 void Buffer::clear() {

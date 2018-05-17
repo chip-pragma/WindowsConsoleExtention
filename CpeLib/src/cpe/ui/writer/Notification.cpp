@@ -1,45 +1,45 @@
 #include "cpe/tool/Encoder.h"
-#include "MessageBox.h"
+#include "Notification.h"
 
 namespace cpe {
 
-MessageBox::MessageBox() {
+Notification::Notification() {
     mBorder.border().final_encoding().set(Encoder(Encoder::CP866));
 }
 
-const StyledBorder &MessageBox::border() const {
+const StyledBorder &Notification::border() const {
     return mBorder;
 }
 
-StyledBorder &MessageBox::border() {
+StyledBorder &Notification::border() {
     return mBorder;
 }
 
-const Nullable<StyledText> &MessageBox::caption() const {
+const Nullable<StyledText> &Notification::caption() const {
     return mCaption;
 }
 
-Nullable<StyledText> &MessageBox::caption() {
+Nullable<StyledText> &Notification::caption() {
     return mCaption;
 }
 
-const StyledText &MessageBox::message() const {
+const StyledText &Notification::message() const {
     return mMessage;
 }
 
-StyledText &MessageBox::message() {
+StyledText &Notification::message() {
     return mMessage;
 }
 
-const Nullable<StyledChar> &MessageBox::icon() const {
+const Nullable<StyledChar> &Notification::icon() const {
     return mIcon;
 }
 
-Nullable<StyledChar> &MessageBox::icon() {
+Nullable<StyledChar> &Notification::icon() {
     return mIcon;
 }
 
-void MessageBox::draw(Buffer &cvs) {
+void Notification::draw(Buffer &cvs) {
     using brd = Border;
 
     Point innerSize = cvs.size() - Point(2, 2);
@@ -60,7 +60,7 @@ void MessageBox::draw(Buffer &cvs) {
 
     cvs.cursor_position(Point(0, 1));
     cvs.draw(mBorder[brd::SL], textBlockUsedSize.y_crd(), true);
-    cvs.cursor_position(Point(cvs.size().x_crd() - 1, 1));
+    cvs.cursor_position(Point(textBlockUsedSize.x_crd() + 1, 1));
     cvs.draw(mBorder[brd::SR], textBlockUsedSize.y_crd(), true);
 
     cvs.cursor_position(Point(0, textBlockUsedSize.y_crd() + 1));
@@ -89,6 +89,27 @@ void MessageBox::draw(Buffer &cvs) {
         cvs.move_cursor(Point(captionWidth, 0));
         cvs.draw(StyledText("]", mBorder.color()));
     }
+}
+
+
+NotificationInitializer::NotificationInitializer(Notification &element) :
+        IInitializer(static_cast<WriterBase &>(element)),
+        mElement(element) { }
+
+StyledBorder &NotificationInitializer::border() {
+    return mElement.border();
+}
+
+Nullable<StyledText> &NotificationInitializer::caption() {
+    return mElement.caption();
+}
+
+StyledText &NotificationInitializer::message() {
+    return mElement.message();
+}
+
+Nullable<StyledChar> &NotificationInitializer::icon() {
+    return mElement.icon();
 }
 
 }

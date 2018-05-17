@@ -22,21 +22,21 @@ abstract ElementBase {
 package "" <<Rectangle>> {
 
     interface IViewRunableItem {
-        #element : ElementBase
         IViewRunableItem(ElementBase)
         {abstract} + run(IController)
     }
 
     abstract ElementItemBase < class TElementInitializer > {
+        #element : ElementBase
         #initializer : IElementInitializer
         #initReceiverFunc : InitializerReceiverFunc
         +ElementItemBase(ElementBase, InitializerReceiverFunc)
     }
 
-    abstract ReaderItemBase < class TElementInitializer, class TReaderResult > {
+    abstract ReaderItemBase < class TElementInitializer, class TReader > {
         # result : IReaderResult
         # resultReceiverFunc : ReaderResultReceiverFunc
-        +ReaderItemBase(ElementBase, InitializerReceiverFunc, ReaderResultReceiverFunc)
+        +ReaderItemBase(TReader, InitializerReceiverFunc, ReaderResultReceiverFunc)
     }
 }
 
@@ -53,8 +53,8 @@ interface IElementInitializer {
     +IElementInitializer(ElementBase)
 }
 
-interface IReaderResult {
-    +IReaderResult(ElementBase)
+class ReaderResult < TValue > {
+    +IReaderResult()
 }
 
 

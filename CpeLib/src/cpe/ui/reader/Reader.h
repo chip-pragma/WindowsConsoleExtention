@@ -12,21 +12,23 @@
 #include "cpe/tool/text.h"
 #include "cpe/tool/Nullable.h"
 #include "cpe/ui/style/TextColor.h"
-#include "cpe/ui/write/WriteHelper.h"
+#include "cpe/ui/output/OutputHelper.h"
 #include "IValidator.h"
 #include "IConverter.h"
-#include "ReaderResult.h"
+#include "cpe/ui/ResultRead.h"
+#include "cpe/ui/writer/WriterBase.h"
 
 namespace cpe {
 
-template<class TValue>
-class Reader : public WriteHelper {
+template<class TValue, class TResult = ResultRead<TValue>>
+class Reader : public OutputHelper {
 public:
-    using ValueType = TValue;
+    using ValueClass = TValue;
+    using ResultReadClass = TResult;
 
     explicit Reader(const IConverter<TValue> &converter);
 
-    ReaderResult<TValue> read();
+    ResultRead<TValue> read();
 
     const Nullable<std::string> &requirement() const;
 
@@ -61,26 +63,26 @@ private:
 
 //region [ definition ]
 
-template<class TValue>
-Reader<TValue>::Reader(const IConverter<TValue> &converter) {
+template<class TValue, class TResult>
+Reader<TValue, TResult>::Reader(const IConverter<TValue> &converter) {
     mConverter = &converter;
 }
 
-template<class TValue>
-const Nullable<std::string> &Reader<TValue>::requirement() const {
+template<class TValue, class TResult>
+const Nullable<std::string> &Reader<TValue, TResult>::requirement() const {
     return mRequiredText;
 }
 
-template<class TValue>
-Nullable<std::string> &Reader<TValue>::requirement() {
+template<class TValue, class TResult>
+Nullable<std::string> &Reader<TValue, TResult>::requirement() {
     return mRequiredText;
 }
 
-template<class TValue>
-ReaderResult<TValue> Reader<TValue>::read() {
+template<class TValue, class TResult>
+ResultRead<TValue> Reader<TValue, TResult>::read() {
     std::string lineValue;
     TValue convertedValue;
-    ReaderResult<TValue> result;
+    ResultRead<TValue> result;
     bool notCommand;
 
     output_begin(std::cout);
@@ -129,7 +131,7 @@ ReaderResult<TValue> Reader<TValue>::read() {
             output_reset_style();
             term::pause();
         } else {
-            if (!lineValue.empty() && result.type() == ReaderResultType::ERROR)
+            if (!lineValue.empty() && result.type() == ResultReadType::ERROR)
                 result.set(convertedValue);
             breaking = true;
         }
@@ -143,45 +145,45 @@ ReaderResult<TValue> Reader<TValue>::read() {
     return result;
 }
 
-template<class TValue>
-const TextColor &Reader<TValue>::read_color() const {
+template<class TValue, class TResult>
+const TextColor &Reader<TValue, TResult>::read_color() const {
     return mReadStyle;
 }
 
-template<class TValue>
-TextColor &Reader<TValue>::read_color() {
+template<class TValue, class TResult>
+TextColor &Reader<TValue, TResult>::read_color() {
     return mReadStyle;
 }
 
-template<class TValue>
-const TextColor &Reader<TValue>::error_color() const {
+template<class TValue, class TResult>
+const TextColor &Reader<TValue, TResult>::error_color() const {
     return mErrorStyle;
 }
 
-template<class TValue>
-TextColor &Reader<TValue>::error_color() {
+template<class TValue, class TResult>
+TextColor &Reader<TValue, TResult>::error_color() {
     return mErrorStyle;
 }
 
-template<class TValue>
-void Reader<TValue>::add_command(const std::string &command) {
+template<class TValue, class TResult>
+void Reader<TValue, TResult>::add_command(const std::string &command) {
     mCommands.insert(command);
 }
 
-template<class TValue>
-void Reader<TValue>::remove_command(const std::string &command) {
+template<class TValue, class TResult>
+void Reader<TValue, TResult>::remove_command(const std::string &command) {
     mCommands.erase(command);
 }
 
-template<class TValue>
+template<class TValue, class TResult>
 template<class TValidator>
-void Reader<TValue>::add_validator(const TValidator &validator) {
+void Reader<TValue, TResult>::add_validator(const TValidator &validator) {
     mValidators.push_back(&validator);
 }
 
-template<class TValue>
+template<class TValue, class TResult>
 template<class TValidator>
-void Reader<TValue>::remove_validator(const TValidator &validator) {
+void Reader<TValue, TResult>::remove_validator(const TValidator &validator) {
     auto finded = std::find(
             mValidators.cbegin(), mValidators.cend(),
             static_cast<const IValidator<TValue> *>(&validator));
