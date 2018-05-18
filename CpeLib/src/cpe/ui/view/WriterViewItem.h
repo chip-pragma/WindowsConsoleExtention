@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <cpe/ui/writer/WriterBase.h>
 
 #include "cpe/ui/output/Buffer.h"
 #include "cpe/ui/writer/IWriter.h"
@@ -27,7 +28,7 @@ template<class TWriter, class TInitializer>
 WriterViewItem<TWriter, TInitializer>::WriterViewItem(TWriter &writer)
         : ViewItemBase<TWriter, TInitializer>(writer),
           mWriter(writer) {
-    static_assert(std::is_base_of<IWriter, TWriter>::value);
+    static_assert(std::is_base_of<WriterBase, TWriter>::value);
 }
 
 template<class TWriter, class TInitializer>
@@ -36,9 +37,7 @@ void WriterViewItem<TWriter, TInitializer>::run(IController &ctrl) {
     if (BaseClass::mInitFunc)
         (ctrl.*BaseClass::mInitFunc)(initializer);
 
-    Buffer buf(term::buffer_size() - 1);
-    mWriter.draw(buf);
-    buf.output_to(std::cout);
+    static_cast<WriterBase&>(mWriter).output_to(std::cout, term::buffer_size() - 1);
 }
 
 

@@ -52,7 +52,7 @@ int main() {
     TestView view;
     auto ctrl = view.initialize();
     ctrl.test_func();
-    view.show(true, false);
+    view.show(false, true);
 
     term::pause();
 

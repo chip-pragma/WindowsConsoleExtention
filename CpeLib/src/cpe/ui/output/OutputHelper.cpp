@@ -11,7 +11,7 @@ void OutputHelper::save_state() {
 
 void OutputHelper::back_state(size_t count) {
     auto width = term::buffer_size().x_crd();
-    for (size_t i; i < count && !mStates.empty(); i++) {
+    for (size_t i = 0; i < count && !mStates.empty(); i++) {
         Point last = mStates.top();
         auto curPos = term::cursor_position();
         auto yDiff = curPos.y_crd() - last.y_crd();

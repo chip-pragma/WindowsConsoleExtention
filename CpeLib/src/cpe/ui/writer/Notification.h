@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "IWriter.h"
+#include "WriterBase.h"
 #include "cpe/ui/IInitializer.h"
 #include "cpe/ui/style/Border.h"
 #include "cpe/ui/output/StyledBorder.h"
@@ -14,7 +14,7 @@ namespace cpe {
 
 #undef MessageBox
 
-class Notification : public IWriter {
+class Notification : public WriterBase {
 public:
     class Initializer : public IInitializer {
     public:
@@ -28,11 +28,17 @@ public:
 
         Nullable<StyledChar> &icon();
 
+        bool is_wait() const;
+
+        void wait(bool wait);
+
     private:
         Notification &mElement;
     };
 
     Notification();
+
+    ~Notification() override;
 
     const StyledBorder &border() const;
 
@@ -50,13 +56,20 @@ public:
 
     Nullable<StyledChar> &icon();
 
+    bool is_wait() const;
+
+    void wait(bool wait);
+
     void draw(Buffer &cvs) override;
+
+    void output_to(std::ostream &outStream, const Point &size) override;
 
 private:
     StyledBorder mBorder;
     Nullable<StyledChar> mIcon;
     Nullable<StyledText> mCaption;
     StyledText mMessage;
+    bool mWait = false;
 };
 
 

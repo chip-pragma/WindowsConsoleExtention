@@ -4,9 +4,13 @@
 
 namespace cpe {
 
+//region [ Initializer ]
+
 Notification::Initializer::Initializer(Notification &element) :
         IInitializer(static_cast<IWriter &>(element)),
         mElement(element) { }
+
+Notification::~Notification() { }
 
 StyledBorder &Notification::Initializer::border() {
     return mElement.border();
@@ -23,6 +27,16 @@ StyledText &Notification::Initializer::message() {
 Nullable<StyledChar> &Notification::Initializer::icon() {
     return mElement.icon();
 }
+
+bool Notification::Initializer::is_wait() const {
+    return mElement.is_wait();
+}
+
+void Notification::Initializer::wait(bool wait) {
+    mElement.wait(wait);
+}
+
+//endregion
 
 Notification::Notification() {
     mBorder.border().final_encoding().set(Encoder(Encoder::CP866));
@@ -58,6 +72,14 @@ const Nullable<StyledChar> &Notification::icon() const {
 
 Nullable<StyledChar> &Notification::icon() {
     return mIcon;
+}
+
+bool Notification::is_wait() const {
+    return mWait;
+}
+
+void Notification::wait(bool wait) {
+    mWait = wait;
 }
 
 void Notification::draw(Buffer &cvs) {
@@ -112,6 +134,11 @@ void Notification::draw(Buffer &cvs) {
     }
 }
 
+void Notification::output_to(std::ostream &outStream, const Point &size) {
+    WriterBase::output_to(outStream, size);
+    if (mWait)
+        term::pause();
+}
 
 }
 
