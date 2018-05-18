@@ -29,7 +29,7 @@ public:
 
 private:
     std::stack<Point> mStates;
-    std::ostream *mOutStream;
+    std::ostream *mOutStream = nullptr;
     bool mOutputAutoFlush;
     Color mOutputFore;
     Color mOutputBack;

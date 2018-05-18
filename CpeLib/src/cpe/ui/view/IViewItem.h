@@ -7,9 +7,7 @@ namespace cpe {
 
 class IViewItem {
 public:
-    explicit IViewItem(ICuiElement &elem) { }
-
-    virtual ~_IViewItem() { }
+    virtual ~IViewItem() { }
 
     virtual void run(IController &ctrl) = 0;
 };

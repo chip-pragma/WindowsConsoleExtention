@@ -2,7 +2,10 @@
 
 #include <string>
 #include <map>
+
+#include "cpe/tool/Nullable.h"
 #include "cpe/tool/Encoder.h"
+
 
 namespace cpe {
 

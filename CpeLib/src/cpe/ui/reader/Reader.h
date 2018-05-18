@@ -16,12 +16,12 @@
 #include "IValidator.h"
 #include "IConverter.h"
 #include "cpe/ui/ResultRead.h"
-#include "cpe/ui/writer/WriterBase.h"
+#include "cpe/ui/writer/IWriter.h"
 
 namespace cpe {
 
 template<class TValue, class TResult = ResultRead<TValue>>
-class Reader : public OutputHelper {
+class Reader {
 public:
     using ValueClass = TValue;
     using ResultReadClass = TResult;
@@ -84,13 +84,14 @@ ResultRead<TValue> Reader<TValue, TResult>::read() {
     TValue convertedValue;
     ResultRead<TValue> result;
     bool notCommand;
+    OutputHelper outHelp;
 
-    output_begin(std::cout);
+    outHelp.begin_colorized(std::cout);
 
     bool breaking = false;
     while (!breaking) {
-        state_save();
-        output_apply_style(mReadStyle);
+        outHelp.save_state();
+        outHelp.apply_color(mReadStyle);
         std::getline(std::cin, lineValue);
         text::trim(lineValue);
 
@@ -124,11 +125,11 @@ ResultRead<TValue> Reader<TValue, TResult>::read() {
         }
 
         if (!errors.empty()) {
-            output_apply_style(mErrorStyle);
+            outHelp.apply_color(mErrorStyle);
             for (const auto &err : errors)
                 std::cout << err << "\n";
             std::cout.flush();
-            output_reset_style();
+            outHelp.reset_colors();
             term::pause();
         } else {
             if (!lineValue.empty() && result.type() == ResultReadType::ERROR)
@@ -136,11 +137,11 @@ ResultRead<TValue> Reader<TValue, TResult>::read() {
             breaking = true;
         }
 
-        output_reset_style();
-        state_clear_back();
+        outHelp.reset_colors();
+        outHelp.back_state();
     }
 
-    output_end();
+    outHelp.end_colorized();
 
     return result;
 }

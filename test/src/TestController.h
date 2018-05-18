@@ -9,7 +9,7 @@ public:
 
     void test_func() const;
 
-    void init_test_notification(cpe::NotificationInitializer &init);
+    void init_test_notification(cpe::Notification::Initializer &init);
 };
 
 

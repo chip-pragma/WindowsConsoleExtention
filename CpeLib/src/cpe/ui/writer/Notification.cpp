@@ -1,7 +1,28 @@
 #include "cpe/tool/Encoder.h"
+#include "IWriter.h"
 #include "Notification.h"
 
 namespace cpe {
+
+Notification::Initializer::Initializer(Notification &element) :
+        IInitializer(static_cast<IWriter &>(element)),
+        mElement(element) { }
+
+StyledBorder &Notification::Initializer::border() {
+    return mElement.border();
+}
+
+Nullable<StyledText> &Notification::Initializer::caption() {
+    return mElement.caption();
+}
+
+StyledText &Notification::Initializer::message() {
+    return mElement.message();
+}
+
+Nullable<StyledChar> &Notification::Initializer::icon() {
+    return mElement.icon();
+}
 
 Notification::Notification() {
     mBorder.border().final_encoding().set(Encoder(Encoder::CP866));
@@ -91,26 +112,6 @@ void Notification::draw(Buffer &cvs) {
     }
 }
 
-
-NotificationInitializer::NotificationInitializer(Notification &element) :
-        IInitializer(static_cast<WriterBase &>(element)),
-        mElement(element) { }
-
-StyledBorder &NotificationInitializer::border() {
-    return mElement.border();
-}
-
-Nullable<StyledText> &NotificationInitializer::caption() {
-    return mElement.caption();
-}
-
-StyledText &NotificationInitializer::message() {
-    return mElement.message();
-}
-
-Nullable<StyledChar> &NotificationInitializer::icon() {
-    return mElement.icon();
-}
 
 }
 

@@ -6,42 +6,54 @@
 #include "cpe/ui/reader/IReader.h"
 #include "cpe/ui/IResultRead.h"
 #include "ViewItemBase.h"
+#include "cpe/ui/IController.h"
 
 namespace cpe {
 
-template<class TController, class TReader, class TInitializer, class TResult>
-class ReaderViewItem : public ViewItemBase<TController, TInitializer> {
+template<class TReader, class TInitializer, class TResult>
+class ReaderViewItem : public ViewItemBase<TReader, TInitializer> {
+
 public:
-    using ReaderClass = TReader;
+    using BaseClass = ViewItemBase<TReader, TInitializer>;
     using ResultClass = TResult;
+    template<class TController>
     using ResultReceiverFunc = void (TController::*)(TResult &);
 
-    explicit ReaderViewItem(TReader &reader,
-                            InitializerReceiverFunc initFunc = nullptr,
-                            ResultReceiverFunc resultFunc = nullptr);
+    explicit ReaderViewItem(TReader &reader);
+
+    ~ReaderViewItem() override { };
+
+    template<class TController>
+    void assign_result_func(ResultReceiverFunc<TController> resultFunc);
 
     void run(IController &ctrl);
 
 protected:
-    IReader &mReader;
-    ResultReceiverFunc mResultFunc;
+    using _PureResultReceiverFunc = void (IController::*)(TResult &);
+
+    TReader &mReader;
+    _PureResultReceiverFunc mResultFunc;
 };
 
-template<class TController, class TReader, class TInitializer, class TResult>
-ReaderViewItem<TController, TReader, TInitializer, TResult>::ReaderViewItem(TReader &reader,
-                                                                            InitializerReceiverFunc initFunc,
-                                                                            ResultReceiverFunc resultFunc)
-        : mReader(static_cast<IReader &>(reader)),
-          ViewItemBase(static_cast<ICuiElement &>(reader), initFunc),
-          mResultFunc(resultFunc) {
+template<class TReader, class TInitializer, class TResult>
+ReaderViewItem<TReader, TInitializer, TResult>::ReaderViewItem(TReader &reader)
+        : ViewItemBase<TReader, TInitializer>(reader),
+          mReader(reader) {
+    static_assert(std::is_base_of<IReader, TReader>::value);
     static_assert(std::is_base_of<IResultRead, TResult>::value);
 }
 
-template<class TController, class TReader, class TInitializer, class TResult>
-void ReaderViewItem<TController, TReader, TInitializer, TResult>::run(IController &ctrl) {
+template<class TReader, class TInitializer, class TResult>
+template<class TController>
+void ReaderViewItem<TReader, TInitializer, TResult>::assign_result_func(ResultReceiverFunc<TController> resultFunc) {
+    mResultFunc = static_cast<_PureResultReceiverFunc>(resultFunc);
+}
+
+template<class TReader, class TInitializer, class TResult>
+void ReaderViewItem<TReader, TInitializer, TResult>::run(IController &ctrl) {
     TInitializer initializer(mReader);
-    if (mInitFunc)
-        (ctrl.*mInitFunc)(initializer);
+    if (BaseClass::mInitFunc)
+        (ctrl.*BaseClass::mInitFunc)(initializer);
 
     while (true) {
         TResult result;

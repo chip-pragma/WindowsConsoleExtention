@@ -2,17 +2,36 @@
 
 #include <string>
 
-#include "WriterBase.h"
+#include "IWriter.h"
 #include "cpe/ui/IInitializer.h"
 #include "cpe/ui/style/Border.h"
 #include "cpe/ui/output/StyledBorder.h"
+#include "cpe/ui/output/StyledText.h"
+#include "cpe/ui/output/StyledChar.h"
+#include "cpe/ui/output/Buffer.h"
 
 namespace cpe {
 
 #undef MessageBox
 
-class Notification : public WriterBase {
+class Notification : public IWriter {
 public:
+    class Initializer : public IInitializer {
+    public:
+        explicit Initializer(Notification &element);
+
+        StyledBorder &border();
+
+        Nullable<StyledText> &caption();
+
+        StyledText &message();
+
+        Nullable<StyledChar> &icon();
+
+    private:
+        Notification &mElement;
+    };
+
     Notification();
 
     const StyledBorder &border() const;
@@ -40,21 +59,7 @@ private:
     StyledText mMessage;
 };
 
-class NotificationInitializer : public IInitializer {
-public:
-    explicit NotificationInitializer(Notification &element);
 
-    StyledBorder &border();
-
-    Nullable<StyledText> &caption();
-
-    StyledText &message();
-
-    Nullable<StyledChar> &icon();
-
-private:
-    Notification &mElement;
-};
 
 }
 

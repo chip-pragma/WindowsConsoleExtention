@@ -6,7 +6,9 @@
 #include "TestController.h"
 
 class TestView : public cpe::ViewBase<TestController> {
-    cpe::Notification m_nTest;
+    using BaseClass = cpe::ViewBase<TestController>;
+
+    cpe::Notification cuiTest;
 
 public:
     void init_items() override;

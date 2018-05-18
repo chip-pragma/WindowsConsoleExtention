@@ -8,36 +8,39 @@
 
 namespace cpe {
 
-template<class TController, class TWriter, class TInitializer>
-class WriterViewItem : public ViewItemBase<TController, TInitializer> {
+template<class TWriter, class TInitializer>
+class WriterViewItem : public ViewItemBase<TWriter, TInitializer> {
 public:
-    using WriterClass = TWriter;
+    using BaseClass = ViewItemBase<TWriter, TInitializer>;
 
-    explicit WriterViewItem(TWriter &writer, InitializerReceiverFunc initFunc = nullptr);
+    explicit WriterViewItem(TWriter &writer);
+
+    ~WriterViewItem() override { }
 
     void run(IController &ctrl);
 
 protected:
-    IWriter &mWriter;
+    TWriter &mWriter;
 };
 
-template<class TController, class TWriter, class TInitializer>
-WriterViewItem<TController, TWriter, TInitializer>::WriterViewItem(TWriter &writer,
-                                                                   InitializerReceiverFunc initFunc)
-        : mWriter(static_cast<IWriter &>(writer)),
-          ViewItemBase(static_cast<ICuiElement &>(writer), initFunc) {
+template<class TWriter, class TInitializer>
+WriterViewItem<TWriter, TInitializer>::WriterViewItem(TWriter &writer)
+        : ViewItemBase<TWriter, TInitializer>(writer),
+          mWriter(writer) {
+    static_assert(std::is_base_of<IWriter, TWriter>::value);
 }
 
-template<class TController, class TWriter, class TInitializer>
-void WriterViewItem<TController, TWriter, TInitializer>::run(IController &ctrl) {
+template<class TWriter, class TInitializer>
+void WriterViewItem<TWriter, TInitializer>::run(IController &ctrl) {
     TInitializer initializer(mWriter);
-    if (mInitFunc)
-        (ctrl.*mInitFunc)(initializer);
+    if (BaseClass::mInitFunc)
+        (ctrl.*BaseClass::mInitFunc)(initializer);
 
     Buffer buf(term::buffer_size() - 1);
     mWriter.draw(buf);
     buf.output_to(std::cout);
 }
+
 
 }
 

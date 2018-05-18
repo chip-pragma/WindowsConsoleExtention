@@ -50,7 +50,7 @@ int main() {
     }*/
 
     TestView view;
-    auto ctrl = view.create_controller();
+    auto ctrl = view.initialize();
     ctrl.test_func();
     view.show(true, false);
 

@@ -16,29 +16,32 @@ namespace cpe {
 template<class TController>
 class ViewBase : public IView {
 public:
+    template<class TInitializer>
+    using InitializerReceiverFunc = void (TController::*)(TInitializer &);
+    template<class TResult>
+    using ResultReceiverFunc = void (TController::*)(TResult &);
+
     using ControllerClass = TController;
 
     ViewBase();
 
     ~ViewBase() override;
 
-    virtual TController &create_controller();
+    virtual TController &initialize();
 
     void show(bool beforeClean, bool afterClean) final;
 
 protected:
     virtual void init_items() = 0;
 
-    // TODO допилить функции
+    template<class TInitializer, class TWriter>
+    void add_writer(TWriter& writer,
+                    InitializerReceiverFunc<TInitializer> initFunc = nullptr);
 
-    template<class TWriter, class TInitializer>
-    void add_item(TWriter &element,
-                  WriterViewItem<TController, TWriter, TInitializer>::InitializerReceiverFunc initFunc = nullptr);
-
-    template<class TReader, class TInitializer, class TResult>
-    void add_item(TReader &reader,
-                  ReaderViewItem<TController, TReader, TInitializer, TResult>::InitializerReceiverFunc initFunc = nullptr,
-                  ReaderViewItem<TController, TReader, TInitializer, TResult>::ResultReceiverFunc = nullptr);
+    template<class TInitializer, class TResult, class TReader>
+    void add_reader(TReader& reader,
+                    InitializerReceiverFunc<TInitializer> initFunc = nullptr,
+                    ResultReceiverFunc<TResult> resultFunc = nullptr);
 
 private:
     IController *mController = nullptr;
@@ -58,7 +61,7 @@ ViewBase<TController>::~ViewBase() {
 }
 
 template<class TController>
-TController &ViewBase<TController>::create_controller() {
+TController &ViewBase<TController>::initialize() {
     if (!mController) {
         mController = static_cast<IController *>(new TController());
         init_items();
@@ -80,6 +83,26 @@ void ViewBase<TController>::show(bool beforeClean, bool afterClean) {
 
     if (afterClean)
         outHelp.back_state();
+}
+
+template<class TController>
+template<class TInitializer, class TWriter>
+void ViewBase<TController>::add_writer(TWriter &writer,
+                                       InitializerReceiverFunc<TInitializer> initFunc) {
+    auto item = new WriterViewItem<TWriter, TInitializer>(writer);
+    item->assign_init_func(initFunc);
+    mItems.push_back(static_cast<IViewItem*>(item));
+}
+
+template<class TController>
+template<class TInitializer, class TResult, class TReader>
+void ViewBase<TController>::add_reader(TReader &reader,
+                                       InitializerReceiverFunc<TInitializer> initFunc,
+                                       ResultReceiverFunc<TResult> resultFunc) {
+    auto item = new ReaderViewItem<TReader, TInitializer, TResult>(reader);
+    item->assign_init_func(initFunc);
+    item->assign_result_func(resultFunc);
+    mItems.push_back(static_cast<IViewItem*>(item));
 }
 
 }
