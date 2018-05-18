@@ -4,7 +4,7 @@
 
 #include "cpe/ui/output/Buffer.h"
 #include "cpe/ui/reader/IReader.h"
-#include "cpe/ui/IResultRead.h"
+#include "cpe/ui/reader/IResultRead.h"
 #include "ViewItemBase.h"
 #include "cpe/ui/IController.h"
 

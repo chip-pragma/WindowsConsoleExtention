@@ -18,9 +18,6 @@ int main() {
     term::pause();
 
     // TODO комманды при работе ввода в ридерах
-    // TODO Реализация MVC (см. Mvc.puml)
-    // TODO Выполнение View-элементов c помощью ElementItem оберток
-    // TODO Ридеры как наследникики WriterBase
 
     /*LineReader reader;
     reader.add_command("first");

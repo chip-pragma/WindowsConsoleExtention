@@ -2,7 +2,7 @@
 
 void TestView::init_items() {
     add_writer<cpe::Notification::Initializer>(
-            cuiTest,
+            cuiTestWriter,
             &TestController::init_test_notification);
 
 }

@@ -3,11 +3,11 @@
 
 namespace cpe {
 
-StyledBorder::StyledBorder(const Border &border) : mBorder(border) {
+StyledBorder::StyledBorder(const BorderStyle &border) : mBorder(border) {
 
 }
 
-StyledBorder::StyledBorder(const Border &border, const TextColor &color) : mBorder(border), mColor(color) {
+StyledBorder::StyledBorder(const BorderStyle &border, const TextColor &color) : mBorder(border), mColor(color) {
 
 }
 
@@ -23,19 +23,19 @@ void StyledBorder::color(const TextColor &color) {
     mColor = color;
 }
 
-const Border &StyledBorder::border() const {
+const BorderStyle &StyledBorder::style() const {
     return mBorder;
 }
 
-Border &StyledBorder::border() {
+BorderStyle &StyledBorder::style() {
     return mBorder;
 }
 
-StyledChar StyledBorder::at(const Border::Side &side) const {
+StyledChar StyledBorder::at(const BorderStyle::Side &side) const {
     return StyledChar(mBorder.at(side), mColor);
 }
 
-StyledChar StyledBorder::operator[](const Border::Side &side) const {
+StyledChar StyledBorder::operator[](const BorderStyle::Side &side) const {
     return at(side);
 }
 

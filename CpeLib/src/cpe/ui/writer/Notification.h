@@ -4,7 +4,7 @@
 
 #include "WriterBase.h"
 #include "cpe/ui/IInitializer.h"
-#include "cpe/ui/style/Border.h"
+#include "cpe/ui/style/BorderStyle.h"
 #include "cpe/ui/output/StyledBorder.h"
 #include "cpe/ui/output/StyledText.h"
 #include "cpe/ui/output/StyledChar.h"

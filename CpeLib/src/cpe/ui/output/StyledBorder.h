@@ -1,7 +1,7 @@
 #pragma once
 
 #include "cpe/ui/style/TextColor.h"
-#include "cpe/ui/style/Border.h"
+#include "cpe/ui/style/BorderStyle.h"
 #include "StyledChar.h"
 
 namespace cpe {
@@ -10,9 +10,9 @@ class StyledBorder {
 public:
     StyledBorder() = default;
 
-    explicit StyledBorder(const Border& border);
+    explicit StyledBorder(const BorderStyle& border);
 
-    StyledBorder(const Border& border, const TextColor& color);
+    StyledBorder(const BorderStyle& border, const TextColor& color);
 
     const TextColor &color() const;
 
@@ -20,17 +20,17 @@ public:
 
     void color(const TextColor &color);
 
-    const Border& border() const;
+    const BorderStyle& style() const;
 
-    Border& border();
+    BorderStyle& style();
 
-    StyledChar at(const Border::Side &side) const;
+    StyledChar at(const BorderStyle::Side &side) const;
 
-    StyledChar operator[](const Border::Side &side) const;
+    StyledChar operator[](const BorderStyle::Side &side) const;
 
 private:
     TextColor mColor;
-    Border mBorder;
+    BorderStyle mBorder;
 };
 
 }

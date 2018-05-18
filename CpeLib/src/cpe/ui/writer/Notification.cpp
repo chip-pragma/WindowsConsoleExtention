@@ -39,7 +39,7 @@ void Notification::Initializer::wait(bool wait) {
 //endregion
 
 Notification::Notification() {
-    mBorder.border().final_encoding().set(Encoder(Encoder::CP866));
+    mBorder.style().final_encoding().set(Encoder(Encoder::CP866));
 }
 
 const StyledBorder &Notification::border() const {
@@ -83,7 +83,7 @@ void Notification::wait(bool wait) {
 }
 
 void Notification::draw(Buffer &cvs) {
-    using brd = Border;
+    using brd = BorderStyle;
 
     Point innerSize = cvs.size() - Point(2, 2);
     Point margin(2, 0);

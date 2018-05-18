@@ -1,17 +1,17 @@
 #include <cpe/tool/Nullable.h>
-#include "Border.h"
+#include "BorderStyle.h"
 
 namespace cpe {
 
-Border::Border() : mEncFrom(Encoder::UTF8) {
+BorderStyle::BorderStyle() : mEncFrom(Encoder::UTF8) {
     apply(DualBorder::DB_NONE);
 }
 
-Border::Border(const DualBorder &dualBorder) : mEncFrom(Encoder::UTF8) {
+BorderStyle::BorderStyle(const DualBorder &dualBorder) : mEncFrom(Encoder::UTF8) {
     apply(dualBorder);
 }
 
-void Border::apply(int8_t db) {
+void BorderStyle::apply(int8_t db) {
     // Коды рамок:
     /*
       DOS   UTF-8
@@ -124,26 +124,26 @@ void Border::apply(int8_t db) {
 
 }
 
-const Border::DualBorder &Border::current() const {
+const BorderStyle::DualBorder &BorderStyle::current() const {
     return mLastApplied;
 }
 
-char Border::at(const Border::Side &side) const {
+char BorderStyle::at(const BorderStyle::Side &side) const {
     auto sym = mSides.at(side);
     if (mEncTo)
         return mEncTo.get().to(mEncFrom.from(sym)).at(0);
     return sym.at(0);
 }
 
-char Border::operator[](const Side &side) const {
+char BorderStyle::operator[](const Side &side) const {
     return at(side);
 }
 
-const cpe::Nullable<Encoder> &Border::final_encoding() const {
+const cpe::Nullable<Encoder> &BorderStyle::final_encoding() const {
     return mEncTo;
 }
 
-Nullable<Encoder> &Border::final_encoding() {
+Nullable<Encoder> &BorderStyle::final_encoding() {
     return mEncTo;
 }
 

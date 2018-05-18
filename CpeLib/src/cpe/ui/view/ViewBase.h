@@ -9,7 +9,7 @@
 #include "WriterViewItem.h"
 #include "cpe/ui/IController.h"
 #include "cpe/ui/IInitializer.h"
-#include "cpe/ui/IResultRead.h"
+#include "cpe/ui/reader/IResultRead.h"
 
 namespace cpe {
 
@@ -34,11 +34,11 @@ public:
 protected:
     virtual void init_items() = 0;
 
-    template<class TInitializer, class TWriter>
+    template<class TInitializer, class TWriter, class TItem = WriterViewItem<TWriter, TInitializer>>
     void add_writer(TWriter& writer,
                     InitializerReceiverFunc<TInitializer> initFunc = nullptr);
 
-    template<class TInitializer, class TResult, class TReader>
+    template<class TInitializer, class TResult, class TReader, class TItem = ReaderViewItem<TReader, TInitializer, TResult>>
     void add_reader(TReader& reader,
                     InitializerReceiverFunc<TInitializer> initFunc = nullptr,
                     ResultReceiverFunc<TResult> resultFunc = nullptr);
@@ -86,20 +86,20 @@ void ViewBase<TController>::show(bool beforeClean, bool afterClean) {
 }
 
 template<class TController>
-template<class TInitializer, class TWriter>
+template<class TInitializer, class TWriter, class TItem>
 void ViewBase<TController>::add_writer(TWriter &writer,
-                                       InitializerReceiverFunc<TInitializer> initFunc) {
-    auto item = new WriterViewItem<TWriter, TInitializer>(writer);
+                                       ViewBase::InitializerReceiverFunc<TInitializer> initFunc) {
+    auto item = new TItem(writer);
     item->assign_init_func(initFunc);
     mItems.push_back(static_cast<IViewItem*>(item));
 }
 
 template<class TController>
-template<class TInitializer, class TResult, class TReader>
+template<class TInitializer, class TResult, class TReader, class TItem>
 void ViewBase<TController>::add_reader(TReader &reader,
-                                       InitializerReceiverFunc<TInitializer> initFunc,
-                                       ResultReceiverFunc<TResult> resultFunc) {
-    auto item = new ReaderViewItem<TReader, TInitializer, TResult>(reader);
+                                       ViewBase::InitializerReceiverFunc<TInitializer> initFunc,
+                                       ViewBase::ResultReceiverFunc<TResult> resultFunc) {
+    auto item = new TItem(reader);
     item->assign_init_func(initFunc);
     item->assign_result_func(resultFunc);
     mItems.push_back(static_cast<IViewItem*>(item));

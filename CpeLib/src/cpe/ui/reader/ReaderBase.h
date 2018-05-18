@@ -15,18 +15,17 @@
 #include "cpe/ui/output/OutputHelper.h"
 #include "IValidator.h"
 #include "IConverter.h"
-#include "cpe/ui/ResultRead.h"
+#include "ResultRead.h"
 #include "cpe/ui/writer/IWriter.h"
 
 namespace cpe {
 
-template<class TValue, class TResult = ResultRead<TValue>>
-class Reader {
+template<class TValue>
+class ReaderBase {
 public:
     using ValueClass = TValue;
-    using ResultReadClass = TResult;
 
-    explicit Reader(const IConverter<TValue> &converter);
+    explicit ReaderBase(const IConverter<TValue> &converter);
 
     ResultRead<TValue> read();
 
@@ -37,10 +36,6 @@ public:
     const TextColor &read_color() const;
 
     TextColor &read_color();
-
-    const TextColor &error_color() const;
-
-    TextColor &error_color();
 
     void add_command(const std::string &command);
 
@@ -56,30 +51,29 @@ private:
     const IConverter<TValue> *mConverter;
     Nullable<std::string> mRequiredText;
     TextColor mReadStyle;
-    TextColor mErrorStyle;
     std::set<std::string> mCommands;
     std::vector<const IValidator<TValue> *> mValidators;
 };
 
 //region [ definition ]
 
-template<class TValue, class TResult>
-Reader<TValue, TResult>::Reader(const IConverter<TValue> &converter) {
+template<class TValue>
+ReaderBase<TValue>::ReaderBase(const IConverter<TValue> &converter) {
     mConverter = &converter;
 }
 
-template<class TValue, class TResult>
-const Nullable<std::string> &Reader<TValue, TResult>::requirement() const {
+template<class TValue>
+const Nullable<std::string> &ReaderBase<TValue>::requirement() const {
     return mRequiredText;
 }
 
-template<class TValue, class TResult>
-Nullable<std::string> &Reader<TValue, TResult>::requirement() {
+template<class TValue>
+Nullable<std::string> &ReaderBase<TValue>::requirement() {
     return mRequiredText;
 }
 
-template<class TValue, class TResult>
-ResultRead<TValue> Reader<TValue, TResult>::read() {
+template<class TValue>
+ResultRead<TValue> ReaderBase<TValue>::read() {
     std::string lineValue;
     TValue convertedValue;
     ResultRead<TValue> result;
@@ -117,7 +111,7 @@ ResultRead<TValue> Reader<TValue, TResult>::read() {
                 for (auto it = mCommands.cbegin();
                      it != mCommands.cend(); ++it) {
                     if (lineValue == *it) {
-                        result.set(*it);
+                        result.assign_command(*it);
                         break;
                     }
                 }
@@ -132,8 +126,8 @@ ResultRead<TValue> Reader<TValue, TResult>::read() {
             outHelp.reset_colors();
             term::pause();
         } else {
-            if (!lineValue.empty() && result.type() == ResultReadType::ERROR)
-                result.set(convertedValue);
+            if (!lineValue.empty() && result.type() == ResultReadType::UNDEFINED)
+                result.assign_command(convertedValue);
             breaking = true;
         }
 
@@ -146,45 +140,35 @@ ResultRead<TValue> Reader<TValue, TResult>::read() {
     return result;
 }
 
-template<class TValue, class TResult>
-const TextColor &Reader<TValue, TResult>::read_color() const {
+template<class TValue>
+const TextColor &ReaderBase<TValue>::read_color() const {
     return mReadStyle;
 }
 
-template<class TValue, class TResult>
-TextColor &Reader<TValue, TResult>::read_color() {
+template<class TValue>
+TextColor &ReaderBase<TValue>::read_color() {
     return mReadStyle;
 }
 
-template<class TValue, class TResult>
-const TextColor &Reader<TValue, TResult>::error_color() const {
-    return mErrorStyle;
-}
-
-template<class TValue, class TResult>
-TextColor &Reader<TValue, TResult>::error_color() {
-    return mErrorStyle;
-}
-
-template<class TValue, class TResult>
-void Reader<TValue, TResult>::add_command(const std::string &command) {
+template<class TValue>
+void ReaderBase<TValue>::add_command(const std::string &command) {
     mCommands.insert(command);
 }
 
-template<class TValue, class TResult>
-void Reader<TValue, TResult>::remove_command(const std::string &command) {
+template<class TValue>
+void ReaderBase<TValue>::remove_command(const std::string &command) {
     mCommands.erase(command);
 }
 
-template<class TValue, class TResult>
+template<class TValue>
 template<class TValidator>
-void Reader<TValue, TResult>::add_validator(const TValidator &validator) {
+void ReaderBase<TValue>::add_validator(const TValidator &validator) {
     mValidators.push_back(&validator);
 }
 
-template<class TValue, class TResult>
+template<class TValue>
 template<class TValidator>
-void Reader<TValue, TResult>::remove_validator(const TValidator &validator) {
+void ReaderBase<TValue>::remove_validator(const TValidator &validator) {
     auto finded = std::find(
             mValidators.cbegin(), mValidators.cend(),
             static_cast<const IValidator<TValue> *>(&validator));

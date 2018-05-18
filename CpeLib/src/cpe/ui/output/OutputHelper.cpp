@@ -26,7 +26,7 @@ void OutputHelper::back_state(size_t count) {
 }
 
 size_t OutputHelper::state_count() const {
-    return 0;
+    return mStates.size();
 }
 
 void OutputHelper::begin_colorized(std::ostream &outStream) {

@@ -2,12 +2,12 @@
 
 #include <string>
 
-#include "Reader.h"
+#include "ReaderBase.h"
 #include "IConverter.h"
 
 namespace cpe {
 
-class LineReader : public Reader<std::string> {
+class LineReader : public ReaderBase<std::string> {
 public:
     LineReader();
 

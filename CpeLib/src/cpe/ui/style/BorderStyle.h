@@ -9,7 +9,7 @@
 
 namespace cpe {
 
-class Border {
+class BorderStyle {
 public:
     enum DualBorder : uint8_t {
         DB_NONE = 0,
@@ -34,9 +34,9 @@ public:
         SC
     };
 
-    Border();
+    BorderStyle();
 
-    explicit Border(const DualBorder &dualBorder);
+    explicit BorderStyle(const DualBorder &dualBorder);
 
     void apply(int8_t dualBorder);
 
