@@ -2,13 +2,13 @@
 
 #include <string>
 
-#include "ReaderBaseTemplate.h"
 #include "ReaderBase.h"
+#include "ReaderStyleBase.h"
 #include "IConverter.h"
 
 namespace cpe {
 
-class LineReader : public ReaderBaseTemplate<std::string, ReaderInitializer, ResultRead<std::string>> {
+class LineReader : public ReaderBase<std::string, ReaderInitializer, ResultRead<std::string>> {
 public:
     LineReader();
 
