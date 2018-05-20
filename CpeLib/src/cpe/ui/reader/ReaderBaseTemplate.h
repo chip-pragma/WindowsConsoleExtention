@@ -45,7 +45,7 @@ protected:
     const IConverter<TValue> *mConverter;
     std::vector<const IValidator<TValue> *> mValidators;
 
-    virtual TInitializer make_initializer() = 0;
+    TInitializer make_initializer() override = 0;
 };
 
 //region [ definition ]

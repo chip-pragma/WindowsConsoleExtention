@@ -28,7 +28,7 @@ public:
 protected:
     Point mSize = term::buffer_size() - 1;
 
-    virtual TInitializer make_initializer() = 0;
+    TInitializer make_initializer() override = 0;
 };
 
 template<class TInitializer>

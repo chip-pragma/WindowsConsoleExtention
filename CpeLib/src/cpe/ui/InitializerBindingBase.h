@@ -21,6 +21,8 @@ protected:
     using _PureInitializerReceiverFunc = void (IController::*)(TInitializer &);
 
     _PureInitializerReceiverFunc mInitFunc = nullptr;
+
+    virtual TInitializer make_initializer() = 0;
 };
 
 template<class TInitializer>

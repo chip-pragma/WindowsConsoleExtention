@@ -16,8 +16,6 @@ enum class ResultReadType : uint8_t {
     VALUE
 };
 
-// TODO закончить с результатом чтения
-
 template<class TValue>
 class ResultRead {
 
