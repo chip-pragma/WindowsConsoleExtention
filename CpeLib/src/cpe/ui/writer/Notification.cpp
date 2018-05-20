@@ -4,35 +4,34 @@
 
 namespace cpe {
 
-//region [ Initializer ]
+//region [ NotificationInitializer ]
 
-Notification::Initializer::Initializer(Notification &element) :
+NotificationInitializer::NotificationInitializer(Notification &element) :
         IInitializer(static_cast<IWriter &>(element)),
         mElement(element) { }
 
-Notification::~Notification() { }
 
-StyledBorder &Notification::Initializer::border() {
+StyledBorder &NotificationInitializer::border() {
     return mElement.border();
 }
 
-Nullable<StyledText> &Notification::Initializer::caption() {
+Nullable<StyledText> &NotificationInitializer::caption() {
     return mElement.caption();
 }
 
-StyledText &Notification::Initializer::message() {
+StyledText &NotificationInitializer::message() {
     return mElement.message();
 }
 
-Nullable<StyledChar> &Notification::Initializer::icon() {
+Nullable<StyledChar> &NotificationInitializer::icon() {
     return mElement.icon();
 }
 
-bool Notification::Initializer::is_wait() const {
+bool NotificationInitializer::is_wait() const {
     return mElement.is_wait();
 }
 
-void Notification::Initializer::wait(bool wait) {
+void NotificationInitializer::wait(bool wait) {
     mElement.wait(wait);
 }
 
@@ -41,6 +40,8 @@ void Notification::Initializer::wait(bool wait) {
 Notification::Notification() {
     mBorder.style().final_encoding().set(Encoder(Encoder::CP866));
 }
+
+Notification::~Notification() { }
 
 const StyledBorder &Notification::border() const {
     return mBorder;
@@ -82,7 +83,13 @@ void Notification::wait(bool wait) {
     mWait = wait;
 }
 
-void Notification::draw(Buffer &cvs) {
+void Notification::output_to(std::ostream &outStream) {
+    WriterBase::output_to(outStream);
+    if (mWait)
+        term::pause();
+}
+
+void Notification::on_write(Buffer &cvs) {
     using brd = BorderStyle;
 
     Point innerSize = cvs.size() - Point(2, 2);
@@ -134,10 +141,8 @@ void Notification::draw(Buffer &cvs) {
     }
 }
 
-void Notification::output_to(std::ostream &outStream, const Point &size) {
-    WriterBase::output_to(outStream, size);
-    if (mWait)
-        term::pause();
+NotificationInitializer Notification::make_initializer() {
+    return NotificationInitializer(*this);
 }
 
 }

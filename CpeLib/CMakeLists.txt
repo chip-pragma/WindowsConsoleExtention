@@ -9,14 +9,14 @@ add_library(${CPE_LIB_TARGET} STATIC
             src/cpe/core/draw/Color.cpp src/cpe/core/draw/Color.cpp src/cpe/ui/style/BorderStyle.h src/cpe/ui/style/BorderStyle.cpp
             src/cpe/core/draw/Color.h src/cpe/_platform/winapi.h src/cpe/core/Exception.cpp src/cpe/core/Exception.h
             src/cpe/ui/output/Buffer.cpp src/cpe/ui/output/Buffer.h src/cpe/macros.h
-            src/cpe/ui/view/ViewBase.h src/cpe/ui/reader/ReaderBase.h
+            src/cpe/ui/view/ViewBase.h src/cpe/ui/reader/ReaderBaseTemplate.h
             src/cpe/ui/output/OutputHelper.cpp src/cpe/ui/output/OutputHelper.h src/cpe/ui/output/StyledChar.cpp
             src/cpe/ui/output/StyledChar.h src/cpe/tool/Nullable.h src/cpe/ui/style/TextColor.cpp
             src/cpe/ui/style/TextColor.h src/cpe/ui/reader/IValidator.h src/cpe/ui/reader/IConverter.h
             src/cpe/ui/writer/Notification.cpp src/cpe/ui/writer/Notification.h
             src/cpe/ui/output/StyledBorder.cpp src/cpe/ui/output/StyledBorder.h
             src/cpe/ui/reader/LineReader.cpp src/cpe/ui/reader/LineReader.h src/cpe/ui/reader/ResultRead.h
-            src/cpe/ui/IController.h src/cpe/ui/IInitializer.h src/cpe/ui/reader/IResultRead.h src/cpe/ui/writer/IWriter.h src/cpe/ui/ICuiElement.h src/cpe/ui/reader/IReader.h src/cpe/ui/view/IView.h src/cpe/ui/view/IViewItem.h src/cpe/ui/view/WriterViewItem.h src/cpe/ui/view/ViewItemBase.h src/cpe/ui/view/ReaderViewItem.h src/cpe/ui/writer/WriterBase.cpp src/cpe/ui/writer/WriterBase.h)
+            src/cpe/ui/IController.h src/cpe/ui/IInitializer.h src/cpe/ui/reader/IResultRead.h src/cpe/ui/writer/IWriter.h src/cpe/ui/ICuiElement.h src/cpe/ui/reader/IReader.h src/cpe/ui/view/IView.h src/cpe/ui/writer/WriterBase.h src/cpe/ui/InitializerBindingBase.h src/cpe/ui/reader/ResultReadBindingBase.h src/cpe/ui/reader/ReaderBase.cpp src/cpe/ui/reader/ReaderBase.h)
 
 target_include_directories(${CPE_LIB_TARGET} PUBLIC src)
 target_compile_features(${CPE_LIB_TARGET} PUBLIC cxx_std_17)

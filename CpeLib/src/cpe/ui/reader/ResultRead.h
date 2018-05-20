@@ -1,13 +1,12 @@
 #pragma once
 
 #include <cstdint>
-#include <variant>
+#include <optional>
 
 #include "cpe/core/Exception.h"
 
 namespace cpe {
 
-#undef ERROR
 enum class ResultReadType : uint8_t {
     UNDEFINED,
     EMPTY,
@@ -21,10 +20,9 @@ enum class ResultReadType : uint8_t {
 
 template<class TValue>
 class ResultRead {
+
 public:
     ResultRead() { };
-
-    ResultRead(const ResultRead<TValue> &result);
 
     ~ResultRead() { };
 
@@ -34,11 +32,15 @@ public:
 
     void assign_convert_fail(const std::string &error);
 
-    void assign_invalid(const std::vector<std::string>& errors);
+    void assign_invalid(const std::vector<std::string> &errors);
 
     void assign_value(const TValue &value);
 
-    ResultReadType &type() const;
+    const ResultReadType &type() const;
+
+    void applied_read(bool apply);
+
+    bool is_read_applied() const;
 
     const std::string &command() const;
 
@@ -50,6 +52,7 @@ public:
 
 private:
     ResultReadType mType = ResultReadType::UNDEFINED;
+    bool mReadApplied;
 
     std::string mCommand;
     std::string mConvertFail;
@@ -58,36 +61,68 @@ private:
 };
 
 template<class TValue>
-ResultRead<TValue>::ResultRead(const ResultRead<TValue> &result) {
-    mType = result.mType;
-    if (mType == ResultReadType::COMMAND)
-        mCommand = result.mCommand;
-    else if (mType == ResultReadType::VALUE)
-        mValue = result.mValue;
+void ResultRead<TValue>::assign_empty() {
+    mType = ResultReadType::EMPTY;
 }
 
 template<class TValue>
 void ResultRead<TValue>::assign_command(const std::string &command) {
-    mType = ResultReadType::COMMAND;
     mCommand = command;
+    mType = ResultReadType::COMMAND;
+}
+
+template<class TValue>
+void ResultRead<TValue>::assign_convert_fail(const std::string &error) {
+    mConvertFail = error;
+    mType = ResultReadType::CONVERT_FAIL;
+}
+
+template<class TValue>
+void ResultRead<TValue>::assign_invalid(const std::vector<std::string> &errors) {
+    mInvalid = errors;
+    mType = ResultReadType::INVALID;
 }
 
 template<class TValue>
 void ResultRead<TValue>::assign_value(const TValue &value) {
-    mType = ResultReadType::VALUE;
     mValue = value;
+    mType = ResultReadType::VALUE;
 }
 
 template<class TValue>
-ResultReadType &ResultRead<TValue>::type() const {
+const ResultReadType &ResultRead<TValue>::type() const {
     return mType;
+}
+
+template<class TValue>
+void ResultRead<TValue>::applied_read(bool apply) {
+    mReadApplied = apply;
+}
+
+template<class TValue>
+bool ResultRead<TValue>::is_read_applied() const {
+    return mReadApplied;
 }
 
 template<class TValue>
 const std::string &ResultRead<TValue>::command() const {
     if (mType != ResultReadType::COMMAND)
-        throw Exception("Result is not command");
+        throw Exception("Result is not <command>");
     return mCommand;
+}
+
+template<class TValue>
+const std::string &ResultRead<TValue>::convert_fail() const {
+    if (mType != ResultReadType::CONVERT_FAIL)
+        throw Exception("Result is not <convert fail>");
+    return mConvertFail;
+}
+
+template<class TValue>
+const std::vector<std::string> &ResultRead<TValue>::invalid() const {
+    if (mType != ResultReadType::INVALID)
+        throw Exception("Result is not <invalid>");
+    return mInvalid;
 }
 
 template<class TValue>

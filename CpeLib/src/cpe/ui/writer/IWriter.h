@@ -9,7 +9,9 @@ class IWriter : public ICuiElement {
 public:
     ~IWriter() override { };
 
-    virtual void draw(Buffer &cvs) = 0;
+    virtual void write(Buffer &buf) = 0;
+
+    virtual void on_write(Buffer &buf) = 0;
 };
 
 }

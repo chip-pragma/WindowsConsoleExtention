@@ -1,7 +1,8 @@
 #pragma once
 
 #include <cstddef>
-#include "NullableException.h"
+
+#include "cpe/core/Exception.h"
 
 namespace cpe {
 
@@ -111,14 +112,14 @@ bool Nullable<TValue>::get(TValue &outValue) const {
 template<class TValue>
 const TValue &Nullable<TValue>::get() const {
     if (!mValue)
-        throw NullableException("Nullable-object's value is undefined (nullptr)");
+        throw Exception("Nullable-object's value is undefined (nullptr)");
     return *mValue;
 }
 
 template<class TValue>
 TValue &Nullable<TValue>::get() {
     if (!mValue)
-        throw NullableException("Nullable-object's value is undefined (nullptr)");
+        throw Exception("Nullable-object's value is undefined (nullptr)");
     return *mValue;
 }
 

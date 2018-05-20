@@ -10,11 +10,25 @@ void TestController::test_func() const {
     std::cout << "[TestController::test_func]\n";
 }
 
-void TestController::init_test_notification(cpe::Notification::Initializer &init) {
-    init.message().text() = "Message from [TestController::init_test_notification]";
+void TestController::init_test_notification(cpe::NotificationInitializer &init) {
     init.border().color().foreground().set(cpe::Colors::LT_GREEN);
+    init.message().text() = "Message from [TestController::init_test_notification]";
     init.border().style().apply(cpe::BorderStyle::DB_OUT_V);
     init.icon().set({'!', {cpe::Colors::WHITE, cpe::Colors::RED}});
     init.wait(true);
+}
+
+void TestController::result_test_reader(cpe::ResultRead<std::string> &result) {
+    if (result.type() == cpe::ResultReadType::COMMAND) {
+        if (result.command() == "siska") {
+            std::cout << "!!! [BOOBS] !!!/n";
+        }
+    } else if (result.type() == cpe::ResultReadType::VALUE) {
+        std::cout << "Readed: " << result.value() << "\n";
+    } else if (result.type() == cpe::ResultReadType::EMPTY) {
+        std::cout << "Empty :-(\n";
+    }
+    result.applied_read(false);
+    cpe::term::pause();
 }
 

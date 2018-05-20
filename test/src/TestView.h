@@ -8,12 +8,11 @@
 
 class TestView : public cpe::ViewBase<TestController> {
     using BaseClass = cpe::ViewBase<TestController>;
-
-    cpe::Notification cuiTestWriter;
-    cpe::LineReader cuiTestReader;
-
 public:
-    void init_items() override;
+    ~TestView() override { };
+
+protected:
+    void on_initialize() override;
 };
 
 

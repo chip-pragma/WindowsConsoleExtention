@@ -12,30 +12,30 @@
 
 namespace cpe {
 
-#undef MessageBox
+class Notification;
 
-class Notification : public WriterBase {
+class NotificationInitializer : public IInitializer {
 public:
-    class Initializer : public IInitializer {
-    public:
-        explicit Initializer(Notification &element);
+    explicit NotificationInitializer(Notification &element);
 
-        StyledBorder &border();
+    StyledBorder &border();
 
-        Nullable<StyledText> &caption();
+    Nullable<StyledText> &caption();
 
-        StyledText &message();
+    StyledText &message();
 
-        Nullable<StyledChar> &icon();
+    Nullable<StyledChar> &icon();
 
-        bool is_wait() const;
+    bool is_wait() const;
 
-        void wait(bool wait);
+    void wait(bool wait);
 
-    private:
-        Notification &mElement;
-    };
+private:
+    Notification &mElement;
+};
 
+class Notification : public WriterBase<NotificationInitializer> {
+public:
     Notification();
 
     ~Notification() override;
@@ -60,9 +60,13 @@ public:
 
     void wait(bool wait);
 
-    void draw(Buffer &cvs) override;
+    void output_to(std::ostream &outStream) override;
 
-    void output_to(std::ostream &outStream, const Point &size) override;
+protected:
+
+    void on_write(Buffer &cvs) override;
+
+    NotificationInitializer make_initializer() override;
 
 private:
     StyledBorder mBorder;
