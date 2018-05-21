@@ -1,26 +1,16 @@
 #pragma once
 
-#include <string>
-
 #include "BaseReader.h"
-#include "IConverter.h"
 
 namespace cpe {
 
-class LineReader : public BaseReader<ReaderData<std::string>, std::string, ResultRead<std::string>> {
-public:
-    explicit LineReader(const IConverter<ReaderData<std::string>> &converter);
-
+class LineReader : public BaseReader<std::string> {
 protected:
-    class _LineConverter : public IConverter<std::string> {
-    public:
-        bool convert(const std::string &lineValue, std::string &outValue, std::string &errorText) const override;
-    };
-
-    _LineConverter mConverter;
+    bool on_convert(std::string &srcLine, std::string &convertedValue) override;
 };
 
 }
+
 
 
 

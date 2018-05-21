@@ -17,7 +17,8 @@ public:
     template<class TValidator>
     void remove_validator(const TValidator &validator);
 
-    std::vector<IValidator<TValue>&> validators() const;
+    std::vector<std::string> validate(const TValue &value) const;
+
 protected:
     std::vector<IValidator<TValue> *> mValidators;
 };
@@ -39,11 +40,11 @@ void ReaderData<TValue>::remove_validator(const TValidator &validator) {
 }
 
 template<class TValue>
-std::vector<IValidator<TValue> &> ReaderData<TValue>::validators() const {
-    std::vector<IValidator<TValue> &> result;
-    for (const auto valid : mValidators)
-        result.push_back(*valid);
-    return result;
+std::vector<std::string> ReaderData<TValue>::validate(const TValue &value) const {
+    std::vector<std::string> errorList;
+    for (const IValidator<TValue> *valid : mValidators)
+        valid->validate(value, errorList);
+    return errorList;
 }
 
 }

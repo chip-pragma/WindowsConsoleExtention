@@ -1,9 +1,10 @@
 #include "TestView.h"
 
 void TestView::on_initialize() {
-    auto &notif = add<cpe::Notification>();
+    auto &notif = make_element<cpe::Notification>();
     notif.bind_data(&TestController::init_test_notification);
+    notif.data().size() = cpe::Point(20, 20);
 
-    auto &reader = add<cpe::LineReader>();
-    reader.bind_result_func(&TestController::result_test_reader);
+    auto &reader = make_element<cpe::LineReader>();
+    reader.bind_result(&TestController::result_test_reader);
 }

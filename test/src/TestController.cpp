@@ -10,15 +10,15 @@ void TestController::test_func() const {
     std::cout << "[TestController::test_func]\n";
 }
 
-void TestController::init_test_notification(cpe::NotificationData &init) {
-    init.message().text() = "Message from [TestController::init_test_notification]";
-    init.border().color().foreground() = cpe::Colors::LT_GREEN;
-    init.border().style().apply(cpe::BorderStyle::DB_OUT_V);
-    init.icon() = cpe::StyledChar('!', {cpe::Colors::BLACK, cpe::Colors::LT_RED});
-    init.wait(true);
+void TestController::init_test_notification(cpe::NotificationData &data) {
+    data.message().text() = "Message from [TestController::init_test_notification]";
+    data.border().color().foreground() = cpe::Colors::LT_GREEN;
+    data.border().style().apply(cpe::BorderStyle::DB_OUT_V);
+    data.icon() = cpe::StyledChar('!', {cpe::Colors::BLACK, cpe::Colors::LT_RED});
+    data.wait(true);
 }
 
-void TestController::result_test_reader(cpe::ResultRead<std::string> &result) {
+void TestController::result_test_reader(cpe::ReaderResult<std::string> &result) {
     if (result.type() == cpe::ResultReadType::COMMAND) {
         if (result.command() == "siska") {
             std::cout << "!!! [BOOBS] !!!/n";

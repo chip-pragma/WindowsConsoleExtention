@@ -13,8 +13,13 @@ public:
 
     TextColor &read_color();
 
+    const std::string &convert_fail_text() const;
+
+    std::string &convert_fail_text();
+
 protected:
     TextColor mReadStyle;
+    std::string mConvertFailText;
 };
 
 }

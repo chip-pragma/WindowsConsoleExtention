@@ -5,7 +5,7 @@
 namespace cpe {
 
 template<class TData>
-class BaseCuiElement : ICuiElement {
+class BaseCuiElement : public ICuiElement {
 public:
     template<class TController>
     using DataReceiverFunc = void (TController::*)(TData &);

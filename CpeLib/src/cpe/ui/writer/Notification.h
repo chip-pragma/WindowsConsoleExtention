@@ -13,28 +13,9 @@
 
 namespace cpe {
 
-class Notification;
-
 class NotificationData : public BaseWriterData {
 public:
-    StyledBorder &border();
-
-    std::optional<StyledText> &caption();
-
-    StyledText &message();
-
-    std::optional<StyledChar> &icon();
-
-    bool is_wait() const;
-
-    void wait(bool wait);
-};
-
-class Notification : public BaseWriter<NotificationData> {
-public:
-    Notification();
-
-    ~Notification() override;
+    NotificationData();
 
     const StyledBorder &border() const;
 
@@ -56,18 +37,23 @@ public:
 
     void wait(bool wait);
 
-    void output_to(std::ostream &outStream) override;
-
 protected:
-
-    void on_write(Buffer &cvs) override;
-
-private:
     StyledBorder mBorder;
     std::optional<StyledChar> mIcon;
     std::optional<StyledText> mCaption;
     StyledText mMessage;
     bool mWait = false;
+};
+
+class Notification : public BaseWriter<NotificationData> {
+public:
+    ~Notification() override { };
+
+    void output_to(std::ostream &outStream) override;
+
+protected:
+
+    void on_write(Buffer &cvs) override;
 };
 
 

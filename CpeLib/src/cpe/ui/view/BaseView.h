@@ -6,7 +6,6 @@
 #include "IView.h"
 #include "cpe/ui/ICuiElement.h"
 #include "cpe/ui/IController.h"
-#include "cpe/ui/reader/IResultRead.h"
 
 namespace cpe {
 
@@ -31,7 +30,7 @@ protected:
     void on_show_after() override { };
 
     template<class TElement>
-    TElement &add();
+    TElement &make_element();
 
 private:
     IController *mController = nullptr;
@@ -64,26 +63,20 @@ void BaseView<TController>::show(bool beforeClean, bool afterClean) {
     if (beforeClean)
         term::clear();
 
-
     OutputHelper outHelp;
     if (afterClean)
         outHelp.save_state();
-
     on_show_before();
-
     for (ICuiElement *item : mElements)
         item->run(*mController);
-
     on_show_after();
-
     if (afterClean)
         outHelp.back_state();
-
 }
 
 template<class TController>
 template<class TElement>
-TElement &BaseView<TController>::add() {
+TElement &BaseView<TController>::make_element() {
     auto elem = new TElement();
     mElements.push_back(elem);
     return *elem;

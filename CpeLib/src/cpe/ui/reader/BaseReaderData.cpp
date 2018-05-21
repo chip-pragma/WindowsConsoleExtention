@@ -12,6 +12,13 @@ TextColor &BaseReaderData::read_color() {
     return mReadStyle;
 }
 
+const std::string &BaseReaderData::convert_fail_text() const {
+    return mConvertFailText;
+}
+
+std::string &BaseReaderData::convert_fail_text() {
+    return mConvertFailText;
+}
 }
 
 

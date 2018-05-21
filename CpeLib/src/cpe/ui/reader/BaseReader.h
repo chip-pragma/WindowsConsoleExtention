@@ -7,27 +7,20 @@
 #include "cpe/ui/output/OutputHelper.h"
 #include "ReaderData.h"
 #include "cpe/ui/BaseCuiElement.h"
-#include "IReader.h"
-#include "IConverter.h"
 #include "IValidator.h"
-#include "ResultRead.h"
+#include "ReaderResult.h"
 
 namespace cpe {
 
-template<class TData, class TValue, class TResult>
-class BaseReader : public BaseCuiElement<TData>,
-                   public IReader<TResult> {
+template<class TValue, class TData = ReaderData<TValue>, class TResult = ReaderResult<TValue>>
+class BaseReader : public BaseCuiElement<TData> {
 
     using _BaseCuiElement = BaseCuiElement<TData>;
 public:
     template<class TController>
     using ResultReadReceiverFunc = void (TController::*)(TResult &);
 
-    explicit BaseReader(const IConverter<TValue> &converter);
-
     virtual ~BaseReader() { }
-
-    virtual void read(TResult &result);
 
     template<class TController>
     void bind_result(ResultReadReceiverFunc<TController> func);
@@ -40,34 +33,26 @@ protected:
     using _PureResultReadReceiverFunc  = void (IController::*)(TResult &);
 
     _PureResultReadReceiverFunc mResultFunc = nullptr;
-    const IConverter<TValue>* mConverter;
 
     virtual void on_read(TResult &result);
+
+    virtual bool on_convert(std::string &srcLine, TValue &convertedValue) = 0;
 };
 
-template<class TData, class TValue, class TResult>
-BaseReader<TData, TValue, TResult>::BaseReader(const IConverter<TValue> &converter)
-        : mConverter(&converter) { };
-
-template<class TData, class TValue, class TResult>
-void BaseReader<TData, TValue, TResult>::read(TResult &result) {
-    on_read(result);
-}
-
-template<class TData, class TValue, class TResult>
+template<class TValue, class TData, class TResult>
 template<class TController>
-void BaseReader<TData, TValue, TResult>::bind_result(BaseReader::ResultReadReceiverFunc<TController> func) {
+void BaseReader<TValue, TData, TResult>::bind_result(BaseReader::ResultReadReceiverFunc<TController> func) {
     mResultFunc = static_cast<_PureResultReadReceiverFunc>(func);
 }
 
-template<class TData, class TValue, class TResult>
-void BaseReader<TData, TValue, TResult>::fire_result(IController &ctrl, TResult &result) {
+template<class TValue, class TData, class TResult>
+void BaseReader<TValue, TData, TResult>::fire_result(IController &ctrl, TResult &result) {
     if (mResultFunc)
         (ctrl.*mResultFunc)(result);
 }
 
-template<class TData, class TValue, class TResult>
-void BaseReader<TData, TValue, TResult>::run(IController &ctrl) {
+template<class TValue, class TData, class TResult>
+void BaseReader<TValue, TData, TResult>::run(IController &ctrl) {
     _BaseCuiElement::fire_data(ctrl);
 
     OutputHelper outHelp;
@@ -75,12 +60,12 @@ void BaseReader<TData, TValue, TResult>::run(IController &ctrl) {
     while (true) {
         outHelp.save_state();
         outHelp.apply_color(
-                static_cast<BaseReaderData&>(_BaseCuiElement::data()).read_color());
+                static_cast<BaseReaderData &>(_BaseCuiElement::data()).read_color());
 
         TResult result;
-        read(result);
+        on_read(result);
         fire_result(ctrl, result);
-        if (static_cast<ResultRead<TValue>>(result).is_read_applied())
+        if (static_cast<ReaderResult<TValue>>(result).is_read_applied())
             break;
 
         outHelp.reset_colors();
@@ -89,9 +74,10 @@ void BaseReader<TData, TValue, TResult>::run(IController &ctrl) {
     outHelp.end_colorized();
 }
 
-template<class TData, class TValue, class TResult>
-void BaseReader<TData, TValue, TResult>::on_read(TResult &result) {
-    auto &castedResult = static_cast<ResultRead<TValue> &>(result);
+template<class TValue, class TData, class TResult>
+void BaseReader<TValue, TData, TResult>::on_read(TResult &result) {
+    auto &castedResult = static_cast<ReaderResult<TValue> &>(result);
+    auto &castedData = static_cast<ReaderData<TValue> &>(_BaseCuiElement::data());
 
     std::string lineValue;
     std::getline(std::cin, lineValue);
@@ -108,20 +94,14 @@ void BaseReader<TData, TValue, TResult>::on_read(TResult &result) {
             castedResult.assign_command(lineValue);
         } else {
             TValue convertedValue;
-            std::string oneError;
-            if (mConverter.convert(lineValue, convertedValue, oneError)) {
-                std::vector<std::string> errorList;
-                for (const IValidator<TValue> &validator :
-                        static_cast<ReaderData<TValue>>(_BaseCuiElement::data()).validators()) {
-                    validator.validate(convertedValue, errorList);
-                }
-
+            if (on_convert(lineValue, convertedValue)) {
+                auto errorList = castedData.validate(convertedValue);
                 if (errorList.empty())
                     castedResult.assign_value(convertedValue);
                 else
                     castedResult.assign_invalid(errorList);
             } else {
-                castedResult.assign_convert_fail(oneError);
+                castedResult.assign_convert_fail(castedData.convert_fail_text());
             }
         }
     }

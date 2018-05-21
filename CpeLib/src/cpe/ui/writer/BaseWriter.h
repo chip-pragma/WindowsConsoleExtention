@@ -18,6 +18,8 @@ public:
     void run(IController &ctrl) override;
 
     virtual void output_to(std::ostream &outStream);
+
+
 };
 
 template<class TData>
