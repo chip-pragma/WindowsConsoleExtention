@@ -1,35 +1,36 @@
 #pragma once
 
+#include <optional>
+
 #include "cpe/core/draw/Color.h"
-#include "cpe/tool/Nullable.h"
 
 namespace cpe {
 
 class TextColor {
 public:
-    TextColor() = default;
+    TextColor();
 
     TextColor(const TextColor &tc);
 
     TextColor(TextColor &&tc) noexcept;
 
-    TextColor(Nullable<Color> fore, Nullable<Color> back);
+    TextColor(std::optional<Color> fore, std::optional<Color> back);
 
-    const Nullable<Color> &foreground() const;
+    const std::optional<Color> &foreground() const;
 
-    Nullable<Color> &foreground();
+    std::optional<Color> &foreground();
 
-    const Nullable<Color> &background() const;
+    const std::optional<Color> &background() const;
 
-    Nullable<Color> &background();
+    std::optional<Color> &background();
 
     void set(const TextColor &tc);
 
     TextColor &operator=(const TextColor &tc);
 
 private:
-    Nullable<Color> mFore;
-    Nullable<Color> mBack;
+    std::optional<Color> mFore = std::nullopt;
+    std::optional<Color> mBack = std::nullopt;
 };
 
 }

@@ -11,7 +11,7 @@ add_library(${CPE_LIB_TARGET} STATIC
             src/cpe/ui/output/Buffer.cpp src/cpe/ui/output/Buffer.h src/cpe/macros.h
             src/cpe/ui/view/ViewBase.h src/cpe/ui/reader/ReaderBase.h
             src/cpe/ui/output/OutputHelper.cpp src/cpe/ui/output/OutputHelper.h src/cpe/ui/output/StyledChar.cpp
-            src/cpe/ui/output/StyledChar.h src/cpe/tool/Nullable.h src/cpe/ui/style/TextColor.cpp
+            src/cpe/ui/output/StyledChar.h src/cpe/ui/style/TextColor.cpp
             src/cpe/ui/style/TextColor.h src/cpe/ui/reader/IValidator.h src/cpe/ui/reader/IConverter.h
             src/cpe/ui/writer/Notification.cpp src/cpe/ui/writer/Notification.h
             src/cpe/ui/output/StyledBorder.cpp src/cpe/ui/output/StyledBorder.h

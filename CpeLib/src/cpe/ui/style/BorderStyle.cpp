@@ -1,4 +1,3 @@
-#include <cpe/tool/Nullable.h>
 #include "BorderStyle.h"
 
 namespace cpe {
@@ -131,7 +130,7 @@ const BorderStyle::DualBorder &BorderStyle::current() const {
 char BorderStyle::at(const BorderStyle::Side &side) const {
     auto sym = mSides.at(side);
     if (mEncTo)
-        return mEncTo.get().to(mEncFrom.from(sym)).at(0);
+        return mEncTo->to(mEncFrom.from(sym)).at(0);
     return sym.at(0);
 }
 
@@ -139,11 +138,11 @@ char BorderStyle::operator[](const Side &side) const {
     return at(side);
 }
 
-const cpe::Nullable<Encoder> &BorderStyle::final_encoding() const {
+const std::optional<Encoder> &BorderStyle::final_encoding() const {
     return mEncTo;
 }
 
-Nullable<Encoder> &BorderStyle::final_encoding() {
+std::optional<Encoder> &BorderStyle::final_encoding() {
     return mEncTo;
 }
 

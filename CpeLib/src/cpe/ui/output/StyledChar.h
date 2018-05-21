@@ -1,18 +1,21 @@
 #pragma once
 
 #include "cpe/core/draw/Color.h"
-#include "cpe/tool/Nullable.h"
 #include "cpe/ui/style/TextColor.h"
 
 namespace cpe {
 
 class StyledChar {
 public:
-    StyledChar() = default;
+    StyledChar();
 
     explicit StyledChar(char c);
 
     StyledChar(char c, const TextColor& color);
+
+    StyledChar(const StyledChar &sch);
+
+    StyledChar(StyledChar &&sch) noexcept;
 
     const TextColor &color() const;
 
@@ -23,6 +26,8 @@ public:
     char character() const;
 
     void character(char aChar);
+
+    StyledChar &operator=(const StyledChar &sch);
 
 private:
     TextColor mColor;

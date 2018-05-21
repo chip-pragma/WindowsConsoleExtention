@@ -15,7 +15,7 @@ StyledBorder &NotificationInitializer::border() {
     return mElement.border();
 }
 
-Nullable<StyledText> &NotificationInitializer::caption() {
+std::optional<StyledText> &NotificationInitializer::caption() {
     return mElement.caption();
 }
 
@@ -23,7 +23,7 @@ StyledText &NotificationInitializer::message() {
     return mElement.message();
 }
 
-Nullable<StyledChar> &NotificationInitializer::icon() {
+std::optional<StyledChar> &NotificationInitializer::icon() {
     return mElement.icon();
 }
 
@@ -38,7 +38,7 @@ void NotificationInitializer::wait(bool wait) {
 //endregion
 
 Notification::Notification() {
-    mBorder.style().final_encoding().set(Encoder(Encoder::CP866));
+    mBorder.style().final_encoding().emplace(Encoder::CP866);
 }
 
 Notification::~Notification() { }
@@ -51,11 +51,11 @@ StyledBorder &Notification::border() {
     return mBorder;
 }
 
-const Nullable<StyledText> &Notification::caption() const {
+const std::optional<StyledText> &Notification::caption() const {
     return mCaption;
 }
 
-Nullable<StyledText> &Notification::caption() {
+std::optional<StyledText> &Notification::caption() {
     return mCaption;
 }
 
@@ -67,11 +67,11 @@ StyledText &Notification::message() {
     return mMessage;
 }
 
-const Nullable<StyledChar> &Notification::icon() const {
+const std::optional<StyledChar> &Notification::icon() const {
     return mIcon;
 }
 
-Nullable<StyledChar> &Notification::icon() {
+std::optional<StyledChar> &Notification::icon() {
     return mIcon;
 }
 
@@ -124,7 +124,7 @@ void Notification::on_write(Buffer &cvs) {
     if (mIcon) {
         cvs.move_cursor(Point(1, 0));
         cvs.draw(StyledText("[", mBorder.color()));
-        cvs.draw(mIcon.get());
+        cvs.draw(*mIcon);
         cvs.draw(StyledText("]", mBorder.color()));
     }
 
@@ -135,7 +135,7 @@ void Notification::on_write(Buffer &cvs) {
         auto captionWidth = cvs.size().x_crd() - cvs.cursor_position().x_crd() - 3;
         auto caption = cvs.extract(cvs.cursor_position(),
                                    Point(captionWidth, 1));
-        caption.draw(mCaption.get());
+        caption.draw(*mCaption);
         cvs.move_cursor(Point(captionWidth, 0));
         cvs.draw(StyledText("]", mBorder.color()));
     }

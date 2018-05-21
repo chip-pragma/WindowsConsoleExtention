@@ -18,8 +18,6 @@ public:
 
     TextColor &color();
 
-    void color(const TextColor &color);
-
     const BorderStyle& style() const;
 
     BorderStyle& style();

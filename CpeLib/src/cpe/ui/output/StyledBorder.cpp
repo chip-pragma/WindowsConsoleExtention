@@ -19,10 +19,6 @@ TextColor &StyledBorder::color() {
     return mColor;
 }
 
-void StyledBorder::color(const TextColor &color) {
-    mColor = color;
-}
-
 const BorderStyle &StyledBorder::style() const {
     return mBorder;
 }

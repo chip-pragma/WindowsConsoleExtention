@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <optional>
 
 #include "WriterBase.h"
 #include "cpe/ui/IInitializer.h"
@@ -20,11 +21,11 @@ public:
 
     StyledBorder &border();
 
-    Nullable<StyledText> &caption();
+    std::optional<StyledText> &caption();
 
     StyledText &message();
 
-    Nullable<StyledChar> &icon();
+    std::optional<StyledChar> &icon();
 
     bool is_wait() const;
 
@@ -44,17 +45,17 @@ public:
 
     StyledBorder &border();
 
-    const Nullable<StyledText> &caption() const;
+    const std::optional<StyledText> &caption() const;
 
-    Nullable<StyledText> &caption();
+    std::optional<StyledText> &caption();
 
     const StyledText &message() const;
 
     StyledText &message();
 
-    const Nullable<StyledChar> &icon() const;
+    const std::optional<StyledChar> &icon() const;
 
-    Nullable<StyledChar> &icon();
+    std::optional<StyledChar> &icon();
 
     bool is_wait() const;
 
@@ -70,8 +71,8 @@ protected:
 
 private:
     StyledBorder mBorder;
-    Nullable<StyledChar> mIcon;
-    Nullable<StyledText> mCaption;
+    std::optional<StyledChar> mIcon;
+    std::optional<StyledText> mCaption;
     StyledText mMessage;
     bool mWait = false;
 };

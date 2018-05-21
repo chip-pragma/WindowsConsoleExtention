@@ -2,8 +2,8 @@
 
 #include <string>
 #include <map>
+#include <optional>
 
-#include "cpe/tool/Nullable.h"
 #include "cpe/tool/Encoder.h"
 
 
@@ -46,15 +46,15 @@ public:
 
     char operator[](const Side &side) const;
 
-    const Nullable<Encoder> &final_encoding() const;
+    const std::optional<Encoder> &final_encoding() const;
 
-    Nullable<Encoder> &final_encoding();
+    std::optional<Encoder> &final_encoding();
 
 private:
     std::map<Side, std::string> mSides;
     DualBorder mLastApplied = DB_NONE;
     Encoder mEncFrom;
-    Nullable<Encoder> mEncTo;
+    std::optional<Encoder> mEncTo;
 };
 
 }

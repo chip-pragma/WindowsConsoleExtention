@@ -52,10 +52,9 @@ void OutputHelper::end_colorized() {
 }
 
 void OutputHelper::apply_color(const TextColor &color) {
-    Color tmp;
-    if (color.foreground().get(tmp)) term::foreground(tmp);
+    if (color.foreground()) term::foreground(*color.foreground());
     else term::foreground(mOutputFore);
-    if (color.background().get(tmp)) term::background(tmp);
+    if (color.background()) term::background(*color.background());
     else term::background(mOutputBack);
 }
 

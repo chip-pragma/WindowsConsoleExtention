@@ -9,7 +9,6 @@
 #include "cpe/core/terminal.h"
 #include "cpe/core/draw/Color.h"
 #include "cpe/core/draw/Point.h"
-#include "cpe/tool/Nullable.h"
 #include "cpe/ui/style/TextColor.h"
 #include "OutputHelper.h"
 #include "StyledText.h"
