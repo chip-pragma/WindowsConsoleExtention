@@ -16,7 +16,7 @@ add_library(${CPE_LIB_TARGET} STATIC
             src/cpe/ui/writer/Notification.cpp src/cpe/ui/writer/Notification.h
             src/cpe/ui/output/StyledBorder.cpp src/cpe/ui/output/StyledBorder.h
             src/cpe/ui/reader/LineReader.cpp src/cpe/ui/reader/LineReader.h src/cpe/ui/reader/ResultRead.h
-            src/cpe/ui/IController.h src/cpe/ui/IInitializer.h src/cpe/ui/reader/IResultRead.h src/cpe/ui/writer/IWriter.h src/cpe/ui/ICuiElement.h src/cpe/ui/reader/IReader.h src/cpe/ui/view/IView.h src/cpe/ui/writer/WriterBase.h src/cpe/ui/InitializerBindingBase.h src/cpe/ui/reader/ResultReadBindingBase.h src/cpe/ui/reader/ReaderStyleBase.cpp src/cpe/ui/reader/ReaderStyleBase.h)
+            src/cpe/ui/IController.h src/cpe/ui/IInitializer.h src/cpe/ui/reader/IResultRead.h src/cpe/ui/writer/IWriter.h src/cpe/ui/ICuiElement.h src/cpe/ui/reader/IReader.h src/cpe/ui/view/IView.h src/cpe/ui/writer/WriterBase.h src/cpe/ui/InitializerBindingBase.h src/cpe/ui/reader/ResultReadBindingBase.h src/cpe/ui/reader/ReaderStyleBase.cpp src/cpe/ui/reader/ReaderStyleBase.h src/cpe/ui/IModel.h)
 
 target_include_directories(${CPE_LIB_TARGET} PUBLIC src)
 target_compile_features(${CPE_LIB_TARGET} PUBLIC cxx_std_17)
