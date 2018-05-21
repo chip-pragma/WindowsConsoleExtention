@@ -1,51 +1,59 @@
 #pragma once
 
 #include <string>
+#include <vector>
+#include <unordered_map>
 
-#include "WriterBase.h"
-#include "cpe/ui/IInitializer.h"
+#include "BaseWriter.h"
+#include "DataTableColumn.cpp"
+#include "cpe/ui/output/StyledBorder.h"
+#include "cpe/ui/IModel.h"
 
 namespace cpe {
 
-template<class TModel>
-class DataTable;
-
-template<class TModel>
-class DataTableInitializer : public IInitializer {
+class DataTableData {
 public:
-    explicit DataTableInitializer(DataTable<TModel> &table)
-            : IInitializer(static_cast<ICuiElement &>(table)) { }
+    enum CellBorder {
+        DTCB_NONE = 0,
+        DTCB_IN = 1,
+        DTCB_OUT = 2,
+        DTCB_V = 4,
+        DTCB_H = 8,
+        DTCB_BOX = DTCB_OUT | DTCB_V | DTCB_H,
+        DTCB_GRID = DTCB_IN | DTCB_V | DTCB_H,
+        DTCB_ALL = DTCB_IN | DTCB_OUT | DTCB_V | DTCB_H
+    };
 
+    CellBorder cell_border() const;
+
+    CellBorder cell_border();
+
+    const StyledBorder &border() const;
+
+    StyledBorder &border();
+
+    void add_column(uint32_t fieldId, const DataTableColumn &column);
+
+    void remove_column(uint32_t fieldId);
+
+    template<class TModel>
+    void data_source(const std::vector<TModel> &ds);
+
+protected:
+    std::unordered_map<uint32_t, DataTableColumn> mColumns;
+    std::vector<const IModel*> mDataSource;
+    CellBorder mCellBorder;
+    StyledBorder mBorder;
 };
 
-template<class TModel>
-class DataTable : public WriterBase<DataTableInitializer<TModel>> {
+class DataTable : public BaseWriter<DataTableData> {
 public:
     ~DataTable() override { }
 
-    void add_column(uint32_t modelIdField, const std::string &caption);
-
 protected:
+
     void on_write(Buffer &buf) override;
-
-    DataTableInitializer<TModel> make_initializer() override;
 };
-
-template<class TModel>
-void DataTable<TModel>::add_column(uint32_t modelIdField, const std::string &caption) {
-    // TODO Создание столбцов и логика работы с моделями
-
-}
-
-template<class TModel>
-void DataTable<TModel>::on_write(Buffer &buf) {
-    // TODO Рисование таблицы
-}
-
-template<class TModel>
-DataTableInitializer<TModel> DataTable<TModel>::make_initializer() {
-    return DataTableInitializer<TModel>(*this);
-}
 
 }
 

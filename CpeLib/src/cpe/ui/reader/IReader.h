@@ -1,12 +1,15 @@
 #pragma once
 
-#include "cpe/ui/ICuiElement.h"
-
 namespace cpe {
 
-class IReader : public ICuiElement {
+template <class TResult>
+class IReader {
 public:
-    ~IReader() override { };
+    virtual ~IReader() { };
+
+    virtual void read(TResult &result) = 0;
+
+    virtual void on_read(TResult &result) = 0;
 };
 
 }

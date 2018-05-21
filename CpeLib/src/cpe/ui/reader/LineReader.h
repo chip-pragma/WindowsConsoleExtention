@@ -2,21 +2,16 @@
 
 #include <string>
 
-#include "ReaderBase.h"
-#include "ReaderStyleBase.h"
+#include "BaseReader.h"
 #include "IConverter.h"
 
 namespace cpe {
 
-class LineReader : public ReaderBase<std::string, ReaderInitializer, ResultRead<std::string>> {
+class LineReader : public BaseReader<ReaderData<std::string>, std::string, ResultRead<std::string>> {
 public:
-    LineReader();
+    explicit LineReader(const IConverter<ReaderData<std::string>> &converter);
 
 protected:
-
-    ReaderInitializer make_initializer() override;
-
-private:
     class _LineConverter : public IConverter<std::string> {
     public:
         bool convert(const std::string &lineValue, std::string &outValue, std::string &errorText) const override;

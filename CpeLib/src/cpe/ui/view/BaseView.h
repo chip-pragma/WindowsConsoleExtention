@@ -6,19 +6,18 @@
 #include "IView.h"
 #include "cpe/ui/ICuiElement.h"
 #include "cpe/ui/IController.h"
-#include "cpe/ui/IInitializer.h"
 #include "cpe/ui/reader/IResultRead.h"
 
 namespace cpe {
 
 template<class TController>
-class ViewBase : public IView {
+class BaseView : public IView {
 public:
     using ControllerClass = TController;
 
-    ViewBase();
+    BaseView();
 
-    ~ViewBase() override;
+    ~BaseView() override;
 
     TController &initialize();
 
@@ -40,19 +39,19 @@ private:
 };
 
 template<class TController>
-ViewBase<TController>::ViewBase() {
+BaseView<TController>::BaseView() {
     static_assert(std::is_base_of<IController, TController>::value);
 }
 
 template<class TController>
-ViewBase<TController>::~ViewBase() {
+BaseView<TController>::~BaseView() {
     for (auto item : mElements)
         delete item;
     delete mController;
 }
 
 template<class TController>
-TController &ViewBase<TController>::initialize() {
+TController &BaseView<TController>::initialize() {
     if (!mController) {
         mController = static_cast<IController *>(new TController());
         on_initialize();
@@ -61,7 +60,7 @@ TController &ViewBase<TController>::initialize() {
 }
 
 template<class TController>
-void ViewBase<TController>::show(bool beforeClean, bool afterClean) {
+void BaseView<TController>::show(bool beforeClean, bool afterClean) {
     if (beforeClean)
         term::clear();
 
@@ -84,7 +83,7 @@ void ViewBase<TController>::show(bool beforeClean, bool afterClean) {
 
 template<class TController>
 template<class TElement>
-TElement &ViewBase<TController>::add() {
+TElement &BaseView<TController>::add() {
     auto elem = new TElement();
     mElements.push_back(elem);
     return *elem;

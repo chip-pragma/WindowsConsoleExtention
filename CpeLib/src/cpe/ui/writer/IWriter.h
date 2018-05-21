@@ -5,9 +5,9 @@
 
 namespace cpe {
 
-class IWriter : public ICuiElement {
+class IWriter {
 public:
-    ~IWriter() override { };
+    virtual ~IWriter() { };
 
     virtual void write(Buffer &buf) = 0;
 

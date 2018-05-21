@@ -10,7 +10,7 @@ void TestController::test_func() const {
     std::cout << "[TestController::test_func]\n";
 }
 
-void TestController::init_test_notification(cpe::NotificationInitializer &init) {
+void TestController::init_test_notification(cpe::NotificationData &init) {
     init.message().text() = "Message from [TestController::init_test_notification]";
     init.border().color().foreground() = cpe::Colors::LT_GREEN;
     init.border().style().apply(cpe::BorderStyle::DB_OUT_V);

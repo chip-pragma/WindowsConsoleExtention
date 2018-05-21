@@ -3,8 +3,8 @@
 #include <string>
 #include <optional>
 
-#include "WriterBase.h"
-#include "cpe/ui/IInitializer.h"
+#include "BaseWriter.h"
+#include "BaseWriterData.h"
 #include "cpe/ui/style/BorderStyle.h"
 #include "cpe/ui/output/StyledBorder.h"
 #include "cpe/ui/output/StyledText.h"
@@ -15,10 +15,8 @@ namespace cpe {
 
 class Notification;
 
-class NotificationInitializer : public IInitializer {
+class NotificationData : public BaseWriterData {
 public:
-    explicit NotificationInitializer(Notification &element);
-
     StyledBorder &border();
 
     std::optional<StyledText> &caption();
@@ -30,12 +28,9 @@ public:
     bool is_wait() const;
 
     void wait(bool wait);
-
-private:
-    Notification &mElement;
 };
 
-class Notification : public WriterBase<NotificationInitializer> {
+class Notification : public BaseWriter<NotificationData> {
 public:
     Notification();
 
@@ -66,8 +61,6 @@ public:
 protected:
 
     void on_write(Buffer &cvs) override;
-
-    NotificationInitializer make_initializer() override;
 
 private:
     StyledBorder mBorder;

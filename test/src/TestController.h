@@ -10,7 +10,7 @@ public:
 
     void test_func() const;
 
-    void init_test_notification(cpe::NotificationInitializer &init);
+    void init_test_notification(cpe::NotificationData &init);
 
     void result_test_reader(cpe::ResultRead<std::string> &result);
 };

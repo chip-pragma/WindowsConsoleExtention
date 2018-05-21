@@ -4,34 +4,29 @@
 
 namespace cpe {
 
-//region [ NotificationInitializer ]
+//region [ NotificationData ]
 
-NotificationInitializer::NotificationInitializer(Notification &element) :
-        IInitializer(static_cast<IWriter &>(element)),
-        mElement(element) { }
-
-
-StyledBorder &NotificationInitializer::border() {
+StyledBorder &NotificationData::border() {
     return mElement.border();
 }
 
-std::optional<StyledText> &NotificationInitializer::caption() {
+std::optional<StyledText> &NotificationData::caption() {
     return mElement.caption();
 }
 
-StyledText &NotificationInitializer::message() {
+StyledText &NotificationData::message() {
     return mElement.message();
 }
 
-std::optional<StyledChar> &NotificationInitializer::icon() {
+std::optional<StyledChar> &NotificationData::icon() {
     return mElement.icon();
 }
 
-bool NotificationInitializer::is_wait() const {
+bool NotificationData::is_wait() const {
     return mElement.is_wait();
 }
 
-void NotificationInitializer::wait(bool wait) {
+void NotificationData::wait(bool wait) {
     mElement.wait(wait);
 }
 
@@ -84,7 +79,7 @@ void Notification::wait(bool wait) {
 }
 
 void Notification::output_to(std::ostream &outStream) {
-    WriterBase::output_to(outStream);
+    BaseWriter::output_to(outStream);
     if (mWait)
         term::pause();
 }
@@ -141,8 +136,8 @@ void Notification::on_write(Buffer &cvs) {
     }
 }
 
-NotificationInitializer Notification::make_initializer() {
-    return NotificationInitializer(*this);
+NotificationData Notification::make_initializer() {
+    return NotificationData(*this);
 }
 
 }

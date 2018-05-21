@@ -17,10 +17,6 @@ int main() {
 
     term::pause();
 
-    // TODO доработать комманды
-    // TODO ResultRead оптимизировать
-
-
     /*LineReader reader;
     reader.add_command("first");
     reader.add_command("second");
