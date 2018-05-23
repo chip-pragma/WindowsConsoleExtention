@@ -2,11 +2,11 @@
 
 #include "cpe/core/terminal.h"
 #include "cpe/core/draw/Point.h"
-#include "cpe/ui/IData.h"
+#include "cpe/ui/IElementData.h"
 
 namespace cpe {
 
-class BaseWriterData : public IData {
+class BaseWriterData : public IElementData {
 public:
     ~BaseWriterData() override { };
 

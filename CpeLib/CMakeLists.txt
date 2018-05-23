@@ -19,7 +19,7 @@ add_library(${CPE_LIB_TARGET} STATIC
             src/cpe/ui/IViewModel.h
             src/cpe/ui/writer/IWriter.h src/cpe/ui/ICuiElement.h
             src/cpe/ui/view/IView.h src/cpe/ui/writer/BaseWriter.h
-            src/cpe/ui/IModel.h src/cpe/ui/BaseCuiElement.h src/cpe/ui/IData.h src/cpe/ui/writer/BaseWriterData.cpp
+            src/cpe/ui/IModel.h src/cpe/ui/BaseCuiElement.h src/cpe/ui/IElementData.h src/cpe/ui/writer/BaseWriterData.cpp
             src/cpe/ui/writer/BaseWriterData.h src/cpe/ui/reader/BaseReaderData.cpp
             src/cpe/ui/reader/BaseReaderData.h src/cpe/ui/reader/BaseReader.h
             src/cpe/ui/reader/ReaderData.h src/cpe/ui/reader/LineReader.cpp src/cpe/ui/reader/LineReader.h src/cpe/ui/output/StyledText.cpp src/cpe/ui/output/StyledText.h src/cpe/ui/output/IOutputable.h src/cpe/ui/output/IOutputable.cpp)

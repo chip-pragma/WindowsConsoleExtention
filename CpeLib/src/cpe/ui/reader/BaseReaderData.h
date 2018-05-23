@@ -1,11 +1,11 @@
 #pragma once
 
-#include "cpe/ui/IData.h"
+#include "cpe/ui/IElementData.h"
 #include "cpe/ui/style/TextColor.h"
 
 namespace cpe {
 
-class BaseReaderData : public IData {
+class BaseReaderData : public IElementData {
 public:
     ~BaseReaderData() override;
 
