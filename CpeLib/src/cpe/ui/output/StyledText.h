@@ -33,6 +33,10 @@ public:
 
     void output_to(std::ostream &outStream) const override;
 
+    StyledText &operator<<(const StyledString &sStr);
+
+    StyledText &operator<<(const StyledText &sText);
+
 protected:
     uint8_t mTabLength = 5;
     std::string mUnfinished = "<~>";

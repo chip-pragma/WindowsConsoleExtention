@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <algorithm>
 
 #include "cpe/ui/output/OutputHelper.h"
 #include "IView.h"
@@ -30,7 +31,10 @@ protected:
     void on_show_after() override { };
 
     template<class TElement>
-    TElement &make_element();
+    void add_element(TElement &element);
+
+    template<class TElement>
+    void remove_element(TElement &element);
 
 private:
     IViewModel *mViewModel = nullptr;
@@ -44,8 +48,6 @@ BaseView<TViewModel>::BaseView() {
 
 template<class TViewModel>
 BaseView<TViewModel>::~BaseView() {
-    for (auto item : mElements)
-        delete item;
     delete mViewModel;
 }
 
@@ -76,10 +78,16 @@ void BaseView<TViewModel>::show(bool beforeClean, bool afterClean) {
 
 template<class TViewModel>
 template<class TElement>
-TElement &BaseView<TViewModel>::make_element() {
-    auto elem = new TElement();
-    mElements.push_back(elem);
-    return *elem;
+void BaseView<TViewModel>::add_element(TElement &element) {
+    mElements.push_back(static_cast<ICuiElement *>(&element));
+}
+
+template<class TViewModel>
+template<class TElement>
+void BaseView<TViewModel>::remove_element(TElement &element) {
+    auto finded = std::find(mElements.begin(), mElements.end(), static_cast<ICuiElement *>(&element));
+    if (finded != mElements.end())
+        mElements.erase(finded);
 }
 
 }

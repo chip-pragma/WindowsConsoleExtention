@@ -43,9 +43,9 @@ public:
 
     Buffer extract(const Point &begin, const Point &size, bool clean = true);
 
-    void draw(const StyledText &text);
+    void draw(const StyledText &text, bool softWrap = true);
 
-    void draw_line(const StyledText &str = StyledString());
+    void draw_line(const StyledText &str, bool softWrap = true);
 
     void draw(const Buffer &sub, bool useActualSize);
 

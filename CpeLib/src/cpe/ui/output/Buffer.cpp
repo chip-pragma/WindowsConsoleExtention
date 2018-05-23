@@ -9,13 +9,15 @@ namespace cpe {
 
 namespace {
 
+inline bool __char_is_one_of(const std::string &chars, char src) {
+    return (chars.find(src) != std::string::npos);
+}
 
 // Проверяет значение точки как значения размера
 inline void __point_as_size(const Point &size);
 
 // Новая строка
 inline void __new_line(Point &cursorPos);
-
 
 
 // Максимальная позиция курсора в рамках холста
@@ -127,23 +129,24 @@ Buffer Buffer::extract(const Point &begin, const Point &size, bool clean) {
     return result;
 }
 
-void Buffer::draw(const StyledText &text) {
-    for (const auto &c : text) {
-        if (c.character() == '\n' || c.character() == '\r') {
+void Buffer::draw(const StyledText &text, bool softWrap) {
+    // TODO Добавить как нибудь "мягкие" разрывы строк
+    for (auto it = text.cbegin(); it != text.cend(); ++it) {
+        if (__char_is_one_of("\n\r", it->character())) {
             __new_line(mCursorPos);
-        } else if (c.character() == '\t') {
+        } else if (it->character() == '\t') {
             auto tl = text.tab_length();
             auto sc = tl - mCursorPos.x_crd() % tl;
-            for (int16_t i = 0; i < sc; i++)
-                __print_text(c);
+            for (int32_t i = 0; i < sc; i++)
+                __print_text(*it);
         } else {
-            __print_text(c);
+            __print_text(*it);
         }
     }
 }
 
-void Buffer::draw_line(const StyledText &str) {
-    draw(str);
+void Buffer::draw_line(const StyledText &str, bool softWrap) {
+    draw(str, false);
     __new_line(mCursorPos);
 }
 
@@ -180,7 +183,7 @@ void Buffer::draw(StyledChar schar, int32_t count, bool vertical) {
     if (std::signbit(count))
         direct *= -1;
 
-    if (schar.character() == '\n' || schar.character() == '\r' || schar.character() == '\t')
+    if (__char_is_one_of("\n\r\t", schar.character()))
         schar.character(' ');
 
     for (int i = 0, n = std::abs(count); i < n; i++) {
@@ -255,7 +258,7 @@ void Buffer::__point_with_max_crd() {
     mMaxCurPos.y_crd(std::max(mMaxCurPos.y_crd(), mCursorPos.y_crd()));
 
     if (mOwner) {
-        Point& ownerMaxPos = mOwner->mMaxCurPos;
+        Point &ownerMaxPos = mOwner->mMaxCurPos;
         Point thisMaxPos = __clamp_point(mMaxCurPos, mSize) + mBeginPosFromOwner;
         ownerMaxPos.x_crd(std::max(ownerMaxPos.x_crd(), thisMaxPos.x_crd()));
         ownerMaxPos.y_crd(std::max(ownerMaxPos.y_crd(), thisMaxPos.y_crd()));

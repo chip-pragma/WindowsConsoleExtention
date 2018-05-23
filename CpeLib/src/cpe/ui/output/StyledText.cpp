@@ -52,4 +52,14 @@ void StyledText::output_to(std::ostream &outStream) const {
     outHelp.end_colorized();
 }
 
+StyledText &StyledText::operator<<(const StyledString &sStr) {
+    push_back(sStr);
+    return *this;
+}
+
+StyledText &StyledText::operator<<(const StyledText &sText) {
+    push_back(sText);
+    return *this;
+}
+
 }
