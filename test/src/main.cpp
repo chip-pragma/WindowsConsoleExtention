@@ -4,11 +4,14 @@
 
 #include <cpe/core/terminal.h>
 #include <cpe/ui/reader/LineReader.h>
+#include <cpe/third/json.hpp>
+#include <cpe/ui/output/StyledText.h>
+#include <cpe/ui/writer/Notification.h>
 
 #include "common.h"
-#include "TestView.h"
 
 using namespace cpe;
+using json = nlohmann::json;
 
 int main() {
     term::title("Текст консоли"_dos);
@@ -17,37 +20,18 @@ int main() {
 
     term::pause();
 
-    /*LineReader reader;
-    reader.add_command("first");
-    reader.add_command("second");
-    reader.add_command("break");
-
-    bool breaking = false;
-    while (!breaking) {
-        auto result = reader.read();
-        if (result.type() == ResultReadType::VALUE) {
-            std::cout << "Введено значение: "_dos << result.value() << "\n";
-        } else if (result.type() == ResultReadType::COMMAND) {
-            std::cout << "Команда: "_dos;
-            if (result.command() == "first")
-                std::cout << "первача";
-            else if (result.command() == "second")
-                std::cout << "вторяча";
-            else if (result.command() == "break") {
-                std::cout << "прерывание цикла";
-                breaking = true;
-            } else {
-                std::cout << "[неизвестная команда]";
-            }
-
-            std::cout << "\n";
-        }
-    }*/
-
-    TestView view;
-    auto ctrl = view.initialize();
-    ctrl.test_func();
-    view.show(false, true);
+    Notification notif;
+    StyledText st;
+    st.push_back({"Проверка"_dos, {Colors::LT_YELLOW, Colors::RED}});
+    st.push_back({" ", {Colors::BLACK, Colors::WHITE}});
+    st.push_back({"стилизованного"_dos, {Colors::LT_GREEN, Colors::PURPLE}});
+    st.push_back({" ", {Colors::BLACK, Colors::WHITE}});
+    st.push_back({"текста"_dos, {Colors::LT_RED, Colors::BLUE}});
+    notif.data().text() = st;
+    notif.data().border().style().apply(BorderStyle::DB_BOTTOM | BorderStyle::DB_RIGHT);
+    Buffer buf({50, 10});
+    notif.write(buf);
+    std::cout << buf;
 
     term::pause();
 

@@ -35,4 +35,4 @@ add_subdirectory(CpeLib)
 #Демо приложение
 add_subdirectory(test)
 #Курсовые
-#add_subdirectory(Task20)
+add_subdirectory(Task20)

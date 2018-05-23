@@ -21,13 +21,13 @@ public:
 
     StyledBorder &border();
 
-    const std::optional<StyledText> &caption() const;
+    const std::optional<StyledString> &caption() const;
 
-    std::optional<StyledText> &caption();
+    std::optional<StyledString> &caption();
 
-    const StyledText &message() const;
+    const StyledText &text() const;
 
-    StyledText &message();
+    StyledText &text();
 
     const std::optional<StyledChar> &icon() const;
 
@@ -40,8 +40,8 @@ public:
 protected:
     StyledBorder mBorder;
     std::optional<StyledChar> mIcon;
-    std::optional<StyledText> mCaption;
-    StyledText mMessage;
+    std::optional<StyledString> mCaption;
+    StyledText mText;
     bool mWait = false;
 };
 

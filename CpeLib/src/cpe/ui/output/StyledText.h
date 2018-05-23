@@ -1,46 +1,45 @@
 #pragma once
 
-#include <string>
+#include <vector>
 
-#include "cpe/ui/style/TextColor.h"
+#include "IOutputable.h"
+#include "StyledChar.h"
+#include "StyledString.h"
 
 namespace cpe {
 
-class StyledText {
+class StyledText : public IOutputable, public std::vector<StyledChar> {
+    using _BaseVector = std::vector<StyledChar>;
 public:
     StyledText() = default;
 
-    explicit StyledText(const std::string &text);
+    StyledText(const StyledString &sStr);
 
-    StyledText(const std::string &text, const TextColor &color);
+    StyledText(uint8_t tabLength, const std::string &unf);
 
-    StyledText(const std::string &text, const TextColor &color, uint8_t tabLength, const std::string &unf);
+    ~StyledText() override;
 
-    const TextColor &color() const;
+    const uint8_t &tab_length() const;
 
-    TextColor &color();
-
-    void color(const TextColor &color);
-
-    const std::string &text() const;
-
-    std::string &text();
-
-    void text(const std::string &text);
-
-    uint8_t tab_length() const;
-
-    void tab_length(uint8_t tabLength);
+    uint8_t &tab_length();
 
     const std::string &unfinished() const;
 
-    void unfinished(const std::string &unfinished);
+    std::string &unfinished();
 
-private:
-    TextColor mColor;
-    std::string mText;
+    void push_back(const StyledString &sStr);
+
+    void push_back(const StyledText &sText);
+
+    void output_to(std::ostream &outStream) const override;
+
+protected:
     uint8_t mTabLength = 5;
     std::string mUnfinished = "<~>";
 };
 
 }
+
+
+
+

@@ -7,8 +7,8 @@ namespace cpe {
 template<class TData>
 class BaseCuiElement : public ICuiElement {
 public:
-    template<class TController>
-    using DataReceiverFunc = void (TController::*)(TData &);
+    template<class TViewModel>
+    using DataReceiverFunc = void (TViewModel::*)(TData &);
 
     BaseCuiElement();
 
@@ -18,13 +18,13 @@ public:
 
     virtual TData &data();
 
-    template<class TController>
-    void bind_data(DataReceiverFunc<TController> func);
+    template<class TViewModel>
+    void bind_data(DataReceiverFunc<TViewModel> func);
 
-    void fire_data(IController &ctrl);
+    void fire_data(IViewModel &ctrl);
 
 protected:
-    using _PureDataReceiverFunc = void (IController::*)(TData &);
+    using _PureDataReceiverFunc = void (IViewModel::*)(TData &);
 
     TData* mData;
     _PureDataReceiverFunc mDataReceiverFunc = nullptr;
@@ -51,13 +51,13 @@ TData &BaseCuiElement<TData>::data() {
 }
 
 template<class TData>
-template<class TController>
-void BaseCuiElement<TData>::bind_data(DataReceiverFunc<TController> func) {
+template<class TViewModel>
+void BaseCuiElement<TData>::bind_data(DataReceiverFunc<TViewModel> func) {
     mDataReceiverFunc = static_cast<_PureDataReceiverFunc>(func);
 }
 
 template<class TData>
-void BaseCuiElement<TData>::fire_data(IController &ctrl) {
+void BaseCuiElement<TData>::fire_data(IViewModel &ctrl) {
     if (mDataReceiverFunc)
         (ctrl.*mDataReceiverFunc)(*mData);
 }

@@ -18,20 +18,20 @@ StyledBorder &NotificationData::border() {
     return mBorder;
 }
 
-const std::optional<StyledText> &NotificationData::caption() const {
+const std::optional<StyledString> &NotificationData::caption() const {
     return mCaption;
 }
 
-std::optional<StyledText> &NotificationData::caption() {
+std::optional<StyledString> &NotificationData::caption() {
     return mCaption;
 }
 
-const StyledText &NotificationData::message() const {
-    return mMessage;
+const StyledText &NotificationData::text() const {
+    return mText;
 }
 
-StyledText &NotificationData::message() {
-    return mMessage;
+StyledText &NotificationData::text() {
+    return mText;
 }
 
 const std::optional<StyledChar> &NotificationData::icon() const {
@@ -65,12 +65,12 @@ void Notification::on_write(Buffer &cvs) {
     Point margin(2, 0);
     Point textBlockSize = innerSize - margin;
     if (textBlockSize.dimension() != Point::DIM_SECTOR_I) {
-        cvs.draw(StyledText("[NO PLACE]"));
+        cvs.draw(StyledString("[NO PLACE]"));
         return;
     }
 
     Buffer text = cvs.extract(margin / 2 + Point(1, 1), textBlockSize, false);
-    text.draw(data().message());
+    text.draw(data().text());
     Point textBlockUsedSize = text.calc_used_size() + margin;
 
     auto &brd = data().border();
@@ -94,21 +94,21 @@ void Notification::on_write(Buffer &cvs) {
 
     if (data().icon().has_value()) {
         cvs.move_cursor(Point(1, 0));
-        cvs.draw(StyledText("[", brd.color()));
+        cvs.draw(StyledString("[", brd.color()));
         cvs.draw(data().icon().value());
-        cvs.draw(StyledText("]", brd.color()));
+        cvs.draw(StyledString("]", brd.color()));
     }
 
     if (data().caption().has_value()
         && (cvs.cursor_position().x_crd() + 3 < cvs.size().x_crd() - 2)) {
         cvs.move_cursor(Point(1, 0));
-        cvs.draw(StyledText("[", brd.color()));
+        cvs.draw(StyledString("[", brd.color()));
         auto captionWidth = cvs.size().x_crd() - cvs.cursor_position().x_crd() - 3;
         auto caption = cvs.extract(cvs.cursor_position(),
                                    Point(captionWidth, 1));
         caption.draw(data().caption().value());
         cvs.move_cursor(Point(captionWidth, 0));
-        cvs.draw(StyledText("]", brd.color()));
+        cvs.draw(StyledString("]", brd.color()));
     }
 }
 

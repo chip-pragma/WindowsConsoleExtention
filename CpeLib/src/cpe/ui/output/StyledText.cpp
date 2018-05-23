@@ -1,66 +1,55 @@
 #include "StyledText.h"
 
+#include "OutputHelper.h"
 
 namespace cpe {
 
-StyledText::StyledText(const std::string &text) : mText(text) {
+StyledText::StyledText(const StyledString &sStr) {
+    push_back(sStr);
+}
+
+StyledText::StyledText(uint8_t tabLength, const std::string &unf)
+        : mTabLength(tabLength),
+          mUnfinished(unf) {
 
 }
 
-StyledText::StyledText(const std::string &text,
-                       const TextColor &color) : mText(text),
-                                                 mColor(color) {
+StyledText::~StyledText() { }
 
-}
-
-StyledText::StyledText(const std::string &text,
-                       const TextColor &color,
-                       uint8_t tabLength,
-                       const std::string &unf) : mText(text),
-                                                 mColor(color),
-                                                 mTabLength(tabLength),
-                                                 mUnfinished(unf) {
-
-}
-
-const TextColor &StyledText::color() const {
-    return mColor;
-}
-
-TextColor &StyledText::color() {
-    return mColor;
-}
-
-void StyledText::color(const TextColor &color) {
-    mColor = color;
-}
-
-const std::string &StyledText::text() const {
-    return mText;
-}
-
-std::string &StyledText::text() {
-    return mText;
-}
-
-void StyledText::text(const std::string &text) {
-    mText = text;
-}
-
-uint8_t StyledText::tab_length() const {
+const uint8_t &StyledText::tab_length() const {
     return mTabLength;
 }
 
-void StyledText::tab_length(uint8_t tabLength) {
-    mTabLength = tabLength;
+uint8_t &StyledText::tab_length() {
+    return mTabLength;
 }
 
 const std::string &StyledText::unfinished() const {
     return mUnfinished;
 }
 
-void StyledText::unfinished(const std::string &unfinished) {
-    mUnfinished = unfinished;
+std::string &StyledText::unfinished() {
+    return mUnfinished;
+}
+
+void StyledText::push_back(const StyledString &sStr) {
+    for (const char &ch : sStr.str())
+        _BaseVector::push_back(StyledChar(ch, sStr.color()));
+}
+
+void StyledText::push_back(const StyledText &sText) {
+    for (const auto &ch : sText)
+        _BaseVector::push_back(ch);
+}
+
+void StyledText::output_to(std::ostream &outStream) const {
+    OutputHelper outHelp;
+    outHelp.begin_colorized(outStream);
+    for (const auto &c : *this) {
+        outHelp.apply_color(c.color());
+        outStream << c.character();
+    }
+    outHelp.end_colorized();
 }
 
 }

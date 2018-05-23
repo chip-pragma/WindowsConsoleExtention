@@ -15,11 +15,9 @@ public:
 
     void write(Buffer &buf) override;
 
-    void run(IController &ctrl) override;
+    void run(IViewModel &ctrl) override;
 
     virtual void output_to(std::ostream &outStream);
-
-
 };
 
 template<class TData>
@@ -28,7 +26,7 @@ void BaseWriter<TData>::write(Buffer &buf) {
 }
 
 template<class TData>
-void BaseWriter<TData>::run(IController &ctrl) {
+void BaseWriter<TData>::run(IViewModel &ctrl) {
     _BaseCuiElement::fire_data(ctrl);
     output_to(std::cout);
 }

@@ -17,20 +17,20 @@ class BaseReader : public BaseCuiElement<TData> {
 
     using _BaseCuiElement = BaseCuiElement<TData>;
 public:
-    template<class TController>
-    using ResultReadReceiverFunc = void (TController::*)(TResult &);
+    template<class TViewModel>
+    using ResultReadReceiverFunc = void (TViewModel::*)(TResult &);
 
     virtual ~BaseReader() { }
 
-    template<class TController>
-    void bind_result(ResultReadReceiverFunc<TController> func);
+    template<class TViewModel>
+    void bind_result(ResultReadReceiverFunc<TViewModel> func);
 
-    void fire_result(IController &ctrl, TResult &result);
+    void fire_result(IViewModel &ctrl, TResult &result);
 
-    void run(IController &ctrl) override;
+    void run(IViewModel &ctrl) override;
 
 protected:
-    using _PureResultReadReceiverFunc  = void (IController::*)(TResult &);
+    using _PureResultReadReceiverFunc  = void (IViewModel::*)(TResult &);
 
     _PureResultReadReceiverFunc mResultFunc = nullptr;
 
@@ -40,19 +40,19 @@ protected:
 };
 
 template<class TValue, class TData, class TResult>
-template<class TController>
-void BaseReader<TValue, TData, TResult>::bind_result(BaseReader::ResultReadReceiverFunc<TController> func) {
+template<class TViewModel>
+void BaseReader<TValue, TData, TResult>::bind_result(BaseReader::ResultReadReceiverFunc<TViewModel> func) {
     mResultFunc = static_cast<_PureResultReadReceiverFunc>(func);
 }
 
 template<class TValue, class TData, class TResult>
-void BaseReader<TValue, TData, TResult>::fire_result(IController &ctrl, TResult &result) {
+void BaseReader<TValue, TData, TResult>::fire_result(IViewModel &ctrl, TResult &result) {
     if (mResultFunc)
         (ctrl.*mResultFunc)(result);
 }
 
 template<class TValue, class TData, class TResult>
-void BaseReader<TValue, TData, TResult>::run(IController &ctrl) {
+void BaseReader<TValue, TData, TResult>::run(IViewModel &ctrl) {
     _BaseCuiElement::fire_data(ctrl);
 
     OutputHelper outHelp;
@@ -64,11 +64,11 @@ void BaseReader<TValue, TData, TResult>::run(IController &ctrl) {
 
         TResult result;
         on_read(result);
+
+        outHelp.reset_colors();
         fire_result(ctrl, result);
         if (static_cast<ReaderResult<TValue>>(result).is_read_applied())
             break;
-
-        outHelp.reset_colors();
         outHelp.back_state();
     }
     outHelp.end_colorized();

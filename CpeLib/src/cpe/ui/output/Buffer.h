@@ -10,13 +10,15 @@
 #include "cpe/core/draw/Color.h"
 #include "cpe/core/draw/Point.h"
 #include "cpe/ui/style/TextColor.h"
+#include "IOutputable.h"
 #include "OutputHelper.h"
-#include "StyledText.h"
 #include "StyledChar.h"
+#include "StyledString.h"
+#include "StyledText.h"
 
 namespace cpe {
 
-class Buffer {
+class Buffer : public IOutputable {
 public:
 
     explicit Buffer(const Point &size);
@@ -43,13 +45,13 @@ public:
 
     void draw(const StyledText &text);
 
-    void draw_line(const StyledText &str = StyledText());
+    void draw_line(const StyledText &str = StyledString());
 
     void draw(const Buffer &sub, bool useActualSize);
 
     void draw(StyledChar schar, int32_t count = 1, bool vertical = false);
 
-    void output_to(std::ostream &outStream) const;
+    void output_to(std::ostream &outStream) const override;
 
     void clear();
 

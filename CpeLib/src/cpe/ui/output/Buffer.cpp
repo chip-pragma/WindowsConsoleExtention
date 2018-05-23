@@ -128,23 +128,23 @@ Buffer Buffer::extract(const Point &begin, const Point &size, bool clean) {
 }
 
 void Buffer::draw(const StyledText &text) {
-    for (const char c : text.text()) {
-        if (c == '\n' || c == '\r') {
+    for (const auto &c : text) {
+        if (c.character() == '\n' || c.character() == '\r') {
             __new_line(mCursorPos);
-        } else if (c == '\t') {
+        } else if (c.character() == '\t') {
             auto tl = text.tab_length();
             auto sc = tl - mCursorPos.x_crd() % tl;
             for (int16_t i = 0; i < sc; i++)
-                __print_text(StyledChar(' ', text.color()));
+                __print_text(c);
         } else {
-            __print_text(StyledChar(c, text.color()));
+            __print_text(c);
         }
     }
 }
 
 void Buffer::draw_line(const StyledText &str) {
-    StyledText line(str.text() + "\n");
-    draw(line);
+    draw(str);
+    __new_line(mCursorPos);
 }
 
 void Buffer::draw(const Buffer &sub, bool useActualSize) {

@@ -37,8 +37,8 @@ void DataTableData::data_source(const std::vector<TModel> &ds) {
 
 //endregion
 
-
 void DataTable::on_write(Buffer &buf) {
+
     // TODO Рисование таблицы
 }
 

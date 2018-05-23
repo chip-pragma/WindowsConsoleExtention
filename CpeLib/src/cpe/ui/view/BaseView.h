@@ -5,25 +5,25 @@
 #include "cpe/ui/output/OutputHelper.h"
 #include "IView.h"
 #include "cpe/ui/ICuiElement.h"
-#include "cpe/ui/IController.h"
+#include "cpe/ui/IViewModel.h"
 
 namespace cpe {
 
-template<class TController>
+template<class TViewModel>
 class BaseView : public IView {
 public:
-    using ControllerClass = TController;
+    using ViewModelClass = TViewModel;
 
     BaseView();
 
     ~BaseView() override;
 
-    TController &initialize();
+    TViewModel &initialize();
 
     void show(bool beforeClean, bool afterClean) final;
 
 protected:
-    void on_initialize() override { };
+    void on_initialize() override = 0;
 
     void on_show_before() override { };
 
@@ -33,33 +33,33 @@ protected:
     TElement &make_element();
 
 private:
-    IController *mController = nullptr;
+    IViewModel *mViewModel = nullptr;
     std::vector<ICuiElement *> mElements;
 };
 
-template<class TController>
-BaseView<TController>::BaseView() {
-    static_assert(std::is_base_of<IController, TController>::value);
+template<class TViewModel>
+BaseView<TViewModel>::BaseView() {
+    static_assert(std::is_base_of<IViewModel, TViewModel>::value);
 }
 
-template<class TController>
-BaseView<TController>::~BaseView() {
+template<class TViewModel>
+BaseView<TViewModel>::~BaseView() {
     for (auto item : mElements)
         delete item;
-    delete mController;
+    delete mViewModel;
 }
 
-template<class TController>
-TController &BaseView<TController>::initialize() {
-    if (!mController) {
-        mController = static_cast<IController *>(new TController());
+template<class TViewModel>
+TViewModel &BaseView<TViewModel>::initialize() {
+    if (!mViewModel) {
+        mViewModel = static_cast<IViewModel *>(new TViewModel());
         on_initialize();
     }
-    return *(static_cast<TController *>(mController));
+    return *(static_cast<TViewModel *>(mViewModel));
 }
 
-template<class TController>
-void BaseView<TController>::show(bool beforeClean, bool afterClean) {
+template<class TViewModel>
+void BaseView<TViewModel>::show(bool beforeClean, bool afterClean) {
     if (beforeClean)
         term::clear();
 
@@ -68,15 +68,15 @@ void BaseView<TController>::show(bool beforeClean, bool afterClean) {
         outHelp.save_state();
     on_show_before();
     for (ICuiElement *item : mElements)
-        item->run(*mController);
+        item->run(*mViewModel);
     on_show_after();
     if (afterClean)
         outHelp.back_state();
 }
 
-template<class TController>
+template<class TViewModel>
 template<class TElement>
-TElement &BaseView<TController>::make_element() {
+TElement &BaseView<TViewModel>::make_element() {
     auto elem = new TElement();
     mElements.push_back(elem);
     return *elem;
