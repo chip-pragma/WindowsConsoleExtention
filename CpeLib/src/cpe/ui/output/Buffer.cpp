@@ -30,7 +30,7 @@ inline bool __is_point_in_bounds(const Point &point, const Point &size);
 inline void __point_as_size(const Point &size) {
     if (size.dimension() != Point::DIM_SECTOR_I) {
         std::stringstream ss;
-        ss << "Invalid size " + size.to_string();
+        ss << "Invalid width " + size.to_string();
         throw cpe::Exception(ss.str());
     }
 }
@@ -113,7 +113,7 @@ Buffer Buffer::extract(const Point &begin, const Point &size, bool clean) {
 
     if (!__is_point_in_bounds(begin, mSize) ||
         !__is_point_in_bounds(end, mSize))
-        throw Exception("Invalid begin position and/or size");
+        throw Exception("Invalid begin position and/or width");
 
     Buffer result(this, begin, size);
 

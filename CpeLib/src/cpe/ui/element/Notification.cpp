@@ -1,5 +1,5 @@
 #include "cpe/tool/Encoder.h"
-#include "IWriter.h"
+#include "cpe/ui/IWriter.h"
 #include "Notification.h"
 
 namespace cpe {

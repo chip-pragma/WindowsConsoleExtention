@@ -8,14 +8,16 @@ namespace cpe {
 
 class BaseWriterData : public IElementData {
 public:
+    BaseWriterData();
+
     ~BaseWriterData() override { };
 
-    const Point &size() const;
+    const int32_t &width() const;
 
-    Point &size();
+    int32_t &width();
 
 protected:
-    Point mSize = term::buffer_size() - 1;
+    int32_t mWidth;
 };
 
 }

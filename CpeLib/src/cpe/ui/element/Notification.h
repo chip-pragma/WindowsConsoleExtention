@@ -3,8 +3,8 @@
 #include <string>
 #include <optional>
 
-#include "BaseWriter.h"
-#include "BaseWriterData.h"
+#include "cpe/ui/BaseWriter.h"
+#include "cpe/ui/BaseWriterData.h"
 #include "cpe/ui/style/BorderStyle.h"
 #include "cpe/ui/output/StyledBorder.h"
 #include "cpe/ui/output/StyledText.h"

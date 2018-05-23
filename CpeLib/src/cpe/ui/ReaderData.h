@@ -3,8 +3,8 @@
 #include <algorithm>
 #include <vector>
 
-#include "BaseReaderData.h"
-#include "IValidator.h"
+#include "cpe/ui/BaseReaderData.h"
+#include "cpe/ui/IValidator.h"
 
 namespace cpe {
 

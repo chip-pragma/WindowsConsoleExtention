@@ -6,5 +6,7 @@ int main() {
     MainView mv;
     mv.initialize();
     mv.show(true, false);
+
+    cpe::term::pause();
     return 0;
 }

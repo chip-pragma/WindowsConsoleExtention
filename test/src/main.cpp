@@ -3,10 +3,10 @@
 #include <cassert>
 
 #include <cpe/core/terminal.h>
-#include <cpe/ui/reader/LineReader.h>
+#include <cpe/ui/element/LineReader.h>
 #include <cpe/third/json.hpp>
 #include <cpe/ui/output/StyledText.h>
-#include <cpe/ui/writer/Notification.h>
+#include <cpe/ui/element/Notification.h>
 
 #include "common.h"
 

@@ -1,7 +1,8 @@
 #pragma once
 
-#include <cpe/ui/writer/Notification.h>
-#include <cpe/ui/view/BaseView.h>
+#include <cpe/ui/BaseView.h>
+#include <cpe/ui/element/Notification.h>
+#include <cpe/ui/element/Label.h>
 
 #include "TransAgency/vm/MainVM.h"
 
@@ -10,7 +11,8 @@ protected:
     void on_initialize() override;
 
 private:
-    cpe::Notification mnCaption;
+    cpe::Notification m_nCaption;
+    cpe::Label m_lWraps;
 };
 
 

@@ -27,15 +27,13 @@ public:
 
     std::string &unfinished();
 
+    void push_back(const std::string &str);
+
     void push_back(const StyledString &sStr);
 
     void push_back(const StyledText &sText);
 
     void output_to(std::ostream &outStream) const override;
-
-    StyledText &operator<<(const StyledString &sStr);
-
-    StyledText &operator<<(const StyledText &sText);
 
 protected:
     uint8_t mTabLength = 5;

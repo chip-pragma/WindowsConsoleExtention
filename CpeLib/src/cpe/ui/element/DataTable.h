@@ -4,7 +4,7 @@
 #include <vector>
 #include <unordered_map>
 
-#include "BaseWriter.h"
+#include "cpe/ui/BaseWriter.h"
 #include "DataTableColumn.cpp"
 #include "cpe/ui/output/StyledBorder.h"
 #include "cpe/ui/IModel.h"

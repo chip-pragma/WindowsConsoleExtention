@@ -31,10 +31,7 @@ protected:
     void on_show_after() override { };
 
     template<class TElement>
-    void add_element(TElement &element);
-
-    template<class TElement>
-    void remove_element(TElement &element);
+    void push(TElement &element);
 
 private:
     IViewModel *mViewModel = nullptr;
@@ -78,16 +75,8 @@ void BaseView<TViewModel>::show(bool beforeClean, bool afterClean) {
 
 template<class TViewModel>
 template<class TElement>
-void BaseView<TViewModel>::add_element(TElement &element) {
+void BaseView<TViewModel>::push(TElement &element) {
     mElements.push_back(static_cast<ICuiElement *>(&element));
-}
-
-template<class TViewModel>
-template<class TElement>
-void BaseView<TViewModel>::remove_element(TElement &element) {
-    auto finded = std::find(mElements.begin(), mElements.end(), static_cast<ICuiElement *>(&element));
-    if (finded != mElements.end())
-        mElements.erase(finded);
 }
 
 }

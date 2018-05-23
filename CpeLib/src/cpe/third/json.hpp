@@ -1663,7 +1663,7 @@ public:
         // assertion to check that each element is 1 byte long
         static_assert(
                 sizeof(typename std::iterator_traits<IteratorType>::value_type) == 1,
-                "each element in the iterator range must have the size of 1 byte");
+                "each element in the iterator range must have the width of 1 byte");
 
         const auto len = static_cast<size_t>(std::distance(first, last));
         if (JSON_LIKELY(len > 0)) {
@@ -5538,7 +5538,7 @@ private:
         if (size_and_type.first != string_t::npos) {
             if (JSON_UNLIKELY(size_and_type.first > result.max_size())) {
                 JSON_THROW(out_of_range::create(408,
-                                                "excessive array size: " + std::to_string(size_and_type.first)));
+                                                "excessive array width: " + std::to_string(size_and_type.first)));
             }
 
             if (size_and_type.second != 0) {
@@ -5571,7 +5571,7 @@ private:
         if (size_and_type.first != string_t::npos) {
             if (JSON_UNLIKELY(size_and_type.first > result.max_size())) {
                 JSON_THROW(out_of_range::create(408,
-                                                "excessive object size: " + std::to_string(size_and_type.first)));
+                                                "excessive object width: " + std::to_string(size_and_type.first)));
             }
 
             if (size_and_type.second != 0) {
@@ -5789,7 +5789,7 @@ public:
             }
 
             case value_t::array: {
-                // step 1: write control byte and the array size
+                // step 1: write control byte and the array width
                 const auto N = j.m_value.array->size();
                 if (N <= 0x17) {
                     write_number(static_cast<uint8_t>(0x80 + N));
@@ -5818,7 +5818,7 @@ public:
             }
 
             case value_t::object: {
-                // step 1: write control byte and the object size
+                // step 1: write control byte and the object width
                 const auto N = j.m_value.object->size();
                 if (N <= 0x17) {
                     write_number(static_cast<uint8_t>(0xA0 + N));
@@ -5984,7 +5984,7 @@ public:
             }
 
             case value_t::array: {
-                // step 1: write control byte and the array size
+                // step 1: write control byte and the array width
                 const auto N = j.m_value.array->size();
                 if (N <= 15) {
                     // fixarray
@@ -6007,7 +6007,7 @@ public:
             }
 
             case value_t::object: {
-                // step 1: write control byte and the object size
+                // step 1: write control byte and the object width
                 const auto N = j.m_value.object->size();
                 if (N <= 15) {
                     // fixmap
@@ -6414,7 +6414,7 @@ namespace dtoa_impl {
 
 template<typename Target, typename Source>
 Target reinterpret_bits(const Source source) {
-    static_assert(sizeof(Target) == sizeof(Source), "size mismatch");
+    static_assert(sizeof(Target) == sizeof(Source), "width mismatch");
 
     Target target;
     std::memcpy(&target, &source, sizeof(Source));
@@ -6634,7 +6634,7 @@ boundaries compute_boundaries(FloatType value) {
 //
 //      2^(q - 2 + alpha) <= c * w < 2^(q + gamma)
 //
-// The choice of (alpha,gamma) determines the size of the table and the form of
+// The choice of (alpha,gamma) determines the width of the table and the form of
 // the digit generation procedure. Using (alpha,gamma)=(-60,-32) works out well
 // in practice:
 //
@@ -12901,17 +12901,17 @@ public:
             }
 
             case value_t::array: {
-                // delegate call to array_t::size()
+                // delegate call to array_t::width()
                 return m_value.array->size();
             }
 
             case value_t::object: {
-                // delegate call to object_t::size()
+                // delegate call to object_t::width()
                 return m_value.object->size();
             }
 
             default: {
-                // all other types have size 1
+                // all other types have width 1
                 return 1;
             }
         }
@@ -12970,7 +12970,7 @@ public:
             }
 
             default: {
-                // all other types have max_size() == size()
+                // all other types have max_size() == width()
                 return size();
             }
         }

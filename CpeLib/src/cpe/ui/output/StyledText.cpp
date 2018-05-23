@@ -32,6 +32,10 @@ std::string &StyledText::unfinished() {
     return mUnfinished;
 }
 
+void StyledText::push_back(const std::string &str) {
+    push_back(StyledString(str));
+}
+
 void StyledText::push_back(const StyledString &sStr) {
     for (const char &ch : sStr.str())
         _BaseVector::push_back(StyledChar(ch, sStr.color()));
@@ -50,16 +54,6 @@ void StyledText::output_to(std::ostream &outStream) const {
         outStream << c.character();
     }
     outHelp.end_colorized();
-}
-
-StyledText &StyledText::operator<<(const StyledString &sStr) {
-    push_back(sStr);
-    return *this;
-}
-
-StyledText &StyledText::operator<<(const StyledText &sText) {
-    push_back(sText);
-    return *this;
 }
 
 }
