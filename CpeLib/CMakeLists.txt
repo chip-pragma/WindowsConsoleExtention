@@ -22,7 +22,7 @@ add_library(${CPE_LIB_TARGET} STATIC
             src/cpe/ui/IModel.h src/cpe/ui/BaseCuiElement.h src/cpe/ui/IElementData.h src/cpe/ui/BaseWriterData.cpp
             src/cpe/ui/BaseWriterData.h src/cpe/ui/BaseReaderData.cpp
             src/cpe/ui/BaseReaderData.h src/cpe/ui/BaseReader.h
-            src/cpe/ui/ReaderData.h src/cpe/ui/element/LineReader.cpp src/cpe/ui/element/LineReader.h src/cpe/ui/output/StyledText.cpp src/cpe/ui/output/StyledText.h src/cpe/ui/output/IOutputable.h src/cpe/ui/output/IOutputable.cpp src/cpe/ui/element/Label.cpp src/cpe/ui/element/Label.h src/cpe/ui/element/Menu.cpp src/cpe/ui/element/Menu.h src/cpe/ui/element/IMenuItem.h)
+            src/cpe/ui/ReaderData.h src/cpe/ui/element/LineReader.cpp src/cpe/ui/element/LineReader.h src/cpe/ui/output/StyledText.cpp src/cpe/ui/output/StyledText.h src/cpe/ui/output/IOutputable.h src/cpe/ui/output/IOutputable.cpp src/cpe/ui/element/Label.cpp src/cpe/ui/element/Label.h src/cpe/ui/element/menu/Menu.cpp src/cpe/ui/element/menu/Menu.h src/cpe/ui/element/menu/IMenuItem.h)
 
 target_include_directories(${CPE_LIB_TARGET} PUBLIC src)
 target_compile_features(${CPE_LIB_TARGET} PUBLIC cxx_std_17)
