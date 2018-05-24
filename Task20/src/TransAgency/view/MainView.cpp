@@ -18,6 +18,8 @@ void MainView::on_initialize() {
     ncData.icon() = cpe::StyledChar('i', {cpe::Colors::LT_TEAL, std::nullopt});
     ncData.wait(true);
 
+    // TODO сократитьт монструозное инициализирование (использовать Named Parameter Idiom)
+
     m_mMain.data().command_color().foreground() = cpe::Colors::LT_RED;
     m_mMain.data().border().style().apply(cpe::BorderStyle::DB_OUT_H);
     m_mMain.data().border().style().final_encoding() = cpe::Encoder(cpe::Encoder::CP866);
