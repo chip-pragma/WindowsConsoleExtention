@@ -11,7 +11,6 @@ void MainView::on_initialize() {
     ncData.icon() = cpe::StyledChar('i', {cpe::Colors::LT_TEAL, std::nullopt});
     ncData.wait(true);
 
-
     push(m_nCaption);
     push(m_lWraps);
 }

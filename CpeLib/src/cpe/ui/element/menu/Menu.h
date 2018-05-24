@@ -13,6 +13,7 @@ public:
 
     ~MenuData() override;
 
+
     void add_item(uint32_t itemId, const std::string &text);
 
     void remove_item(uint32_t itemId);
