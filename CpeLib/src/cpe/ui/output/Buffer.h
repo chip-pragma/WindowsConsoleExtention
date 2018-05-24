@@ -27,25 +27,21 @@ public:
 
     const Point &cursor_position() const;
 
-    void cursor_position(const Point &pos);
+    Point &cursor_position();
 
-    void move_cursor(const Point &vector);
+    const Point & get_size() const;
 
-    const Point & size() const;
+    Point get_used_size() const;
 
-    Point calc_used_size() const;
+    bool has_owner() const;
 
-    bool have_owner() const;
+    const Buffer& get_owner() const;
 
-    const Buffer& owner() const;
-
-    Buffer& owner();
-
-    Buffer extract(const Point &begin, const Point &size, bool clean = true);
+    Buffer extract(Point begin, Point size, bool clean = true);
 
     void draw(const StyledText &text, bool softWrap = true);
 
-    void draw_line(const StyledText &str, bool softWrap = true);
+    void draw_line(const StyledText &str = StyledText(), bool softWrap = true);
 
     void draw(const Buffer &sub, bool useActualSize);
 

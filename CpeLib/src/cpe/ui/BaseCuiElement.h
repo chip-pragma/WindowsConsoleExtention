@@ -26,8 +26,12 @@ public:
 protected:
     using _PureDataReceiverFunc = void (IViewModel::*)(TData &);
 
-    TData* mData;
+    TData *mData;
     _PureDataReceiverFunc mDataReceiverFunc = nullptr;
+
+    void on_before_run() override { };
+
+    void on_after_run() override { };
 };
 
 template<class TData>

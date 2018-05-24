@@ -4,6 +4,10 @@
 
 namespace cpe {
 
+StyledText::StyledText(const std::string &str) {
+    push_back(StyledString(str));
+}
+
 StyledText::StyledText(const StyledString &sStr) {
     push_back(sStr);
 }

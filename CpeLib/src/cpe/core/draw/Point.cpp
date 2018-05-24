@@ -14,20 +14,20 @@ Point::Point(int32_t x, int32_t y) {
     this->mY = y;
 }
 
-int32_t Point::x_crd() const {
+const int32_t &Point::x_crd() const {
     return mX;
 }
 
-void Point::x_crd(int32_t x) {
-    mX = x;
+int32_t &Point::x_crd() {
+    return mX;
 }
 
-int32_t Point::y_crd() const {
+const int32_t &Point::y_crd() const {
     return mY;
 }
 
-void Point::y_crd(int32_t y) {
-    mY = y;
+int32_t &Point::y_crd() {
+    return mY;
 }
 
 Point::Dimension Point::dimension() const {

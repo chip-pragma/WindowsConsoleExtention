@@ -61,7 +61,7 @@ void Notification::output_to(std::ostream &outStream) {
 void Notification::on_write(Buffer &cvs) {
     using BS = BorderStyle;
 
-    Point innerSize = cvs.size() - Point(2, 2);
+    Point innerSize = cvs.get_size() - Point(2, 2);
     Point margin(2, 0);
     Point textBlockSize = innerSize - margin;
     if (textBlockSize.dimension() != Point::DIM_SECTOR_I) {
@@ -71,7 +71,7 @@ void Notification::on_write(Buffer &cvs) {
 
     Buffer text = cvs.extract(margin / 2 + Point(1, 1), textBlockSize, false);
     text.draw(data().text());
-    Point textBlockUsedSize = text.calc_used_size() + margin;
+    Point textBlockUsedSize = text.get_used_size() + margin;
 
     auto &brd = data().border();
 
@@ -79,35 +79,35 @@ void Notification::on_write(Buffer &cvs) {
     cvs.draw(brd[BS::ST], textBlockUsedSize.x_crd(), false);
     cvs.draw(brd[BS::SRT]);
 
-    cvs.cursor_position(Point(0, 1));
+    cvs.cursor_position() = Point(0, 1);
     cvs.draw(brd[BS::SL], textBlockUsedSize.y_crd(), true);
-    cvs.cursor_position(Point(textBlockUsedSize.x_crd() + 1, 1));
+    cvs.cursor_position() = Point(textBlockUsedSize.x_crd() + 1, 1);
     cvs.draw(brd[BS::SR], textBlockUsedSize.y_crd(), true);
 
-    cvs.cursor_position(Point(0, textBlockUsedSize.y_crd() + 1));
+    cvs.cursor_position() = Point(0, textBlockUsedSize.y_crd() + 1);
     cvs.draw(brd[BS::SLB]);
     cvs.draw(brd[BS::SB], textBlockUsedSize.x_crd(), false);
     cvs.draw(brd[BS::SRB]);
 
     // Open
-    cvs.cursor_position(Point(1, 0));
+    cvs.cursor_position() = Point(1, 0);
 
     if (data().icon().has_value()) {
-        cvs.move_cursor(Point(1, 0));
+        cvs.cursor_position().x_crd()++;
         cvs.draw(StyledString("[", brd.color()));
         cvs.draw(data().icon().value());
         cvs.draw(StyledString("]", brd.color()));
     }
 
     if (data().caption().has_value()
-        && (cvs.cursor_position().x_crd() + 3 < cvs.size().x_crd() - 2)) {
-        cvs.move_cursor(Point(1, 0));
+        && (cvs.cursor_position().x_crd() + 3 < cvs.get_size().x_crd() - 2)) {
+        cvs.cursor_position().x_crd()++;
         cvs.draw(StyledString("[", brd.color()));
-        auto captionWidth = cvs.size().x_crd() - cvs.cursor_position().x_crd() - 3;
+        auto captionWidth = cvs.get_size().x_crd() - cvs.cursor_position().x_crd() - 3;
         auto caption = cvs.extract(cvs.cursor_position(),
                                    Point(captionWidth, 1));
         caption.draw(data().caption().value());
-        cvs.move_cursor(Point(captionWidth, 0));
+        cvs.cursor_position().x_crd() += captionWidth;
         cvs.draw(StyledString("]", brd.color()));
     }
 }

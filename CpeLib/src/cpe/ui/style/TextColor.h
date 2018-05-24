@@ -24,8 +24,6 @@ public:
 
     std::optional<Color> &background();
 
-    void set(const TextColor &tc);
-
     TextColor &operator=(const TextColor &tc);
 
 private:

@@ -26,9 +26,9 @@ public:
 protected:
     void on_initialize() override = 0;
 
-    void on_show_before() override { };
+    void on_before_show() override { };
 
-    void on_show_after() override { };
+    void on_after_show() override { };
 
     template<class TElement>
     void push(TElement &element);
@@ -65,10 +65,10 @@ void BaseView<TViewModel>::show(bool beforeClean, bool afterClean) {
     OutputHelper outHelp;
     if (afterClean)
         outHelp.save_state();
-    on_show_before();
+    on_before_show();
     for (ICuiElement *item : mElements)
         item->run(*mViewModel);
-    on_show_after();
+    on_after_show();
     if (afterClean)
         outHelp.back_state();
 }

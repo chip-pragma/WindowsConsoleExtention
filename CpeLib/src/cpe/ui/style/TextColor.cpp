@@ -41,11 +41,6 @@ std::optional<Color> &TextColor::background() {
     return mBack;
 }
 
-void TextColor::set(const TextColor &tc) {
-    mFore = tc.mFore;
-    mBack = tc.mBack;
-}
-
 TextColor &TextColor::operator=(const TextColor &tc) {
     mFore = tc.mFore;
     mBack = tc.mBack;

@@ -23,13 +23,13 @@ public:
 
     Point(int32_t x, int32_t y);
 
-    int32_t x_crd() const;
+    const int32_t& x_crd() const;
 
-    void x_crd(int32_t x);
+    int32_t& x_crd();
 
-    int32_t y_crd() const;
+    const int32_t& y_crd() const;
 
-    void y_crd(int32_t y);
+    int32_t& y_crd();
 
     Dimension dimension() const;
 

@@ -29,6 +29,8 @@ void BaseWriter<TData>::write(Buffer &buf) {
 
 template<class TData>
 void BaseWriter<TData>::run(IViewModel &ctrl) {
+    if (!static_cast<IElementData&>(_BaseCuiElement::data()).visible())
+        return;
     _BaseCuiElement::fire_data(ctrl);
     output_to(std::cout);
 }

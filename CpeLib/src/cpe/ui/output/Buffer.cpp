@@ -36,7 +36,7 @@ inline void __point_as_size(const Point &size) {
 }
 
 inline void __new_line(Point &cursorPos) {
-    cursorPos.x_crd(0);
+    cursorPos.x_crd() = 0;
     cursorPos += Point(0, 1);
 }
 
@@ -76,43 +76,33 @@ const Point &Buffer::cursor_position() const {
     return mCursorPos;
 }
 
-void Buffer::cursor_position(const Point &pos) {
-    mCursorPos = pos;
+Point &Buffer::cursor_position() {
+    return mCursorPos;
 }
 
-void Buffer::move_cursor(const Point &vector) {
-    mCursorPos += vector;
-}
-
-const Point &Buffer::size() const {
+const Point &Buffer::get_size() const {
     return mSize;
 }
 
-Point Buffer::calc_used_size() const {
+Point Buffer::get_used_size() const {
     return (__clamp_point(mMaxCurPos, mSize) + 1);
 }
 
-bool Buffer::have_owner() const {
+bool Buffer::has_owner() const {
     return static_cast<bool>(mOwner);
 }
 
-const Buffer &Buffer::owner() const {
+const Buffer &Buffer::get_owner() const {
     if (!mOwner)
         throw Exception("Buffer does not have parent");
     return *mOwner;
 }
 
-Buffer &Buffer::owner() {
-    if (!mOwner)
-        throw Exception("Buffer does not have parent");
-    return *mOwner;
-}
-
-Buffer Buffer::extract(const Point &begin, const Point &size, bool clean) {
+Buffer Buffer::extract(Point begin, Point size, bool clean) {
     auto end = begin + size;
 
     if (!__is_point_in_bounds(begin, mSize) ||
-        !__is_point_in_bounds(end, mSize))
+        !__is_point_in_bounds(end, mSize + 1))
         throw Exception("Invalid begin position and/or width");
 
     Buffer result(this, begin, size);
@@ -171,7 +161,7 @@ void Buffer::draw(const Buffer &sub, bool useActualSize) {
                         = sub.mBuffer[i][j];
             }
             __point_with_max_crd();
-            cursor_position(Point(srcCurPos.x_crd(), srcCurPos.y_crd() + i));
+            cursor_position() = Point(srcCurPos.x_crd(), srcCurPos.y_crd() + i);
         }
     }
 }
@@ -254,14 +244,14 @@ void Buffer::__print_text(const StyledChar &schar) {
 }
 
 void Buffer::__point_with_max_crd() {
-    mMaxCurPos.x_crd(std::max(mMaxCurPos.x_crd(), mCursorPos.x_crd()));
-    mMaxCurPos.y_crd(std::max(mMaxCurPos.y_crd(), mCursorPos.y_crd()));
+    mMaxCurPos.x_crd() = std::max(mMaxCurPos.x_crd(), mCursorPos.x_crd());
+    mMaxCurPos.y_crd() = std::max(mMaxCurPos.y_crd(), mCursorPos.y_crd());
 
     if (mOwner) {
         Point &ownerMaxPos = mOwner->mMaxCurPos;
         Point thisMaxPos = __clamp_point(mMaxCurPos, mSize) + mBeginPosFromOwner;
-        ownerMaxPos.x_crd(std::max(ownerMaxPos.x_crd(), thisMaxPos.x_crd()));
-        ownerMaxPos.y_crd(std::max(ownerMaxPos.y_crd(), thisMaxPos.y_crd()));
+        ownerMaxPos.x_crd() = std::max(ownerMaxPos.x_crd(), thisMaxPos.x_crd());
+        ownerMaxPos.y_crd() = std::max(ownerMaxPos.y_crd(), thisMaxPos.y_crd());
     }
 }
 

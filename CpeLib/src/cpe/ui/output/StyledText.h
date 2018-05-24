@@ -13,6 +13,8 @@ class StyledText : public IOutputable, public std::vector<StyledChar> {
 public:
     StyledText() = default;
 
+    StyledText(const std::string &str);
+
     StyledText(const StyledString &sStr);
 
     StyledText(uint8_t tabLength, const std::string &unf);

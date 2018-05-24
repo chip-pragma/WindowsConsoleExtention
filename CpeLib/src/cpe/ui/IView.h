@@ -11,9 +11,9 @@ public:
 protected:
     virtual void on_initialize() = 0;
 
-    virtual void on_show_before() = 0;
+    virtual void on_before_show() = 0;
 
-    virtual void on_show_after() = 0;
+    virtual void on_after_show() = 0;
 };
 
 }

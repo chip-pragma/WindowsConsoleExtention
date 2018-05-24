@@ -9,7 +9,7 @@ class StyledChar {
 public:
     StyledChar();
 
-    explicit StyledChar(char c);
+    StyledChar(char c);
 
     StyledChar(char c, const TextColor& color);
 

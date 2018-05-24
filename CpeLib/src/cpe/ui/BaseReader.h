@@ -53,6 +53,9 @@ void BaseReader<TValue, TData, TResult>::fire_result(IViewModel &ctrl, TResult &
 
 template<class TValue, class TData, class TResult>
 void BaseReader<TValue, TData, TResult>::run(IViewModel &ctrl) {
+    if (!static_cast<IElementData&>(_BaseCuiElement::data()).visible())
+        return;
+
     _BaseCuiElement::fire_data(ctrl);
 
     OutputHelper outHelp;
