@@ -4,14 +4,6 @@
 
 namespace cpe {
 
-StyledText::StyledText(const std::string &str) {
-    push_back(StyledString(str));
-}
-
-StyledText::StyledText(const StyledString &sStr) {
-    push_back(sStr);
-}
-
 StyledText::StyledText(uint8_t tabLength, const std::string &unf)
         : mTabLength(tabLength),
           mUnfinished(unf) {

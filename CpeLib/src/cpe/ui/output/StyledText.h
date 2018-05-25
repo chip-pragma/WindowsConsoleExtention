@@ -8,15 +8,11 @@
 
 namespace cpe {
 
-class StyledText : public IOutputable, public std::vector<StyledChar> {
+// FEATURE переделать StyledText, реализовать StyledTextBuilder, удалить StyledString
+
+class StyledText : public IOutputable {
     using _BaseVector = std::vector<StyledChar>;
 public:
-    StyledText() = default;
-
-    StyledText(const std::string &str);
-
-    StyledText(const StyledString &sStr);
-
     StyledText(uint8_t tabLength, const std::string &unf);
 
     ~StyledText() override;

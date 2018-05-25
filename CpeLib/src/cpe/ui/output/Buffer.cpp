@@ -120,7 +120,7 @@ Buffer Buffer::extract(Point begin, Point size, bool clean) {
 }
 
 void Buffer::draw(const StyledText &text, bool softWrap) {
-    // TODO Добавить как нибудь "мягкие" разрывы строк
+    // FEATURE Добавить как нибудь "мягкие" разрывы строк
     for (auto it = text.cbegin(); it != text.cend(); ++it) {
         if (__char_is_one_of("\n\r", it->character())) {
             __new_line(mCursorPos);

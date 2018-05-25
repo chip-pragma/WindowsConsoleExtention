@@ -18,16 +18,21 @@ void MainView::on_initialize() {
     ncData.icon() = cpe::StyledChar('i', {cpe::Colors::LT_TEAL, std::nullopt});
     ncData.wait(true);
 
-    // TODO сократить монструозное инициализирование (c Named Parameter Idiom не вышло)
-
-    m_mMain.data().command_color().foreground() = cpe::Colors::LT_RED;
-    m_mMain.data().border().style().apply(cpe::BorderStyle::DB_OUT_H);
-    m_mMain.data().border().style().final_encoding() = cpe::Encoder(cpe::Encoder::CP866);
-    m_mMain.data().border().color().foreground() = cpe::Colors::LT_TEAL;
-    m_mMain.data().width() = 30;
-    m_mMain.data().caption().push_back({"Заголовок "_dos, {cpe::Colors::BLACK, cpe::Colors::WHITE}});
-    m_mMain.data().caption().push_back({" этой "_dos, {cpe::Colors::BLACK, cpe::Colors::LT_TEAL}});
-    m_mMain.data().caption().push_back({" менюшки"_dos, {cpe::Colors::BLACK, cpe::Colors::LT_RED}});
+    {
+        auto &d = m_mMain.data();
+        d.command_color().foreground() = cpe::Colors::LT_RED;
+        d.width() = 30;
+        auto &dc = d.caption();
+        // FEATURE Здесь должен быть StringBuilder
+        dc.push_back({"Заголовок "_dos, {cpe::Colors::BLACK, cpe::Colors::WHITE}});
+        dc.push_back({" этой "_dos, {cpe::Colors::BLACK, cpe::Colors::LT_TEAL}});
+        dc.push_back({" менюшки"_dos, {cpe::Colors::BLACK, cpe::Colors::LT_RED}});
+        auto &db = d.border();
+        db.color().foreground() = cpe::Colors::LT_TEAL;
+        auto &dbs = db.style();
+        dbs.apply(cpe::BorderStyle::DB_OUT_H);
+        dbs.final_encoding() = cpe::Encoder(cpe::Encoder::CP866);
+    }
 
     m_mMain_nmiCars.index() = MainVM::ID_MM_CARS;
     m_mMain_nmiCars.text() = {"Транспорт"_dos};
