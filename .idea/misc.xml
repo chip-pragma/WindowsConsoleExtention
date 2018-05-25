@@ -7,6 +7,9 @@
       <file path="$PROJECT_DIR$/Task20/src" />
       <file path="$PROJECT_DIR$/test/src" />
     </sourceRoots>
+    <libraryRoots>
+      <file path="$PROJECT_DIR$/CpeLib/src/cpe/third" />
+    </libraryRoots>
     <excludeRoots>
       <file path="$PROJECT_DIR$/CpeLib/_old" />
       <file path="$PROJECT_DIR$/CpeLib/uml" />

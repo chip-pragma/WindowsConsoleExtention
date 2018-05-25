@@ -11,7 +11,7 @@ public:
     bool &visible() override;
 
 protected:
-    bool mVisible;
+    bool mVisible = true;
 };
 
 }
