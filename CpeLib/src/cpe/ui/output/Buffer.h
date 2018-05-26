@@ -13,7 +13,6 @@
 #include "IOutputable.h"
 #include "OutputHelper.h"
 #include "StyledChar.h"
-#include "StyledString.h"
 #include "StyledText.h"
 
 namespace cpe {
@@ -23,7 +22,7 @@ public:
 
     explicit Buffer(const Point &size);
 
-    ~Buffer();
+    ~Buffer() override;
 
     const Point &cursor_position() const;
 
@@ -33,6 +32,14 @@ public:
 
     Point get_used_size() const;
 
+    const uint8_t &tab_length() const;
+
+    uint8_t &tab_length();
+
+    const std::string &unfinished() const;
+
+    std::string &unfinished();
+
     bool has_owner() const;
 
     const Buffer& get_owner() const;
@@ -41,7 +48,7 @@ public:
 
     void draw(const StyledText &text, bool softWrap = true);
 
-    void draw_line(const StyledText &str = StyledText(), bool softWrap = true);
+    void draw_line(const StyledText &str, bool softWrap = true);
 
     void draw(const Buffer &sub, bool useActualSize);
 
@@ -64,6 +71,8 @@ private:
     Point mBeginPosFromOwner;
     Point mSize;
     Point mMaxCurPos;
+    uint8_t mTabLength = 5;
+    std::string mUnfinished = "<~>";
 
     explicit Buffer(Buffer *parent, const Point &beginPos, const Point &size);
 

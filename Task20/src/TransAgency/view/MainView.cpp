@@ -9,12 +9,15 @@ MainView::~MainView() { }
 
 
 void MainView::on_initialize() {
-    m_lWraps.data().text().push_back("\n\n");
+    m_lWraps.data().text().append("\n\n");
 
     auto &ncData = m_nCaption.data();
     ncData.border().style().apply(cpe::BorderStyle::DB_ALL);
-    ncData.text().push_back({"СИСТЕМА УПРАВЛЕНИЯ ДАННЫМИ\n"_dos, {cpe::Colors::LT_GREEN, std::nullopt}});
-    ncData.text().push_back({"ТРАНСПОРТНОГО АГЕНСТВА"_dos, {cpe::Colors::LT_YELLOW, cpe::Colors::BLUE}});
+    ncData.text()
+        .color({cpe::Colors::LT_GREEN, std::nullopt})
+        .append("СИСТЕМА УПРАВЛЕНИЯ ДАННЫМИ\n"_dos)
+        .color({cpe::Colors::LT_YELLOW, std::nullopt})
+        .append("ТРАНСПОРТНОГО АГЕНСТВА\n"_dos);
     ncData.icon() = cpe::StyledChar('i', {cpe::Colors::LT_TEAL, std::nullopt});
     ncData.wait(true);
 
@@ -22,11 +25,13 @@ void MainView::on_initialize() {
         auto &d = m_mMain.data();
         d.command_color().foreground() = cpe::Colors::LT_RED;
         d.width() = 30;
-        auto &dc = d.caption();
-        // FEATURE Здесь должен быть StringBuilder
-        dc.push_back({"Заголовок "_dos, {cpe::Colors::BLACK, cpe::Colors::WHITE}});
-        dc.push_back({" этой "_dos, {cpe::Colors::BLACK, cpe::Colors::LT_TEAL}});
-        dc.push_back({" менюшки"_dos, {cpe::Colors::BLACK, cpe::Colors::LT_RED}});
+        d.caption()
+            .color({std::nullopt, cpe::Colors::WHITE})
+            .append("Заголовок "_dos)
+            .color({std::nullopt, cpe::Colors::LT_TEAL})
+            .append(" этой "_dos)
+            .color({std::nullopt, cpe::Colors::LT_RED})
+            .append(" менюшки"_dos);
         auto &db = d.border();
         db.color().foreground() = cpe::Colors::LT_TEAL;
         auto &dbs = db.style();
@@ -35,19 +40,19 @@ void MainView::on_initialize() {
     }
 
     m_mMain_nmiCars.index() = MainVM::ID_MM_CARS;
-    m_mMain_nmiCars.text() = {"Транспорт"_dos};
+    m_mMain_nmiCars.text().append("Транспорт"_dos);
     m_mMain.add_item(MainVM::ID_MM_CARS, m_mMain_nmiCars);
 
     m_mMain_nmiClients.index() = MainVM::ID_MM_CLIENTS;
-    m_mMain_nmiClients.text() = {"Клиенты"_dos};
+    m_mMain_nmiClients.text().append("Клиенты"_dos);
     m_mMain.add_item(MainVM::ID_MM_CLIENTS, m_mMain_nmiClients);
 
     m_mMain_nmiRent.index() = MainVM::ID_MM_RENT;
-    m_mMain_nmiRent.text() = {"Аренда"_dos};
+    m_mMain_nmiRent.text().append("Аренда"_dos);
     m_mMain.add_item(MainVM::ID_MM_RENT, m_mMain_nmiRent);
 
     m_mMain_nmiExit.index() = MainVM::ID_MM_EXIT;
-    m_mMain_nmiExit.text() = {"Выход"_dos};
+    m_mMain_nmiExit.text().append("Выход"_dos);
     m_mMain.add_item(MainVM::ID_MM_EXIT, m_mMain_nmiExit);
 
     push(m_nCaption);

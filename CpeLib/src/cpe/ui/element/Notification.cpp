@@ -18,11 +18,11 @@ StyledBorder &NotificationData::border() {
     return mBorder;
 }
 
-const std::optional<StyledString> &NotificationData::caption() const {
+const std::optional<StyledText> &NotificationData::caption() const {
     return mCaption;
 }
 
-std::optional<StyledString> &NotificationData::caption() {
+std::optional<StyledText> &NotificationData::caption() {
     return mCaption;
 }
 
@@ -65,7 +65,7 @@ void Notification::on_write(Buffer &cvs) {
     Point margin(2, 0);
     Point textBlockSize = innerSize - margin;
     if (textBlockSize.dimension() != Point::DIM_SECTOR_I) {
-        cvs.draw(StyledString("[NO PLACE]"));
+        cvs.draw(StyledText().append("[NO PLACE]"));
         return;
     }
 
@@ -94,21 +94,21 @@ void Notification::on_write(Buffer &cvs) {
 
     if (data().icon().has_value()) {
         cvs.cursor_position().x_crd()++;
-        cvs.draw(StyledString("[", brd.color()));
+        cvs.draw(StyledChar('[', brd.color()));
         cvs.draw(data().icon().value());
-        cvs.draw(StyledString("]", brd.color()));
+        cvs.draw(StyledChar(']', brd.color()));
     }
 
     if (data().caption().has_value()
         && (cvs.cursor_position().x_crd() + 3 < cvs.get_size().x_crd() - 2)) {
         cvs.cursor_position().x_crd()++;
-        cvs.draw(StyledString("[", brd.color()));
+        cvs.draw(StyledChar('[', brd.color()));
         auto captionWidth = cvs.get_size().x_crd() - cvs.cursor_position().x_crd() - 3;
         auto caption = cvs.extract(cvs.cursor_position(),
                                    Point(captionWidth, 1));
         caption.draw(data().caption().value());
         cvs.cursor_position().x_crd() += captionWidth;
-        cvs.draw(StyledString("]", brd.color()));
+        cvs.draw(StyledChar(']', brd.color()));
     }
 }
 

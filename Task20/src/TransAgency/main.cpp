@@ -3,6 +3,8 @@
 #include "TransAgency/view/MainView.h"
 
 int main() {
+    cpe::term::pause();
+
     MainView mv;
     mv.initialize();
     mv.show(true, false);

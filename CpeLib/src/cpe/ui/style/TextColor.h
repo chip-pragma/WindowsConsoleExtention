@@ -26,6 +26,10 @@ public:
 
     TextColor &operator=(const TextColor &tc);
 
+    bool operator==(const TextColor &rhs) const;
+
+    bool operator!=(const TextColor &rhs) const;
+
 private:
     std::optional<Color> mFore = std::nullopt;
     std::optional<Color> mBack = std::nullopt;

@@ -3,13 +3,14 @@
 namespace cpe {
 
 NumericMenuItem::NumericMenuItem(uint32_t index)
-        : mIndex(index) { }
+    : mIndex(index) { }
 
 NumericMenuItem::NumericMenuItem(uint32_t itemId, const std::string &text)
-        : mIndex(itemId),
-          mText(text) { }
+    : mIndex(itemId) {
+    mText.append(text);
+}
 
-const uint32_t& NumericMenuItem::index() const {
+const uint32_t &NumericMenuItem::index() const {
     return mIndex;
 }
 
@@ -30,7 +31,9 @@ void NumericMenuItem::write(cpe::Buffer &buf, const cpe::StyledBorder &sBord, co
     buf.draw(sBord[BS::SL]);
     buf.draw(' ');
     buf.draw(StyledChar('[', sBord.color()));
-    buf.draw(StyledString(get_command(), commandColor));
+    buf.draw(StyledText()
+                 .color(commandColor)
+                 .append(get_command()));
     buf.draw(StyledChar(']', sBord.color()));
     buf.draw(' ');
 

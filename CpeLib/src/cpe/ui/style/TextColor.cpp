@@ -47,4 +47,13 @@ TextColor &TextColor::operator=(const TextColor &tc) {
     return *this;
 }
 
+bool TextColor::operator==(const TextColor &rhs) const {
+    return mFore == rhs.mFore &&
+           mBack == rhs.mBack;
+}
+
+bool TextColor::operator!=(const TextColor &rhs) const {
+    return !(rhs == *this);
+}
+
 }

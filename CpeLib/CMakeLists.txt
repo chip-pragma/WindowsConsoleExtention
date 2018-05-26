@@ -4,7 +4,7 @@ project(ConsolePresentExtention)
 
 add_library(${CPE_LIB_TARGET} STATIC
             src/cpe/tool/text.cpp src/cpe/tool/text.h src/cpe/core/terminal.cpp src/cpe/core/terminal.h
-            src/cpe/ui/output/StyledString.cpp src/cpe/ui/output/StyledString.h src/cpe/tool/Encoder.cpp
+            src/cpe/tool/Encoder.cpp
             src/cpe/tool/Encoder.h src/cpe/core/draw/Point.cpp src/cpe/core/draw/Point.h src/cpe/platform.h
             src/cpe/core/draw/Color.cpp src/cpe/core/draw/Color.cpp src/cpe/ui/style/BorderStyle.h src/cpe/ui/style/BorderStyle.cpp
             src/cpe/core/draw/Color.h src/cpe/_platform/winapi.h src/cpe/core/Exception.cpp src/cpe/core/Exception.h

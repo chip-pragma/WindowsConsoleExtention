@@ -1,55 +1,87 @@
 #include "StyledText.h"
-
 #include "OutputHelper.h"
+#include "cpe/core/Exception.h"
+
+#include <algorithm>
 
 namespace cpe {
 
-StyledText::StyledText(uint8_t tabLength, const std::string &unf)
-        : mTabLength(tabLength),
-          mUnfinished(unf) {
-
-}
+StyledText::StyledText()
+    : mColors(1) { }
 
 StyledText::~StyledText() { }
 
-const uint8_t &StyledText::tab_length() const {
-    return mTabLength;
+const TextColor &StyledText::text_color() const {
+    return mColors.back().color;
 }
 
-uint8_t &StyledText::tab_length() {
-    return mTabLength;
+StyledText &StyledText::color(const TextColor &tColor) {
+    if (mColors.back().position < mText.length()
+        && mColors.back().color != tColor)
+        mColors.emplace_back(tColor, 0);
+    else
+        mColors.back().color = tColor;
+    return *this;
 }
 
-const std::string &StyledText::unfinished() const {
-    return mUnfinished;
+StyledText &StyledText::reset_color() {
+    color(TextColor());
+    return *this;
 }
 
-std::string &StyledText::unfinished() {
-    return mUnfinished;
+StyledText &StyledText::append(const std::string &str) {
+    mText += str;
+    return *this;
 }
 
-void StyledText::push_back(const std::string &str) {
-    push_back(StyledString(str));
+StyledText &StyledText::append(const StyledText &sText) {
+    mText += sText.mText;
+    for (const auto &tsc : sText.mColors) {
+        this->color(tsc.color);
+        mColors.back().position += tsc.position;
+    }
+    return *this;
 }
 
-void StyledText::push_back(const StyledString &sStr) {
-    for (const char &ch : sStr.str())
-        _BaseVector::push_back(StyledChar(ch, sStr.color()));
+size_t StyledText::length() const {
+    return mText.length();
 }
 
-void StyledText::push_back(const StyledText &sText) {
-    for (const auto &ch : sText)
-        _BaseVector::push_back(ch);
+StyledChar StyledText::at(size_t index) const {
+    if (index < 0 ||
+        index >= mText.length())
+        throw Exception("Out of range");
+
+    auto c = mText[index];
+    TextColor clr;
+
+    for (const auto &item : mColors) {
+        if (item.position > index) break;
+        clr = item.color;
+    }
+
+    return StyledChar(c, clr);
 }
 
 void StyledText::output_to(std::ostream &outStream) const {
     OutputHelper outHelp;
     outHelp.begin_colorized(outStream);
-    for (const auto &c : *this) {
-        outHelp.apply_color(c.color());
-        outStream << c.character();
+
+    // FIXME Вывод текста
+    for (size_t i = 0, j = 0, k = 0; i < mText.length(); ++i, ++k) {
+        if (mColors[j].position +=)
+        outHelp.apply_color(mColors[j].color);
+        outStream << mText[i];
     }
     outHelp.end_colorized();
+}
+
+const std::string &StyledText::to_string() const {
+    return mText;
+}
+
+StyledChar StyledText::operator[](size_t index) const {
+    return at(index);
 }
 
 }

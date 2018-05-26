@@ -5,13 +5,13 @@
 
 namespace cpe {
 
-StyledChar::StyledChar() {
+StyledChar::StyledChar() { }
 
-}
+StyledChar::StyledChar(char c)
+    : mChar(c) { }
 
-StyledChar::StyledChar(char c) : mChar(c) {}
-
-StyledChar::StyledChar(char c, const TextColor &color) : mChar(c), mColor(color) {}
+StyledChar::StyledChar(char c, const TextColor &color)
+    : mChar(c), mColor(color) {}
 
 StyledChar::StyledChar(const StyledChar &sch) {
     mChar = sch.mChar;

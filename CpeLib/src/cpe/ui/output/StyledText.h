@@ -1,41 +1,58 @@
 #pragma once
 
 #include <vector>
+#include <optional>
 
 #include "IOutputable.h"
 #include "StyledChar.h"
-#include "StyledString.h"
+#include "cpe/ui/style/TextColor.h"
 
 namespace cpe {
 
 // FEATURE переделать StyledText, реализовать StyledTextBuilder, удалить StyledString
 
 class StyledText : public IOutputable {
-    using _BaseVector = std::vector<StyledChar>;
+    // QUEST Реализовать нормальные итераторы
 public:
-    StyledText(uint8_t tabLength, const std::string &unf);
+    StyledText();
 
     ~StyledText() override;
 
-    const uint8_t &tab_length() const;
+    const TextColor& text_color() const;
 
-    uint8_t &tab_length();
+    StyledText& color(const TextColor &tColor);
 
-    const std::string &unfinished() const;
+    StyledText& reset_color();
 
-    std::string &unfinished();
+    StyledText& append(const std::string &str);
 
-    void push_back(const std::string &str);
+    StyledText& append(const StyledText &sText);
 
-    void push_back(const StyledString &sStr);
+    size_t length() const;
 
-    void push_back(const StyledText &sText);
+    StyledChar at(size_t index) const;
 
     void output_to(std::ostream &outStream) const override;
 
+    const std::string& to_string() const;
+
+    StyledChar operator[](size_t index) const;
+
 protected:
-    uint8_t mTabLength = 5;
-    std::string mUnfinished = "<~>";
+    struct _TextColorLine {
+        _TextColorLine() = default;
+
+        explicit _TextColorLine(const TextColor &color, size_t pos = 0)
+            : color(color),
+              position(pos) { }
+
+        TextColor color;
+        size_t position = 0;
+    };
+
+    std::string mText;
+    std::vector<_TextColorLine> mColors;
+
 };
 
 }

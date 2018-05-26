@@ -88,6 +88,22 @@ Point Buffer::get_used_size() const {
     return (__clamp_point(mMaxCurPos, mSize) + 1);
 }
 
+const uint8_t &Buffer::tab_length() const {
+    return mTabLength;
+}
+
+uint8_t &Buffer::tab_length() {
+    return mTabLength;
+}
+
+const std::string &Buffer::unfinished() const {
+    return mUnfinished;
+}
+
+std::string &Buffer::unfinished() {
+    return mUnfinished;
+}
+
 bool Buffer::has_owner() const {
     return static_cast<bool>(mOwner);
 }
@@ -121,16 +137,16 @@ Buffer Buffer::extract(Point begin, Point size, bool clean) {
 
 void Buffer::draw(const StyledText &text, bool softWrap) {
     // FEATURE Добавить как нибудь "мягкие" разрывы строк
-    for (auto it = text.cbegin(); it != text.cend(); ++it) {
-        if (__char_is_one_of("\n\r", it->character())) {
+    for (size_t i = 0; i < text.length(); ++i) {
+        auto ch = text[i];
+        if (__char_is_one_of("\n\r", ch.character())) {
             __new_line(mCursorPos);
-        } else if (it->character() == '\t') {
-            auto tl = text.tab_length();
-            auto sc = tl - mCursorPos.x_crd() % tl;
-            for (int32_t i = 0; i < sc; i++)
-                __print_text(*it);
+        } else if (ch.character() == '\t') {
+            auto sc = mTabLength - mCursorPos.x_crd() % mTabLength;
+            for (int32_t j = 0; j < sc; j++)
+                __print_text(ch);
         } else {
-            __print_text(*it);
+            __print_text(ch);
         }
     }
 }

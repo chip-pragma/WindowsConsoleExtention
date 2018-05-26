@@ -21,9 +21,9 @@ public:
 
     StyledBorder &border();
 
-    const std::optional<StyledString> &caption() const;
+    const std::optional<StyledText> &caption() const;
 
-    std::optional<StyledString> &caption();
+    std::optional<StyledText> &caption();
 
     const StyledText &text() const;
 
@@ -40,7 +40,7 @@ public:
 protected:
     StyledBorder mBorder;
     std::optional<StyledChar> mIcon;
-    std::optional<StyledString> mCaption;
+    std::optional<StyledText> mCaption;
     StyledText mText;
     bool mWait = false;
 };
