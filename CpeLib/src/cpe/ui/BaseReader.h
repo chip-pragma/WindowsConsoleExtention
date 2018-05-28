@@ -18,19 +18,19 @@ class BaseReader : public BaseCuiElement<TData> {
     using _BaseCuiElement = BaseCuiElement<TData>;
 public:
     template<class TViewModel>
-    using ResultReadReceiverFunc = void (TViewModel::*)(TResult &);
+    using ResultReadReceiverFunc = bool (TViewModel::*)(TResult &);
 
     virtual ~BaseReader() { }
 
     template<class TViewModel>
     void bind_result(ResultReadReceiverFunc<TViewModel> func);
 
-    void fire_result(IViewModel &ctrl, TResult &result);
+    bool fire_result(IViewModel &ctrl, TResult &result);
 
     void run(IViewModel &ctrl) override;
 
 protected:
-    using _PureResultReadReceiverFunc  = void (IViewModel::*)(TResult &);
+    using _PureResultReadReceiverFunc  = bool (IViewModel::*)(TResult &);
 
     _PureResultReadReceiverFunc mResultFunc = nullptr;
 
@@ -46,15 +46,18 @@ void BaseReader<TValue, TData, TResult>::bind_result(BaseReader::ResultReadRecei
 }
 
 template<class TValue, class TData, class TResult>
-void BaseReader<TValue, TData, TResult>::fire_result(IViewModel &ctrl, TResult &result) {
+bool BaseReader<TValue, TData, TResult>::fire_result(IViewModel &ctrl, TResult &result) {
     if (mResultFunc)
-        (ctrl.*mResultFunc)(result);
+        return (ctrl.*mResultFunc)(result);
+    return true;
 }
 
 template<class TValue, class TData, class TResult>
 void BaseReader<TValue, TData, TResult>::run(IViewModel &ctrl) {
     if (!static_cast<IElementData&>(_BaseCuiElement::data()).visible())
         return;
+
+    this->on_before_run();
 
     _BaseCuiElement::fire_data(ctrl);
 
@@ -69,12 +72,13 @@ void BaseReader<TValue, TData, TResult>::run(IViewModel &ctrl) {
         on_read(result);
 
         outHelp.reset_colors();
-        fire_result(ctrl, result);
-        if (static_cast<ReaderResult<TValue>>(result).is_read_applied())
+        if (fire_result(ctrl, result))
             break;
         outHelp.back_state();
     }
     outHelp.end_colorized();
+
+    this->on_after_run();
 }
 
 template<class TValue, class TData, class TResult>

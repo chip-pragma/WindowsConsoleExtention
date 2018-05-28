@@ -6,9 +6,7 @@ namespace cpe {
 
 //region [ NotificationData ]
 
-NotificationData::NotificationData() {
-    mBorder.style().final_encoding().emplace(Encoder::CP866);
-}
+NotificationData::NotificationData() { }
 
 const StyledBorder &NotificationData::border() const {
     return mBorder;

@@ -46,15 +46,12 @@ public:
 
     char operator[](const Side &side) const;
 
-    const std::optional<Encoder> &final_encoding() const;
-
-    std::optional<Encoder> &final_encoding();
+    static std::optional<Encoder> &final_encoding();
 
 private:
     std::map<Side, std::string> mSides;
     DualBorder mLastApplied = DB_NONE;
     Encoder mEncFrom;
-    std::optional<Encoder> mEncTo;
 };
 
 }

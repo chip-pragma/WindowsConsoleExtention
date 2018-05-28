@@ -9,8 +9,6 @@
 
 namespace cpe {
 
-// FEATURE переделать StyledText, реализовать StyledTextBuilder, удалить StyledString
-
 class StyledText : public IOutputable {
     // QUEST Реализовать нормальные итераторы
 public:
@@ -18,7 +16,7 @@ public:
 
     ~StyledText() override;
 
-    const TextColor& text_color() const;
+    const TextColor& color() const;
 
     StyledText& color(const TextColor &tColor);
 
@@ -42,12 +40,14 @@ protected:
     struct _TextColorLine {
         _TextColorLine() = default;
 
-        explicit _TextColorLine(const TextColor &color, size_t pos = 0)
+        explicit _TextColorLine(const TextColor &color, size_t pos, size_t length = 0)
             : color(color),
-              position(pos) { }
+              position(pos),
+              length(length) { }
 
         TextColor color;
         size_t position = 0;
+        size_t length = 0;
     };
 
     std::string mText;

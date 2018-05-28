@@ -37,10 +37,6 @@ public:
 
     const ReaderResultType &type() const;
 
-    void applied_read(bool apply);
-
-    bool is_read_applied() const;
-
     const std::string &command() const;
 
     const std::string &convert_fail() const;
@@ -51,7 +47,6 @@ public:
 
 private:
     ReaderResultType mType = ReaderResultType::UNDEFINED;
-    bool mReadApplied;
 
     std::string mCommand;
     std::string mConvertFail;
@@ -91,16 +86,6 @@ void ReaderResult<TValue>::assign_value(const TValue &value) {
 template<class TValue>
 const ReaderResultType &ReaderResult<TValue>::type() const {
     return mType;
-}
-
-template<class TValue>
-void ReaderResult<TValue>::applied_read(bool apply) {
-    mReadApplied = apply;
-}
-
-template<class TValue>
-bool ReaderResult<TValue>::is_read_applied() const {
-    return mReadApplied;
 }
 
 template<class TValue>

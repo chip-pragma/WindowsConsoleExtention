@@ -27,6 +27,7 @@ private:
     cpe::NumericMenuItem m_mMain_nmiClients;
     cpe::NumericMenuItem m_mMain_nmiRent;
     cpe::NumericMenuItem m_mMain_nmiExit;
+    cpe::MenuReader m_mrMain;
 };
 
 

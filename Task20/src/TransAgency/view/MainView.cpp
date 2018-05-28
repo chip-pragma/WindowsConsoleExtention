@@ -9,54 +9,69 @@ MainView::~MainView() { }
 
 
 void MainView::on_initialize() {
+    using namespace cpe;
+
     m_lWraps.data().text().append("\n\n");
 
-    auto &ncData = m_nCaption.data();
-    ncData.border().style().apply(cpe::BorderStyle::DB_ALL);
-    ncData.text()
-        .color({cpe::Colors::LT_GREEN, std::nullopt})
-        .append("СИСТЕМА УПРАВЛЕНИЯ ДАННЫМИ\n"_dos)
-        .color({cpe::Colors::LT_YELLOW, std::nullopt})
-        .append("ТРАНСПОРТНОГО АГЕНСТВА\n"_dos);
-    ncData.icon() = cpe::StyledChar('i', {cpe::Colors::LT_TEAL, std::nullopt});
-    ncData.wait(true);
-
     {
-        auto &d = m_mMain.data();
-        d.command_color().foreground() = cpe::Colors::LT_RED;
-        d.width() = 30;
-        d.caption()
-            .color({std::nullopt, cpe::Colors::WHITE})
-            .append("Заголовок "_dos)
-            .color({std::nullopt, cpe::Colors::LT_TEAL})
-            .append(" этой "_dos)
-            .color({std::nullopt, cpe::Colors::LT_RED})
-            .append(" менюшки"_dos);
-        auto &db = d.border();
-        db.color().foreground() = cpe::Colors::LT_TEAL;
-        auto &dbs = db.style();
-        dbs.apply(cpe::BorderStyle::DB_OUT_H);
-        dbs.final_encoding() = cpe::Encoder(cpe::Encoder::CP866);
+        auto &d = m_nCaption.data();
+        d.border().style().apply(BorderStyle::DB_ALL);
+        d.text()
+            .color({Colors::LT_GREEN, std::nullopt})
+            .append("СИСТЕМА УПРАВЛЕНИЯ ДАННЫМИ\n"_dos)
+            .color({Colors::LT_YELLOW, Colors::BLUE})
+            .append("ТРАНСПОРТНОГО АГЕНСТВА\n"_dos);
+        d.icon() = StyledChar('i', {Colors::LT_TEAL, std::nullopt});
+        d.wait(true);
     }
 
-    m_mMain_nmiCars.index() = MainVM::ID_MM_CARS;
-    m_mMain_nmiCars.text().append("Транспорт"_dos);
-    m_mMain.add_item(MainVM::ID_MM_CARS, m_mMain_nmiCars);
+    {
+        m_mMain.assign_reader(m_mrMain);
+        auto &d = m_mMain.data();
+        d.command_color().foreground() = Colors::LT_PURPLE;
+        d.width() = 80;
+        d.caption()
+            .color({Colors::LT_TEAL, std::nullopt})
+            .append("Главное меню"_dos);
+        d.border().style().apply(BorderStyle::DB_OUT_H);
+    }
 
-    m_mMain_nmiClients.index() = MainVM::ID_MM_CLIENTS;
-    m_mMain_nmiClients.text().append("Клиенты"_dos);
-    m_mMain.add_item(MainVM::ID_MM_CLIENTS, m_mMain_nmiClients);
+    {
+        m_mrMain.bind_result(&MainVM::main_menu_result);
+        auto& d = m_mrMain.data();
+        d.read_color() = {Colors::LT_TEAL, Colors::BLUE};
+        d.convert_fail_text() = "Неверный пункт меню"_dos;
+    }
 
-    m_mMain_nmiRent.index() = MainVM::ID_MM_RENT;
-    m_mMain_nmiRent.text().append("Аренда"_dos);
-    m_mMain.add_item(MainVM::ID_MM_RENT, m_mMain_nmiRent);
+    {
+        m_mMain_nmiCars.index() = MainVM::ID_MM_CARS;
+        m_mMain_nmiCars.text()
+            .color({Colors::WHITE, std::nullopt})
+            .append("Транспорт"_dos);
+        m_mMain.add_item(MainVM::ID_MM_CARS, m_mMain_nmiCars);
 
-    m_mMain_nmiExit.index() = MainVM::ID_MM_EXIT;
-    m_mMain_nmiExit.text().append("Выход"_dos);
-    m_mMain.add_item(MainVM::ID_MM_EXIT, m_mMain_nmiExit);
+        m_mMain_nmiClients.index() = MainVM::ID_MM_CLIENTS;
+        m_mMain_nmiClients.text()
+            .color({Colors::WHITE, std::nullopt})
+            .append("Клиенты"_dos);
+        m_mMain.add_item(MainVM::ID_MM_CLIENTS, m_mMain_nmiClients);
+
+        m_mMain_nmiRent.index() = MainVM::ID_MM_RENT;
+        m_mMain_nmiRent.text()
+            .color({Colors::WHITE, std::nullopt})
+            .append("Аренда"_dos);
+        m_mMain.add_item(MainVM::ID_MM_RENT, m_mMain_nmiRent);
+
+        m_mMain_nmiExit.index() = MainVM::ID_MM_EXIT;
+        m_mMain_nmiExit.text()
+            .color({Colors::WHITE, std::nullopt})
+            .append("Выход"_dos);
+        m_mMain.add_item(MainVM::ID_MM_EXIT, m_mMain_nmiExit);
+    }
 
     push(m_nCaption);
     push(m_lWraps);
     push(m_mMain);
+    push(m_mrMain);
 }
 

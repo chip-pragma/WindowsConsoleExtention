@@ -129,8 +129,8 @@ const BorderStyle::DualBorder &BorderStyle::current() const {
 
 char BorderStyle::at(const BorderStyle::Side &side) const {
     auto sym = mSides.at(side);
-    if (mEncTo)
-        return mEncTo->to(mEncFrom.from(sym)).at(0);
+    if (BorderStyle::final_encoding().has_value())
+        return BorderStyle::final_encoding()->to(mEncFrom.from(sym)).at(0);
     return sym.at(0);
 }
 
@@ -138,11 +138,8 @@ char BorderStyle::operator[](const Side &side) const {
     return at(side);
 }
 
-const std::optional<Encoder> &BorderStyle::final_encoding() const {
-    return mEncTo;
-}
-
 std::optional<Encoder> &BorderStyle::final_encoding() {
+    static std::optional<Encoder> mEncTo;
     return mEncTo;
 }
 

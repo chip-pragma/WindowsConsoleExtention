@@ -28,11 +28,11 @@ TextColor &MenuData::command_color() {
     return mCommandColor;
 }
 
-void MenuData::set_items_source(const MenuItemMap &items) {
-    mItems = &items;
-}
-
 Menu::~Menu() { }
+
+void Menu::assign_reader(MenuReader &reader) {
+    mReader = &reader;
+}
 
 void Menu::on_write(Buffer &buf) {
     using BS = BorderStyle;
@@ -66,6 +66,11 @@ void Menu::on_write(Buffer &buf) {
 
 void Menu::on_before_run() {
     data().set_items_source(mItems);
+}
+
+void Menu::on_after_run() {
+    if (mReader)
+        mReader->set_items_source(mItems);
 }
 
 }
