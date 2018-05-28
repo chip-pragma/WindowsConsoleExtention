@@ -47,19 +47,19 @@ inline cpe::Color to_color(SHORT bufferAttributes) {
     if ((bufferAttributes & 8) == 8)
         i += PLUS;
     if ((bufferAttributes & 4) == 4)
-        result.red(i);
+        result.getR(i);
     if ((bufferAttributes & 2) == 2)
-        result.green(i);
+        result.getG(i);
     if ((bufferAttributes & 1) == 1)
-        result.blue(i);
+        result.getB(i);
     return result;
 }
 
 inline SHORT from_color(cpe::Color color) {
     SHORT pc =
-            buffer_attribute_color_component(color.red(), BitColor::RED)
-            | buffer_attribute_color_component(color.green(), BitColor::GREEN)
-            | buffer_attribute_color_component(color.blue(), BitColor::BLUE);
+            buffer_attribute_color_component(color.getR(), BitColor::RED)
+            | buffer_attribute_color_component(color.getG(), BitColor::GREEN)
+            | buffer_attribute_color_component(color.getB(), BitColor::BLUE);
     return pc;
 }
 

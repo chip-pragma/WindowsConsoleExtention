@@ -5,11 +5,11 @@
 
 namespace cpe {
 
-void OutputHelper::save_state() {
+void OutputHelper::saveState() {
     mStates.push(term::cursor_position());
 }
 
-void OutputHelper::back_state(size_t count) {
+void OutputHelper::backState(size_t count) {
     auto width = term::buffer_size().getX();
     for (size_t i = 0; i < count && !mStates.empty(); i++) {
         Point last = mStates.top();
@@ -25,11 +25,11 @@ void OutputHelper::back_state(size_t count) {
     }
 }
 
-size_t OutputHelper::state_count() const {
+size_t OutputHelper::getStateCount() const {
     return mStates.size();
 }
 
-void OutputHelper::begin_colorized(std::ostream &outStream) {
+void OutputHelper::beginColorize(std::ostream &outStream) {
     if (mOutStream)
         throw cpe::Exception("Output has already begined");
     mOutStream = &outStream;
@@ -42,8 +42,8 @@ void OutputHelper::begin_colorized(std::ostream &outStream) {
     mOutputBack = term::background();
 }
 
-void OutputHelper::end_colorized() {
-    reset_colors();
+void OutputHelper::endColorize() {
+    resetColors();
 
     if (mOutputAutoFlush)
         (*mOutStream) << std::unitbuf;
@@ -51,14 +51,14 @@ void OutputHelper::end_colorized() {
     mOutStream = nullptr;
 }
 
-void OutputHelper::apply_color(const TextColor &color) {
+void OutputHelper::applyColor(const TextColor &color) {
     if (color.foreground()) term::foreground(*color.foreground());
     else term::foreground(mOutputFore);
     if (color.background()) term::background(*color.background());
     else term::background(mOutputBack);
 }
 
-void OutputHelper::reset_colors() {
+void OutputHelper::resetColors() {
     term::foreground(mOutputFore);
     term::background(mOutputBack);
 }

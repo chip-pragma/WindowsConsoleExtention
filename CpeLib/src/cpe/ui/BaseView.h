@@ -64,13 +64,13 @@ void BaseView<TViewModel>::show(bool beforeClean, bool afterClean) {
 
     OutputHelper outHelp;
     if (afterClean)
-        outHelp.save_state();
+        outHelp.saveState();
     on_before_show();
     for (ICuiElement *item : mElements)
         item->run(*mViewModel);
     on_after_show();
     if (afterClean)
-        outHelp.back_state();
+        outHelp.backState();
 }
 
 template<class TViewModel>

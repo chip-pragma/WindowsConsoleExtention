@@ -8,27 +8,27 @@ Color::Color(uint8_t r, uint8_t g, uint8_t b) noexcept {
     this->mBlue = b;
 }
 
-uint8_t Color::red() const {
+uint8_t Color::getR() const {
     return mRed;
 }
 
-void Color::red(uint8_t r) {
+void Color::getR(uint8_t r) {
     mRed = r;
 }
 
-uint8_t Color::green() const {
+uint8_t Color::getG() const {
     return mGreen;
 }
 
-void Color::green(uint8_t g) {
+void Color::getG(uint8_t g) {
     mGreen = g;
 }
 
-uint8_t Color::blue() const {
+uint8_t Color::getB() const {
     return mBlue;
 }
 
-void Color::blue(uint8_t b) {
+void Color::getB(uint8_t b) {
     mBlue = b;
 }
 

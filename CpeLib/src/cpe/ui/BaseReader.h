@@ -62,21 +62,21 @@ void BaseReader<TValue, TData, TResult>::run(IViewModel &ctrl) {
     _BaseCuiElement::fire_data(ctrl);
 
     OutputHelper outHelp;
-    outHelp.begin_colorized(std::cout);
+    outHelp.beginColorize(std::cout);
     while (true) {
-        outHelp.save_state();
-        outHelp.apply_color(
-                static_cast<BaseReaderData &>(_BaseCuiElement::data()).read_color());
+        outHelp.saveState();
+        outHelp.applyColor(
+            static_cast<BaseReaderData &>(_BaseCuiElement::data()).read_color());
 
         TResult result;
         on_read(result);
 
-        outHelp.reset_colors();
+        outHelp.resetColors();
         if (fire_result(ctrl, result))
             break;
-        outHelp.back_state();
+        outHelp.backState();
     }
-    outHelp.end_colorized();
+    outHelp.endColorize();
 
     this->onAfterRun();
 }

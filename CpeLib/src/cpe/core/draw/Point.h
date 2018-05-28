@@ -7,16 +7,16 @@ namespace cpe {
 
 class Point {
 public:
-    enum Dimension : int8_t {
-        DIM_POINT = 0,
-        DIM_X = 1,
-        DIM_Y = 2,
-        DIM_NEGATIVE_X = 4,
-        DIM_NEGATIVE_Y = 8,
-        DIM_SECTOR_I = DIM_X | DIM_Y,
-        DIM_SECTOR_II = DIM_X | DIM_Y | DIM_NEGATIVE_X,
-        DIM_SECTOR_III = DIM_X | DIM_Y | DIM_NEGATIVE_Y | DIM_NEGATIVE_X,
-        DIM_SECTOR_VI = DIM_X | DIM_Y | DIM_NEGATIVE_Y,
+    enum Location : int8_t {
+        PL_ZERO = 0,
+        PL_X = 1,
+        PL_Y = 2,
+        PL_NEGATIVE_X = 4,
+        PL_NEGATIVE_Y = 8,
+        PL_SECTOR_I = PL_X | PL_Y,
+        PL_SECTOR_II = PL_X | PL_Y | PL_NEGATIVE_X,
+        PL_SECTOR_III = PL_X | PL_Y | PL_NEGATIVE_Y | PL_NEGATIVE_X,
+        PL_SECTOR_VI = PL_X | PL_Y | PL_NEGATIVE_Y,
     };
 
     Point();
@@ -31,7 +31,7 @@ public:
 
     int32_t& getY();
 
-    Dimension dimension() const;
+    Location calcLocation() const;
 
     std::string toString() const;
 

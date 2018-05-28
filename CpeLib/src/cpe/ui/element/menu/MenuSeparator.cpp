@@ -2,9 +2,9 @@
 
 namespace cpe {
 
-void MenuSeparator::write(cpe::Buffer &buf,
-                          const cpe::StyledBorder &sBord,
-                          const cpe::TextColor &commandColor) const {
+void MenuSeparator::write(Buffer &buf,
+                          const StyledBorder &sBord,
+                          const TextColor &commandColor) const {
     using BS = BorderStyle;
     buf.draw(sBord[BS::SLH]);
     buf.draw(sBord[BS::SH], 2);

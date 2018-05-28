@@ -62,7 +62,7 @@ void Notification::onWrite(Buffer &cvs) {
     Point innerSize = cvs.getSize() - Point(2, 2);
     Point margin(2, 0);
     Point textBlockSize = innerSize - margin;
-    if (textBlockSize.dimension() != Point::DIM_SECTOR_I) {
+    if (textBlockSize.calcLocation() != Point::PL_SECTOR_I) {
         cvs.draw(StyledText().append("[NO PLACE]"));
         return;
     }

@@ -40,7 +40,7 @@ void MainView::on_initialize() {
         d.getBorder().getStyle().apply(BorderStyle::DB_OUT_H);
         d.getReaderHint()
             .setColor({Colors::LT_TEAL, std::nullopt})
-            .append("Напишите эссе, какой бы вы выбрали сраный пункт меню."_dos);
+            .append("Напишите эссе, какой бы вы выбрали пункт меню."_dos);
     }
 
     {

@@ -59,7 +59,7 @@ uint32_t output_cp() {
 
 bool buffer_size(const Point &size) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
-    if (size.dimension() != Point::DIM_SECTOR_I)
+    if (size.calcLocation() != Point::PL_SECTOR_I)
         throw Exception("Invalid width");
 
     return static_cast<bool>(SetConsoleScreenBufferSize(

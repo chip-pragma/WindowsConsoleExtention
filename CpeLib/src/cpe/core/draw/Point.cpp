@@ -30,19 +30,19 @@ int32_t &Point::getY() {
     return mY;
 }
 
-Point::Dimension Point::dimension() const {
-    int8_t result = DIM_POINT;
+Point::Location Point::calcLocation() const {
+    int8_t result = PL_ZERO;
     if (mX != 0) {
-        result |= DIM_X;
+        result |= PL_X;
         if (mX < 0)
-            result |= DIM_NEGATIVE_X;
+            result |= PL_NEGATIVE_X;
     }
     if (mY != 0) {
-        result |= DIM_Y;
+        result |= PL_Y;
         if (mY < 0)
-            result |= DIM_NEGATIVE_Y;
+            result |= PL_NEGATIVE_Y;
     }
-    return static_cast<Dimension>(result);
+    return static_cast<Location>(result);
 }
 
 std::string Point::toString() const {
