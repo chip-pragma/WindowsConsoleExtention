@@ -1,17 +1,25 @@
 #pragma once
 
+#include <vector>
+
 #include "cpe/ui/BaseReader.h"
-#include "BaseSetItemsSource.h"
+#include "BaseCommandMenuItem.h"
 
 namespace cpe {
 
-class MenuReader : public BaseReader<uint32_t>, public BaseSetItemsSource {
+using MenuCommandItemPair = std::pair<uint32_t, BaseCommandMenuItem*>;
+using MenuCommandItemVector = std::vector<MenuCommandItemPair>;
+
+class MenuReader : public BaseReader<uint32_t> {
 public:
     ~MenuReader() override;
 
-protected:
+    void setCommandItems(const MenuCommandItemVector &itemList);
 
-    bool on_convert(std::string &srcLine, uint32_t &convertedValue) override;
+protected:
+    MenuCommandItemVector mCommandItems;
+
+    bool onConvert(std::string &srcLine, uint32_t &convertedValue) override;
 };
 
 }

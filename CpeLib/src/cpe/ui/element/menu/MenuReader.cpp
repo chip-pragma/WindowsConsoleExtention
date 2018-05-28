@@ -4,11 +4,17 @@ namespace cpe {
 
 MenuReader::~MenuReader() { }
 
-bool MenuReader::on_convert(std::string &srcLine, uint32_t &convertedValue) {
-    for (const auto& item : *mItems) {
-        if (item.second->get_command() == srcLine) {
-            convertedValue = item.first;
-            return true;
+void MenuReader::setCommandItems(const MenuCommandItemVector &itemList) {
+    mCommandItems = itemList;
+}
+
+bool MenuReader::onConvert(std::string &srcLine, uint32_t &convertedValue) {
+    for (const auto& item : mCommandItems) {
+        for (const auto& com : item.second->getCommandList()) {
+            if (com == srcLine) {
+                convertedValue = item.first;
+                return true;
+            }
         }
     }
     return false;

@@ -7,71 +7,79 @@
 #include "cpe/core/Exception.h"
 #include "cpe/ui/BaseWriterData.h"
 #include "cpe/ui/BaseWriter.h"
-#include "BaseMenuItem.h"
+#include "BaseCommandMenuItem.h"
 #include "MenuReader.h"
-#include "BaseSetItemsSource.h"
 
 namespace cpe {
 
+using MenuItemPair = std::pair<uint32_t, IMenuItem*>;
+using MenuItemVector = std::vector<MenuItemPair>;
 
-
-class MenuData : public BaseWriterData, public BaseSetItemsSource{
+class MenuData : public BaseWriterData {
 public:
     ~MenuData() override;
 
-    const StyledBorder &border() const;
+    const StyledBorder &getBorder() const;
 
-    StyledBorder &border();
+    StyledBorder &getBorder();
 
-    const StyledText &caption() const;
+    const StyledText &getCaption() const;
 
-    StyledText &caption();
+    StyledText &getCaption();
 
-    const TextColor &command_color() const;
+    const StyledText &getReaderHint() const;
 
-    TextColor &command_color();
+    StyledText &getReaderHint();
+
+    const TextColor &getCommandColor() const;
+
+    TextColor &getCommandColor();
 
     template<class TItem>
-    TItem &get(uint32_t itemId);
+    TItem &getItem(uint32_t itemId);
+
+    void setItems(MenuItemVector& items);
 
 protected:
     StyledBorder mBorder;
     StyledText mCaption;
+    StyledText mReaderHint;
     TextColor mCommandColor;
+    MenuItemVector* mItems;
 };
 
 class Menu : public BaseWriter<MenuData> {
 public:
     ~Menu() override;
 
-    void assign_reader(MenuReader& reader);
+    void assignReader(MenuReader &reader);
 
     template<class TItem>
-    void add_item(uint32_t itemId, TItem &item);
+    void addItem(uint32_t itemId, TItem &item);
 
 protected:
-    MenuItemMap mItems;
-    MenuReader* mReader;
+    MenuItemVector mItems;
+    MenuReader *mReader = nullptr;
 
-    void on_write(Buffer &buf) override;
+    void onWrite(Buffer &buf) override;
 
-    void on_before_run() override;
+    void onBeforeRun() override;
 
-    void on_after_run() override;
+    void onAfterRun() override;
 };
 
 template<class TItem>
-TItem &MenuData::get(uint32_t itemId) {
+TItem &MenuData::getItem(uint32_t itemId) {
     auto finded = std::find(mItems->cbegin(), mItems->cend(),
-            [&] (MenuItemPair& r) { return r.first == itemId; });
+                            [&](MenuItemPair &r) { return r.first == itemId; });
     if (finded == mItems->cend())
         throw Exception("Item with this ID not found");
     return static_cast<TItem &>(*finded);
 }
 
 template<class TItem>
-void Menu::add_item(uint32_t itemId, TItem &item) {
-    mItems.emplace_back(itemId, static_cast<BaseMenuItem *>(&item));
+void Menu::addItem(uint32_t itemId, TItem &item) {
+    mItems.emplace_back(itemId, static_cast<IMenuItem *>(&item));
 }
 
 }

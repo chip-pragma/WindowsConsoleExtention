@@ -10,6 +10,6 @@ cpe::StyledText &cpe::LabelData::text() {
     return mText;
 }
 
-void cpe::Label::on_write(cpe::Buffer &buf) {
+void cpe::Label::onWrite(cpe::Buffer &buf) {
     buf.draw(data().text());
 }

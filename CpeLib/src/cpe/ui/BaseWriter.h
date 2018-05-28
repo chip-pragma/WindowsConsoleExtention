@@ -24,17 +24,17 @@ public:
 
 template<class TData>
 void BaseWriter<TData>::write(Buffer &buf) {
-    on_write(buf);
+    onWrite(buf);
 }
 
 template<class TData>
 void BaseWriter<TData>::run(IViewModel &ctrl) {
     if (!static_cast<IElementData&>(_BaseCuiElement::data()).visible())
         return;
-    this->on_before_run();
+    this->onBeforeRun();
     _BaseCuiElement::fire_data(ctrl);
     output_to(std::cout);
-    this->on_after_run();
+    this->onAfterRun();
 }
 
 template<class TData>
@@ -42,7 +42,7 @@ void BaseWriter<TData>::output_to(std::ostream &outStream) {
     Buffer buf(Point(
             static_cast<BaseWriterData &>(_BaseCuiElement::data()).width(),
             MAX_HEIGHT));
-    on_write(buf);
+    onWrite(buf);
     buf.output_to(outStream);
 }
 

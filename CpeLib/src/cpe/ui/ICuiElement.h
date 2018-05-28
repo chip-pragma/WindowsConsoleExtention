@@ -11,9 +11,9 @@ public:
     virtual void run(IViewModel &ctrl) = 0;
 
 protected:
-    virtual void on_before_run() = 0;
+    virtual void onBeforeRun() = 0;
 
-    virtual void on_after_run() = 0;
+    virtual void onAfterRun() = 0;
 };
 
 }

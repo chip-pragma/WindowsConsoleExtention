@@ -56,7 +56,7 @@ void Notification::output_to(std::ostream &outStream) {
         term::pause();
 }
 
-void Notification::on_write(Buffer &cvs) {
+void Notification::onWrite(Buffer &cvs) {
     using BS = BorderStyle;
 
     Point innerSize = cvs.get_size() - Point(2, 2);

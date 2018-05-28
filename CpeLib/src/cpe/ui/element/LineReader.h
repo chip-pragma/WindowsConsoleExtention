@@ -11,7 +11,7 @@ public:
 
 protected:
 
-    bool on_convert(std::string &srcLine, std::string &convertedValue) override;
+    bool onConvert(std::string &srcLine, std::string &convertedValue) override;
 };
 
 }

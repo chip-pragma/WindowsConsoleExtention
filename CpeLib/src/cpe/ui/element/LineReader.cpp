@@ -6,7 +6,7 @@ LineReader::~LineReader() {
 
 }
 
-bool LineReader::on_convert(std::string &srcLine, std::string &convertedValue) {
+bool LineReader::onConvert(std::string &srcLine, std::string &convertedValue) {
     convertedValue = srcLine;
     return true;
 }

@@ -9,13 +9,11 @@ namespace cpe {
 
 class IMenuItem {
 public:
-    virtual const bool& visible() const = 0;
+    virtual const bool& getVisible() const = 0;
 
-    virtual bool& visible() = 0;
+    virtual bool& getVisible() = 0;
 
     virtual void write(Buffer &buf, const StyledBorder &sBord, const TextColor &commandColor) const = 0;
-
-    virtual std::string get_command() const = 0;
 };
 
 }

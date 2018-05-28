@@ -4,7 +4,7 @@
 #include <cpe/ui/element/Notification.h>
 #include <cpe/ui/element/Label.h>
 #include <cpe/ui/element/menu/Menu.h>
-#include <cpe/ui/element/menu/NumericMenuItem.h>
+#include <cpe/ui/element/menu/MenuItem.h>
 
 #include "TransAgency/vm/MainVM.h"
 
@@ -23,10 +23,10 @@ private:
     cpe::Notification m_nCaption;
     cpe::Label m_lWraps;
     cpe::Menu m_mMain;
-    cpe::NumericMenuItem m_mMain_nmiCars;
-    cpe::NumericMenuItem m_mMain_nmiClients;
-    cpe::NumericMenuItem m_mMain_nmiRent;
-    cpe::NumericMenuItem m_mMain_nmiExit;
+    cpe::MenuItem m_mMain_nmiCars;
+    cpe::MenuItem m_mMain_nmiClients;
+    cpe::MenuItem m_mMain_nmiRent;
+    cpe::MenuItem m_mMain_nmiExit;
     cpe::MenuReader m_mrMain;
 };
 

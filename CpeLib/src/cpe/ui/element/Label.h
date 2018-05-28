@@ -20,7 +20,7 @@ protected:
 class Label : public BaseWriter<LabelData> {
 public:
 protected:
-    void on_write(Buffer &buf) override;
+    void onWrite(Buffer &buf) override;
 };
 
 }

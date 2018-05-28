@@ -36,7 +36,7 @@ protected:
 
     virtual void on_read(TResult &result);
 
-    virtual bool on_convert(std::string &srcLine, TValue &convertedValue) = 0;
+    virtual bool onConvert(std::string &srcLine, TValue &convertedValue) = 0;
 };
 
 template<class TValue, class TData, class TResult>
@@ -57,7 +57,7 @@ void BaseReader<TValue, TData, TResult>::run(IViewModel &ctrl) {
     if (!static_cast<IElementData&>(_BaseCuiElement::data()).visible())
         return;
 
-    this->on_before_run();
+    this->onBeforeRun();
 
     _BaseCuiElement::fire_data(ctrl);
 
@@ -78,7 +78,7 @@ void BaseReader<TValue, TData, TResult>::run(IViewModel &ctrl) {
     }
     outHelp.end_colorized();
 
-    this->on_after_run();
+    this->onAfterRun();
 }
 
 template<class TValue, class TData, class TResult>
@@ -101,7 +101,7 @@ void BaseReader<TValue, TData, TResult>::on_read(TResult &result) {
             castedResult.assign_command(lineValue);
         } else {
             TValue convertedValue;
-            if (on_convert(lineValue, convertedValue)) {
+            if (onConvert(lineValue, convertedValue)) {
                 auto errorList = castedData.validate(convertedValue);
                 if (errorList.empty())
                     castedResult.assign_value(convertedValue);

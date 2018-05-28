@@ -26,9 +26,9 @@ public:
 protected:
     using _PureDataReceiverFunc = void (IViewModel::*)(TData &);
 
-    void on_before_run() override { }
+    void onBeforeRun() override { }
 
-    void on_after_run() override { }
+    void onAfterRun() override { }
 
     TData *mData;
     _PureDataReceiverFunc mDataReceiverFunc = nullptr;

@@ -6,6 +6,7 @@
 #include <cpe/core/terminal.h>
 
 bool MainVM::main_menu_result(cpe::ReaderResult<uint32_t> &result) {
+    bool exit = false;
     if (result.type() == cpe::ReaderResultType::VALUE) {
         std::string str;
         switch (result.value()) {
@@ -20,12 +21,15 @@ bool MainVM::main_menu_result(cpe::ReaderResult<uint32_t> &result) {
                 break;
             case ID_MM_EXIT:
                 str = "Выход?.. (корректно)"_dos;
+                exit = true;
                 break;
             default:
                 str = "Пункт меню не определен. В ридере обшибка!"_dos;
                 break;
         }
         std::cout << "VALUE: " << str;
+        if (exit)
+            return true;
     } else if (result.type() == cpe::ReaderResultType::COMMAND) {
         if (result.command() == "check") {
             std::cout << "COMMAND: проверка!.."_dos;
