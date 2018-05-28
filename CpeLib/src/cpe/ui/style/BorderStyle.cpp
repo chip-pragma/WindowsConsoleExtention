@@ -50,10 +50,10 @@ void BorderStyle::apply(int8_t db) {
     mSides[SV] = "\u2502";
     mSides[SH] = "\u2500";
 
-    mSides[SVL] = "\u251C";
-    mSides[SVR] = "\u2524";
-    mSides[SHT] = "\u252C";
-    mSides[SHB] = "\u2534";
+    mSides[SLH] = "\u251C";
+    mSides[SRH] = "\u2524";
+    mSides[STV] = "\u252C";
+    mSides[SBV] = "\u2534";
 
     mSides[SC] = "\u253C";
 
@@ -62,25 +62,25 @@ void BorderStyle::apply(int8_t db) {
         mSides[SL] = "\u2551";
         mSides[SLT] = "\u2553";
         mSides[SLB] = "\u2559";
-        mSides[SVL] = "\u255F";
+        mSides[SLH] = "\u255F";
     }
     if ((db & Db::DB_RIGHT) != 0) {
         mSides[SR] = "\u2551";
         mSides[SRT] = "\u2556";
         mSides[SRB] = "\u255C";
-        mSides[SVR] = "\u2562";
+        mSides[SRH] = "\u2562";
     }
     if ((db & Db::DB_TOP) != 0) {
         mSides[ST] = "\u2550";
         mSides[SLT] = "\u2552";
         mSides[SRT] = "\u2555";
-        mSides[SHT] = "\u2564";
+        mSides[STV] = "\u2564";
     }
     if ((db & Db::DB_BOTTOM) != 0) {
         mSides[SB] = "\u2550";
         mSides[SLB] = "\u2558";
         mSides[SRB] = "\u255B";
-        mSides[SHB] = "\u2567";
+        mSides[SBV] = "\u2567";
     }
 
     // Углы
@@ -96,26 +96,26 @@ void BorderStyle::apply(int8_t db) {
     // Прямые (внутренние)
     if ((db & Db::DB_IN_V) != 0) {
         mSides[SV] = "\u2551";
-        mSides[SHT] = "\u2565";
-        mSides[SHB] = "\u2568";
+        mSides[STV] = "\u2565";
+        mSides[SBV] = "\u2568";
         mSides[SC] = "\u256B";
     }
     if ((db & Db::DB_IN_H) != 0) {
         mSides[SH] = "\u2550";
-        mSides[SVL] = "\u255E";
-        mSides[SVR] = "\u2561";
+        mSides[SLH] = "\u255E";
+        mSides[SRH] = "\u2561";
         mSides[SC] = "\u256A";
     }
 
     // Тройник
     if ((db & (Db::DB_IN_V | Db::DB_TOP)) == 20)
-        mSides[SHT] = "\u2566";
+        mSides[STV] = "\u2566";
     if ((db & (Db::DB_IN_V | Db::DB_BOTTOM)) == 24)
-        mSides[SHB] = "\u2569";
+        mSides[SBV] = "\u2569";
     if ((db & (Db::DB_IN_H | Db::DB_LEFT)) == 33)
-        mSides[SVL] = "\u2560";
+        mSides[SLH] = "\u2560";
     if ((db & (Db::DB_IN_H | Db::DB_RIGHT)) == 34)
-        mSides[SVR] = "\u2563";
+        mSides[SRH] = "\u2563";
 
     // Перекрестье
     if ((db & (Db::DB_IN_H | Db::DB_IN_V)) == 48)

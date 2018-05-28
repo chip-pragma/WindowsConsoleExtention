@@ -2,22 +2,22 @@
 
 #include <cstdint>
 
-#include "BaseCommandMenuItem.h"
+#include "BaseMenuItem.h"
 
 namespace cpe {
 
-class MenuItem : public BaseCommandMenuItem {
+using MenuItemCommandList = std::vector<std::string>;
+
+class MenuItem : public BaseMenuItem {
 public:
     explicit MenuItem(const std::string &commands);
 
-    const StyledText &getText() const;
-
-    StyledText &getText();
+    const MenuItemCommandList & getCommandList() const;
 
     void write(Buffer &buf, const StyledBorder &sBord, const TextColor &commandColor) const override;
 
 protected:
-    StyledText mText;
+    MenuItemCommandList mCommandList;
 };
 
 }

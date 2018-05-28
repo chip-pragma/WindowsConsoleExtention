@@ -14,19 +14,19 @@ Point::Point(int32_t x, int32_t y) {
     this->mY = y;
 }
 
-const int32_t &Point::x_crd() const {
+const int32_t &Point::getX() const {
     return mX;
 }
 
-int32_t &Point::x_crd() {
+int32_t &Point::getX() {
     return mX;
 }
 
-const int32_t &Point::y_crd() const {
+const int32_t &Point::getY() const {
     return mY;
 }
 
-int32_t &Point::y_crd() {
+int32_t &Point::getY() {
     return mY;
 }
 
@@ -45,7 +45,7 @@ Point::Dimension Point::dimension() const {
     return static_cast<Dimension>(result);
 }
 
-std::string Point::to_string() const {
+std::string Point::toString() const {
     std::stringstream ss;
     ss << "(x=" << mX << "; y=" << mY << ")";
     return ss.str();

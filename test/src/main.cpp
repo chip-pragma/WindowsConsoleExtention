@@ -28,7 +28,7 @@ int main() {
     st.push_back({" ", {Colors::BLACK, Colors::WHITE}});
     st.push_back({"текста"_dos, {Colors::LT_RED, Colors::BLUE}});
     notif.data().text() = st;
-    notif.data().border().style().apply(BorderStyle::DB_BOTTOM | BorderStyle::DB_RIGHT);
+    notif.data().border().getStyle().apply(BorderStyle::DB_BOTTOM | BorderStyle::DB_RIGHT);
     Buffer buf({50, 10});
     notif.write(buf);
     std::cout << buf;

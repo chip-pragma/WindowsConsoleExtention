@@ -1,16 +1,17 @@
 #include "MenuItem.h"
+#include "cpe/tool/text.h"
+#include "cpe/core/Exception.h"
 
 namespace cpe {
 
-MenuItem::MenuItem(const std::string &commands)
-    : BaseCommandMenuItem(commands) { }
-
-const StyledText &MenuItem::getText() const {
-    return mText;
+MenuItem::MenuItem(const std::string &commands) {
+    text::split(commands, mCommandList, "|");
+    if (mCommandList.empty())
+        throw Exception("Menu item command is not set");
 }
 
-StyledText &MenuItem::getText() {
-    return mText;
+const MenuItemCommandList & MenuItem::getCommandList() const {
+    return mCommandList;
 }
 
 void MenuItem::write(cpe::Buffer &buf, const cpe::StyledBorder &sBord, const TextColor &commandColor) const {
@@ -19,14 +20,14 @@ void MenuItem::write(cpe::Buffer &buf, const cpe::StyledBorder &sBord, const Tex
 
     StyledText coms;
     coms.append(" ")
-        .color(sBord.color())
+        .setColor(sBord.getColor())
         .append("[");
 
     auto &list = getCommandList();
     for (auto it = list.cbegin();;) {
-        coms.color(commandColor)
+        coms.setColor(commandColor)
             .append(*it)
-            .color(sBord.color());
+            .setColor(sBord.getColor());
         if (++it != list.cend())
             coms.append("|");
         else
@@ -34,13 +35,13 @@ void MenuItem::write(cpe::Buffer &buf, const cpe::StyledBorder &sBord, const Tex
     }
 
     coms.append("]")
-        .reset_color()
+        .resetColor()
         .append(" ");
     buf.draw(coms);
 
-    auto subBuf = buf.extract(buf.cursor_position(), buf.get_size() - buf.cursor_position());
+    auto subBuf = buf.extract(buf.getCursorPos(), buf.getSize() - buf.getCursorPos());
     subBuf.draw(mText);
-    buf.cursor_position().y_crd() += subBuf.get_used_size().y_crd();
+    buf.getCursorPos().getY() += subBuf.getUsedSize().getY();
 }
 
 }

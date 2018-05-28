@@ -24,37 +24,37 @@ public:
 
     ~Buffer() override;
 
-    const Point &cursor_position() const;
+    const Point &getCursorPos() const;
 
-    Point &cursor_position();
+    Point &getCursorPos();
 
-    const Point & get_size() const;
+    const Point & getSize() const;
 
-    Point get_used_size() const;
+    Point getUsedSize() const;
 
-    const uint8_t &tab_length() const;
+    const uint8_t &getTabLength() const;
 
-    uint8_t &tab_length();
+    uint8_t &getTabLength();
 
     const std::string &unfinished() const;
 
     std::string &unfinished();
 
-    bool has_owner() const;
+    bool hasOwner() const;
 
-    const Buffer& get_owner() const;
+    const Buffer& getOwner() const;
 
     Buffer extract(Point begin, Point size, bool clean = true);
 
     void draw(const StyledText &text, bool softWrap = true);
 
-    void draw_line(const StyledText &str, bool softWrap = true);
+    void drawLine(const StyledText &str, bool softWrap = true);
 
     void draw(const Buffer &sub, bool useActualSize);
 
     void draw(StyledChar schar, int32_t count = 1, bool vertical = false);
 
-    void output_to(std::ostream &outStream) const override;
+    void outputTo(std::ostream &outStream) const override;
 
     void clear();
 
@@ -77,11 +77,11 @@ private:
     explicit Buffer(Buffer *parent, const Point &beginPos, const Point &size);
 
     // "Печатает" символ в допустимой области холста
-    void __print_char(const StyledChar &schar);
+    void __printChar(const StyledChar &schar);
     // Печатает текстовый символ (с пропуском строки и т.п.)
-    void __print_text(const StyledChar &schar);
+    void __printText(const StyledChar &schar);
     // Расчет максимальной позиции курсора
-    void __point_with_max_crd();
+    void __pointWithMaxCrd();
 };
 
 }

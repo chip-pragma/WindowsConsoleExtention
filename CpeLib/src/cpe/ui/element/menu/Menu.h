@@ -7,13 +7,13 @@
 #include "cpe/core/Exception.h"
 #include "cpe/ui/BaseWriterData.h"
 #include "cpe/ui/BaseWriter.h"
-#include "BaseCommandMenuItem.h"
+#include "BaseMenuItem.h"
 #include "MenuReader.h"
 
 namespace cpe {
 
-using MenuItemPair = std::pair<uint32_t, IMenuItem*>;
-using MenuItemVector = std::vector<MenuItemPair>;
+using IMenuItemPair = std::pair<uint32_t, IMenuItem*>;
+using IMenuItemVector = std::vector<IMenuItemPair>;
 
 class MenuData : public BaseWriterData {
 public:
@@ -38,14 +38,14 @@ public:
     template<class TItem>
     TItem &getItem(uint32_t itemId);
 
-    void setItems(MenuItemVector& items);
+    void setItems(IMenuItemVector& items);
 
 protected:
     StyledBorder mBorder;
     StyledText mCaption;
     StyledText mReaderHint;
     TextColor mCommandColor;
-    MenuItemVector* mItems;
+    IMenuItemVector* mItems;
 };
 
 class Menu : public BaseWriter<MenuData> {
@@ -58,7 +58,7 @@ public:
     void addItem(uint32_t itemId, TItem &item);
 
 protected:
-    MenuItemVector mItems;
+    IMenuItemVector mItems;
     MenuReader *mReader = nullptr;
 
     void onWrite(Buffer &buf) override;

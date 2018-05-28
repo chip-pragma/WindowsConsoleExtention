@@ -43,7 +43,7 @@ void BaseWriter<TData>::output_to(std::ostream &outStream) {
             static_cast<BaseWriterData &>(_BaseCuiElement::data()).width(),
             MAX_HEIGHT));
     onWrite(buf);
-    buf.output_to(outStream);
+    buf.outputTo(outStream);
 }
 
 }

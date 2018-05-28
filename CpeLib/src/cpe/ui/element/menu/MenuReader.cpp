@@ -4,7 +4,7 @@ namespace cpe {
 
 MenuReader::~MenuReader() { }
 
-void MenuReader::setCommandItems(const MenuCommandItemVector &itemList) {
+void MenuReader::setCommandItems(const MenuItemVector &itemList) {
     mCommandItems = itemList;
 }
 

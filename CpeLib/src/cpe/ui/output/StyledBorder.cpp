@@ -11,19 +11,19 @@ StyledBorder::StyledBorder(const BorderStyle &border, const TextColor &color) : 
 
 }
 
-const TextColor &StyledBorder::color() const {
+const TextColor &StyledBorder::getColor() const {
     return mColor;
 }
 
-TextColor &StyledBorder::color() {
+TextColor &StyledBorder::getColor() {
     return mColor;
 }
 
-const BorderStyle &StyledBorder::style() const {
+const BorderStyle &StyledBorder::getStyle() const {
     return mBorder;
 }
 
-BorderStyle &StyledBorder::style() {
+BorderStyle &StyledBorder::getStyle() {
     return mBorder;
 }
 

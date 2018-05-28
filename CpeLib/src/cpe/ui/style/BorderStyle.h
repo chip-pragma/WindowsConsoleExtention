@@ -30,7 +30,7 @@ public:
         SL, SR, ST, SB,
         SLT, SRT, SLB, SRB,
         SV, SH,
-        SVL, SVR, SHT, SHB,
+        SLH, SRH, STV, SBV,
         SC
     };
 

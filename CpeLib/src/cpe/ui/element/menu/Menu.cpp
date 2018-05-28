@@ -36,7 +36,7 @@ TextColor &MenuData::getCommandColor() {
     return mCommandColor;
 }
 
-void MenuData::setItems(MenuItemVector &items) {
+void MenuData::setItems(IMenuItemVector &items) {
     mItems = &items;
 }
 
@@ -55,30 +55,30 @@ void Menu::onWrite(Buffer &buf) {
     buf.draw(StyledChar(' '));
 
     {
-        auto captionBuf = buf.extract(buf.cursor_position(), buf.get_size() - buf.cursor_position());
-        captionBuf.draw_line(data().getCaption());
-        buf.cursor_position() = Point(0, 1);
-        buf.draw(brd[BS::SL], captionBuf.get_used_size().y_crd() - 1, true);
+        auto captionBuf = buf.extract(buf.getCursorPos(), buf.getSize() - buf.getCursorPos());
+        captionBuf.drawLine(data().getCaption());
+        buf.getCursorPos() = Point(0, 1);
+        buf.draw(brd[BS::SL], captionBuf.getUsedSize().getY() - 1, true);
     }
 
     for (const auto &pair : mItems) {
         if (!pair.second->getVisible())
             continue;
-        auto sumBuf = buf.extract(buf.cursor_position(), buf.get_size() - buf.cursor_position());
+        auto sumBuf = buf.extract(buf.getCursorPos(), buf.getSize() - buf.getCursorPos());
         pair.second->write(sumBuf, brd, data().getCommandColor());
-        buf.cursor_position().x_crd() = 0;
-        buf.cursor_position().y_crd()++;
-        buf.draw(brd[BS::SL], sumBuf.get_used_size().y_crd() - 1, true);
+        buf.getCursorPos().getX() = 0;
+        buf.getCursorPos().getY()++;
+        buf.draw(brd[BS::SL], sumBuf.getUsedSize().getY() - 1, true);
     }
 
-    buf.cursor_position().x_crd() = 0;
+    buf.getCursorPos().getX() = 0;
     buf.draw(brd[BS::SLB]);
     buf.draw(brd[BS::SB], 2);
     buf.draw(StyledChar(' '));
 
     {
-        auto inputMsg = buf.extract(buf.cursor_position(), buf.get_size() - buf.cursor_position());
-        inputMsg.draw_line(data().getReaderHint());
+        auto inputMsg = buf.extract(buf.getCursorPos(), buf.getSize() - buf.getCursorPos());
+        inputMsg.drawLine(data().getReaderHint());
     }
 }
 
@@ -88,9 +88,9 @@ void Menu::onBeforeRun() {
 
 void Menu::onAfterRun() {
     if (mReader) {
-        MenuCommandItemVector vec;
+        MenuItemVector vec;
         for (auto& item : mItems) {
-            auto comItem = dynamic_cast<BaseCommandMenuItem*>(item.second);
+            auto comItem = dynamic_cast<MenuItem*>(item.second);
             if (comItem)
                 vec.emplace_back(item.first, comItem);
         }

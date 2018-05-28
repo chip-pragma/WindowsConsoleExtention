@@ -18,9 +18,9 @@ public:
 
     const TextColor& color() const;
 
-    StyledText& color(const TextColor &tColor);
+    StyledText& setColor(const TextColor &tColor);
 
-    StyledText& reset_color();
+    StyledText& resetColor();
 
     StyledText& append(const std::string &str);
 
@@ -30,7 +30,7 @@ public:
 
     StyledChar at(size_t index) const;
 
-    void output_to(std::ostream &outStream) const override;
+    void outputTo(std::ostream &outStream) const override;
 
     const std::string& to_string() const;
 

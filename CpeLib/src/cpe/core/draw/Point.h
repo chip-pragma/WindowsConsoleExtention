@@ -23,17 +23,17 @@ public:
 
     Point(int32_t x, int32_t y);
 
-    const int32_t& x_crd() const;
+    const int32_t& getX() const;
 
-    int32_t& x_crd();
+    int32_t& getX();
 
-    const int32_t& y_crd() const;
+    const int32_t& getY() const;
 
-    int32_t& y_crd();
+    int32_t& getY();
 
     Dimension dimension() const;
 
-    std::string to_string() const;
+    std::string toString() const;
 
     Point &operator+=(const Point &p1);
 

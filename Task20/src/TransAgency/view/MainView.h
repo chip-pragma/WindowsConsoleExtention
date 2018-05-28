@@ -5,6 +5,7 @@
 #include <cpe/ui/element/Label.h>
 #include <cpe/ui/element/menu/Menu.h>
 #include <cpe/ui/element/menu/MenuItem.h>
+#include <cpe/ui/element/menu/MenuSeparator.h>
 
 #include "TransAgency/vm/MainVM.h"
 
@@ -23,11 +24,13 @@ private:
     cpe::Notification m_nCaption;
     cpe::Label m_lWraps;
     cpe::Menu m_mMain;
-    cpe::MenuItem m_mMain_nmiCars;
-    cpe::MenuItem m_mMain_nmiClients;
-    cpe::MenuItem m_mMain_nmiRent;
-    cpe::MenuItem m_mMain_nmiExit;
     cpe::MenuReader m_mrMain;
+    cpe::MenuItem m_mMain_miCars;
+    cpe::MenuItem m_mMain_miClients;
+    cpe::MenuItem m_mMain_miRent;
+    cpe::MenuItem m_mMain_miExit;
+    cpe::MenuSeparator m_mMain_ms1;
+    cpe::MenuSeparator m_mMain_ms2;
 };
 
 

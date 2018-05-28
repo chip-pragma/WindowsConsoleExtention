@@ -14,13 +14,13 @@ public:
 
     StyledBorder(const BorderStyle& border, const TextColor& color);
 
-    const TextColor &color() const;
+    const TextColor &getColor() const;
 
-    TextColor &color();
+    TextColor &getColor();
 
-    const BorderStyle& style() const;
+    const BorderStyle& getStyle() const;
 
-    BorderStyle& style();
+    BorderStyle& getStyle();
 
     StyledChar at(const BorderStyle::Side &side) const;
 

@@ -3,7 +3,7 @@
 namespace cpe {
 
 BaseWriterData::BaseWriterData()
-        : mWidth(term::buffer_size().x_crd() - 1) {
+        : mWidth(term::buffer_size().getX() - 1) {
 
 }
 
