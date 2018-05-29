@@ -12,28 +12,28 @@ MainView::MainView()
 
 MainView::~MainView() { }
 
-void MainView::on_initialize() {
+void MainView::onInitialize() {
     using namespace cpe;
 
-    m_lWraps.data().text().append("\n\n");
+    m_lWraps.getData().getText().append("\n\n");
 
     {
-        auto &d = m_nCaption.data();
-        d.border().getStyle().apply(BorderStyle::DB_ALL);
-        d.text()
+        auto &d = m_nCaption.getData();
+        d.getBorder().getStyle().apply(BorderStyle::DB_ALL);
+        d.getText()
             .setColor({Colors::LT_GREEN, std::nullopt})
             .append("СИСТЕМА УПРАВЛЕНИЯ ДАННЫМИ\n"_dos)
             .setColor({Colors::LT_YELLOW, Colors::BLUE})
             .append("ТРАНСПОРТНОГО АГЕНСТВА\n"_dos);
-        d.icon() = StyledChar('i', {Colors::LT_TEAL, std::nullopt});
-        d.wait(true);
+        d.getIcon() = StyledChar('i', {Colors::LT_TEAL, std::nullopt});
+        d.setWait(true);
     }
 
     {
         m_mMain.assignReader(m_mrMain);
-        auto &d = m_mMain.data();
-        d.getCommandColor().foreground() = Colors::LT_PURPLE;
-        d.width() = 70;
+        auto &d = m_mMain.getData();
+        d.getCommandColor().getFore() = Colors::LT_PURPLE;
+        d.getWidth() = 70;
         d.getCaption()
             .setColor({Colors::LT_TEAL, std::nullopt})
             .append("Главное меню"_dos);
@@ -44,10 +44,10 @@ void MainView::on_initialize() {
     }
 
     {
-        m_mrMain.bind_result(&MainVM::main_menu_result);
-        auto &d = m_mrMain.data();
-        d.read_color() = {Colors::LT_TEAL, Colors::BLUE};
-        d.convert_fail_text() = "Неверный пункт меню"_dos;
+        m_mrMain.bindResult(&MainVM::onMainMenuResult);
+        auto &d = m_mrMain.getData();
+        d.getColorRead() = {Colors::LT_TEAL, Colors::BLUE};
+        d.getErrorText() = "Неверный пункт меню"_dos;
     }
 
     {

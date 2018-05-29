@@ -5,11 +5,11 @@
 #include <iostream>
 #include <cpe/core/terminal.h>
 
-bool MainVM::main_menu_result(cpe::ReaderResult<uint32_t> &result) {
+bool MainVM::onMainMenuResult(cpe::ReaderResult<uint32_t> &result) {
     bool exit = false;
-    if (result.type() == cpe::ReaderResultType::VALUE) {
+    if (result.getType() == cpe::ReaderResultType::VALUE) {
         std::string str;
-        switch (result.value()) {
+        switch (result.getValue()) {
             case ID_MM_CARS:
                 str = "Транспорт! (корректно)"_dos;
                 break;
@@ -30,15 +30,15 @@ bool MainVM::main_menu_result(cpe::ReaderResult<uint32_t> &result) {
         std::cout << "VALUE: " << str;
         if (exit)
             return true;
-    } else if (result.type() == cpe::ReaderResultType::COMMAND) {
-        if (result.command() == "check") {
+    } else if (result.getType() == cpe::ReaderResultType::COMMAND) {
+        if (result.getCommand() == "check") {
             std::cout << "COMMAND: проверка!.."_dos;
         } else {
             std::cout << "COMMAND: не определена (корректно)"_dos;
         }
-    } else if (result.type() == cpe::ReaderResultType::CONVERT_FAIL) {
+    } else if (result.getType() == cpe::ReaderResultType::CONVERT_FAIL) {
         std::cout << "CONVERT_FAIL: не определен пункт меню!"_dos;
     }
-    cpe::term::pause();
+    cpe::term::callPause();
     return false;
 }

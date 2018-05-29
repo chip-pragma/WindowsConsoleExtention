@@ -23,23 +23,19 @@ StyledChar::StyledChar(StyledChar &&sch) noexcept {
     mColor = sch.mColor;
 }
 
-const TextColor &StyledChar::color() const {
+const TextColor &StyledChar::getColor() const {
     return mColor;
 }
 
-TextColor &StyledChar::color() {
+TextColor &StyledChar::getColor() {
     return mColor;
 }
 
-void StyledChar::color(const TextColor &color) {
-    mColor = color;
-}
-
-char StyledChar::character() const {
+char StyledChar::getChar() const {
     return mChar;
 }
 
-void StyledChar::character(char aChar) {
+void StyledChar::setChar(char aChar) {
     mChar = aChar;
 }
 

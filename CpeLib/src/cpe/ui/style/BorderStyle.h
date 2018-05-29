@@ -40,13 +40,13 @@ public:
 
     void apply(int8_t dualBorder);
 
-    const DualBorder& current() const;
+    const DualBorder& getCurrent() const;
 
     char at(const Side &side) const;
 
     char operator[](const Side &side) const;
 
-    static std::optional<Encoder> &final_encoding();
+    static std::optional<Encoder> &getFinalEncoding();
 
 private:
     std::map<Side, std::string> mSides;

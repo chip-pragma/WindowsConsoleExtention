@@ -10,17 +10,17 @@ public:
 
     Color(uint8_t r, uint8_t g, uint8_t b) noexcept;
 
-    uint8_t red() const;
+    uint8_t getR() const;
 
-    void red(uint8_t r);
+    void setR(uint8_t r);
 
-    uint8_t green() const;
+    uint8_t getG() const;
 
-    void green(uint8_t g);
+    void setG(uint8_t g);
 
-    uint8_t blue() const;
+    uint8_t getB() const;
 
-    void blue(uint8_t b);
+    void setB(uint8_t b);
 
     bool operator==(const Color &rhs) const;
 

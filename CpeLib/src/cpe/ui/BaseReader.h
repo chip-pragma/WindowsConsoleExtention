@@ -23,9 +23,9 @@ public:
     virtual ~BaseReader() { }
 
     template<class TViewModel>
-    void bind_result(ResultReadReceiverFunc<TViewModel> func);
+    void bindResult(ResultReadReceiverFunc<TViewModel> func);
 
-    bool fire_result(IViewModel &ctrl, TResult &result);
+    bool fireResult(IViewModel &ctrl, TResult &result);
 
     void run(IViewModel &ctrl) override;
 
@@ -34,19 +34,19 @@ protected:
 
     _PureResultReadReceiverFunc mResultFunc = nullptr;
 
-    virtual void on_read(TResult &result);
+    virtual void onRead(TResult &result);
 
     virtual bool onConvert(std::string &srcLine, TValue &convertedValue) = 0;
 };
 
 template<class TValue, class TData, class TResult>
 template<class TViewModel>
-void BaseReader<TValue, TData, TResult>::bind_result(BaseReader::ResultReadReceiverFunc<TViewModel> func) {
+void BaseReader<TValue, TData, TResult>::bindResult(BaseReader::ResultReadReceiverFunc<TViewModel> func) {
     mResultFunc = static_cast<_PureResultReadReceiverFunc>(func);
 }
 
 template<class TValue, class TData, class TResult>
-bool BaseReader<TValue, TData, TResult>::fire_result(IViewModel &ctrl, TResult &result) {
+bool BaseReader<TValue, TData, TResult>::fireResult(IViewModel &ctrl, TResult &result) {
     if (mResultFunc)
         return (ctrl.*mResultFunc)(result);
     return true;
@@ -54,61 +54,61 @@ bool BaseReader<TValue, TData, TResult>::fire_result(IViewModel &ctrl, TResult &
 
 template<class TValue, class TData, class TResult>
 void BaseReader<TValue, TData, TResult>::run(IViewModel &ctrl) {
-    if (!static_cast<IElementData&>(_BaseCuiElement::data()).visible())
+    if (!static_cast<IElementData &>(_BaseCuiElement::getData()).getVisible())
         return;
 
     this->onBeforeRun();
 
-    _BaseCuiElement::fire_data(ctrl);
+    _BaseCuiElement::fireData(ctrl);
 
     OutputHelper outHelp;
-    outHelp.begin_colorized(std::cout);
+    outHelp.beginColorize(std::cout);
     while (true) {
-        outHelp.save_state();
-        outHelp.apply_color(
-                static_cast<BaseReaderData &>(_BaseCuiElement::data()).read_color());
+        outHelp.saveState();
+        outHelp.applyColor(
+            static_cast<BaseReaderData &>(_BaseCuiElement::getData()).getColorRead());
 
         TResult result;
-        on_read(result);
+        onRead(result);
 
-        outHelp.reset_colors();
-        if (fire_result(ctrl, result))
+        outHelp.resetColor();
+        if (fireResult(ctrl, result))
             break;
-        outHelp.back_state();
+        outHelp.goBackState();
     }
-    outHelp.end_colorized();
+    outHelp.endColorize();
 
     this->onAfterRun();
 }
 
 template<class TValue, class TData, class TResult>
-void BaseReader<TValue, TData, TResult>::on_read(TResult &result) {
+void BaseReader<TValue, TData, TResult>::onRead(TResult &result) {
     auto &castedResult = static_cast<ReaderResult<TValue> &>(result);
-    auto &castedData = static_cast<ReaderData<TValue> &>(_BaseCuiElement::data());
+    auto &castedData = static_cast<ReaderData<TValue> &>(_BaseCuiElement::getData());
 
     std::string lineValue;
     std::getline(std::cin, lineValue);
     text::trim(lineValue);
 
     if (lineValue.empty()) {
-        castedResult.assign_empty();
+        castedResult.assignEmpty();
     } else {
         bool isCommand = (lineValue[0] == '\\');
         if (isCommand || lineValue[0] == '@')
             lineValue.erase(0, 1);
 
         if (isCommand) {
-            castedResult.assign_command(lineValue);
+            castedResult.assignCommand(lineValue);
         } else {
             TValue convertedValue;
             if (onConvert(lineValue, convertedValue)) {
                 auto errorList = castedData.validate(convertedValue);
                 if (errorList.empty())
-                    castedResult.assign_value(convertedValue);
+                    castedResult.assignValue(convertedValue);
                 else
-                    castedResult.assign_invalid(errorList);
+                    castedResult.assignInvalid(errorList);
             } else {
-                castedResult.assign_convert_fail(castedData.convert_fail_text());
+                castedResult.assignError(castedData.getErrorText());
             }
         }
     }

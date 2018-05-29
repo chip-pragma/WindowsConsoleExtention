@@ -11,7 +11,7 @@ StyledText::StyledText()
 
 StyledText::~StyledText() { }
 
-const TextColor &StyledText::color() const {
+const TextColor &StyledText::getColor() const {
     return mColors.back().color;
 }
 
@@ -45,7 +45,7 @@ StyledText &StyledText::append(const StyledText &sText) {
     return *this;
 }
 
-size_t StyledText::length() const {
+size_t StyledText::getLength() const {
     return mText.length();
 }
 
@@ -67,17 +67,17 @@ StyledChar StyledText::at(size_t index) const {
 
 void StyledText::outputTo(std::ostream &outStream) const {
     OutputHelper outHelp;
-    outHelp.begin_colorized(outStream);
+    outHelp.beginColorize(outStream);
     for (size_t i = 0, j = 0; i < mText.length(); ++i) {
         if (mColors[j].position + mColors[j].length >= i)
             j++;
-        outHelp.apply_color(mColors[j].color);
+        outHelp.applyColor(mColors[j].color);
         outStream << mText[i];
     }
-    outHelp.end_colorized();
+    outHelp.endColorize();
 }
 
-const std::string &StyledText::to_string() const {
+const std::string &StyledText::toString() const {
     return mText;
 }
 

@@ -13,19 +13,19 @@ class Point;
 
 class OutputHelper {
 public:
-    void save_state();
+    void saveState();
 
-    void back_state(size_t count = 1);
+    void goBackState(size_t count = 1);
 
-    size_t state_count() const;
+    size_t getStateCount() const;
 
-    void begin_colorized(std::ostream &outStream);
+    void beginColorize(std::ostream &outStream);
 
-    void end_colorized();
+    void endColorize();
 
-    void apply_color(const TextColor &color);
+    void applyColor(const TextColor &color);
 
-    void reset_colors();
+    void resetColor();
 
 private:
     std::stack<Point> mStates;

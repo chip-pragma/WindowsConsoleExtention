@@ -16,7 +16,7 @@ public:
 
     ~StyledText() override;
 
-    const TextColor& color() const;
+    const TextColor& getColor() const;
 
     StyledText& setColor(const TextColor &tColor);
 
@@ -26,13 +26,13 @@ public:
 
     StyledText& append(const StyledText &sText);
 
-    size_t length() const;
+    size_t getLength() const;
 
     StyledChar at(size_t index) const;
 
     void outputTo(std::ostream &outStream) const override;
 
-    const std::string& to_string() const;
+    const std::string& toString() const;
 
     StyledChar operator[](size_t index) const;
 

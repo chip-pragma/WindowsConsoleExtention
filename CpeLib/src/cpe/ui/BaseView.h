@@ -24,11 +24,11 @@ public:
     void show(bool beforeClean, bool afterClean) final;
 
 protected:
-    void on_initialize() override = 0;
+    void onInitialize() override = 0;
 
-    void on_before_show() override { };
+    void onBeforeShow() override { };
 
-    void on_after_show() override { };
+    void onAfterShow() override { };
 
     template<class TElement>
     void push(TElement &element);
@@ -52,7 +52,7 @@ template<class TViewModel>
 TViewModel &BaseView<TViewModel>::initialize() {
     if (!mViewModel) {
         mViewModel = static_cast<IViewModel *>(new TViewModel());
-        on_initialize();
+        onInitialize();
     }
     return *(static_cast<TViewModel *>(mViewModel));
 }
@@ -64,13 +64,13 @@ void BaseView<TViewModel>::show(bool beforeClean, bool afterClean) {
 
     OutputHelper outHelp;
     if (afterClean)
-        outHelp.save_state();
-    on_before_show();
+        outHelp.saveState();
+    onBeforeShow();
     for (ICuiElement *item : mElements)
         item->run(*mViewModel);
-    on_after_show();
+    onAfterShow();
     if (afterClean)
-        outHelp.back_state();
+        outHelp.goBackState();
 }
 
 template<class TViewModel>

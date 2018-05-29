@@ -9,9 +9,9 @@ class LabelData : public BaseWriterData {
 public:
     ~LabelData() override;
 
-    const StyledText &text() const;
+    const StyledText &getText() const;
 
-    StyledText &text();
+    StyledText &getText();
 
 protected:
     StyledText mText;

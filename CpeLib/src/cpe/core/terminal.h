@@ -10,38 +10,36 @@
 
 namespace cpe::term {
 
-void pause();
+void callPause();
 
 void clear();
 
-void title(const std::string &title);
+void setTitle(const std::string &title);
 
-std::string title();
+std::string getTitle();
 
-bool input_cp(uint32_t codePage);
+bool setInputCp(uint32_t codePage);
 
-bool output_cp(uint32_t codePage);
+bool setOutputCp(uint32_t codePage);
 
-uint32_t input_cp();
+uint32_t getInputCp();
 
-uint32_t output_cp();
+uint32_t getOutputCp();
 
-bool buffer_size(const Point &size);
+bool setBufferSize(const Point &size);
 
-Point buffer_size();
+Point getBufferSize();
 
-bool cursor_position(const Point &pos);
+bool setCursorPos(const Point &pos);
 
-Point cursor_position();
+Point getCursorPos();
 
-bool move_cursor(const Point &vector);
+bool setForeground(const Color &color);
 
-bool foreground(const Color &color);
+Color getForeground();
 
-Color foreground();
+bool setBackground(const Color &color);
 
-bool background(const Color &color);
-
-Color background();
+Color getBackground();
 
 }

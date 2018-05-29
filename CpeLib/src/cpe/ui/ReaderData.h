@@ -12,10 +12,10 @@ template<class TValue>
 class ReaderData : public BaseReaderData {
 public:
     template<class TValidator>
-    void add_validator(const TValidator &validator);
+    void addValidator(const TValidator &validator);
 
     template<class TValidator>
-    void remove_validator(const TValidator &validator);
+    void removeValidator(const TValidator &validator);
 
     std::vector<std::string> validate(const TValue &value) const;
 
@@ -25,13 +25,13 @@ protected:
 
 template<class TValue>
 template<class TValidator>
-void ReaderData<TValue>::add_validator(const TValidator &validator) {
+void ReaderData<TValue>::addValidator(const TValidator &validator) {
     mValidators.push_back(static_cast<IValidator<TValue> *>(new TValidator(validator)));
 }
 
 template<class TValue>
 template<class TValidator>
-void ReaderData<TValue>::remove_validator(const TValidator &validator) {
+void ReaderData<TValue>::removeValidator(const TValidator &validator) {
     auto finded = std::find(
             mValidators.cbegin(), mValidators.cend(),
             static_cast<const IValidator<TValue> *>(&validator));

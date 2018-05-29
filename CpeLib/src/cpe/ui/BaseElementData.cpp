@@ -3,10 +3,10 @@
 
 cpe::BaseElementData::~BaseElementData() { }
 
-const bool &cpe::BaseElementData::visible() const {
+const bool &cpe::BaseElementData::getVisible() const {
     return mVisible;
 }
 
-bool &cpe::BaseElementData::visible() {
+bool &cpe::BaseElementData::getVisible() {
     return mVisible;
 }

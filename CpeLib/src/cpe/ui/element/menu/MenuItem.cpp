@@ -7,7 +7,7 @@ namespace cpe {
 MenuItem::MenuItem(const std::string &commands) {
     text::split(commands, mCommandList, "|");
     if (mCommandList.empty())
-        throw Exception("Menu item command is not set");
+        throw Exception("Menu item getCommand is not set");
 }
 
 const MenuItemCommandList & MenuItem::getCommandList() const {

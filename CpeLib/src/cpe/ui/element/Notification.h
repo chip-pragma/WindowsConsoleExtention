@@ -17,25 +17,25 @@ class NotificationData : public BaseWriterData {
 public:
     NotificationData();
 
-    const StyledBorder &border() const;
+    const StyledBorder &getBorder() const;
 
-    StyledBorder &border();
+    StyledBorder &getBorder();
 
-    const std::optional<StyledText> &caption() const;
+    const std::optional<StyledText> &getCaption() const;
 
-    std::optional<StyledText> &caption();
+    std::optional<StyledText> &getCaption();
 
-    const StyledText &text() const;
+    const StyledText &getText() const;
 
-    StyledText &text();
+    StyledText &getText();
 
-    const std::optional<StyledChar> &icon() const;
+    const std::optional<StyledChar> &getIcon() const;
 
-    std::optional<StyledChar> &icon();
+    std::optional<StyledChar> &getIcon();
 
-    bool is_wait() const;
+    bool getWait() const;
 
-    void wait(bool wait);
+    void setWait(bool wait);
 
 protected:
     StyledBorder mBorder;
@@ -49,7 +49,7 @@ class Notification : public BaseWriter<NotificationData> {
 public:
     ~Notification() override { };
 
-    void output_to(std::ostream &outStream) override;
+    void outputTo(std::ostream &outStream) override;
 
 protected:
 

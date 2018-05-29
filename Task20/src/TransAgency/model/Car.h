@@ -31,9 +31,9 @@ public:
 
     std::string &state_number();
 
-    std::string field_value(uint32_t idField) const override;
+    std::string getFieldValue(uint32_t idField) const override;
 
-    std::string to_string() const override;
+    std::string toString() const override;
 
 private:
     std::string mMark;

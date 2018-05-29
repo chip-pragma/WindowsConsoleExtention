@@ -25,19 +25,19 @@ TextColor::TextColor(TextColor &&tc) noexcept {
     tc.mBack = std::nullopt;
 }
 
-const std::optional<Color> &TextColor::foreground() const {
+const std::optional<Color> &TextColor::getFore() const {
     return mFore;
 }
 
-std::optional<Color> &TextColor::foreground() {
+std::optional<Color> &TextColor::getFore() {
     return mFore;
 }
 
-const std::optional<Color> &TextColor::background() const {
+const std::optional<Color> &TextColor::getBack() const {
     return mBack;
 }
 
-std::optional<Color> &TextColor::background() {
+std::optional<Color> &TextColor::getBack() {
     return mBack;
 }
 

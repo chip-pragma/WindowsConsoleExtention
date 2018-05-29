@@ -19,7 +19,7 @@ public:
 
     void run(IViewModel &ctrl) override;
 
-    virtual void output_to(std::ostream &outStream);
+    virtual void outputTo(std::ostream &outStream);
 };
 
 template<class TData>
@@ -29,18 +29,18 @@ void BaseWriter<TData>::write(Buffer &buf) {
 
 template<class TData>
 void BaseWriter<TData>::run(IViewModel &ctrl) {
-    if (!static_cast<IElementData&>(_BaseCuiElement::data()).visible())
+    if (!static_cast<IElementData &>(_BaseCuiElement::getData()).getVisible())
         return;
     this->onBeforeRun();
-    _BaseCuiElement::fire_data(ctrl);
-    output_to(std::cout);
+    _BaseCuiElement::fireData(ctrl);
+    outputTo(std::cout);
     this->onAfterRun();
 }
 
 template<class TData>
-void BaseWriter<TData>::output_to(std::ostream &outStream) {
+void BaseWriter<TData>::outputTo(std::ostream &outStream) {
     Buffer buf(Point(
-            static_cast<BaseWriterData &>(_BaseCuiElement::data()).width(),
+        static_cast<BaseWriterData &>(_BaseCuiElement::getData()).getWidth(),
             MAX_HEIGHT));
     onWrite(buf);
     buf.outputTo(outStream);

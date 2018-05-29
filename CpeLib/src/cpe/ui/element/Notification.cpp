@@ -8,52 +8,52 @@ namespace cpe {
 
 NotificationData::NotificationData() { }
 
-const StyledBorder &NotificationData::border() const {
+const StyledBorder &NotificationData::getBorder() const {
     return mBorder;
 }
 
-StyledBorder &NotificationData::border() {
+StyledBorder &NotificationData::getBorder() {
     return mBorder;
 }
 
-const std::optional<StyledText> &NotificationData::caption() const {
+const std::optional<StyledText> &NotificationData::getCaption() const {
     return mCaption;
 }
 
-std::optional<StyledText> &NotificationData::caption() {
+std::optional<StyledText> &NotificationData::getCaption() {
     return mCaption;
 }
 
-const StyledText &NotificationData::text() const {
+const StyledText &NotificationData::getText() const {
     return mText;
 }
 
-StyledText &NotificationData::text() {
+StyledText &NotificationData::getText() {
     return mText;
 }
 
-const std::optional<StyledChar> &NotificationData::icon() const {
+const std::optional<StyledChar> &NotificationData::getIcon() const {
     return mIcon;
 }
 
-std::optional<StyledChar> &NotificationData::icon() {
+std::optional<StyledChar> &NotificationData::getIcon() {
     return mIcon;
 }
 
-bool NotificationData::is_wait() const {
+bool NotificationData::getWait() const {
     return mWait;
 }
 
-void NotificationData::wait(bool wait) {
+void NotificationData::setWait(bool wait) {
     mWait = wait;
 }
 
 //endregion
 
-void Notification::output_to(std::ostream &outStream) {
-    BaseWriter::output_to(outStream);
-    if (data().is_wait())
-        term::pause();
+void Notification::outputTo(std::ostream &outStream) {
+    BaseWriter::outputTo(outStream);
+    if (getData().getWait())
+        term::callPause();
 }
 
 void Notification::onWrite(Buffer &cvs) {
@@ -68,10 +68,10 @@ void Notification::onWrite(Buffer &cvs) {
     }
 
     Buffer text = cvs.extract(margin / 2 + Point(1, 1), textBlockSize, false);
-    text.draw(data().text());
+    text.draw(getData().getText());
     Point textBlockUsedSize = text.getUsedSize() + margin;
 
-    auto &brd = data().border();
+    auto &brd = getData().getBorder();
 
     cvs.draw(brd[BS::SLT]);
     cvs.draw(brd[BS::ST], textBlockUsedSize.getX(), false);
@@ -90,21 +90,21 @@ void Notification::onWrite(Buffer &cvs) {
     // Open
     cvs.getCursorPos() = Point(1, 0);
 
-    if (data().icon().has_value()) {
+    if (getData().getIcon().has_value()) {
         cvs.getCursorPos().getX()++;
         cvs.draw(StyledChar('[', brd.getColor()));
-        cvs.draw(data().icon().value());
+        cvs.draw(getData().getIcon().value());
         cvs.draw(StyledChar(']', brd.getColor()));
     }
 
-    if (data().caption().has_value()
+    if (getData().getCaption().has_value()
         && (cvs.getCursorPos().getX() + 3 < cvs.getSize().getX() - 2)) {
         cvs.getCursorPos().getX()++;
         cvs.draw(StyledChar('[', brd.getColor()));
         auto captionWidth = cvs.getSize().getX() - cvs.getCursorPos().getX() - 3;
         auto caption = cvs.extract(cvs.getCursorPos(),
                                    Point(captionWidth, 1));
-        caption.draw(data().caption().value());
+        caption.draw(getData().getCaption().value());
         cvs.getCursorPos().getX() += captionWidth;
         cvs.draw(StyledChar(']', brd.getColor()));
     }

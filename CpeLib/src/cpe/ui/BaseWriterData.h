@@ -12,9 +12,9 @@ public:
 
     ~BaseWriterData() override { };
 
-    const int32_t &width() const;
+    const int32_t &getWidth() const;
 
-    int32_t &width();
+    int32_t &getWidth();
 
 protected:
     int32_t mWidth;

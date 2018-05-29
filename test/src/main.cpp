@@ -14,11 +14,11 @@ using namespace cpe;
 using json = nlohmann::json;
 
 int main() {
-    term::title("Текст консоли"_dos);
-    term::foreground(Colors::WHITE);
-    term::background(Colors::BLACK);
+    term::setTitle("Текст консоли"_dos);
+    term::setForeground(Colors::WHITE);
+    term::setBackground(Colors::BLACK);
 
-    term::pause();
+    term::callPause();
 
     Notification notif;
     StyledText st;
@@ -27,13 +27,13 @@ int main() {
     st.push_back({"стилизованного"_dos, {Colors::LT_GREEN, Colors::PURPLE}});
     st.push_back({" ", {Colors::BLACK, Colors::WHITE}});
     st.push_back({"текста"_dos, {Colors::LT_RED, Colors::BLUE}});
-    notif.data().text() = st;
-    notif.data().border().getStyle().apply(BorderStyle::DB_BOTTOM | BorderStyle::DB_RIGHT);
+    notif.getData().getText() = st;
+    notif.getData().getBorder().getStyle().apply(BorderStyle::DB_BOTTOM | BorderStyle::DB_RIGHT);
     Buffer buf({50, 10});
     notif.write(buf);
     std::cout << buf;
 
-    term::pause();
+    term::callPause();
 
     return 0;
 }

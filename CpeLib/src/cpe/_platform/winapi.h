@@ -17,7 +17,7 @@ enum class BitColor : uint8_t {
     BLUE = 0
 };
 
-SHORT buffer_attribute_color_component(uint8_t component, BitColor comp) noexcept {
+SHORT bufferAttributeColorComponent(uint8_t component, BitColor comp) noexcept {
     if (component < 64)
         return 0;
     else if (component <= 192)
@@ -28,18 +28,18 @@ SHORT buffer_attribute_color_component(uint8_t component, BitColor comp) noexcep
 
 }
 
-inline cpe::Point to_point(const COORD &coord) {
+inline cpe::Point toPoint(const COORD &coord) {
     return cpe::Point(coord.X, coord.Y);
 }
 
-inline COORD from_point(const cpe::Point &point) {
+inline COORD fromPoint(const cpe::Point &point) {
     return COORD{
             .X = static_cast<SHORT>(point.getX()),
             .Y = static_cast<SHORT>(point.getY())
     };
 }
 
-inline cpe::Color to_color(SHORT bufferAttributes) {
+inline cpe::Color toColor(SHORT bufferAttributes) {
     cpe::Color result;
     const uint8_t MIN = 128;
     const uint8_t PLUS = 127;
@@ -47,34 +47,34 @@ inline cpe::Color to_color(SHORT bufferAttributes) {
     if ((bufferAttributes & 8) == 8)
         i += PLUS;
     if ((bufferAttributes & 4) == 4)
-        result.red(i);
+        result.setR(i);
     if ((bufferAttributes & 2) == 2)
-        result.green(i);
+        result.setG(i);
     if ((bufferAttributes & 1) == 1)
-        result.blue(i);
+        result.setB(i);
     return result;
 }
 
-inline SHORT from_color(cpe::Color color) {
+inline SHORT fromColor(cpe::Color color) {
     SHORT pc =
-            buffer_attribute_color_component(color.red(), BitColor::RED)
-            | buffer_attribute_color_component(color.green(), BitColor::GREEN)
-            | buffer_attribute_color_component(color.blue(), BitColor::BLUE);
+        bufferAttributeColorComponent(color.getR(), BitColor::RED)
+            | bufferAttributeColorComponent(color.getG(), BitColor::GREEN)
+            | bufferAttributeColorComponent(color.getB(), BitColor::BLUE);
     return pc;
 }
 
-inline HANDLE output_handle() noexcept {
+inline HANDLE getOutputHandle() noexcept {
     return ::GetStdHandle(STD_OUTPUT_HANDLE);
 }
 
-inline HANDLE input_handle() noexcept {
+inline HANDLE getInputHandle() noexcept {
     return ::GetStdHandle(STD_INPUT_HANDLE);
 }
 
-inline CONSOLE_SCREEN_BUFFER_INFO buffer_info() noexcept {
+inline CONSOLE_SCREEN_BUFFER_INFO getBufferInfo() noexcept {
     CONSOLE_SCREEN_BUFFER_INFO info;
     ::GetConsoleScreenBufferInfo(
-            output_handle(),
+        getOutputHandle(),
             &info);
     return info;
 }
