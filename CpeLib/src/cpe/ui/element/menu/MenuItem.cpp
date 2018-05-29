@@ -7,7 +7,7 @@ namespace cpe {
 MenuItem::MenuItem(const std::string &commands) {
     text::split(commands, mCommandList, "|");
     if (mCommandList.empty())
-        throw Exception("Menu item command is not set");
+        throw Exception("Menu item getCommand is not set");
 }
 
 const MenuItemCommandList & MenuItem::getCommandList() const {
@@ -19,9 +19,7 @@ void MenuItem::write(cpe::Buffer &buf, const cpe::StyledBorder &sBord, const Tex
     buf.draw(sBord[BS::SL]);
 
     StyledText coms;
-    coms.append(" ")
-        .setColor(sBord.getColor())
-        .append("[");
+    coms.append(" ");
 
     auto &list = getCommandList();
     for (auto it = list.cbegin();;) {
@@ -29,13 +27,12 @@ void MenuItem::write(cpe::Buffer &buf, const cpe::StyledBorder &sBord, const Tex
             .append(*it)
             .setColor(sBord.getColor());
         if (++it != list.cend())
-            coms.append("|");
+            coms.append(",");
         else
             break;
     }
 
-    coms.append("]")
-        .resetColor()
+    coms.resetColor()
         .append(" ");
     buf.draw(coms);
 

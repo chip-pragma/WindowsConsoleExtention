@@ -3,33 +3,28 @@
 #include <cstdint>
 #include <string>
 
-#include "cpe/ui/style/TextColor.h"
+#include "cpe/ui/output/StyledText.h"
 
 namespace cpe {
 
 class DataTableColumn {
 public:
-    DataTableColumn(const std::string &caption);
 
-    DataTableColumn(const std::string &caption, const TextColor &headerColor);
+    bool getVisible() const;
 
-    DataTableColumn(const std::string &caption, const TextColor &headerColor, const TextColor &cellColor);
+    void setVisible(bool vis);
 
-    const std::string &caption() const;
+    const StyledText &getHeader() const;
 
-    std::string &caption();
+    StyledText &getHeader();
 
-    const TextColor &header_color() const;
+    const TextColor &getCellTextColor() const;
 
-    TextColor &header_color();
-
-    const TextColor &cell_color() const;
-
-    TextColor &cell_color();
+    TextColor &getCellTextColor();
 
 protected:
-    std::string mCaption;
-    TextColor mHeaderColor;
+    bool mVisible;
+    StyledText mHeader;
     TextColor mCellColor;
 };
 

@@ -11,6 +11,8 @@
 
 namespace cpe {
 
+using DataTableColumnVector = std::unordered_map<uint32_t, DataTableColumn*>;
+
 class DataTableData {
 public:
     enum CellBorder {
@@ -24,35 +26,40 @@ public:
         DTCB_ALL = DTCB_IN | DTCB_OUT | DTCB_V | DTCB_H
     };
 
-    CellBorder cell_border() const;
+    CellBorder getCellBorder() const;
 
-    CellBorder cell_border();
+    CellBorder getCellBorder();
 
-    const StyledBorder &border() const;
+    const StyledBorder &getBorder() const;
 
-    StyledBorder &border();
+    StyledBorder &getBorder();
 
-    void add_column(uint32_t fieldId, const DataTableColumn &column);
-
-    void remove_column(uint32_t fieldId);
+    DataTableColumn& getColumn(uint32_t fieldId);
 
     template<class TModel>
-    void data_source(const std::vector<TModel> &ds);
+    void setDataSource(const std::vector<TModel> &ds);
+
+    void setColumnList(DataTableColumnVector& list);
 
 protected:
-    std::unordered_map<uint32_t, DataTableColumn> mColumns;
     std::vector<const IModel*> mDataSource;
     CellBorder mCellBorder;
     StyledBorder mBorder;
+    DataTableColumnVector* mColumns = nullptr;
 };
 
 class DataTable : public BaseWriter<DataTableData> {
 public:
     ~DataTable() override { }
 
-protected:
+    void addColumn(uint32_t fieldId, const DataTableColumn &column);
 
-    void on_write(Buffer &buf) override;
+protected:
+    DataTableColumnVector mColumns;
+
+    void onBeforeRun() override;
+
+    void onWrite(Buffer &buf) override;
 };
 
 }

@@ -9,13 +9,13 @@ class BaseReaderData : public BaseElementData {
 public:
     ~BaseReaderData() override;
 
-    const TextColor &read_color() const;
+    const TextColor &getReadColor() const;
 
-    TextColor &read_color();
+    TextColor &getColorRead();
 
-    const std::string &convert_fail_text() const;
+    const std::string &getErrorText() const;
 
-    std::string &convert_fail_text();
+    std::string &getErrorText();
 
 protected:
     TextColor mReadStyle;

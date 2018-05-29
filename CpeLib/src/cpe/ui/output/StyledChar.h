@@ -17,15 +17,13 @@ public:
 
     StyledChar(StyledChar &&sch) noexcept;
 
-    const TextColor &color() const;
+    const TextColor &getColor() const;
 
-    TextColor &color();
+    TextColor &getColor();
 
-    void color(const TextColor &color);
+    char getChar() const;
 
-    char character() const;
-
-    void character(char aChar);
+    void setChar(char aChar);
 
     StyledChar &operator=(const StyledChar &sch);
 

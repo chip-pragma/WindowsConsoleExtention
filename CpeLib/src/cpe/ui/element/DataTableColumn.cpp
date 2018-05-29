@@ -2,39 +2,27 @@
 
 namespace cpe {
 
-DataTableColumn::DataTableColumn(const std::string &caption)
-        : mCaption(caption) { }
-
-DataTableColumn::DataTableColumn(const std::string &caption, const TextColor &headerColor)
-        : mCaption(caption),
-          mHeaderColor(headerColor) { }
-
-DataTableColumn::DataTableColumn(const std::string &caption, const TextColor &headerColor, const TextColor &cellColor)
-        : mCaption(caption),
-          mHeaderColor(headerColor),
-          mCellColor(cellColor) { }
-
-const std::string &DataTableColumn::caption() const {
-    return mCaption;
+bool DataTableColumn::getVisible() const {
+    return mVisible;
 }
 
-std::string &DataTableColumn::caption() {
-    return mCaption;
+void DataTableColumn::setVisible(bool vis) {
+    mVisible = vis;
 }
 
-const TextColor &DataTableColumn::header_color() const {
-    return mHeaderColor;
+const StyledText &DataTableColumn::getHeader() const {
+    return mHeader;
 }
 
-TextColor &DataTableColumn::header_color() {
-    return mHeaderColor;
+StyledText &DataTableColumn::getHeader() {
+    return mHeader;
 }
 
-const TextColor &DataTableColumn::cell_color() const {
+const TextColor &DataTableColumn::getCellTextColor() const {
     return mCellColor;
 }
 
-TextColor &DataTableColumn::cell_color() {
+TextColor &DataTableColumn::getCellTextColor() {
     return mCellColor;
 }
 

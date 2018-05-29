@@ -123,14 +123,14 @@ void BorderStyle::apply(int8_t db) {
 
 }
 
-const BorderStyle::DualBorder &BorderStyle::current() const {
+const BorderStyle::DualBorder &BorderStyle::getCurrent() const {
     return mLastApplied;
 }
 
 char BorderStyle::at(const BorderStyle::Side &side) const {
     auto sym = mSides.at(side);
-    if (BorderStyle::final_encoding().has_value())
-        return BorderStyle::final_encoding()->to(mEncFrom.from(sym)).at(0);
+    if (BorderStyle::getFinalEncoding().has_value())
+        return BorderStyle::getFinalEncoding()->to(mEncFrom.from(sym)).at(0);
     return sym.at(0);
 }
 
@@ -138,7 +138,7 @@ char BorderStyle::operator[](const Side &side) const {
     return at(side);
 }
 
-std::optional<Encoder> &BorderStyle::final_encoding() {
+std::optional<Encoder> &BorderStyle::getFinalEncoding() {
     static std::optional<Encoder> mEncTo;
     return mEncTo;
 }

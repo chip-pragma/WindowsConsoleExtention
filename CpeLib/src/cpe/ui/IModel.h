@@ -8,9 +8,9 @@ class IModel {
 public:
     virtual ~IModel() { }
 
-    virtual std::string field_value(uint32_t idField) const = 0;
+    virtual bool getFieldValue(uint32_t idField, std::string &outField) const = 0;
 
-    virtual std::string to_string() const = 0;
+    virtual std::string toString() const = 0;
 };
 
 }

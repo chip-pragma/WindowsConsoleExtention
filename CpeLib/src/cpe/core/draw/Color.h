@@ -12,15 +12,15 @@ public:
 
     uint8_t getR() const;
 
-    void getR(uint8_t r);
+    void setR(uint8_t r);
 
     uint8_t getG() const;
 
-    void getG(uint8_t g);
+    void setG(uint8_t g);
 
     uint8_t getB() const;
 
-    void getB(uint8_t b);
+    void setB(uint8_t b);
 
     bool operator==(const Color &rhs) const;
 

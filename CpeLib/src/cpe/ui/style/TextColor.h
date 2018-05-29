@@ -16,13 +16,13 @@ public:
 
     TextColor(std::optional<Color> fore, std::optional<Color> back);
 
-    const std::optional<Color> &foreground() const;
+    const std::optional<Color> &getFore() const;
 
-    std::optional<Color> &foreground();
+    std::optional<Color> &getFore();
 
-    const std::optional<Color> &background() const;
+    const std::optional<Color> &getBack() const;
 
-    std::optional<Color> &background();
+    std::optional<Color> &getBack();
 
     TextColor &operator=(const TextColor &tc);
 

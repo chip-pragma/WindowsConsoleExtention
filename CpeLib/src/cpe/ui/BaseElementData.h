@@ -8,9 +8,9 @@ class BaseElementData : public IElementData {
 public:
     ~BaseElementData() override;
 
-    const bool &visible() const override;
+    const bool &getVisible() const override;
 
-    bool &visible() override;
+    bool &getVisible() override;
 
 protected:
     bool mVisible = true;

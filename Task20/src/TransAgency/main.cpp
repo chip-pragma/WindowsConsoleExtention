@@ -5,14 +5,12 @@
 int main() {
     using namespace cpe;
 
-    term::pause();
-
-    BorderStyle::final_encoding() = Encoder(Encoder::CP866);
+    BorderStyle::getFinalEncoding() = Encoder(Encoder::CP866);
 
     MainView mv;
     mv.initialize();
     mv.show(true, false);
 
-    cpe::term::pause();
+    term::callPause();
     return 0;
 }

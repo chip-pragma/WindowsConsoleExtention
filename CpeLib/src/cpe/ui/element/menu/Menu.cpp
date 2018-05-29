@@ -49,41 +49,39 @@ void Menu::assignReader(MenuReader &reader) {
 void Menu::onWrite(Buffer &buf) {
     using BS = BorderStyle;
 
-    const auto &brd = data().getBorder();
-    buf.draw(brd[BS::SLT]);
-    buf.draw(brd[BS::ST], 2);
-    buf.draw(StyledChar(' '));
+    const auto &brd = getData().getBorder();
+    buf.draw(brd[BS::SLT] + ' ');
 
     {
         auto captionBuf = buf.extract(buf.getCursorPos(), buf.getSize() - buf.getCursorPos());
-        captionBuf.drawLine(data().getCaption());
+        captionBuf.drawLine(getData().getCaption());
         buf.getCursorPos() = Point(0, 1);
         buf.draw(brd[BS::SL], captionBuf.getUsedSize().getY() - 1, true);
     }
+
+
 
     for (const auto &pair : mItems) {
         if (!pair.second->getVisible())
             continue;
         auto sumBuf = buf.extract(buf.getCursorPos(), buf.getSize() - buf.getCursorPos());
-        pair.second->write(sumBuf, brd, data().getCommandColor());
+        pair.second->write(sumBuf, brd, getData().getCommandColor());
         buf.getCursorPos().getX() = 0;
         buf.getCursorPos().getY()++;
         buf.draw(brd[BS::SL], sumBuf.getUsedSize().getY() - 1, true);
     }
 
     buf.getCursorPos().getX() = 0;
-    buf.draw(brd[BS::SLB]);
-    buf.draw(brd[BS::SB], 2);
-    buf.draw(StyledChar(' '));
+    buf.draw(brd[BS::SLB] + ' ');
 
     {
         auto inputMsg = buf.extract(buf.getCursorPos(), buf.getSize() - buf.getCursorPos());
-        inputMsg.drawLine(data().getReaderHint());
+        inputMsg.drawLine(getData().getReaderHint());
     }
 }
 
 void Menu::onBeforeRun() {
-    data().setItems(mItems);
+    getData().setItems(mItems);
 }
 
 void Menu::onAfterRun() {

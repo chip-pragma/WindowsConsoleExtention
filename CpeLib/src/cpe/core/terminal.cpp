@@ -7,7 +7,7 @@
 
 namespace cpe::term {
 
-void pause() {
+void callPause() {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
     system("pause");
 #endif
@@ -19,13 +19,13 @@ void clear() {
 #endif
 }
 
-void title(const std::string &title) {
+void setTitle(const std::string &title) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
     SetConsoleTitleA(title.c_str());
 #endif
 }
 
-std::string title() {
+std::string getTitle() {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
     char title[MAX_PATH];
     GetConsoleTitle(title, MAX_PATH);
@@ -33,110 +33,101 @@ std::string title() {
 #endif
 }
 
-bool input_cp(uint32_t codePage) {
+bool setInputCp(uint32_t codePage) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
     return (bool) SetConsoleCP(codePage);
 #endif
 }
 
-bool output_cp(uint32_t codePage) {
+bool setOutputCp(uint32_t codePage) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
     return (bool) SetConsoleOutputCP(codePage);
 #endif
 }
 
-uint32_t input_cp() {
+uint32_t getInputCp() {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
     return GetConsoleCP();
 #endif
 }
 
-uint32_t output_cp() {
+uint32_t getOutputCp() {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
     return GetConsoleOutputCP();
 #endif
 }
 
-bool buffer_size(const Point &size) {
+bool setBufferSize(const Point &size) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
     if (size.calcLocation() != Point::PL_SECTOR_I)
         throw Exception("Invalid width");
 
     return static_cast<bool>(SetConsoleScreenBufferSize(
-                _winapi::output_handle(),
-                _winapi::from_point(size)));
+        _winapi::getOutputHandle(),
+                _winapi::fromPoint(size)));
 #endif
 }
 
-Point buffer_size() {
+Point getBufferSize() {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
-    auto info = _winapi::buffer_info();
-    return _winapi::to_point(info.dwSize);
+    auto info = _winapi::getBufferInfo();
+    return _winapi::toPoint(info.dwSize);
 #endif
 }
 
-bool cursor_position(const Point &point) {
+bool setCursorPos(const Point &point) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
     return (bool) SetConsoleCursorPosition(
-            _winapi::output_handle(),
-            _winapi::from_point(point));
+        _winapi::getOutputHandle(),
+            _winapi::fromPoint(point));
 #endif
 }
 
-Point cursor_position() {
+Point getCursorPos() {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
-    auto info = _winapi::buffer_info();
-    return _winapi::to_point(info.dwCursorPosition);
+    auto info = _winapi::getBufferInfo();
+    return _winapi::toPoint(info.dwCursorPosition);
 #endif
 }
 
-bool move_cursor(const Point &vector) {
-
-#if defined(CPE_PLATFORM_IS_WINDOWS)
-    return cursor_position(
-            cursor_position() + vector);
-#endif
-
-}
-
-bool foreground(const Color &color) {
+bool setForeground(const Color &color) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
 
-    auto info = _winapi::buffer_info();
-    auto attr = (info.wAttributes & ~(uint16_t(0b1111))) | _winapi::from_color(color);
+    auto info = _winapi::getBufferInfo();
+    auto attr = (info.wAttributes & ~(uint16_t(0b1111))) | _winapi::fromColor(color);
     return (bool) SetConsoleTextAttribute(
-            _winapi::output_handle(),
+        _winapi::getOutputHandle(),
             attr);
 
 #endif
 }
 
-Color foreground() {
+Color getForeground() {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
 
-    auto info = _winapi::buffer_info();
-    return _winapi::to_color(info.wAttributes);
+    auto info = _winapi::getBufferInfo();
+    return _winapi::toColor(info.wAttributes);
 
 #endif
 }
 
-bool background(const Color &color) {
+bool setBackground(const Color &color) {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
 
-    auto info = _winapi::buffer_info();
-    auto attr = (info.wAttributes & (~(uint16_t(0b1111) << 4))) | (_winapi::from_color(color) << 4);
+    auto info = _winapi::getBufferInfo();
+    auto attr = (info.wAttributes & (~(uint16_t(0b1111) << 4))) | (_winapi::fromColor(color) << 4);
     return (bool) SetConsoleTextAttribute(
-            _winapi::output_handle(),
+        _winapi::getOutputHandle(),
             attr);
 
 #endif
 }
 
-Color background() {
+Color getBackground() {
 #if defined(CPE_PLATFORM_IS_WINDOWS)
 
-    auto info = _winapi::buffer_info();
-    return _winapi::to_color(info.wAttributes >> 4);
+    auto info = _winapi::getBufferInfo();
+    return _winapi::toColor(info.wAttributes >> 4);
 
 #endif
 }

@@ -14,7 +14,7 @@ inline bool __charIsOneOf(const std::string &chars, char src) {
 }
 
 // Проверяет значение точки как значения размера
-inline void __pointAsSize(const Point &size);
+inline void __point_as_size(const Point &size);
 
 // Новая строка
 inline void __newLine(Point &cursorPos);
@@ -27,17 +27,17 @@ inline Point __clampPoint(const Point &point, const Point &size);
 inline bool __isPointInBounds(const Point &point, const Point &size);
 
 
-inline void __pointAsSize(const Point &size) {
-    if (size.calcLocation() != Point::PL_SECTOR_I) {
+inline void __point_as_size(const Point &size) {
+    if (size.dimension() != Point::DIM_SECTOR_I) {
         std::stringstream ss;
-        ss << "Invalid width " + size.toString();
+        ss << "Invalid getWidth " + size.toString();
         throw cpe::Exception(ss.str());
     }
 }
 
 inline void __newLine(Point &cursorPos) {
     cursorPos.getX() = 0;
-    cursorPos.getY() += 1;
+    cursorPos += Point(0, 1);
 }
 
 Point __clampPoint(const Point &point, const Point &size) {
@@ -50,13 +50,13 @@ Point __clampPoint(const Point &point, const Point &size) {
 
 inline bool __isPointInBounds(const Point &point, const Point &size) {
     return (point.getX() >= 0 && point.getX() < size.getX() &&
-            point.getY() >= 0 && point.getY() < size.getY());
+        point.getY() >= 0 && point.getY() < size.getY());
 }
 
 }
 
 Buffer::Buffer(const Point &size) {
-    __pointAsSize(size);
+    __point_as_size(size);
     mSize = size;
 
     mBuffer = new StyledChar *[size.getY()];
@@ -119,7 +119,7 @@ Buffer Buffer::extract(Point begin, Point size, bool clean) {
 
     if (!__isPointInBounds(begin, mSize) ||
         !__isPointInBounds(end, mSize + 1))
-        throw Exception("Invalid begin position and/or width");
+        throw Exception("Invalid begin position and/or getWidth");
 
     Buffer result(this, begin, size);
 
@@ -137,11 +137,11 @@ Buffer Buffer::extract(Point begin, Point size, bool clean) {
 
 void Buffer::draw(const StyledText &text, bool softWrap) {
     // FEATURE Добавить как нибудь "мягкие" разрывы строк
-    for (size_t i = 0; i < text.length(); ++i) {
+    for (size_t i = 0; i < text.getLength(); ++i) {
         auto ch = text[i];
-        if (__charIsOneOf("\n\r", ch.character())) {
+        if (__charIsOneOf("\n\r", ch.getChar())) {
             __newLine(mCursorPos);
-        } else if (ch.character() == '\t') {
+        } else if (ch.getChar() == '\t') {
             auto sc = mTabLength - mCursorPos.getX() % mTabLength;
             for (int32_t j = 0; j < sc; j++)
                 __printText(ch);
@@ -173,10 +173,11 @@ void Buffer::draw(const Buffer &sub, bool useActualSize) {
         for (int j = 0; j < size.getX(); j++) {
             Point coord(j + srcCurPos.getX(), i + srcCurPos.getY());
             if (__isPointInBounds(coord, mSize)) {
-                mBuffer[coord.getY()][coord.getX()] = sub.mBuffer[i][j];
+                mBuffer[coord.getY()][coord.getX()]
+                    = sub.mBuffer[i][j];
             }
             __pointWithMaxCrd();
-            mCursorPos = Point(srcCurPos.getX(), srcCurPos.getY() + i);
+            getCursorPos() = Point(srcCurPos.getX(), srcCurPos.getY() + i);
         }
     }
 }
@@ -188,8 +189,8 @@ void Buffer::draw(StyledChar schar, int32_t count, bool vertical) {
     if (std::signbit(count))
         direct *= -1;
 
-    if (__charIsOneOf("\n\r\t", schar.character()))
-        schar.character(' ');
+    if (__charIsOneOf("\n\r\t", schar.getChar()))
+        schar.setChar(' ');
 
     for (int i = 0, n = std::abs(count); i < n; i++) {
         __pointWithMaxCrd();
@@ -207,8 +208,8 @@ void Buffer::outputTo(std::ostream &outStream) const {
         auto line = mBuffer[i];
         for (int j = 0; j < maxSize.getX(); j++) {
             auto c = line[j];
-            outHelp.applyColor(c.color());
-            outStream << c.character();
+            outHelp.applyColor(c.getColor());
+            outStream << c.getChar();
         }
         outStream << std::endl;
     }
@@ -262,11 +263,15 @@ void Buffer::__pointWithMaxCrd() {
     mMaxCurPos.getX() = std::max(mMaxCurPos.getX(), mCursorPos.getX());
     mMaxCurPos.getY() = std::max(mMaxCurPos.getY(), mCursorPos.getY());
 
-    if (mOwner) {
-        Point &ownerMaxPos = mOwner->mMaxCurPos;
-        Point thisMaxPos = mMaxCurPos + mBeginPosFromOwner;
+    auto current = this;
+    auto next = mOwner;
+    while (next) {
+        Point &ownerMaxPos = next->mMaxCurPos;
+        Point thisMaxPos = __clampPoint(current->mMaxCurPos, current->mSize) + current->mBeginPosFromOwner;
         ownerMaxPos.getX() = std::max(ownerMaxPos.getX(), thisMaxPos.getX());
         ownerMaxPos.getY() = std::max(ownerMaxPos.getY(), thisMaxPos.getY());
+        current = next;
+        next = next->mOwner;
     }
 }
 

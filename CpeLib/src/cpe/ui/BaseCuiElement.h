@@ -14,14 +14,14 @@ public:
 
     ~BaseCuiElement() override;
 
-    virtual const TData &data() const;
+    virtual const TData &getData() const;
 
-    virtual TData &data();
+    virtual TData &getData();
 
     template<class TViewModel>
-    void bind_data(DataReceiverFunc<TViewModel> func);
+    void bindData(DataReceiverFunc<TViewModel> func);
 
-    void fire_data(IViewModel &ctrl);
+    void fireData(IViewModel &ctrl);
 
 protected:
     using _PureDataReceiverFunc = void (IViewModel::*)(TData &);
@@ -45,23 +45,23 @@ BaseCuiElement<TData>::~BaseCuiElement() {
 }
 
 template<class TData>
-const TData &BaseCuiElement<TData>::data() const {
+const TData &BaseCuiElement<TData>::getData() const {
     return *mData;
 }
 
 template<class TData>
-TData &BaseCuiElement<TData>::data() {
+TData &BaseCuiElement<TData>::getData() {
     return *mData;
 }
 
 template<class TData>
 template<class TViewModel>
-void BaseCuiElement<TData>::bind_data(DataReceiverFunc<TViewModel> func) {
+void BaseCuiElement<TData>::bindData(DataReceiverFunc<TViewModel> func) {
     mDataReceiverFunc = static_cast<_PureDataReceiverFunc>(func);
 }
 
 template<class TData>
-void BaseCuiElement<TData>::fire_data(IViewModel &ctrl) {
+void BaseCuiElement<TData>::fireData(IViewModel &ctrl) {
     if (mDataReceiverFunc)
         (ctrl.*mDataReceiverFunc)(*mData);
 }

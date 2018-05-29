@@ -16,7 +16,7 @@ public:
         ID_MM_SEP2,
     };
 
-    bool main_menu_result(cpe::ReaderResult<uint32_t>& result);
+    bool onMainMenuResult(cpe::ReaderResult<uint32_t> &result);
 };
 
 

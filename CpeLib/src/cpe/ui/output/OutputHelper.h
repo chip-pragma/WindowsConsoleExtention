@@ -15,7 +15,7 @@ class OutputHelper {
 public:
     void saveState();
 
-    void backState(size_t count = 1);
+    void goBackState(size_t count = 1);
 
     size_t getStateCount() const;
 
@@ -25,7 +25,7 @@ public:
 
     void applyColor(const TextColor &color);
 
-    void resetColors();
+    void resetColor();
 
 private:
     std::stack<Point> mStates;

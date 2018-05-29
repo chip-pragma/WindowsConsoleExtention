@@ -18,7 +18,7 @@ public:
 
 protected:
 
-    void on_initialize() override;
+    void onInitialize() override;
 
 private:
     cpe::Notification m_nCaption;

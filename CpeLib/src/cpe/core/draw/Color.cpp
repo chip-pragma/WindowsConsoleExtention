@@ -12,7 +12,7 @@ uint8_t Color::getR() const {
     return mRed;
 }
 
-void Color::getR(uint8_t r) {
+void Color::setR(uint8_t r) {
     mRed = r;
 }
 
@@ -20,7 +20,7 @@ uint8_t Color::getG() const {
     return mGreen;
 }
 
-void Color::getG(uint8_t g) {
+void Color::setG(uint8_t g) {
     mGreen = g;
 }
 
@@ -28,7 +28,7 @@ uint8_t Color::getB() const {
     return mBlue;
 }
 
-void Color::getB(uint8_t b) {
+void Color::setB(uint8_t b) {
     mBlue = b;
 }
 

@@ -6,20 +6,20 @@
 namespace cpe {
 
 void OutputHelper::saveState() {
-    mStates.push(term::cursor_position());
+    mStates.push(term::getCursorPos());
 }
 
-void OutputHelper::backState(size_t count) {
-    auto width = term::buffer_size().getX();
+void OutputHelper::goBackState(size_t count) {
+    auto width = term::getBufferSize().getX();
     for (size_t i = 0; i < count && !mStates.empty(); i++) {
         Point last = mStates.top();
-        auto curPos = term::cursor_position();
+        auto curPos = term::getCursorPos();
         auto yDiff = curPos.getY() - last.getY();
         int nback = (width - last.getX()) + width * (yDiff - 1) + curPos.getX();
 
-        term::cursor_position(last);
+        term::setCursorPos(last);
         std::cout << std::string(static_cast<unsigned int>(nback), ' ');
-        term::cursor_position(last);
+        term::setCursorPos(last);
 
         mStates.pop();
     }
@@ -38,12 +38,12 @@ void OutputHelper::beginColorize(std::ostream &outStream) {
     if (mOutputAutoFlush)
         outStream << std::nounitbuf;
 
-    mOutputFore = term::foreground();
-    mOutputBack = term::background();
+    mOutputFore = term::getForeground();
+    mOutputBack = term::getBackground();
 }
 
 void OutputHelper::endColorize() {
-    resetColors();
+    resetColor();
 
     if (mOutputAutoFlush)
         (*mOutStream) << std::unitbuf;
@@ -52,15 +52,15 @@ void OutputHelper::endColorize() {
 }
 
 void OutputHelper::applyColor(const TextColor &color) {
-    if (color.foreground()) term::foreground(*color.foreground());
-    else term::foreground(mOutputFore);
-    if (color.background()) term::background(*color.background());
-    else term::background(mOutputBack);
+    if (color.getFore()) term::setForeground(*color.getFore());
+    else term::setForeground(mOutputFore);
+    if (color.getBack()) term::setBackground(*color.getBack());
+    else term::setBackground(mOutputBack);
 }
 
-void OutputHelper::resetColors() {
-    term::foreground(mOutputFore);
-    term::background(mOutputBack);
+void OutputHelper::resetColor() {
+    term::setForeground(mOutputFore);
+    term::setBackground(mOutputBack);
 }
 
 }

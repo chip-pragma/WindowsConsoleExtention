@@ -3,15 +3,15 @@
 namespace cpe {
 
 BaseWriterData::BaseWriterData()
-        : mWidth(term::buffer_size().getX() - 1) {
+        : mWidth(term::getBufferSize().getX() - 1) {
 
 }
 
-const int32_t &BaseWriterData::width() const {
+const int32_t &BaseWriterData::getWidth() const {
     return mWidth;
 }
 
-int32_t &BaseWriterData::width() {
+int32_t &BaseWriterData::getWidth() {
     return mWidth;
 }
 

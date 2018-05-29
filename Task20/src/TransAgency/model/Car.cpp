@@ -36,7 +36,7 @@ std::string &Car::state_number() {
     return mStateNumber;
 }
 
-std::string Car::field_value(uint32_t idField) const {
+bool Car::getFieldValue(uint32_t idField, std::string &outField) const {
     switch (idField) {
         case Fields::F_MARK:
             return mMark;
@@ -51,7 +51,7 @@ std::string Car::field_value(uint32_t idField) const {
     }
 }
 
-std::string Car::to_string() const {
+std::string Car::toString() const {
     std::stringstream ss;
     ss << mMaker << " " << mMark << "(" << mStateNumber << ")";
     return ss.str();
