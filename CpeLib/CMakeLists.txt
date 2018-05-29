@@ -1,7 +1,5 @@
 project(ConsolePresentExtention)
 
-
-
 add_library(${CPE_LIB_TARGET} STATIC
             src/cpe/tool/text.cpp src/cpe/tool/text.h src/cpe/core/terminal.cpp src/cpe/core/terminal.h
             src/cpe/tool/Encoder.cpp

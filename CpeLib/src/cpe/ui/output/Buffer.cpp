@@ -28,7 +28,7 @@ inline bool __isPointInBounds(const Point &point, const Point &size);
 
 
 inline void __point_as_size(const Point &size) {
-    if (size.dimension() != Point::DIM_SECTOR_I) {
+    if (size.calcLocation() != Point::PL_SECTOR_I) {
         std::stringstream ss;
         ss << "Invalid getWidth " + size.toString();
         throw cpe::Exception(ss.str());

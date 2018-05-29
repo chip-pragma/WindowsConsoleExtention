@@ -39,16 +39,21 @@ std::string &Car::state_number() {
 bool Car::getFieldValue(uint32_t idField, std::string &outField) const {
     switch (idField) {
         case Fields::F_MARK:
-            return mMark;
+            outField = mMark;
+            break;
         case Fields::F_MAKER:
-            return mMaker;
+            outField = mMaker;
+            break;
         case Fields::F_STATE_NUMBER:
-            return mStateNumber;
+            outField = mMaker;
+            break;
         case Fields::F_SEATS:
-            return std::to_string(mSeats);
+            outField = std::to_string(mSeats);
+            break;
         default:
-            return "<?>";
+            return false;
     }
+    return true;
 }
 
 std::string Car::toString() const {

@@ -5,9 +5,12 @@ set(CPE_TEST_TARGET CPE_Test)
 #Имя библиотеки CPE
 set(CPE_LIB_TARGET CpeLib)
 #Курсовые
+set(COURSE_TASK_8 Task8)
 set(COURSE_TASK_20 Task20)
 #Директория бинарников сборки
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../bin)
+#Стандарт C++
+set(CMAKE_CXX_STANDARD 17)
 
 #  ----------------------------------
 # | Добавляем параметры компилятора |
@@ -35,4 +38,5 @@ add_subdirectory(CpeLib)
 #Демо приложение
 add_subdirectory(test)
 #Курсовые
+add_subdirectory(Task8)
 add_subdirectory(Task20)
