@@ -20,6 +20,10 @@ public:
 
     StyledText& setColor(const TextColor &tColor);
 
+    StyledText& setFore(const Color& fore);
+
+    StyledText& setBack(const Color& back);
+
     StyledText& resetColor();
 
     StyledText& append(const std::string &str);

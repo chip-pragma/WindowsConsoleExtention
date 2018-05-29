@@ -263,11 +263,15 @@ void Buffer::__pointWithMaxCrd() {
     mMaxCurPos.getX() = std::max(mMaxCurPos.getX(), mCursorPos.getX());
     mMaxCurPos.getY() = std::max(mMaxCurPos.getY(), mCursorPos.getY());
 
-    if (mOwner) {
-        Point &ownerMaxPos = mOwner->mMaxCurPos;
-        Point thisMaxPos = __clampPoint(mMaxCurPos, mSize) + mBeginPosFromOwner;
+    auto current = this;
+    auto next = mOwner;
+    while (next) {
+        Point &ownerMaxPos = next->mMaxCurPos;
+        Point thisMaxPos = __clampPoint(current->mMaxCurPos, current->mSize) + current->mBeginPosFromOwner;
         ownerMaxPos.getX() = std::max(ownerMaxPos.getX(), thisMaxPos.getX());
         ownerMaxPos.getY() = std::max(ownerMaxPos.getY(), thisMaxPos.getY());
+        current = next;
+        next = next->mOwner;
     }
 }
 

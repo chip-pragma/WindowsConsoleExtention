@@ -25,6 +25,26 @@ StyledText &StyledText::setColor(const TextColor &tColor) {
     return *this;
 }
 
+StyledText &StyledText::setFore(const Color &fore) {
+    if (mColors.back().color.getFore() != fore) {
+        if (mColors.back().length != 0)
+            mColors.emplace_back(TextColor(fore, mColors.back().color.getBack()), mText.length());
+        else
+            mColors.back().color.getFore() = fore;
+    }
+    return *this;
+}
+
+StyledText &StyledText::setBack(const Color &back) {
+    if (mColors.back().color.getBack() != back) {
+        if (mColors.back().length != 0)
+            mColors.emplace_back(TextColor(mColors.back().color.getFore(), back), mText.length());
+        else
+            mColors.back().color.getBack() = back;
+    }
+    return *this;
+}
+
 StyledText &StyledText::resetColor() {
     setColor(TextColor());
     return *this;

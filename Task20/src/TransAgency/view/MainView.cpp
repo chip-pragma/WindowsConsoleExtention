@@ -33,13 +33,14 @@ void MainView::onInitialize() {
         m_mMain.assignReader(m_mrMain);
         auto &d = m_mMain.getData();
         d.getCommandColor().getFore() = Colors::LT_PURPLE;
-        d.getWidth() = 70;
+        d.getWidth() = 80;
         d.getCaption()
-            .setColor({Colors::LT_TEAL, std::nullopt})
+            .setFore(Colors::LT_TEAL)
+            .setBack(Colors::PURPLE)
             .append("Главное меню"_dos);
         d.getBorder().getStyle().apply(BorderStyle::DB_OUT_H);
         d.getReaderHint()
-            .setColor({Colors::LT_TEAL, std::nullopt})
+            .setFore(Colors::LT_TEAL)
             .append("Напишите эссе, какой бы вы выбрали сраный пункт меню."_dos);
     }
 
