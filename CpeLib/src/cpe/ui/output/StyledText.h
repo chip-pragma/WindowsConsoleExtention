@@ -16,19 +16,21 @@ public:
 
     ~StyledText() override;
 
-    const TextColor& getColor() const;
+    const TextColor &getColor() const;
 
-    StyledText& setColor(const TextColor &tColor);
+    StyledText &setColor(const TextColor &tColor);
 
-    StyledText& setFore(const Color& fore);
+    StyledText &setFore(const Color &fore);
 
-    StyledText& setBack(const Color& back);
+    StyledText &setBack(const Color &back);
 
-    StyledText& resetColor();
+    StyledText &resetColor();
 
-    StyledText& append(const std::string &str);
+    StyledText &append(const std::string &str);
 
-    StyledText& append(const StyledText &sText);
+    StyledText &append(const StyledText &sText);
+
+    StyledText &append(const StyledChar &sChar);
 
     size_t getLength() const;
 
@@ -36,9 +38,21 @@ public:
 
     void outputTo(std::ostream &outStream) const override;
 
-    const std::string& toString() const;
+    const std::string &toString() const;
 
     StyledChar operator[](size_t index) const;
+
+    StyledText operator+(const std::string &str);
+
+    StyledText operator+(const StyledText &sText);
+
+    StyledText operator+(const StyledChar &sChar);
+
+    StyledText& operator+=(const std::string &str);
+
+    StyledText& operator+=(const StyledText &sText);
+
+    StyledText& operator+=(const StyledChar &sChar);
 
 protected:
     struct _TextColorLine {
@@ -59,6 +73,7 @@ protected:
 
 };
 
+StyledText operator+(const StyledChar &sc1, const StyledChar &sc2);
 }
 
 

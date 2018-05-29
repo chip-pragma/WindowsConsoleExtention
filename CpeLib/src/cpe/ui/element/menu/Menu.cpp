@@ -50,9 +50,7 @@ void Menu::onWrite(Buffer &buf) {
     using BS = BorderStyle;
 
     const auto &brd = getData().getBorder();
-    buf.draw(brd[BS::SLT]);
-    buf.draw(brd[BS::ST], 2);
-    buf.draw(StyledChar(' '));
+    buf.draw(brd[BS::SLT] + ' ');
 
     {
         auto captionBuf = buf.extract(buf.getCursorPos(), buf.getSize() - buf.getCursorPos());
@@ -60,6 +58,8 @@ void Menu::onWrite(Buffer &buf) {
         buf.getCursorPos() = Point(0, 1);
         buf.draw(brd[BS::SL], captionBuf.getUsedSize().getY() - 1, true);
     }
+
+
 
     for (const auto &pair : mItems) {
         if (!pair.second->getVisible())
@@ -72,9 +72,7 @@ void Menu::onWrite(Buffer &buf) {
     }
 
     buf.getCursorPos().getX() = 0;
-    buf.draw(brd[BS::SLB]);
-    buf.draw(brd[BS::SB], 2);
-    buf.draw(StyledChar(' '));
+    buf.draw(brd[BS::SLB] + ' ');
 
     {
         auto inputMsg = buf.extract(buf.getCursorPos(), buf.getSize() - buf.getCursorPos());

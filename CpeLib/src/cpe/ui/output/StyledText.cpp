@@ -65,6 +65,13 @@ StyledText &StyledText::append(const StyledText &sText) {
     return *this;
 }
 
+StyledText &StyledText::append(const StyledChar &sChar) {
+    mText += sChar.getChar();
+    setColor(sChar.getColor());
+    mColors.back().length++;
+    return *this;
+}
+
 size_t StyledText::getLength() const {
     return mText.length();
 }
@@ -103,6 +110,34 @@ const std::string &StyledText::toString() const {
 
 StyledChar StyledText::operator[](size_t index) const {
     return at(index);
+}
+
+StyledText StyledText::operator+(const std::string &str) {
+    return StyledText(*this).append(*this).append(str);
+}
+
+StyledText StyledText::operator+(const StyledText &sText) {
+    return StyledText(*this).append(*this).append(sText);
+}
+
+StyledText StyledText::operator+(const StyledChar &sChar) {
+    return StyledText(*this).append(*this).append(sChar);
+}
+
+StyledText &StyledText::operator+=(const std::string &str) {
+    return append(str);
+}
+
+StyledText &StyledText::operator+=(const StyledText &sText) {
+    return append(sText);
+}
+
+StyledText &StyledText::operator+=(const StyledChar &sChar) {
+    return append(sChar);
+}
+
+StyledText operator+(const StyledChar &sc1, const StyledChar &sc2) {
+    return StyledText().append(sc1).append(sc2);
 }
 
 }

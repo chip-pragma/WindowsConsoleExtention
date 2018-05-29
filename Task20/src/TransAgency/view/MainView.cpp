@@ -5,10 +5,10 @@
 
 MainView::MainView()
     : BaseView(),
-      m_mMain_miCars("1|car"),
-      m_mMain_miClients("2|client"),
-      m_mMain_miRent("3|rent"),
-      m_mMain_miExit("0|exit") { }
+      m_mMain_miCars("1|t"),
+      m_mMain_miClients("2|c"),
+      m_mMain_miRent("3|r"),
+      m_mMain_miExit("0|q") { }
 
 MainView::~MainView() { }
 
@@ -21,27 +21,20 @@ void MainView::onInitialize() {
         auto &d = m_nCaption.getData();
         d.getBorder().getStyle().apply(BorderStyle::DB_ALL);
         d.getText()
-            .setColor({Colors::LT_GREEN, std::nullopt})
+            .setFore(Colors::LT_GREEN)
             .append("СИСТЕМА УПРАВЛЕНИЯ ДАННЫМИ\n"_dos)
-            .setColor({Colors::LT_YELLOW, Colors::BLUE})
+            .setFore(Colors::LT_YELLOW)
             .append("ТРАНСПОРТНОГО АГЕНСТВА\n"_dos);
         d.getIcon() = StyledChar('i', {Colors::LT_TEAL, std::nullopt});
-        d.setWait(true);
     }
 
     {
         m_mMain.assignReader(m_mrMain);
         auto &d = m_mMain.getData();
         d.getCommandColor().getFore() = Colors::LT_PURPLE;
-        d.getWidth() = 80;
-        d.getCaption()
-            .setFore(Colors::LT_TEAL)
-            .setBack(Colors::PURPLE)
-            .append("Главное меню"_dos);
+        d.getCaption().append("Главное меню"_dos);
         d.getBorder().getStyle().apply(BorderStyle::DB_OUT_H);
-        d.getReaderHint()
-            .setFore(Colors::LT_TEAL)
-            .append("Напишите эссе, какой бы вы выбрали сраный пункт меню."_dos);
+        d.getReaderHint().append("Выберите действие"_dos);
     }
 
     {
@@ -52,32 +45,26 @@ void MainView::onInitialize() {
     }
 
     {
-        m_mMain_ms1.getText()
-            .setColor({Colors::PURPLE, Colors::WHITE})
-            .append("сепараторик, епта. Нужно чтобы он быль бооольшим и толстым, сцуко."_dos);
-
         m_mMain_miCars.getText()
-            .setColor({Colors::WHITE, std::nullopt})
-            .append("Транспорт"_dos);
-        m_mMain.addItem(MainVM::ID_MM_CARS, m_mMain_miCars);
+            .setFore(Colors::WHITE)
+            .append("Управление транспортом"_dos);
 
         m_mMain_miClients.getText()
-            .setColor({Colors::WHITE, std::nullopt})
-            .append("Клиенты"_dos);
-        m_mMain.addItem(MainVM::ID_MM_CLIENTS, m_mMain_miClients);
-
-        m_mMain.addItem(MainVM::ID_MM_SEP1, m_mMain_ms1);
+            .setFore(Colors::WHITE)
+            .append("Управление клиентами"_dos);
 
         m_mMain_miRent.getText()
-            .setColor({Colors::WHITE, std::nullopt})
-            .append("Аренда"_dos);
-        m_mMain.addItem(MainVM::ID_MM_RENT, m_mMain_miRent);
-
-        m_mMain.addItem(MainVM::ID_MM_SEP1, m_mMain_ms1);
+            .setFore(Colors::WHITE)
+            .append("Управление арендой"_dos);
 
         m_mMain_miExit.getText()
-            .setColor({Colors::WHITE, std::nullopt})
-            .append("Выход"_dos);
+            .setFore(Colors::WHITE)
+            .append("Выход из программы"_dos);
+
+        m_mMain.addItem(MainVM::ID_MM_CARS, m_mMain_miCars);
+        m_mMain.addItem(MainVM::ID_MM_CLIENTS, m_mMain_miClients);
+        m_mMain.addItem(MainVM::ID_MM_RENT, m_mMain_miRent);
+        m_mMain.addItem(MainVM::ID_MM_SEP1, m_mMain_ms1);
         m_mMain.addItem(MainVM::ID_MM_EXIT, m_mMain_miExit);
     }
 
