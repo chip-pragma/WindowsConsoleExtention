@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "cpe/platform.h"
+#include "platform/platform.h"
 
 namespace cpe {
 

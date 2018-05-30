@@ -9,6 +9,6 @@
 /// Платформа Windows
 #define CPE_PLATFORM_IS_WINDOWS
 
-#include "cpe/_platform/winapi.h"
+#include "platform/winapi.h"
 
 #endif
