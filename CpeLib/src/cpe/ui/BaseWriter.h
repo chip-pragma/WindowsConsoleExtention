@@ -29,11 +29,14 @@ void BaseWriter<TData>::write(Buffer &buf) {
 
 template<class TData>
 void BaseWriter<TData>::run(IViewModel &ctrl) {
-    if (!static_cast<IElementData &>(_BaseCuiElement::getData()).getVisible())
+    auto &data = static_cast<IElementData &>(_BaseCuiElement::getData());
+    if (!data.getVisible())
         return;
     this->onBeforeRun();
     _BaseCuiElement::fireData(ctrl);
     outputTo(std::cout);
+    if (data.isCallPause())
+        term::callPause();
     this->onAfterRun();
 }
 

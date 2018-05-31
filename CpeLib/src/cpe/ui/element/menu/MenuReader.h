@@ -9,6 +9,7 @@ namespace cpe {
 
 using MenuItemPair = std::pair<uint32_t, MenuItem*>;
 using MenuItemVector = std::vector<MenuItemPair>;
+using MenuReaderResult = ReaderResult<uint32_t>;
 
 class MenuReader : public BaseReader<uint32_t> {
 public:

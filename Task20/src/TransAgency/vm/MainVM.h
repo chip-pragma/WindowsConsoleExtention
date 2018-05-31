@@ -2,10 +2,10 @@
 
 #include <cstdint>
 
-#include <cpe/ui/IViewModel.h>
-#include <cpe/ui/ReaderResult.h>
+#include <cpe/ui/BaseViewModel.h>
+#include <cpe/ui/element/menu/MenuReader.h>
 
-class MainVM : public cpe::IViewModel {
+class MainVM : public cpe::BaseViewModel {
 public:
     enum MainMenuIds : uint32_t {
         ID_MM_EXIT = 0,
@@ -16,7 +16,7 @@ public:
         ID_MM_SEP2,
     };
 
-    bool onMainMenuResult(cpe::ReaderResult<uint32_t> &result);
+    bool onMainMenuResult(cpe::MenuReaderResult &result);
 };
 
 

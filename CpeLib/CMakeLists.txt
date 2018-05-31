@@ -28,7 +28,7 @@ add_library(${CPE_LIB_TARGET} STATIC
             src/cpe/ui/BaseElementData.h src/cpe/ui/element/menu/BaseMenuItem.cpp src/cpe/ui/element/menu/BaseMenuItem.h
             src/cpe/ui/element/menu/MenuReader.cpp src/cpe/ui/element/menu/MenuReader.h
             src/cpe/ui/element/menu/MenuSeparator.cpp src/cpe/ui/element/menu/MenuSeparator.h
-            src/cpe/core/draw/Rectangle.cpp src/cpe/core/draw/Rectangle.h)
+            src/cpe/core/draw/Rectangle.cpp src/cpe/core/draw/Rectangle.h src/cpe/ui/ISerializable.cpp src/cpe/ui/ISerializable.h src/cpe/ui/BaseViewModel.cpp src/cpe/ui/BaseViewModel.h)
 
 target_include_directories(${CPE_LIB_TARGET} PUBLIC src)
 target_compile_features(${CPE_LIB_TARGET} PUBLIC cxx_std_17)

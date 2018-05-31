@@ -7,6 +7,14 @@ const bool &cpe::BaseElementData::getVisible() const {
     return mVisible;
 }
 
-bool &cpe::BaseElementData::getVisible() {
-    return mVisible;
+void cpe::BaseElementData::setVisible(bool value) {
+    mVisible = value;
+}
+
+const bool &cpe::BaseElementData::isCallPause() const {
+    return mCallPause;
+}
+
+void cpe::BaseElementData::setCallPause(bool value) {
+    mCallPause = value;
 }

@@ -4,35 +4,35 @@
 
 Car::~Car() { }
 
-const std::string &Car::mark() const {
+const std::string &Car::getMark() const {
     return mMark;
 }
 
-std::string &Car::mark() {
+std::string &Car::getMark() {
     return mMark;
 }
 
-const std::string &Car::maker() const {
+const std::string &Car::getMaker() const {
     return mMaker;
 }
 
-std::string &Car::maker() {
+std::string &Car::getMaker() {
     return mMaker;
 }
 
-const uint32_t &Car::seats() const {
+const uint32_t &Car::getSeats() const {
     return mSeats;
 }
 
-uint32_t &Car::seats() {
+uint32_t &Car::getSeats() {
     return mSeats;
 }
 
-const std::string &Car::state_number() const {
+const std::string &Car::getStateNumber() const {
     return mStateNumber;
 }
 
-std::string &Car::state_number() {
+std::string &Car::getStateNumber() {
     return mStateNumber;
 }
 
@@ -60,4 +60,12 @@ std::string Car::toString() const {
     std::stringstream ss;
     ss << mMaker << " " << mMark << "(" << mStateNumber << ")";
     return ss.str();
+}
+
+void Car::onSerialize(std::ostream &os) const {
+    // TODO сериализация
+}
+
+void Car::onDeserialize(std::istream &is) const {
+
 }

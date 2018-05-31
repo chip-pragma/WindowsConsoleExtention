@@ -10,10 +10,6 @@ public:
 
 protected:
     virtual void onInitialize() = 0;
-
-    virtual void onBeforeShow() = 0;
-
-    virtual void onAfterShow() = 0;
 };
 
 }

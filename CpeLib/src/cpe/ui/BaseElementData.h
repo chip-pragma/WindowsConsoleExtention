@@ -10,10 +10,15 @@ public:
 
     const bool &getVisible() const override;
 
-    bool &getVisible() override;
+    void setVisible(bool value) override;
+
+    const bool &isCallPause() const override;
+
+    void setCallPause(bool value) override;
 
 protected:
     bool mVisible = true;
+    bool mCallPause = false;
 };
 
 }

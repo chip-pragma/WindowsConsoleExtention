@@ -6,7 +6,7 @@
 #include "cpe/ui/output/OutputHelper.h"
 #include "IView.h"
 #include "cpe/ui/ICuiElement.h"
-#include "cpe/ui/IViewModel.h"
+#include "cpe/ui/BaseViewModel.h"
 
 namespace cpe {
 
@@ -26,21 +26,17 @@ public:
 protected:
     void onInitialize() override = 0;
 
-    void onBeforeShow() override { };
-
-    void onAfterShow() override { };
-
     template<class TElement>
     void push(TElement &element);
 
 private:
-    IViewModel *mViewModel = nullptr;
+    BaseViewModel *mViewModel = nullptr;
     std::vector<ICuiElement *> mElements;
 };
 
 template<class TViewModel>
 BaseView<TViewModel>::BaseView() {
-    static_assert(std::is_base_of<IViewModel, TViewModel>::value);
+    static_assert(std::is_base_of<BaseViewModel, TViewModel>::value);
 }
 
 template<class TViewModel>
@@ -51,7 +47,7 @@ BaseView<TViewModel>::~BaseView() {
 template<class TViewModel>
 TViewModel &BaseView<TViewModel>::initialize() {
     if (!mViewModel) {
-        mViewModel = static_cast<IViewModel *>(new TViewModel());
+        mViewModel = static_cast<BaseViewModel *>(new TViewModel());
         onInitialize();
     }
     return *(static_cast<TViewModel *>(mViewModel));
@@ -65,10 +61,11 @@ void BaseView<TViewModel>::show(bool beforeClean, bool afterClean) {
     OutputHelper outHelp;
     if (afterClean)
         outHelp.saveState();
-    onBeforeShow();
-    for (ICuiElement *item : mElements)
+    mViewModel->onBeforeShow();
+    for (ICuiElement *item : mElements){
         item->run(*mViewModel);
-    onAfterShow();
+    }
+    mViewModel->onAfterShow();
     if (afterClean)
         outHelp.goBackState();
 }

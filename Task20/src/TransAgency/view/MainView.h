@@ -10,17 +10,6 @@
 #include "TransAgency/vm/MainVM.h"
 
 class MainView : public cpe::BaseView<MainVM> {
-protected:
-public:
-    MainView();
-
-    ~MainView() override;
-
-protected:
-
-    void onInitialize() override;
-
-private:
     cpe::Notification m_nCaption;
     cpe::Label m_lWraps;
     cpe::Menu m_mMain;
@@ -31,6 +20,16 @@ private:
     cpe::MenuItem m_mMain_miExit;
     cpe::MenuSeparator m_mMain_ms1;
     cpe::MenuSeparator m_mMain_ms2;
+
+public:
+    MainView();
+
+    ~MainView() override;
+
+protected:
+
+    void onInitialize() override;
+
 };
 
 

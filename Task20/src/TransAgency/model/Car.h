@@ -3,8 +3,11 @@
 #include <string>
 
 #include <cpe/ui/IModel.h>
+#include <cpe/ui/ISerializable.h>
+#include <ostream>
 
-class Car : public cpe::IModel {
+class Car : public cpe::IModel,
+            public cpe::ISerializable {
 public:
     enum Fields : uint32_t {
         F_MARK,
@@ -15,25 +18,30 @@ public:
 
     ~Car() override;
 
-    const std::string &mark() const;
+    const std::string &getMark() const;
 
-    std::string &mark();
+    std::string &getMark();
 
-    const std::string &maker() const;
+    const std::string &getMaker() const;
 
-    std::string &maker();
+    std::string &getMaker();
 
-    const uint32_t &seats() const;
+    const uint32_t &getSeats() const;
 
-    uint32_t &seats();
+    uint32_t &getSeats();
 
-    const std::string &state_number() const;
+    const std::string &getStateNumber() const;
 
-    std::string &state_number();
+    std::string &getStateNumber();
 
     bool getFieldValue(uint32_t idField, std::string &outField) const override;
 
     std::string toString() const override;
+
+protected:
+    void onSerialize(std::ostream &os) const override;
+
+    void onDeserialize(std::istream &is) const override;
 
 private:
     std::string mMark;

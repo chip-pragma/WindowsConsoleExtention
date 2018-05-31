@@ -40,21 +40,7 @@ std::optional<StyledChar> &NotificationData::getIcon() {
     return mIcon;
 }
 
-bool NotificationData::getWait() const {
-    return mWait;
-}
-
-void NotificationData::setWait(bool wait) {
-    mWait = wait;
-}
-
 //endregion
-
-void Notification::outputTo(std::ostream &outStream) {
-    BaseWriter::outputTo(outStream);
-    if (getData().getWait())
-        term::callPause();
-}
 
 void Notification::onWrite(Buffer &cvs) {
     using BS = BorderStyle;

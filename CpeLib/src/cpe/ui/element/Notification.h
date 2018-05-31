@@ -33,10 +33,6 @@ public:
 
     std::optional<StyledChar> &getIcon();
 
-    bool getWait() const;
-
-    void setWait(bool wait);
-
 protected:
     StyledBorder mBorder;
     std::optional<StyledChar> mIcon;
@@ -48,8 +44,6 @@ protected:
 class Notification : public BaseWriter<NotificationData> {
 public:
     ~Notification() override { };
-
-    void outputTo(std::ostream &outStream) override;
 
 protected:
 
