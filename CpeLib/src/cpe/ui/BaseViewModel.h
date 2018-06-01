@@ -11,6 +11,10 @@ protected:
     void onBeforeShow() override { };
 
     void onAfterShow() override { };
+
+    void resetView();
+private:
+    bool mReset = false;
 };
 }
 

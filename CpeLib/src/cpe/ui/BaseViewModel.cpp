@@ -2,4 +2,8 @@
 
 namespace cpe {
 
+void BaseViewModel::resetView() {
+    mReset = true;
+}
+
 }

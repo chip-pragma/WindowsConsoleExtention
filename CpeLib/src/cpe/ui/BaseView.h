@@ -59,13 +59,20 @@ void BaseView<TViewModel>::show(bool beforeClean, bool afterClean) {
         term::clear();
 
     OutputHelper outHelp;
-    if (afterClean)
+
+    while (true) {
         outHelp.saveState();
-    mViewModel->onBeforeShow();
-    for (ICuiElement *item : mElements){
-        item->run(*mViewModel);
+        mViewModel->onBeforeShow();
+        for (ICuiElement *item : mElements)
+            item->run(*mViewModel);
+        mViewModel->onAfterShow();
+        if (mViewModel->mReset) {
+            outHelp.goBackState();
+            mViewModel->mReset = false;
+        }
+        else
+            break;
     }
-    mViewModel->onAfterShow();
     if (afterClean)
         outHelp.goBackState();
 }
