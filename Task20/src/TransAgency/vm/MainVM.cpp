@@ -11,10 +11,8 @@ bool MainVM::onMainMenuResult(cpe::MenuReaderResult &result) {
     if (result.getType() == cpe::ReaderResultType::VALUE) {
         switch (result.getValue()) {
             case MainVM::ID_MM_CARS: {
-                // TODO выполнение View через специальные ViewNavigator для возможности отрисовки предыдущего контента
-                CarListView carList;
-                carList.initialize();
-                carList.show(true, false);
+                CarListVM vmCarList;
+                CarListView().showView(vmCarList);
                 return true;
             }
             default:

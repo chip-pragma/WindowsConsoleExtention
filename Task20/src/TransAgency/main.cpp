@@ -5,11 +5,10 @@
 int main() {
     using namespace cpe;
 
-    BorderStyle::getFinalEncoding() = Encoder(Encoder::CP866);
+    BorderStyle::FinalEncoding = Encoder(Encoder::CP866);
 
-    MainView mv;
-    mv.initialize();
-    mv.show(true, false);
+    MainVM vmMain;
+    MainView().showView(vmMain);
 
     term::callPause();
     return 0;

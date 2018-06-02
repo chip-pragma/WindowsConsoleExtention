@@ -17,21 +17,22 @@ public:
 
     BaseView();
 
-    ~BaseView() override;
+    ~BaseView() override { };
 
-    TViewModel &initialize();
+    virtual void showView(TViewModel &viewModel) final;
 
-    void show(bool beforeClean, bool afterClean) final;
+    virtual void showDialog(TViewModel &viewModel, bool clearBefore) final;
 
 protected:
     void onInitialize() override = 0;
 
     template<class TElement>
-    void push(TElement &element);
+    void addElement(TElement &element);
 
 private:
-    BaseViewModel *mViewModel = nullptr;
     std::vector<ICuiElement *> mElements;
+
+    void onShow(TViewModel &viewModel);
 };
 
 template<class TViewModel>
@@ -40,46 +41,44 @@ BaseView<TViewModel>::BaseView() {
 }
 
 template<class TViewModel>
-BaseView<TViewModel>::~BaseView() {
-    delete mViewModel;
+void BaseView<TViewModel>::showView(TViewModel &viewModel) {
+    term::clear();
+    onShow(viewModel);
+    term::clear();
 }
 
 template<class TViewModel>
-TViewModel &BaseView<TViewModel>::initialize() {
-    if (!mViewModel) {
-        mViewModel = static_cast<BaseViewModel *>(new TViewModel());
-        onInitialize();
-    }
-    return *(static_cast<TViewModel *>(mViewModel));
-}
-
-template<class TViewModel>
-void BaseView<TViewModel>::show(bool beforeClean, bool afterClean) {
-    if (beforeClean)
-        term::clear();
-
+void BaseView<TViewModel>::showDialog(TViewModel &viewModel, bool clearBefore) {
     OutputHelper outHelp;
-
-    while (true) {
-        outHelp.saveState();
-        mViewModel->onBeforeShow();
-        for (ICuiElement *item : mElements)
-            item->run(*mViewModel);
-        mViewModel->onAfterShow();
-        if (mViewModel->mReset) {
-            outHelp.goBackState();
-            mViewModel->mReset = false;
-        }
-        else
-            break;
-    }
-    if (afterClean)
+    outHelp.saveState();
+    onShow(viewModel);
+    if (clearBefore)
         outHelp.goBackState();
 }
 
 template<class TViewModel>
+void BaseView<TViewModel>::onShow(TViewModel &viewModel) {
+    mElements.clear();
+    this->onInitialize();
+
+    OutputHelper outHelp;
+    auto& vm = static_cast<BaseViewModel&>(viewModel);
+    while (true) {
+        outHelp.saveState();
+        vm.onBeforeShow();
+        for (ICuiElement *item : mElements)
+            item->run(vm);
+        vm.onAfterShow();
+        if (vm.mReset) {
+            outHelp.goBackState();
+            vm.mReset = false;
+        } else break;
+    }
+}
+
+template<class TViewModel>
 template<class TElement>
-void BaseView<TViewModel>::push(TElement &element) {
+void BaseView<TViewModel>::addElement(TElement &element) {
     mElements.push_back(static_cast<ICuiElement *>(&element));
 }
 

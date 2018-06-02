@@ -34,6 +34,8 @@ public:
         SC
     };
 
+    static std::optional<Encoder> FinalEncoding;
+
     BorderStyle();
 
     explicit BorderStyle(const DualBorder &dualBorder);
@@ -45,8 +47,6 @@ public:
     char at(const Side &side) const;
 
     char operator[](const Side &side) const;
-
-    static std::optional<Encoder> &getFinalEncoding();
 
 private:
     std::map<Side, std::string> mSides;

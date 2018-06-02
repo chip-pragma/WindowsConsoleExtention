@@ -15,5 +15,5 @@ void CarListView::onInitialize() {
             .append("Проверка, епта!"_dos);
     }
 
-    push(m_lTest);
+    addElement(m_lTest);
 }

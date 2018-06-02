@@ -68,9 +68,9 @@ void MainView::onInitialize() {
         m_mMain.addItem(MainVM::ID_MM_EXIT, m_mMain_miExit);
     }
 
-    push(m_nCaption);
-    push(m_lWraps);
-    push(m_mMain);
-    push(m_mrMain);
+    addElement(m_nCaption);
+    addElement(m_lWraps);
+    addElement(m_mMain);
+    addElement(m_mrMain);
 }
 
