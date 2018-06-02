@@ -8,28 +8,15 @@
 #include "DataTableColumn.cpp"
 #include "cpe/ui/output/StyledBorder.h"
 #include "cpe/ui/IModel.h"
+#include "cpe/ui/BaseWriterData.h"
 
 namespace cpe {
 
 using DataTableColumnVector = std::unordered_map<uint32_t, DataTableColumn*>;
+using DataSourceVector = std::vector<const IModel*>;
 
-class DataTableData {
+class DataTableData : public BaseWriterData {
 public:
-    enum CellBorder {
-        DTCB_NONE = 0,
-        DTCB_IN = 1,
-        DTCB_OUT = 2,
-        DTCB_V = 4,
-        DTCB_H = 8,
-        DTCB_BOX = DTCB_OUT | DTCB_V | DTCB_H,
-        DTCB_GRID = DTCB_IN | DTCB_V | DTCB_H,
-        DTCB_ALL = DTCB_IN | DTCB_OUT | DTCB_V | DTCB_H
-    };
-
-    CellBorder getCellBorder() const;
-
-    CellBorder getCellBorder();
-
     const StyledBorder &getBorder() const;
 
     StyledBorder &getBorder();
@@ -39,11 +26,12 @@ public:
     template<class TModel>
     void setDataSource(const std::vector<TModel> &ds);
 
+    const DataSourceVector& getDataSource() const;
+
     void setColumnList(DataTableColumnVector& list);
 
 protected:
-    std::vector<const IModel*> mDataSource;
-    CellBorder mCellBorder;
+    DataSourceVector mDataSource;
     StyledBorder mBorder;
     DataTableColumnVector* mColumns = nullptr;
 };
@@ -57,7 +45,7 @@ public:
 protected:
     DataTableColumnVector mColumns;
 
-    void onBeforeRun() override;
+    void onRun() override;
 
     void onWrite(Buffer &buf) override;
 };

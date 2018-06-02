@@ -28,6 +28,8 @@ protected:
 
     void onBeforeRun() override { }
 
+    void onRun() override { }
+
     void onAfterRun() override { }
 
     TData *mData;

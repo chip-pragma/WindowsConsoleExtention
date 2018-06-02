@@ -5,6 +5,7 @@
 int main() {
     using namespace cpe;
 
+    cpe::term::setTitle("Транспортное Агенство");
     BorderStyle::FinalEncoding = Encoder(Encoder::CP866);
 
     MainVM vmMain;

@@ -13,6 +13,8 @@ public:
 protected:
     virtual void onBeforeRun() = 0;
 
+    virtual void onRun() = 0;
+
     virtual void onAfterRun() = 0;
 };
 

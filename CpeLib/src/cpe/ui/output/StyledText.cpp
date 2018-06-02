@@ -58,17 +58,21 @@ StyledText &StyledText::append(const std::string &str) {
 
 StyledText &StyledText::append(const StyledText &sText) {
     mText += sText.mText;
+    auto prevColor = getColor();
     for (const auto &tsc : sText.mColors) {
         this->setColor(tsc.color);
         mColors.back().length += tsc.length;
     }
+    this->setColor(prevColor);
     return *this;
 }
 
 StyledText &StyledText::append(const StyledChar &sChar) {
     mText += sChar.getChar();
+    auto prevColor = getColor();
     setColor(sChar.getColor());
     mColors.back().length++;
+    this->setColor(prevColor);
     return *this;
 }
 

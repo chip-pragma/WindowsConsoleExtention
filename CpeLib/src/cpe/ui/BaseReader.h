@@ -58,8 +58,8 @@ void BaseReader<TValue, TData, TResult>::run(IViewModel &ctrl) {
         return;
 
     this->onBeforeRun();
-
     _BaseCuiElement::fireData(ctrl);
+    this->onRun();
 
     OutputHelper outHelp;
     outHelp.beginColorize(std::cout);

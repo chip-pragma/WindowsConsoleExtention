@@ -34,6 +34,7 @@ void BaseWriter<TData>::run(IViewModel &ctrl) {
         return;
     this->onBeforeRun();
     _BaseCuiElement::fireData(ctrl);
+    this->onRun();
     outputTo(std::cout);
     if (data.isCallPause())
         term::callPause();

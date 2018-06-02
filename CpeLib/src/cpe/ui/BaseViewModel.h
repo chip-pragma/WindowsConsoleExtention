@@ -8,6 +8,11 @@ class BaseViewModel : public IViewModel {
     template <class TViewModel>
     friend class BaseView;
 protected:
+public:
+    ~BaseViewModel() override { }
+
+protected:
+
     void onBeforeShow() override { };
 
     void onAfterShow() override { };

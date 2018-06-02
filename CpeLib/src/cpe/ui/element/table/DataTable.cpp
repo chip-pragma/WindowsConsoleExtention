@@ -4,14 +4,6 @@ namespace cpe {
 
 //region [ DataTableData ]
 
-DataTableData::CellBorder DataTableData::getCellBorder() const {
-    return mCellBorder;
-}
-
-DataTableData::CellBorder DataTableData::getCellBorder() {
-    return mCellBorder;
-}
-
 const StyledBorder &DataTableData::getBorder() const {
     return mBorder;
 }
@@ -31,6 +23,10 @@ void DataTableData::setDataSource(const std::vector<TModel> &ds) {
     }
 }
 
+const DataSourceVector &DataTableData::getDataSource() const {
+    return mDataSource;
+}
+
 void DataTableData::setColumnList(DataTableColumnVector &list) {
     mColumns = &list;
 }
@@ -41,13 +37,33 @@ void DataTable::addColumn(uint32_t fieldId, const DataTableColumn &column) {
     mColumns.emplace(fieldId, &column);
 }
 
-void DataTable::onBeforeRun() {
+void DataTable::onRun() {
     getData().setColumnList(mColumns);
 }
 
 void DataTable::onWrite(Buffer &buf) {
-
     // TODO Рисование таблицы
+
+    for (auto data : getData().getDataSource()) {
+        for (auto& pair : mColumns) {
+            if (!pair.second->getVisible())
+                continue;
+
+            StyledText modelData;
+            modelData
+                .append(pair.second->getHeader())
+                .append(" : ")
+                .setColor(pair.second->getCellTextColor());
+            std::string modelDataField;
+            if (data->getFieldValue(pair.first, modelDataField)) {
+                modelData.append(modelDataField);
+            }
+            modelData
+                .resetColor()
+                .append("\n");
+            buf.draw(modelData);
+        }
+    }
 }
 
 
