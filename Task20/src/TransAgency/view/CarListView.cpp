@@ -3,34 +3,32 @@
 #include "../common.h"
 #include "../model/Car.h"
 
-CarListView::~CarListView() {
-
-}
+CarListView::~CarListView() { }
 
 void CarListView::onInitialize() {
     {
         m_dtCars.bindData(&CarListVM::onDataTableInit);
-        auto &d =  m_dtCars.getData();
+        auto &d = m_dtCars.getData();
         d.setCallPause(true);
 
         m_dtCars_dtcMark.getHeader()
             .setColor({cpe::Colors::BLACK, cpe::Colors::LT_GREEN})
-            .append("МАРКА");
+            .append("МАРКА"_dos);
         m_dtCars_dtcMark.getCellTextColor().getFore() = cpe::Colors::LT_GREEN;
 
         m_dtCars_dtcMaker.getHeader()
             .setColor({cpe::Colors::BLACK, cpe::Colors::LT_RED})
-            .append("ПРОИЗВОДИТЕЛЬ");
+            .append("ПРОИЗВОДИТЕЛЬ"_dos);
         m_dtCars_dtcMaker.getCellTextColor().getFore() = cpe::Colors::LT_RED;
 
         m_dtCars_dtcSeats.getHeader()
             .setColor({cpe::Colors::BLACK, cpe::Colors::LT_TEAL})
-            .append("СИДЕНИЙ");
+            .append("СИДЕНИЙ"_dos);
         m_dtCars_dtcSeats.getCellTextColor().getFore() = cpe::Colors::LT_TEAL;
 
         m_dtCars_dtcStateNumber.getHeader()
             .setColor({cpe::Colors::BLACK, cpe::Colors::LT_PURPLE})
-            .append("ГОСНОМЕР");
+            .append("ГОСНОМЕР"_dos);
         m_dtCars_dtcStateNumber.getCellTextColor().getFore() = cpe::Colors::LT_PURPLE;
 
         m_dtCars.addColumn(Car::F_MARK, m_dtCars_dtcMark);

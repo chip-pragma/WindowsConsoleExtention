@@ -4,7 +4,6 @@
 
 #include <cpe/core/terminal.h>
 #include <cpe/ui/element/LineReader.h>
-#include <cpe/third/json.hpp>
 #include <cpe/ui/output/StyledText.h>
 #include <cpe/ui/element/Notification.h>
 

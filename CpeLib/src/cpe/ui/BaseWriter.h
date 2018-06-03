@@ -15,9 +15,9 @@ public:
 
     ~BaseWriter() override { };
 
-    void write(Buffer &buf) override;
+    void write(Buffer &buf) final;
 
-    void run(IViewModel &ctrl) override;
+    void run(IViewModel &ctrl) final;
 
     virtual void outputTo(std::ostream &outStream);
 };

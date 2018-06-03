@@ -38,7 +38,7 @@ void MainView::onInitialize() {
     }
 
     {
-        m_mrMain.bindResult(&MainVM::onMainMenuResult);
+        m_mrMain.bindResult(&MainVM::onMainMenuReaderResult);
         auto &d = m_mrMain.getData();
         d.getColorRead() = {Colors::LT_TEAL, Colors::BLUE};
         d.getErrorText() = "Неверный пункт меню"_dos;

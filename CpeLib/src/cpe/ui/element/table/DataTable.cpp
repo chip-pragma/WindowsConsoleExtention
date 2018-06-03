@@ -16,13 +16,6 @@ DataTableColumn &DataTableData::getColumn(uint32_t fieldId) {
     return *(mColumns->at(fieldId));
 }
 
-template<class TModel>
-void DataTableData::setDataSource(const std::vector<TModel> &ds) {
-    for (const auto &model : ds) {
-        mDataSource.push_back(static_cast<const IModel *>(model));
-    }
-}
-
 const DataSourceVector &DataTableData::getDataSource() const {
     return mDataSource;
 }
@@ -33,7 +26,7 @@ void DataTableData::setColumnList(DataTableColumnVector &list) {
 
 //endregion
 
-void DataTable::addColumn(uint32_t fieldId, const DataTableColumn &column) {
+void DataTable::addColumn(uint32_t fieldId, DataTableColumn &column) {
     mColumns.emplace(fieldId, &column);
 }
 
@@ -42,7 +35,7 @@ void DataTable::onRun() {
 }
 
 void DataTable::onWrite(Buffer &buf) {
-    // TODO Рисование таблицы
+    // TODO доработать рисование таблицы
 
     for (auto data : getData().getDataSource()) {
         for (auto& pair : mColumns) {

@@ -37,10 +37,6 @@ CarListVM::CarListVM() {
 
 CarListVM::~CarListVM() { }
 
-void CarListVM::onAfterShow() {
-    this->resetView();
-}
-
 void CarListVM::onDataTableInit(cpe::DataTableData &data) {
     data.setDataSource(mCarList);
 }

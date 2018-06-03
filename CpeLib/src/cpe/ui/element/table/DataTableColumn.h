@@ -23,7 +23,7 @@ public:
     TextColor &getCellTextColor();
 
 protected:
-    bool mVisible;
+    bool mVisible = true;
     StyledText mHeader;
     TextColor mCellColor;
 };

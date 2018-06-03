@@ -15,9 +15,6 @@ public:
 
     void onDataTableInit(cpe::DataTableData& data);
 
-protected:
-    void onAfterShow() override;
-
 private:
     std::vector<Car> mCarList;
 };

@@ -5,10 +5,10 @@
 #include <unordered_map>
 
 #include "cpe/ui/BaseWriter.h"
-#include "DataTableColumn.cpp"
 #include "cpe/ui/output/StyledBorder.h"
 #include "cpe/ui/IModel.h"
 #include "cpe/ui/BaseWriterData.h"
+#include "DataTableColumn.h"
 
 namespace cpe {
 
@@ -40,7 +40,7 @@ class DataTable : public BaseWriter<DataTableData> {
 public:
     ~DataTable() override { }
 
-    void addColumn(uint32_t fieldId, const DataTableColumn &column);
+    void addColumn(uint32_t fieldId, DataTableColumn &column);
 
 protected:
     DataTableColumnVector mColumns;
@@ -49,6 +49,13 @@ protected:
 
     void onWrite(Buffer &buf) override;
 };
+
+template<class TModel>
+void DataTableData::setDataSource(const std::vector<TModel> &ds) {
+    for (const auto &model : ds) {
+        mDataSource.push_back(static_cast<const IModel *>(&model));
+    }
+}
 
 }
 

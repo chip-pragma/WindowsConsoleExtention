@@ -80,7 +80,7 @@ void Menu::onWrite(Buffer &buf) {
     }
 }
 
-void Menu::run(IViewModel &ctrl) {
+void Menu::onRun() {
     getData().setItems(mItems);
 }
 

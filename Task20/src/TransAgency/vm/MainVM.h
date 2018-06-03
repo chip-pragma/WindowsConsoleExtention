@@ -16,7 +16,7 @@ public:
         ID_MM_SEP2,
     };
 
-    bool onMainMenuResult(cpe::MenuReaderResult &result);
+    bool onMainMenuReaderResult(cpe::MenuReaderResult &result);
 };
 
 

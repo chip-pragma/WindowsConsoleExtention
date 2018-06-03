@@ -63,8 +63,8 @@ protected:
 
     void onWrite(Buffer &buf) override;
 
-public:
-    void run(IViewModel &ctrl) override;
+protected:
+    void onRun() override;
 
 protected:
 
