@@ -1,5 +1,7 @@
 #include "DataTable.h"
 
+#include <cmath>
+
 namespace cpe {
 
 //region [ DataTableData ]
@@ -20,7 +22,7 @@ const DataSourceVector &DataTableData::getDataSource() const {
     return mDataSource;
 }
 
-void DataTableData::setColumnList(DataTableColumnVector &list) {
+void DataTableData::setColumnList(DataTableColumnMap &list) {
     mColumns = &list;
 }
 
@@ -37,8 +39,33 @@ void DataTable::onRun() {
 void DataTable::onWrite(Buffer &buf) {
     // TODO доработать рисование таблицы
 
+    auto colCount = mColumns.size();
+    double colWidth = buf.getSize().getX() - (colCount - 1);
+
+    struct Column {
+        uint32_t id;
+        DataTableColumn *column;
+        int width;
+    };
+    std::vector<Column> cols;
+
+    for (auto &pair : mColumns) {
+        Column col{
+            col.id = pair.first,
+            col.column = pair.second
+        };
+
+        double w = (colWidth / colCount--);
+        colWidth -= w;
+        col.width = static_cast<int>(std::round(w));
+        cols.push_back(col);
+
+        auto header = buf.extract(buf.getCursorPos(), Point(col.width, ))
+        header.draw(col.column->getHeader());
+    }
+
     for (auto data : getData().getDataSource()) {
-        for (auto& pair : mColumns) {
+        for (auto &pair : cols) {
             if (!pair.second->getVisible())
                 continue;
 

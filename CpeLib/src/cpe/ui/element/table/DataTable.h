@@ -12,7 +12,8 @@
 
 namespace cpe {
 
-using DataTableColumnVector = std::unordered_map<uint32_t, DataTableColumn*>;
+using DataTableColumnPair = std::pair<uint32_t, DataTableColumn*>;
+using DataTableColumnMap = std::unordered_map<uint32_t, DataTableColumn*>;
 using DataSourceVector = std::vector<const IModel*>;
 
 class DataTableData : public BaseWriterData {
@@ -28,12 +29,12 @@ public:
 
     const DataSourceVector& getDataSource() const;
 
-    void setColumnList(DataTableColumnVector& list);
+    void setColumnList(DataTableColumnMap& list);
 
 protected:
     DataSourceVector mDataSource;
     StyledBorder mBorder;
-    DataTableColumnVector* mColumns = nullptr;
+    DataTableColumnMap* mColumns = nullptr;
 };
 
 class DataTable : public BaseWriter<DataTableData> {
@@ -43,7 +44,7 @@ public:
     void addColumn(uint32_t fieldId, DataTableColumn &column);
 
 protected:
-    DataTableColumnVector mColumns;
+    DataTableColumnMap mColumns;
 
     void onRun() override;
 
