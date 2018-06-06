@@ -33,7 +33,9 @@ void MainView::onInitialize() {
         auto &d = m_mMain.getData();
         d.getCommandColor().getFore() = Colors::LT_PURPLE;
         d.getCaption().append("Главное меню"_dos);
-        d.getBorder().getStyle().apply(BorderStyle::DB_OUT_H);
+        auto &db = d.getBorder();
+        db.getStyle().apply(BorderStyle::DB_OUT_H);
+        db.getColor().getFore() = Colors::LT_TEAL;
         d.getReaderHint().append("Выберите действие"_dos);
     }
 

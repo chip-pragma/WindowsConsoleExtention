@@ -6,7 +6,9 @@
 int main() {
     using namespace cpe;
 
-    cpe::term::setTitle("Транспортное Агенство"_dos);
+    term::setBackground(cpe::Colors::BLACK);
+    term::setForeground(cpe::Colors::WHITE);
+    term::setTitle("Транспортное Агенство"_dos);
     BorderStyle::FinalEncoding = Encoder(Encoder::CP866);
 
     MainVM vmMain;
