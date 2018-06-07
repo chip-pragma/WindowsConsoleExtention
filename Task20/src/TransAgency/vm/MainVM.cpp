@@ -12,21 +12,20 @@ bool MainVM::onMainMenuReaderResult(cpe::MenuReaderResult &result) {
             case MainVM::ID_MM_CARS: {
                 CarListVM vmCarList;
                 CarListView().showView(vmCarList);
-                resetView();
+                this->resetView();
                 return true;
             }
-            case MainVM::ID_MM_EXIT: {
+            case MainVM::ID_MM_EXIT:
                 return true;
-            }
             default:
                 break;
         }
-    } else {
-        cpe::StyledText()
-            .setFore(cpe::Colors::LT_RED)
-            .append("Неверная комадна меню\n"_dos)
-            .outputTo(std::cout);
     }
+
+    cpe::StyledText()
+        .setFore(cpe::Colors::LT_RED)
+        .append("Неверная комадна меню\n"_dos)
+        .outputTo(std::cout);
     cpe::term::callPause();
     return false;
 }

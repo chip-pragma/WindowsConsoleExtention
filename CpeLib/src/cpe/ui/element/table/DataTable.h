@@ -25,7 +25,7 @@ public:
     DataTableColumn& getColumn(uint32_t fieldId);
 
     template<class TModel>
-    void setDataSource(const std::vector<TModel> &ds);
+    void setDataSource(const std::vector<TModel*>& ds);
 
     const DataSourceVector& getDataSource() const;
 
@@ -52,9 +52,10 @@ protected:
 };
 
 template<class TModel>
-void DataTableData::setDataSource(const std::vector<TModel> &ds) {
-    for (const auto &model : ds) {
-        mDataSource.push_back(static_cast<const IModel *>(&model));
+void DataTableData::setDataSource(const std::vector<TModel*>& ds) {
+    mDataSource.clear();
+    for (auto model : ds) {
+        mDataSource.push_back(static_cast<const IModel *>(model));
     }
 }
 

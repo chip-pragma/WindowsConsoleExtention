@@ -16,7 +16,6 @@ public:
     void onDataTableInit(cpe::DataTableData& data);
 
 private:
-    std::vector<Car> mCarList;
 };
 
 

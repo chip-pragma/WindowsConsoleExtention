@@ -6,35 +6,41 @@
 CarListView::~CarListView() { }
 
 void CarListView::onInitialize() {
+    using namespace cpe;
+    
     {
+        const TextColor HEADER_COLOR(Colors::WHITE, Colors::BLUE);
+        const TextColor BORDER_COLOR(Colors::TEAL, std::nullopt);
+
         m_dtCars.bindData(&CarListVM::onDataTableInit);
         auto &d = m_dtCars.getData();
         d.setCallPause(true);
+        d.getBorder().getColor() = BORDER_COLOR;
 
         m_dtCars_dtcMark.getHeader()
-            .setColor({cpe::Colors::BLACK, cpe::Colors::LT_GREEN})
+            .setColor(HEADER_COLOR)
             .append("МАРКА"_dos);
-        m_dtCars_dtcMark.getCellTextColor().getFore() = cpe::Colors::LT_GREEN;
 
         m_dtCars_dtcMaker.getHeader()
-            .setColor({cpe::Colors::BLACK, cpe::Colors::LT_RED})
+            .setColor(HEADER_COLOR)
             .append("ПРОИЗВОДИТЕЛЬ"_dos);
-        m_dtCars_dtcMaker.getCellTextColor().getFore() = cpe::Colors::LT_RED;
 
         m_dtCars_dtcSeats.getHeader()
-            .setColor({cpe::Colors::BLACK, cpe::Colors::LT_TEAL})
+            .setColor(HEADER_COLOR)
             .append("СИДЕНИЙ"_dos);
-        m_dtCars_dtcSeats.getCellTextColor().getFore() = cpe::Colors::LT_TEAL;
 
         m_dtCars_dtcStateNumber.getHeader()
-            .setColor({cpe::Colors::BLACK, cpe::Colors::LT_PURPLE})
+            .setColor(HEADER_COLOR)
             .append("ГОСНОМЕР"_dos);
-        m_dtCars_dtcStateNumber.getCellTextColor().getFore() = cpe::Colors::LT_PURPLE;
 
-        m_dtCars.addColumn(Car::F_MARK, m_dtCars_dtcMark);
-        m_dtCars.addColumn(Car::F_MAKER, m_dtCars_dtcMaker);
-        m_dtCars.addColumn(Car::F_SEATS, m_dtCars_dtcSeats);
-        m_dtCars.addColumn(Car::F_STATE_NUMBER, m_dtCars_dtcStateNumber);
+        m_dtCars.addColumn(Car::CF_MARK, m_dtCars_dtcMark);
+        m_dtCars.addColumn(Car::CF_MAKER, m_dtCars_dtcMaker);
+        m_dtCars.addColumn(Car::CF_SEATS, m_dtCars_dtcSeats);
+        m_dtCars.addColumn(Car::CF_STATE_NUMBER, m_dtCars_dtcStateNumber);
+    }
+
+    {
+        // TODO текст "страница: Х из Y", затем меню "управление"
     }
 
     addElement(m_dtCars);
