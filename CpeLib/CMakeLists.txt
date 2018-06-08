@@ -31,7 +31,7 @@ add_library(${CPE_LIB_TARGET} STATIC
             src/cpe/core/draw/Rectangle.cpp src/cpe/core/draw/Rectangle.h src/cpe/ui/ISerializable.cpp src/cpe/ui/ISerializable.h
             src/cpe/ui/BaseViewModel.cpp src/cpe/ui/BaseViewModel.h src/cpe/ui/element/table/DataTable.h
             src/cpe/ui/element/table/DataTableColumn.h
-            src/cpe/ui/element/table/DataTableColumn.cpp src/cpe/ui/element/table/DataTableModel.h)
+            src/cpe/ui/element/table/DataTableModel.h)
 
 target_include_directories(${CPE_LIB_TARGET} PUBLIC src)
 target_compile_features(${CPE_LIB_TARGET} PUBLIC cxx_std_17)

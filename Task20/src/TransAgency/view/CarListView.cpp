@@ -36,6 +36,10 @@ void CarListView::onInitialize() {
         m_dtCars_dtcSeats.getHeader()
             .setColor(HEADER_COLOR)
             .append("СИДЕНИЙ"_dos);
+        m_dtCars_dtcSeats.setSortFunctor(
+            [](const Car &c1, const Car &c2) -> bool {
+                return (c1.getSeats() < c2.getSeats());
+            });
 
         m_dtCars_dtcStateNumber.getHeader()
             .setColor(HEADER_COLOR)

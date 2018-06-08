@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <cmath>
+#include <optional>
 
 #include "cpe/ui/BaseWriter.h"
 #include "cpe/ui/output/StyledBorder.h"
@@ -13,39 +15,36 @@
 
 namespace cpe {
 
-using DataTableColumnPair = std::pair<uint32_t, DataTableColumn *>;
-using DataTableColumnVector = std::vector<DataTableColumnPair>;
-
-template<class TData>
+template<class TDataModel>
 class DataTableData : public BaseWriterData {
 public:
     const StyledBorder &getBorder() const;
 
     StyledBorder &getBorder();
 
-    DataTableColumn &getColumn(uint32_t fieldId);
+    bool tryGetColumn(uint32_t fieldId, DataTableColumn<TDataModel> &outColumn) const;
 
-    void setColumnList(DataTableColumnVector &list);
+    void setColumnList(DataTableColumnVector<TDataModel> &list);
 
-    void setDataSource(std::vector<TData> ds);
+    const DataTableModel<TDataModel> &getModel() const;
 
-    const std::vector<TData> &getDataSource() const;
+    DataTableModel<TDataModel> &getModel();
 
 protected:
     StyledBorder mBorder;
-    DataTableColumnVector *mColumns = nullptr;
-    std::vector<TData> mDataSource;
+    DataTableColumnVector<TDataModel> *mColumns = nullptr;
+    DataTableModel<TDataModel> mModel;
 };
 
-template<class TData>
-class DataTable : public BaseWriter<DataTableData<TData>> {
+template<class TDataModel>
+class DataTable : public BaseWriter<DataTableData<TDataModel>> {
 public:
     ~DataTable() override { }
 
-    void addColumn(uint32_t fieldId, DataTableColumn &column);
+    void addColumn(uint32_t fieldId, DataTableColumn<TDataModel> &column);
 
 protected:
-    DataTableColumnVector mColumns;
+    DataTableColumnVector<TDataModel> mColumns;
 
     void onRun() override;
 
@@ -55,57 +54,66 @@ protected:
 
 //region [ DataTableData ]
 
-template<class TData>
-const StyledBorder &DataTableData<TData>::getBorder() const {
+template<class TDataModel>
+const StyledBorder &DataTableData<TDataModel>::getBorder() const {
     return mBorder;
 }
 
-template<class TData>
-StyledBorder &DataTableData<TData>::getBorder() {
+template<class TDataModel>
+StyledBorder &DataTableData<TDataModel>::getBorder() {
     return mBorder;
 }
 
-template<class TData>
-DataTableColumn &DataTableData<TData>::getColumn(uint32_t fieldId) {
-    return *(mColumns->at(fieldId).second);
+template<class TDataModel>
+bool DataTableData<TDataModel>::tryGetColumn(uint32_t fieldId, DataTableColumn<TDataModel> &outColumn) const {
+    auto iter = std::find_if(mColumns->begin(),
+                             mColumns->end(),
+                             [&](const DataTableColumnPair<TDataModel> &pair) {
+                                 bool equal = (pair.first == fieldId);
+                                 if (equal)
+                                     outColumn = *(pair.second);
+                                 return equal;
+                             }
+    );
+    return (iter != mColumns->end());
 }
 
-template<class TData>
-void DataTableData<TData>::setColumnList(DataTableColumnVector &list) {
+template<class TDataModel>
+void DataTableData<TDataModel>::setColumnList(DataTableColumnVector<TDataModel> &list) {
     mColumns = &list;
 }
 
-template<class TData>
-void DataTableData<TData>::setDataSource(std::vector<TData> ds) {
-    mDataSource = ds;
+template<class TDataModel>
+const DataTableModel<TDataModel> &DataTableData<TDataModel>::getModel() const {
+    return mModel;
 }
 
-template<class TData>
-const std::vector<TData> &DataTableData<TData>::getDataSource() const {
-    return mDataSource;
+template<class TDataModel>
+DataTableModel<TDataModel> &DataTableData<TDataModel>::getModel() {
+    return mModel;
 }
 
 //endregion
 
-template<class TData>
-void DataTable<TData>::addColumn(uint32_t fieldId, DataTableColumn &column) {
-    mColumns.push_back(DataTableColumnPair(fieldId, &column));
+template<class TDataModel>
+void DataTable<TDataModel>::addColumn(uint32_t fieldId, DataTableColumn<TDataModel> &column) {
+    mColumns.push_back(DataTableColumnPair<TDataModel>(fieldId, &column));
 }
 
-template<class TData>
-void DataTable<TData>::onRun() {
-    static_cast<DataTableData<TData>&>(this->getData()).setColumnList(mColumns);
+template<class TDataModel>
+void DataTable<TDataModel>::onRun() {
+    static_cast<DataTableData<TDataModel> &>(this->getData()).setColumnList(mColumns);
 }
 
-template<class TData>
-void DataTable<TData>::onWrite(Buffer &buf) {
+template<class TDataModel>
+void DataTable<TDataModel>::onWrite(Buffer &buf) {
     struct ExtColumn {
         uint32_t id;
-        DataTableColumn *column;
+        DataTableColumn<TDataModel> *column;
         int width;
     };
     std::vector<ExtColumn> extColsVec;
-    DataTableData<TData>& dtData = this->getData();
+    DataTableData<TDataModel> &dtData = this->getData();
 
     const int offset = 1;
     int curColDrawPos = offset;
@@ -140,8 +148,8 @@ void DataTable<TData>::onWrite(Buffer &buf) {
     buf.getCursorPos() = Point(offset, maxCellHeight);
 
     for (size_t i = 0, n = -1 + extColsVec.size(); i <= n; i++) {
-        const StyledBorder& bord = dtData.getBorder();
-        ExtColumn& extCol = extColsVec.at(i);
+        const StyledBorder &bord = dtData.getBorder();
+        ExtColumn &extCol = extColsVec.at(i);
 
         buf.draw(bord.at(BorderStyle::ST), extCol.width);
         if (i < n)
@@ -152,9 +160,12 @@ void DataTable<TData>::onWrite(Buffer &buf) {
 
     //endregion
 
+    std::vector<TDataModel> dataModelList
+        = static_cast<DataTableModel<TDataModel>&>(dtData.getModel())
+            .apply(mColumns);
     int usedHeight = 0;
-    for (size_t i = 0, n = -1 + dtData.getDataSource().size(); i <= n; i++) {
-        auto &srcDataItem = static_cast<const IModel&>(dtData.getDataSource().at(i));
+    for (size_t i = 0, n = -1 + dataModelList.size(); i <= n; i++) {
+        auto &srcDataItem = static_cast<const IModel &>(dataModelList.at(i));
 
         usedHeight += maxCellHeight;
         maxCellHeight = 0;
@@ -190,8 +201,8 @@ void DataTable<TData>::onWrite(Buffer &buf) {
 
         buf.getCursorPos() = Point(offset, usedHeight + maxCellHeight);
         for (size_t j = 0, m = -1 + extColsVec.size(); j <= m; j++) {
-            const StyledBorder& bord = dtData.getBorder();
-            ExtColumn& extCol = extColsVec.at(j);
+            const StyledBorder &bord = dtData.getBorder();
+            ExtColumn &extCol = extColsVec.at(j);
 
             buf.draw(bord.at(BorderStyle::SH), extCol.width);
             if (j < m) {

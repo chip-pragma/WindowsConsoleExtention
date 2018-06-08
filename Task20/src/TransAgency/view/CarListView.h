@@ -14,10 +14,10 @@
 
 class CarListView : public cpe::BaseView<CarListVM> {
     cpe::DataTable<Car> m_dtCars;
-    cpe::DataTableColumn m_dtCars_dtcMark;
-    cpe::DataTableColumn m_dtCars_dtcMaker;
-    cpe::DataTableColumn m_dtCars_dtcSeats;
-    cpe::DataTableColumn m_dtCars_dtcStateNumber;
+    cpe::DataTableColumn<Car> m_dtCars_dtcMark;
+    cpe::DataTableColumn<Car> m_dtCars_dtcMaker;
+    cpe::DataTableColumn<Car> m_dtCars_dtcSeats;
+    cpe::DataTableColumn<Car> m_dtCars_dtcStateNumber;
     cpe::Label m_lPageOf;
     cpe::Menu m_mControl;
     cpe::MenuReader m_mrControl;

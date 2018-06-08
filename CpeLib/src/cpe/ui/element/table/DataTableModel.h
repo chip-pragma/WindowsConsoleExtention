@@ -10,10 +10,9 @@
 
 namespace cpe {
 
-template<class TData>
+template<class TDataModel>
 class DataTableModel {
 public:
-    DataTableModel(const std::vector<TData> &dataSource);
 
     const std::optional<uint32_t> &getSortBy() const;
 
@@ -33,9 +32,11 @@ public:
 
     void setPageNumber(size_t pageNumber);
 
-    const std::vector<TData> &getDataSource() const;
+    void setDataSource(const std::vector<TDataModel> &dataSource);
 
-    std::vector<TData> apply();
+    const std::vector<TDataModel> &getDataSource() const;
+
+    std::vector<TDataModel> apply(const DataTableColumnVector<TDataModel> &columnVec);
 
 private:
     std::optional<uint32_t> mSortBy = std::nullopt;
@@ -44,102 +45,120 @@ private:
     size_t mPageCount = 0;
     size_t mPageNumber = 0;
 
-    const std::vector<TData> &mDataSource;
+    const std::vector<TDataModel> *mDataSource = nullptr;
 
 };
 
-template<class TData>
-DataTableModel<TData>::DataTableModel(const std::vector<TData> &dataSource)
-    : mDataSource(dataSource) { }
-
-template<class TData>
-const std::optional<uint32_t> &DataTableModel<TData>::getSortBy() const {
+template<class TDataModel>
+const std::optional<uint32_t> &DataTableModel<TDataModel>::getSortBy() const {
     return mSortBy;
 }
 
-template<class TData>
-void DataTableModel<TData>::setSortBy(const std::optional<uint32_t> &sortBy) {
+template<class TDataModel>
+void DataTableModel<TDataModel>::setSortBy(const std::optional<uint32_t> &sortBy) {
     mSortBy = sortBy;
 }
 
-template<class TData>
-const std::optional<std::string> &DataTableModel<TData>::getFilterBy() const {
+template<class TDataModel>
+const std::optional<std::string> &DataTableModel<TDataModel>::getFilterBy() const {
     return mFilterBy;
 }
 
-template<class TData>
-void DataTableModel<TData>::setFilterBy(const std::optional<std::string> &filterBy) {
+template<class TDataModel>
+void DataTableModel<TDataModel>::setFilterBy(const std::optional<std::string> &filterBy) {
     mFilterBy = filterBy;
 }
 
-template<class TData>
-const std::optional<size_t> &DataTableModel<TData>::getPageItemCount() const {
+template<class TDataModel>
+const std::optional<size_t> &DataTableModel<TDataModel>::getPageItemCount() const {
     return mPageItemCount;
 }
 
-template<class TData>
-void DataTableModel<TData>::setPageItemCount(const std::optional<size_t> &pageItemCount) {
+template<class TDataModel>
+void DataTableModel<TDataModel>::setPageItemCount(const std::optional<size_t> &pageItemCount) {
     mPageItemCount = pageItemCount;
 }
 
-template<class TData>
-size_t DataTableModel<TData>::getPageCount() const {
+template<class TDataModel>
+size_t DataTableModel<TDataModel>::getPageCount() const {
     return mPageCount;
 }
 
-template<class TData>
-size_t DataTableModel<TData>::getPageNumber() const {
+template<class TDataModel>
+size_t DataTableModel<TDataModel>::getPageNumber() const {
     return mPageNumber;
 }
 
-template<class TData>
-void DataTableModel<TData>::setPageNumber(size_t pageNumber) {
+template<class TDataModel>
+void DataTableModel<TDataModel>::setPageNumber(size_t pageNumber) {
     mPageNumber = std::clamp(pageNumber, size_t(0), mPageCount);
 }
 
-template<class TData>
-const std::vector<TData> &DataTableModel<TData>::getDataSource() const {
+template<class TDataModel>
+void DataTableModel<TDataModel>::setDataSource(const std::vector<TDataModel> &dataSource) {
+    mDataSource = &dataSource;
+}
+
+template<class TDataModel>
+const std::vector<TDataModel> &DataTableModel<TDataModel>::getDataSource() const {
     return mDataSource;
 }
 
-template<class TData>
-std::vector<TData> DataTableModel<TData>::apply() {
-    std::vector<TData> result;
-    result = mDataSource;
+template<class TDataModel>
+std::vector<TDataModel> DataTableModel<TDataModel>::apply(const DataTableColumnVector<TDataModel> &columnVec) {
+    std::vector<TDataModel> resultData;
+    if (!mDataSource)
+        return resultData;
 
-    if (mSortBy.has_value()) {
-        std::sort(result.begin(),
-                  result.end(),
-                  [=](const TData &oneData, const TData &twoData) -> bool {
-                      auto &oneModel = static_cast<const IModel &>(oneData);
-                      auto &twoModel = static_cast<const IModel &>(twoData);
+    resultData = *mDataSource;
 
-                      std::string oneFieldValue;
-                      std::string twoFieldValue;
-                      oneModel.getFieldValue(mSortBy.value(), oneFieldValue);
-                      twoModel.getFieldValue(mSortBy.value(), twoFieldValue);
-
-                      return (oneFieldValue.compare(twoFieldValue) < 0);
-                  }
-        );
+    if (mFilterBy.has_value()) {
+        std::remove_if(
+            resultData.begin(),
+            resultData.end(),
+            [&](const TDataModel &data) {
+                auto &model = static_cast<const IModel &>(data);
+                for (const DataTableColumnPair<TDataModel> &colPair : columnVec) {
+                    std::string fieldValue = "";
+                    if (model.getFieldValue(colPair.first, fieldValue))
+                        if (fieldValue.find(mFilterBy.value()) != std::string::npos)
+                            return false;
+                }
+                return true;
+            });
     }
 
-    // TODO фильтрация (поиск) mFilterBy
+    if (mSortBy.has_value()) {
+        DataTableColumn<TDataModel> *column = nullptr;
+        std::find_if(
+            columnVec.begin(),
+            columnVec.end(),
+            [&](const DataTableColumnPair<TDataModel> &pair) {
+                bool equal = (pair.first == mSortBy.value());
+                if (equal)
+                    column = pair.second;
+                return equal;
+            });
+        if (column
+            && column->getVisible()
+            && column->getSortFunctor())
+            std::sort(resultData.begin(), resultData.end(), column->getSortFunctor());
+    }
 
     if (!mPageItemCount.has_value()) {
         mPageCount = 1;
         mPageNumber = 0;
     } else {
         auto items = mPageItemCount.value();
-        mPageCount = result.size() / items + 1;
+        mPageCount = resultData.size() / items + 1;
         mPageNumber = std::clamp(mPageNumber, size_t(0), mPageCount - 1);
 
         auto begin = mPageNumber * items;
-        auto end = std::min(begin + items, result.size());
-        result = std::vector<TData>(result.begin() + begin, result.begin() + end);
+        auto end = std::min(begin + items, resultData.size());
+        resultData = std::vector<TDataModel>(resultData.begin() + begin, resultData.begin() + end);
     }
 
-    return result;
+    return resultData;
 }
 
 }

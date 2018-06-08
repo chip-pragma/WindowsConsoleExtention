@@ -6,23 +6,21 @@
 #include <sstream>
 
 
-CarListVM::CarListVM()
-    : mTableModel(TransAgency::get().getCarList()) {
-
-}
-
 CarListVM::~CarListVM() { }
 
 void CarListVM::onDataTableInit(cpe::DataTableData<Car> &data) {
-    data.setDataSource(mTableModel.apply());
+    mTableModel = &data.getModel();
+    mTableModel->setDataSource(TransAgency::get().getCarList());
+    mTableModel->setSortBy(Car::CF_SEATS);
 }
 
 void CarListVM::onLabelPageInit(cpe::LabelData &data) {
     std::stringstream ss;
     ss << "[Страница "
-       << mTableModel.getPageNumber() + 1
+       << mTableModel->getPageNumber() + 1
        << " из "
-       << mTableModel.getPageCount()
+       << mTableModel->getPageCount()
        << "]\n";
     data.getText().clear().append(fromUtf8ToDos866(ss.str()));
+    this->abort();
 }
