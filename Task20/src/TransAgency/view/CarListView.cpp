@@ -52,7 +52,7 @@ void CarListView::onInitialize() {
     }
 
     {
-        // TODO текст "страница: Х из Y", затем меню "управление"
+        // FIXME ошибка при уничтожении Label (возможно двойное удаление LabelData)
         m_lPageOf.bindData(&CarListVM::onLabelPageInit);
         m_lPageOf.getData().setCallPause(true);
     }

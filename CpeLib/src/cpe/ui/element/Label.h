@@ -19,6 +19,8 @@ protected:
 
 class Label : public BaseWriter<LabelData> {
 public:
+    ~Label() override;
+
 protected:
     void onWrite(Buffer &buf) override;
 };

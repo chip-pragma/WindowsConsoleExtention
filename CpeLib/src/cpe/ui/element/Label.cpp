@@ -1,15 +1,25 @@
 #include "Label.h"
 
-cpe::LabelData::~LabelData() { }
+namespace cpe {
 
-const cpe::StyledText &cpe::LabelData::getText() const {
+LabelData::~LabelData() {
+
+}
+
+const StyledText &LabelData::getText() const {
     return mText;
 }
 
-cpe::StyledText &cpe::LabelData::getText() {
+StyledText &LabelData::getText() {
     return mText;
 }
 
-void cpe::Label::onWrite(cpe::Buffer &buf) {
+void Label::onWrite(Buffer &buf) {
     buf.draw(getData().getText());
+}
+
+Label::~Label() {
+
+}
+
 }
