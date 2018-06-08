@@ -3,18 +3,26 @@
 #include "../common.h"
 #include "../model/Car.h"
 
+CarListView::CarListView()
+    : m_mControl_miAdd("1|a"),
+      m_mControl_miEdit("2|e"),
+      m_mControl_miRemove("3|r"),
+      m_mControl_miGoToPage("4|g"),
+      m_mControl_miBack("0|b") {
+
+}
+
 CarListView::~CarListView() { }
 
 void CarListView::onInitialize() {
     using namespace cpe;
-    
+
     {
         const TextColor HEADER_COLOR(Colors::WHITE, Colors::BLUE);
         const TextColor BORDER_COLOR(Colors::TEAL, std::nullopt);
 
         m_dtCars.bindData(&CarListVM::onDataTableInit);
         auto &d = m_dtCars.getData();
-        d.setCallPause(true);
         d.getBorder().getColor() = BORDER_COLOR;
 
         m_dtCars_dtcMark.getHeader()
@@ -41,7 +49,10 @@ void CarListView::onInitialize() {
 
     {
         // TODO текст "страница: Х из Y", затем меню "управление"
+        m_lPageOf.bindData(&CarListVM::onLabelPageInit);
+        m_lPageOf.getData().setCallPause(true);
     }
 
     addElement(m_dtCars);
+    addElement(m_lPageOf);
 }

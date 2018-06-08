@@ -19,8 +19,6 @@ private:
     TransAgencyDestroyHandler mDestroyHandler = nullptr;
 };
 
-using CarVector = std::vector<const Car*>;
-
 class TransAgency {
 public:
     TransAgency(const TransAgency &) = delete;
@@ -29,11 +27,7 @@ public:
 
     static TransAgency &get();
 
-    CarVector getCarList() const;
-
-    Car& addCar();
-
-    bool removeCar(Car& car);
+    std::vector<Car>& getCarList();
 
     void saveData(std::string fileName);
 
@@ -50,7 +44,7 @@ private:
     static TransAgency *mInstance;
     static TransAgencyDestroyer mDestroyer;
 
-    std::vector<Car*> mCarList;
+    std::vector<Car> mCarList;
 };
 
 

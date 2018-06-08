@@ -7,7 +7,6 @@ namespace cpe {
 class BaseViewModel : public IViewModel {
     template <class TViewModel>
     friend class BaseView;
-protected:
 public:
     ~BaseViewModel() override { }
 
@@ -17,9 +16,13 @@ protected:
 
     void onAfterShow() override { };
 
-    void resetView();
+public:
+    bool isAborted() const;
+
+    void abort();
+
 private:
-    bool mReset = false;
+    bool mAborted = false;
 };
 }
 

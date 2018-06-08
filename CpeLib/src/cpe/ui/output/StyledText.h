@@ -32,6 +32,8 @@ public:
 
     StyledText &append(const StyledChar &sChar);
 
+    StyledText &clear();
+
     size_t getLength() const;
 
     StyledChar at(size_t index) const;

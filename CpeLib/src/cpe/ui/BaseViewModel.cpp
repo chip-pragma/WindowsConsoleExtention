@@ -2,8 +2,12 @@
 
 namespace cpe {
 
-void BaseViewModel::resetView() {
-    mReset = true;
+bool BaseViewModel::isAborted() const {
+    return mAborted;
+}
+
+void BaseViewModel::abort() {
+    mAborted = true;
 }
 
 }

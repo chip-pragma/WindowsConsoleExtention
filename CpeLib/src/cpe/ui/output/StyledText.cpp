@@ -76,6 +76,12 @@ StyledText &StyledText::append(const StyledChar &sChar) {
     return *this;
 }
 
+StyledText &StyledText::clear() {
+    mText.clear();
+    mColors.clear();
+    return *this;
+}
+
 size_t StyledText::getLength() const {
     return mText.length();
 }

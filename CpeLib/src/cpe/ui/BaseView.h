@@ -62,17 +62,19 @@ void BaseView<TViewModel>::onShow(TViewModel &viewModel) {
     this->onInitialize();
 
     OutputHelper outHelp;
-    auto& vm = static_cast<BaseViewModel&>(viewModel);
+    auto &vm = static_cast<BaseViewModel &>(viewModel);
     while (true) {
         outHelp.saveState();
         vm.onBeforeShow();
-        for (ICuiElement *item : mElements)
+        for (ICuiElement *item : mElements) {
             item->run(vm);
+            if (vm.isAborted())
+                break;
+        }
         vm.onAfterShow();
-        if (vm.mReset) {
-            outHelp.goBackState();
-            vm.mReset = false;
-        } else break;
+        if (vm.isAborted())
+            break;
+        outHelp.goBackState();
     }
 }
 

@@ -4,8 +4,10 @@
 
 #include <cpe/ui/BaseViewModel.h>
 #include <cpe/ui/element/table/DataTable.h>
+#include <cpe/ui/element/Label.h>
 
 #include "TransAgency/model/Car.h"
+#include "TransAgency/common.h"
 
 class CarListVM : public cpe::BaseViewModel {
 public:
@@ -13,9 +15,12 @@ public:
 
     ~CarListVM() override;
 
-    void onDataTableInit(cpe::DataTableData& data);
+    void onDataTableInit(cpe::DataTableData<Car>& data);
+
+    void onLabelPageInit(cpe::LabelData& data);
 
 private:
+    cpe::DataTableModel<Car> mTableModel;
 };
 
 

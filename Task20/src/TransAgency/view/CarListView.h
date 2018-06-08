@@ -13,7 +13,7 @@
 #include "../vm/CarListVM.h"
 
 class CarListView : public cpe::BaseView<CarListVM> {
-    cpe::DataTable m_dtCars;
+    cpe::DataTable<Car> m_dtCars;
     cpe::DataTableColumn m_dtCars_dtcMark;
     cpe::DataTableColumn m_dtCars_dtcMaker;
     cpe::DataTableColumn m_dtCars_dtcSeats;
@@ -29,6 +29,8 @@ class CarListView : public cpe::BaseView<CarListVM> {
     cpe::MenuSeparator m_mControl_msSep1;
 
 public:
+    CarListView();
+
     ~CarListView() override;
 
 protected:

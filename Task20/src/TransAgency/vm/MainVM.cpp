@@ -12,10 +12,10 @@ bool MainVM::onMainMenuReaderResult(cpe::MenuReaderResult &result) {
             case MainVM::ID_MM_CARS: {
                 CarListVM vmCarList;
                 CarListView().showView(vmCarList);
-                this->resetView();
                 return true;
             }
             case MainVM::ID_MM_EXIT:
+                this->abort();
                 return true;
             default:
                 break;
