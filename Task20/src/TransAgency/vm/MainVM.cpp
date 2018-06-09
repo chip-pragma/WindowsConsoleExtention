@@ -6,6 +6,8 @@
 #include <iostream>
 #include <cpe/core/terminal.h>
 
+using namespace cpe;
+
 bool MainVM::onMainMenuReaderResult(cpe::MenuReaderResult &result) {
     if (result.getType() == cpe::ReaderResultType::VALUE) {
         switch (result.getValue()) {
@@ -28,4 +30,8 @@ bool MainVM::onMainMenuReaderResult(cpe::MenuReaderResult &result) {
         .outputTo(std::cout);
     cpe::term::callPause();
     return false;
+}
+
+void MainVM::onLabelTestInit(cpe::LabelData &data) {
+    data.getText().append("Приффки");
 }

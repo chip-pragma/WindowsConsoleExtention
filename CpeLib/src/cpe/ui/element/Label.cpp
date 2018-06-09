@@ -3,7 +3,7 @@
 namespace cpe {
 
 LabelData::~LabelData() {
-
+    int i = 0;
 }
 
 const StyledText &LabelData::getText() const {

@@ -4,6 +4,7 @@
 
 #include <cpe/ui/BaseViewModel.h>
 #include <cpe/ui/element/menu/MenuReader.h>
+#include <cpe/ui/element/Label.h>
 
 class MainVM : public cpe::BaseViewModel {
 public:
@@ -17,6 +18,8 @@ public:
     };
 
     bool onMainMenuReaderResult(cpe::MenuReaderResult &result);
+
+    void onLabelTestInit(cpe::LabelData &data);
 };
 
 

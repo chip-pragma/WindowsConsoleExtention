@@ -12,6 +12,7 @@
 class MainView : public cpe::BaseView<MainVM> {
     cpe::Notification m_nCaption;
     cpe::Label m_lWraps;
+    cpe::Label m_lTest;
     cpe::Menu m_mMain;
     cpe::MenuReader m_mrMain;
     cpe::MenuItem m_mMain_miCars;

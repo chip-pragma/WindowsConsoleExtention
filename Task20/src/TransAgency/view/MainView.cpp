@@ -70,9 +70,14 @@ void MainView::onInitialize() {
         m_mMain.addItem(MainVM::ID_MM_EXIT, m_mMain_miExit);
     }
 
+    {
+        m_lTest.bindData(&MainVM::onLabelTestInit);
+    }
+
     addElement(m_nCaption);
     addElement(m_lWraps);
     addElement(m_mMain);
+    addElement(m_lTest);
     addElement(m_mrMain);
 }
 
