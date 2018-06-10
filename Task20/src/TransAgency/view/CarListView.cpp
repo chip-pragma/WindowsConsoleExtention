@@ -4,7 +4,8 @@
 #include "../model/Car.h"
 
 CarListView::CarListView()
-    : m_mControl_miAdd("1|a"),
+    : BaseView(),
+      m_mControl_miAdd("1|a"),
       m_mControl_miEdit("2|e"),
       m_mControl_miRemove("3|r"),
       m_mControl_miGoToPage("4|g"),
