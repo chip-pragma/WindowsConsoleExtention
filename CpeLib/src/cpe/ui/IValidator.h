@@ -10,7 +10,7 @@ class IValidator {
 public:
     virtual ~IValidator() { }
 
-    virtual void validate(const TValue &value, std::vector<std::string> &outErrors) const = 0;
+    virtual bool validate(const TValue &value, std::vector<std::string> &outErrors) const = 0;
 };
 
 }

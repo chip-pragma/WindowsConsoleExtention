@@ -8,7 +8,7 @@ namespace cpe {
 
 class BaseScript {
 public:
-    virtual ~BaseScript();
+    virtual ~BaseScript() = 0;
 
     virtual void run() final;
 
@@ -24,9 +24,9 @@ protected:
 
     void onRun();
 
-    virtual void onBeforeRun() = 0;
+    virtual void onBeforeRun() { };
 
-    virtual void onAfterRun() = 0;
+    virtual void onAfterRun() { };
 
 private:
     std::vector<IElement *> mElements;

@@ -26,11 +26,11 @@ StyledText &StyledText::setColor(const TextColor &tColor) {
 }
 
 StyledText &StyledText::setFore(const Color &fore) {
-    if (mColors.back().color.getFore() != fore) {
+    if (mColors.back().color.refFore() != fore) {
         if (mColors.back().length != 0)
             mColors.emplace_back(TextColor(fore, mColors.back().color.getBack()), mText.length());
         else
-            mColors.back().color.getFore() = fore;
+            mColors.back().color.refFore() = fore;
     }
     return *this;
 }
@@ -38,7 +38,7 @@ StyledText &StyledText::setFore(const Color &fore) {
 StyledText &StyledText::setBack(const Color &back) {
     if (mColors.back().color.getBack() != back) {
         if (mColors.back().length != 0)
-            mColors.emplace_back(TextColor(mColors.back().color.getFore(), back), mText.length());
+            mColors.emplace_back(TextColor(mColors.back().color.refFore(), back), mText.length());
         else
             mColors.back().color.getBack() = back;
     }

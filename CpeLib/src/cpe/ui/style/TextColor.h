@@ -18,7 +18,7 @@ public:
 
     const std::optional<Color> &getFore() const;
 
-    std::optional<Color> &getFore();
+    std::optional<Color> &refFore();
 
     const std::optional<Color> &getBack() const;
 

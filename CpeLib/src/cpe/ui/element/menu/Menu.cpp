@@ -2,70 +2,70 @@
 
 namespace cpe {
 
-MenuData::~MenuData() { }
+Menu::~Menu() {
+    for (auto item : mItems)
+        delete item.second;
+    delete mReader;
+}
 
-const StyledBorder &MenuData::getBorder() const {
+const StyledBorder &Menu::getBorder() const {
     return mBorder;
 }
 
-StyledBorder &MenuData::getBorder() {
+StyledBorder &Menu::getBorder() {
     return mBorder;
 }
 
-const StyledText &MenuData::getCaption() const {
+const StyledText &Menu::getCaption() const {
     return mCaption;
 }
 
-StyledText &MenuData::getCaption() {
+StyledText &Menu::getCaption() {
     return mCaption;
 }
 
-const StyledText &MenuData::getReaderHint() const {
+const StyledText &Menu::getReaderHint() const {
     return mReaderHint;
 }
 
-StyledText &MenuData::getReaderHint() {
+StyledText &Menu::getReaderHint() {
     return mReaderHint;
 }
 
-const TextColor &MenuData::getCommandColor() const {
+const TextColor &Menu::getCommandColor() const {
     return mCommandColor;
 }
 
-TextColor &MenuData::getCommandColor() {
+TextColor &Menu::getCommandColor() {
     return mCommandColor;
 }
 
-void MenuData::setItems(IMenuItemVector &items) {
-    mItems = &items;
+void Menu::assignReader(MenuReader *reader) {
+    mReader = reader;
 }
 
-Menu::~Menu() { }
-
-void Menu::assignReader(MenuReader &reader) {
-    mReader = &reader;
+void Menu::removeItem(uint32_t itemId) {
+    // TODO удаление компонента
 }
 
 void Menu::onWrite(Buffer &buf) {
     using BS = BorderStyle;
 
-    const auto &brd = getData().getBorder();
+    const auto &brd = this->getBorder();
     buf.draw(brd[BS::SLT] + ' ');
 
     {
         auto captionBuf = buf.extract(buf.getCursorPos(), buf.getSize() - buf.getCursorPos());
-        captionBuf.drawLine(getData().getCaption());
+        captionBuf.drawLine(this->getCaption());
         buf.getCursorPos() = Point(0, 1);
         buf.draw(brd[BS::SL], captionBuf.getUsedSize().getY() - 1, true);
     }
-
-
 
     for (const auto &pair : mItems) {
         if (!pair.second->getVisible())
             continue;
         auto sumBuf = buf.extract(buf.getCursorPos(), buf.getSize() - buf.getCursorPos());
-        pair.second->write(sumBuf, brd, getData().getCommandColor());
+        pair.second->write(sumBuf, brd, this->getCommandColor());
         buf.getCursorPos().getX() = 0;
         buf.getCursorPos().getY()++;
         buf.draw(brd[BS::SL], sumBuf.getUsedSize().getY() - 1, true);
@@ -76,12 +76,8 @@ void Menu::onWrite(Buffer &buf) {
 
     {
         auto inputMsg = buf.extract(buf.getCursorPos(), buf.getSize() - buf.getCursorPos());
-        inputMsg.drawLine(getData().getReaderHint());
+        inputMsg.drawLine(this->getReaderHint());
     }
-}
-
-void Menu::onRun() {
-    getData().setItems(mItems);
 }
 
 void Menu::onAfterRun() {

@@ -46,10 +46,10 @@ void CarListView::onInitialize() {
             .setColor(HEADER_COLOR)
             .append("ГОСНОМЕР"_dos);
 
-        m_dtCars.addColumn(Car::CF_MARK, m_dtCars_dtcMark);
-        m_dtCars.addColumn(Car::CF_MAKER, m_dtCars_dtcMaker);
-        m_dtCars.addColumn(Car::CF_SEATS, m_dtCars_dtcSeats);
-        m_dtCars.addColumn(Car::CF_STATE_NUMBER, m_dtCars_dtcStateNumber);
+        m_dtCars.makeColumn(Car::CF_MARK, 0);
+        m_dtCars.makeColumn(Car::CF_MAKER, 0);
+        m_dtCars.makeColumn(Car::CF_SEATS, 0);
+        m_dtCars.makeColumn(Car::CF_STATE_NUMBER, 0);
     }
 
     {

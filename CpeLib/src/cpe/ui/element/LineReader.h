@@ -4,7 +4,7 @@
 
 namespace cpe {
 
-class LineReader : public BaseReader<std::string> {
+class LineReader : public BaseReader<LineReader, std::string> {
 protected:
 public:
     ~LineReader() override;

@@ -8,17 +8,17 @@
 
 namespace cpe {
 
-template<class TDataModel>
+template<class TModel>
 class DataTableColumn;
 
-template<class TDataModel>
-using DataTableColumnPair = std::pair<uint32_t, DataTableColumn<TDataModel> *>;
-template<class TDataModel>
-using DataTableColumnVector = std::vector<DataTableColumnPair<TDataModel>>;
-template<class TDataModel>
-using DataTableColumnSortPredicate = std::function<bool(const TDataModel &, const TDataModel &)>;
+template<class TModel>
+using DataTableColumnPair = std::pair<uint32_t, DataTableColumn<TModel> *>;
+template<class TModel>
+using DataTableColumnVector = std::vector<DataTableColumnPair<TModel>>;
+template<class TModel>
+using DataTableColumnSortPredicate = std::function<bool(const TModel &, const TModel &)>;
 
-template<class TDataModel>
+template<class TModel>
 class DataTableColumn {
 public:
 
@@ -34,54 +34,54 @@ public:
 
     TextColor &getCellTextColor();
 
-    const DataTableColumnSortPredicate<TDataModel> &getSortFunctor() const;
+    const DataTableColumnSortPredicate<TModel> &getSortFunctor() const;
 
-    void setSortFunctor(const DataTableColumnSortPredicate<TDataModel> &sortFunctor);
+    void setSortFunctor(const DataTableColumnSortPredicate<TModel> &sortFunctor);
 
 protected:
     bool mVisible = true;
     StyledText mHeader;
     TextColor mCellColor;
-    DataTableColumnSortPredicate<TDataModel> mSortFunctor = nullptr;
+    DataTableColumnSortPredicate<TModel> mSortFunctor = nullptr;
 };
 
-template<class TDataModel>
-bool DataTableColumn<TDataModel>::getVisible() const {
+template<class TModel>
+bool DataTableColumn<TModel>::getVisible() const {
     return mVisible;
 }
 
-template<class TDataModel>
-void DataTableColumn<TDataModel>::setVisible(bool vis) {
+template<class TModel>
+void DataTableColumn<TModel>::setVisible(bool vis) {
     mVisible = vis;
 }
 
-template<class TDataModel>
-const StyledText &DataTableColumn<TDataModel>::getHeader() const {
+template<class TModel>
+const StyledText &DataTableColumn<TModel>::getHeader() const {
     return mHeader;
 }
 
-template<class TDataModel>
-StyledText &DataTableColumn<TDataModel>::getHeader() {
+template<class TModel>
+StyledText &DataTableColumn<TModel>::getHeader() {
     return mHeader;
 }
 
-template<class TDataModel>
-const TextColor &DataTableColumn<TDataModel>::getCellTextColor() const {
+template<class TModel>
+const TextColor &DataTableColumn<TModel>::getCellTextColor() const {
     return mCellColor;
 }
 
-template<class TDataModel>
-TextColor &DataTableColumn<TDataModel>::getCellTextColor() {
+template<class TModel>
+TextColor &DataTableColumn<TModel>::getCellTextColor() {
     return mCellColor;
 }
 
-template<class TDataModel>
-const DataTableColumnSortPredicate<TDataModel> &DataTableColumn<TDataModel>::getSortFunctor() const {
+template<class TModel>
+const DataTableColumnSortPredicate<TModel> &DataTableColumn<TModel>::getSortFunctor() const {
     return mSortFunctor;
 }
 
-template<class TDataModel>
-void DataTableColumn<TDataModel>::setSortFunctor(const DataTableColumnSortPredicate<TDataModel> &sortFunctor) {
+template<class TModel>
+void DataTableColumn<TModel>::setSortFunctor(const DataTableColumnSortPredicate<TModel> &sortFunctor) {
     mSortFunctor = sortFunctor;
 }
 

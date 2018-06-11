@@ -5,6 +5,8 @@ namespace cpe {
 class BaseScript;
 
 class IElement {
+    friend class BaseScript;
+
 public:
     virtual~IElement() { };
 
@@ -16,12 +18,12 @@ public:
 
     virtual void setCallPause(bool value) = 0;
 
-    virtual void run(BaseScript &script) = 0;
+
 
 protected:
-    virtual void onBeforeRun() = 0;
+    virtual void run(BaseScript &script) = 0;
 
-    virtual void onRun() = 0;
+    virtual void onBeforeRun() = 0;
 
     virtual void onAfterRun() = 0;
 };

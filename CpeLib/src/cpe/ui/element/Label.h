@@ -1,13 +1,12 @@
 #pragma once
 
-#include "cpe/ui/BaseWriterData.h"
 #include "cpe/ui/BaseWriter.h"
 
 namespace cpe {
 
-class LabelData : public BaseWriterData {
+class Label : public BaseWriter<Label> {
 public:
-    ~LabelData() override;
+    ~Label() override;
 
     const StyledText &getText() const;
 
@@ -15,13 +14,7 @@ public:
 
 protected:
     StyledText mText;
-};
 
-class Label : public BaseWriter<LabelData> {
-public:
-    ~Label() override;
-
-protected:
     void onWrite(Buffer &buf) override;
 };
 

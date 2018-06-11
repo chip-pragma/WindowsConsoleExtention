@@ -5,74 +5,126 @@
 
 #include "cpe/tool/text.h"
 #include "cpe/ui/output/OutputHelper.h"
-#include "ReaderData.h"
+#include "cpe/ui/style/TextColor.h"
 #include "cpe/ui/BaseElement.h"
 #include "IValidator.h"
 #include "ReaderResult.h"
 
 namespace cpe {
 
-template<class TValue, class TData = ReaderData<TValue>, class TResult = ReaderResult<TValue>>
-class BaseReader : public BaseElement<TData> {
-
-    using _BaseCuiElement = BaseElement<TData>;
+template<class TDerived, class TValue, class TResult = ReaderResult<TValue>>
+class BaseReader : public BaseElement<TDerived> {
 public:
-    template<class TViewModel>
-    using ResultReadReceiverFunc = bool (TViewModel::*)(TResult &);
+    template<class TScript>
+    using ResultReadListenerFunc = bool (TScript::*)(TResult &);
 
     virtual ~BaseReader() { }
 
-    template<class TViewModel>
-    void bindResult(ResultReadReceiverFunc<TViewModel> func);
+    const TextColor &getReadColor() const;
 
-    bool fireResult(IController &ctrl, TResult &result);
+    TextColor &getColorRead();
 
-    void run(IController &ctrl) override;
+    const std::string &getErrorText() const;
+
+    std::string &getErrorText();
+
+    template<class TValidator>
+    void addValidator(const TValidator &validator);
+
+    template<class TValidator>
+    void removeValidator(const TValidator &validator);
+
+    template<class TScript>
+    void addResultReadListener(ResultReadListenerFunc<TScript> func);
 
 protected:
-    using _PureResultReadReceiverFunc  = bool (IController::*)(TResult &);
 
-    _PureResultReadReceiverFunc mResultFunc = nullptr;
+    using _PureResultReadListenerFunc  = bool (BaseScript::*)(TResult &);
 
-    virtual void onRead(TResult &result);
+    _PureResultReadListenerFunc mResultFunc = nullptr;
+    std::vector<IValidator<TValue> *> mValidators;
+    TextColor mColorRead;
+    std::string mErrorText;
+    bool fireResultRead(BaseScript &script, TResult &result);
+
+    void run(BaseScript &script) override;
+
+    void onRead(TResult &result);
 
     virtual bool onConvert(std::string &srcLine, TValue &convertedValue) = 0;
+
+    bool onValidate(const TValue &value, std::vector<std::string> &errorList) const;
 };
 
-template<class TValue, class TData, class TResult>
-template<class TViewModel>
-void BaseReader<TValue, TData, TResult>::bindResult(BaseReader::ResultReadReceiverFunc<TViewModel> func) {
-    mResultFunc = static_cast<_PureResultReadReceiverFunc>(func);
+template<class TDerived, class TValue, class TResult>
+const TextColor &BaseReader<TDerived, TValue, TResult>::getReadColor() const {
+    return mColorRead;
 }
 
-template<class TValue, class TData, class TResult>
-bool BaseReader<TValue, TData, TResult>::fireResult(IController &ctrl, TResult &result) {
+template<class TDerived, class TValue, class TResult>
+TextColor &BaseReader<TDerived, TValue, TResult>::getColorRead() {
+    return mColorRead;
+}
+
+template<class TDerived, class TValue, class TResult>
+const std::string &BaseReader<TDerived, TValue, TResult>::getErrorText() const {
+    return mErrorText;
+}
+
+template<class TDerived, class TValue, class TResult>
+std::string &BaseReader<TDerived, TValue, TResult>::getErrorText() {
+    return mErrorText;
+}
+
+template<class TDerived, class TValue, class TResult>
+template<class TValidator>
+void BaseReader<TDerived, TValue, TResult>::addValidator(const TValidator &validator) {
+    mValidators.push_back(static_cast<IValidator<TValue> *>(new TValidator(validator)));
+}
+
+template<class TDerived, class TValue, class TResult>
+template<class TValidator>
+void BaseReader<TDerived, TValue, TResult>::removeValidator(const TValidator &validator) {
+    auto finded = std::find(
+        mValidators.begin(),
+        mValidators.end(),
+        static_cast<const IValidator<TValue> *>(&validator));
+    if (finded != mValidators.end())
+        mValidators.erase(finded);
+}
+
+template<class TDerived, class TValue, class TResult>
+template<class TScript>
+void BaseReader<TDerived, TValue, TResult>::addResultReadListener(ResultReadListenerFunc<TScript> func) {
+    mResultFunc = static_cast<_PureResultReadListenerFunc>(func);
+}
+
+template<class TDerived, class TValue, class TResult>
+bool BaseReader<TDerived, TValue, TResult>::fireResultRead(BaseScript &script, TResult &result) {
     if (mResultFunc)
-        return (ctrl.*mResultFunc)(result);
+        return (script.*mResultFunc)(result);
     return true;
 }
 
-template<class TValue, class TData, class TResult>
-void BaseReader<TValue, TData, TResult>::run(IController &ctrl) {
-    if (!static_cast<IElementData &>(_BaseCuiElement::getData()).getVisible())
+template<class TDerived, class TValue, class TResult>
+void BaseReader<TDerived, TValue, TResult>::run(BaseScript &script) {
+    if (!this->getVisible())
         return;
 
     this->onBeforeRun();
-    _BaseCuiElement::fireData(ctrl);
-    this->onRun();
+    this->fireBeforeRun(script);
 
     OutputHelper outHelp;
     outHelp.beginColorize(std::cout);
     while (true) {
         outHelp.saveState();
-        outHelp.applyColor(
-            static_cast<BaseReaderData &>(_BaseCuiElement::getData()).getColorRead());
+        outHelp.applyColor(this->getColorRead());
 
         TResult result;
         onRead(result);
 
         outHelp.resetColor();
-        if (fireResult(ctrl, result))
+        if (fireResultRead(script, result))
             break;
         outHelp.goBackState();
     }
@@ -81,10 +133,9 @@ void BaseReader<TValue, TData, TResult>::run(IController &ctrl) {
     this->onAfterRun();
 }
 
-template<class TValue, class TData, class TResult>
-void BaseReader<TValue, TData, TResult>::onRead(TResult &result) {
+template<class TDerived, class TValue, class TResult>
+void BaseReader<TDerived, TValue, TResult>::onRead(TResult &result) {
     auto &castedResult = static_cast<ReaderResult<TValue> &>(result);
-    auto &castedData = static_cast<ReaderData<TValue> &>(_BaseCuiElement::getData());
 
     std::string lineValue;
     std::getline(std::cin, lineValue);
@@ -102,16 +153,26 @@ void BaseReader<TValue, TData, TResult>::onRead(TResult &result) {
         } else {
             TValue convertedValue;
             if (onConvert(lineValue, convertedValue)) {
-                auto errorList = castedData.validate(convertedValue);
-                if (errorList.empty())
+                std::vector<std::string> errorList;
+                if (this->onValidate(convertedValue, errorList))
                     castedResult.assignValue(convertedValue);
                 else
                     castedResult.assignInvalid(errorList);
             } else {
-                castedResult.assignError(castedData.getErrorText());
+                castedResult.assignError(this->getErrorText());
             }
         }
     }
+}
+
+template<class TDerived, class TValue, class TResult>
+bool BaseReader<TDerived, TValue, TResult>::onValidate(const TValue &value, std::vector<std::string> &errorList) const {
+    bool totalResult = true;
+    for (const IValidator<TValue> *valid : mValidators) {
+        if (!valid->validate(value, errorList))
+            totalResult = false;
+    }
+    return totalResult;
 }
 
 }

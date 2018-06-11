@@ -2,9 +2,7 @@
 
 namespace cpe {
 
-LineReader::~LineReader() {
-
-}
+LineReader::~LineReader() { }
 
 bool LineReader::onConvert(std::string &srcLine, std::string &convertedValue) {
     convertedValue = srcLine;

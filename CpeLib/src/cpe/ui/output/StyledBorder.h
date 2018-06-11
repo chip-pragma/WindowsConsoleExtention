@@ -16,7 +16,7 @@ public:
 
     const TextColor &getColor() const;
 
-    TextColor &getColor();
+    TextColor &refColor();
 
     const BorderStyle& getStyle() const;
 

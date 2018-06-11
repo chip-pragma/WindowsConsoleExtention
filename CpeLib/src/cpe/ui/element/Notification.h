@@ -4,7 +4,6 @@
 #include <optional>
 
 #include "cpe/ui/BaseWriter.h"
-#include "cpe/ui/BaseWriterData.h"
 #include "cpe/ui/style/BorderStyle.h"
 #include "cpe/ui/output/StyledBorder.h"
 #include "cpe/ui/output/StyledText.h"
@@ -13,13 +12,13 @@
 
 namespace cpe {
 
-class NotificationData : public BaseWriterData {
+class Notification : public BaseWriter<Notification> {
 public:
-    NotificationData();
+    ~Notification() override { };
 
     const StyledBorder &getBorder() const;
 
-    StyledBorder &getBorder();
+    StyledBorder &refBorder();
 
     const std::optional<StyledText> &getCaption() const;
 
@@ -27,7 +26,7 @@ public:
 
     const StyledText &getText() const;
 
-    StyledText &getText();
+    StyledText &refText();
 
     const std::optional<StyledChar> &getIcon() const;
 
@@ -39,13 +38,6 @@ protected:
     std::optional<StyledText> mCaption;
     StyledText mText;
     bool mWait = false;
-};
-
-class Notification : public BaseWriter<NotificationData> {
-public:
-    ~Notification() override { };
-
-protected:
 
     void onWrite(Buffer &cvs) override;
 };

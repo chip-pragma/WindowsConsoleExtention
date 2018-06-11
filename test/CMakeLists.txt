@@ -8,4 +8,5 @@ target_link_libraries(${CPE_TEST_TARGET} ${CPE_LIB_TARGET})
 target_compile_features(${CPE_TEST_TARGET} PUBLIC cxx_std_17)
 
 set_target_properties(${CPE_TEST_TARGET} PROPERTIES
-                      OUTPUT_NAME "CpeTest")
+                      OUTPUT_NAME "CpeTest"
+                      LINK_FLAGS ${STATIC_STD_LINK})

@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <optional>
 #include <vector>
+#include <cstdint>
 
 #include "cpe/core/Exception.h"
 

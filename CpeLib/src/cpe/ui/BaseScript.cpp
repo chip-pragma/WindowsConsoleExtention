@@ -38,7 +38,7 @@ void BaseScript::onRun() {
         outHelp.saveState();
         this->onBeforeRun();
         for (auto item : mElements) {
-            item->run(this);
+            item->run(*this);
             if (this->isAborted())
                 break;
         }

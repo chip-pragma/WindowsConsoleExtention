@@ -26,7 +26,11 @@ public:
 protected:
     using _PureBeforeRunListenerFunc = void (BaseScript::*)(TDerived &);
 
-    void fireData(BaseScript &script);
+    void fireBeforeRun(BaseScript &script);
+
+    void onBeforeRun() override { }
+
+    void onAfterRun() override { }
 
 private:
     bool mVisible = true;
@@ -61,9 +65,9 @@ void BaseElement<TDerived>::addBeforeRunListener(BeforeRunListenerFunc<TScript> 
 }
 
 template<class TDerived>
-void BaseElement<TDerived>::fireData(BaseScript &script) {
+void BaseElement<TDerived>::fireBeforeRun(BaseScript &script) {
     if (mBeforeRunListenerFunc)
-        (script.*mBeforeRunListenerFunc)(*this);
+        (script.*mBeforeRunListenerFunc)(*static_cast<TDerived*>(this));
 }
 
 }

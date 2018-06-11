@@ -1,6 +1,8 @@
 #include "main.h"
 
 #include <cpe/core/terminal.h>
+#include <cpe/ui/style/BorderStyle.h>
+#include <cpe/tool/Encoder.h>
 
 #include "common.h"
 #include "TestScript.h"
@@ -22,6 +24,8 @@ int main() {
 }
 
 void onTesting() {
+    BorderStyle::FinalEncoding = Encoder(Encoder::CP866);
+
     TestScript testScr;
     testScr.run();
 }

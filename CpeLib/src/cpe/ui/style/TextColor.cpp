@@ -29,7 +29,7 @@ const std::optional<Color> &TextColor::getFore() const {
     return mFore;
 }
 
-std::optional<Color> &TextColor::getFore() {
+std::optional<Color> &TextColor::refFore() {
     return mFore;
 }
 

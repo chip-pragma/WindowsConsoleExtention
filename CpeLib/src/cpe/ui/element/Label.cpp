@@ -2,24 +2,18 @@
 
 namespace cpe {
 
-LabelData::~LabelData() {
-    int i = 0;
-}
+Label::~Label() { }
 
-const StyledText &LabelData::getText() const {
+const StyledText &Label::getText() const {
     return mText;
 }
 
-StyledText &LabelData::getText() {
+StyledText &Label::getText() {
     return mText;
 }
 
 void Label::onWrite(Buffer &buf) {
-    buf.draw(getData().getText());
-}
-
-Label::~Label() {
-
+    buf.draw(this->getText());
 }
 
 }

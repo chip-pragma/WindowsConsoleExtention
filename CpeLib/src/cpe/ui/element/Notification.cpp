@@ -1,46 +1,39 @@
-#include "cpe/tool/Encoder.h"
-#include "cpe/ui/IWriter.h"
 #include "Notification.h"
+#include "cpe/tool/Encoder.h"
 
 namespace cpe {
 
-//region [ NotificationData ]
-
-NotificationData::NotificationData() { }
-
-const StyledBorder &NotificationData::getBorder() const {
+const StyledBorder &Notification::getBorder() const {
     return mBorder;
 }
 
-StyledBorder &NotificationData::getBorder() {
+StyledBorder &Notification::refBorder() {
     return mBorder;
 }
 
-const std::optional<StyledText> &NotificationData::getCaption() const {
+const std::optional<StyledText> &Notification::getCaption() const {
     return mCaption;
 }
 
-std::optional<StyledText> &NotificationData::getCaption() {
+std::optional<StyledText> &Notification::getCaption() {
     return mCaption;
 }
 
-const StyledText &NotificationData::getText() const {
+const StyledText &Notification::getText() const {
     return mText;
 }
 
-StyledText &NotificationData::getText() {
+StyledText &Notification::refText() {
     return mText;
 }
 
-const std::optional<StyledChar> &NotificationData::getIcon() const {
+const std::optional<StyledChar> &Notification::getIcon() const {
     return mIcon;
 }
 
-std::optional<StyledChar> &NotificationData::getIcon() {
+std::optional<StyledChar> &Notification::getIcon() {
     return mIcon;
 }
-
-//endregion
 
 void Notification::onWrite(Buffer &cvs) {
     using BS = BorderStyle;
@@ -54,10 +47,10 @@ void Notification::onWrite(Buffer &cvs) {
     }
 
     Buffer text = cvs.extract(margin / 2 + Point(1, 1), textBlockSize, false);
-    text.draw(getData().getText());
+    text.draw(this->refText());
     Point textBlockUsedSize = text.getUsedSize() + margin;
 
-    auto &brd = getData().getBorder();
+    auto &brd = this->refBorder();
 
     cvs.draw(brd[BS::SLT]);
     cvs.draw(brd[BS::ST], textBlockUsedSize.getX(), false);
@@ -76,23 +69,23 @@ void Notification::onWrite(Buffer &cvs) {
     // Open
     cvs.getCursorPos() = Point(1, 0);
 
-    if (getData().getIcon().has_value()) {
+    if (this->getIcon().has_value()) {
         cvs.getCursorPos().getX()++;
-        cvs.draw(StyledChar('[', brd.getColor()));
-        cvs.draw(getData().getIcon().value());
-        cvs.draw(StyledChar(']', brd.getColor()));
+        cvs.draw(StyledChar('[', brd.refColor()));
+        cvs.draw(this->getIcon().value());
+        cvs.draw(StyledChar(']', brd.refColor()));
     }
 
-    if (getData().getCaption().has_value()
+    if (this->getCaption().has_value()
         && (cvs.getCursorPos().getX() + 3 < cvs.getSize().getX() - 2)) {
         cvs.getCursorPos().getX()++;
-        cvs.draw(StyledChar('[', brd.getColor()));
+        cvs.draw(StyledChar('[', brd.refColor()));
         auto captionWidth = cvs.getSize().getX() - cvs.getCursorPos().getX() - 3;
         auto caption = cvs.extract(cvs.getCursorPos(),
                                    Point(captionWidth, 1));
-        caption.draw(getData().getCaption().value());
+        caption.draw(this->getCaption().value());
         cvs.getCursorPos().getX() += captionWidth;
-        cvs.draw(StyledChar(']', brd.getColor()));
+        cvs.draw(StyledChar(']', brd.refColor()));
     }
 }
 

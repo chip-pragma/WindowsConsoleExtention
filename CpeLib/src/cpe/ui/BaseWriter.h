@@ -1,54 +1,64 @@
 #pragma once
 
-#include "IWriter.h"
-#include "BaseWriterData.h"
+#include <cstdint>
+
+#include "cpe/ui/output/Buffer.h"
 #include "cpe/ui/BaseElement.h"
 
 namespace cpe {
 
-template<class TData>
-class BaseWriter : public BaseElement<TData>,
-                   public IWriter {
-    using _BaseCuiElement = BaseElement<TData>;
+template<class TDerived>
+class BaseWriter : public BaseElement<TDerived> {
 public:
     static const int32_t MAX_HEIGHT = 128;
 
+    BaseWriter();
+
     ~BaseWriter() override { };
 
-    void write(Buffer &buf) final;
+    const int32_t &getWidth() const;
 
-    void run(IController &ctrl) final;
+    int32_t &getWidth();
 
-    virtual void outputTo(std::ostream &outStream);
+protected:
+    int32_t mWidth = term::getBufferSize().getX() - 1;
+
+    void run(BaseScript &script) final;
+
+    virtual void onWrite(Buffer &buf) = 0;
 };
 
-template<class TData>
-void BaseWriter<TData>::write(Buffer &buf) {
-    onWrite(buf);
+template<class TDerived>
+BaseWriter<TDerived>::BaseWriter() {
+
 }
 
-template<class TData>
-void BaseWriter<TData>::run(IController &ctrl) {
-    auto &data = static_cast<IElementData &>(_BaseCuiElement::getData());
-    if (!data.getVisible())
+template<class TDerived>
+const int32_t &BaseWriter<TDerived>::getWidth() const {
+    return mWidth;
+}
+
+template<class TDerived>
+int32_t &BaseWriter<TDerived>::getWidth() {
+    return mWidth;
+}
+
+template<class TDerived>
+void BaseWriter<TDerived>::run(BaseScript &script) {
+    if (!this->getVisible())
         return;
     this->onBeforeRun();
-    _BaseCuiElement::fireData(ctrl);
-    this->onRun();
-    outputTo(std::cout);
-    if (data.isCallPause())
+    this->fireBeforeRun(script);
+
+    Buffer buf(Point(this->getWidth(), MAX_HEIGHT));
+    onWrite(buf);
+    buf.outputTo(std::cout);
+
+    if (this->isCallPause())
         term::callPause();
     this->onAfterRun();
 }
 
-template<class TData>
-void BaseWriter<TData>::outputTo(std::ostream &outStream) {
-    Buffer buf(Point(
-        static_cast<BaseWriterData &>(_BaseCuiElement::getData()).getWidth(),
-            MAX_HEIGHT));
-    onWrite(buf);
-    buf.outputTo(outStream);
-}
 
 }
 
