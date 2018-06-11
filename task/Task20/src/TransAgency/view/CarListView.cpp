@@ -58,6 +58,6 @@ void CarListView::onInitialize() {
         m_lPageOf.getData().setCallPause(true);
     }
 
-    addElement(m_dtCars);
-    addElement(m_lPageOf);
+    append(m_dtCars);
+    append(m_lPageOf);
 }

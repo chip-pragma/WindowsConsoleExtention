@@ -74,10 +74,10 @@ void MainView::onInitialize() {
         m_lTest.bindData(&MainVM::onLabelTestInit);
     }
 
-    addElement(m_nCaption);
-    addElement(m_lWraps);
-    addElement(m_mMain);
-    addElement(m_lTest);
-    addElement(m_mrMain);
+    append(m_nCaption);
+    append(m_lWraps);
+    append(m_mMain);
+    append(m_lTest);
+    append(m_mrMain);
 }
 

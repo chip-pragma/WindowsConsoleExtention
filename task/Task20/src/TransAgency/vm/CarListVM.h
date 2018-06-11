@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include <cpe/ui/BaseViewModel.h>
+#include <cpe/ui/BaseController.h>
 #include <cpe/ui/element/table/DataTable.h>
 #include <cpe/ui/element/Label.h>
 #include <cpe/ui/element/table/DataTableModel.h>
@@ -10,7 +10,7 @@
 #include "TransAgency/model/Car.h"
 #include "TransAgency/common.h"
 
-class CarListVM : public cpe::BaseViewModel {
+class CarListVM : public cpe::BaseController {
 public:
     ~CarListVM() override;
 

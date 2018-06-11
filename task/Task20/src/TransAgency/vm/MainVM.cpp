@@ -13,7 +13,7 @@ bool MainVM::onMainMenuReaderResult(cpe::MenuReaderResult &result) {
         switch (result.getValue()) {
             case MainVM::ID_MM_CARS: {
                 CarListVM vmCarList;
-                CarListView().showView(vmCarList);
+                CarListView().showNew(vmCarList);
                 return true;
             }
             case MainVM::ID_MM_EXIT:

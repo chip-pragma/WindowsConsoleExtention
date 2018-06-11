@@ -1,16 +1,11 @@
-#include <iostream>
-#include <utility>
-#include <cassert>
+#include "main.h"
 
 #include <cpe/core/terminal.h>
-#include <cpe/ui/element/LineReader.h>
-#include <cpe/ui/output/StyledText.h>
-#include <cpe/ui/element/Notification.h>
 
 #include "common.h"
+#include "TestScript.h"
 
 using namespace cpe;
-using json = nlohmann::json;
 
 int main() {
     term::setTitle("Текст консоли"_dos);
@@ -19,20 +14,14 @@ int main() {
 
     term::callPause();
 
-    Notification notif;
-    StyledText st;
-    st.push_back({"Проверка"_dos, {Colors::LT_YELLOW, Colors::RED}});
-    st.push_back({" ", {Colors::BLACK, Colors::WHITE}});
-    st.push_back({"стилизованного"_dos, {Colors::LT_GREEN, Colors::PURPLE}});
-    st.push_back({" ", {Colors::BLACK, Colors::WHITE}});
-    st.push_back({"текста"_dos, {Colors::LT_RED, Colors::BLUE}});
-    notif.getData().getText() = st;
-    notif.getData().getBorder().getStyle().apply(BorderStyle::DB_BOTTOM | BorderStyle::DB_RIGHT);
-    Buffer buf({50, 10});
-    notif.write(buf);
-    std::cout << buf;
+    onTesting();
 
     term::callPause();
 
     return 0;
+}
+
+void onTesting() {
+    TestScript testScr;
+    testScr.run();
 }

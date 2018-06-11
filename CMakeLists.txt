@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.9)
 
 #Имя исполняемого файла
 set(CPE_TEST_TARGET CPE_Test)
+set(CPE_EXPERIMENT_TARGET CPE_Experiment)
 #Имя библиотеки CPE
 set(CPE_LIB_TARGET cpe)
 #Курсовые
@@ -30,6 +31,7 @@ message(STATUS "Add compile options: ${STATIC_STD_LINK}")
 add_subdirectory(CpeLib)
 #Демо приложение
 add_subdirectory(test)
+add_subdirectory(experiment)
 ##Курсовые
-add_subdirectory(Task8)
-add_subdirectory(Task20)
+add_subdirectory(task/Task8)
+add_subdirectory(task/Task20)

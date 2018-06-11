@@ -2,11 +2,11 @@
 
 #include <cstdint>
 
-#include <cpe/ui/BaseViewModel.h>
+#include <cpe/ui/BaseController.h>
 #include <cpe/ui/element/menu/MenuReader.h>
 #include <cpe/ui/element/Label.h>
 
-class MainVM : public cpe::BaseViewModel {
+class MainVM : public cpe::BaseController {
 public:
     enum MainMenuIds : uint32_t {
         ID_MM_EXIT = 0,

@@ -4,8 +4,8 @@
   <component name="CidrRootsConfiguration">
     <sourceRoots>
       <file path="$PROJECT_DIR$/CpeLib/src" />
-      <file path="$PROJECT_DIR$/Task20/src" />
-      <file path="$PROJECT_DIR$/Task8/src" />
+      <file path="$PROJECT_DIR$/task/Task20/src" />
+      <file path="$PROJECT_DIR$/task/Task8/src" />
       <file path="$PROJECT_DIR$/test/src" />
     </sourceRoots>
     <libraryRoots>

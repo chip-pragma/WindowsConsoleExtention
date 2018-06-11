@@ -3,7 +3,7 @@
 #include <string>
 
 #include <cpe/ui/IModel.h>
-#include <cpe/ui/ISerializable.h>
+#include <cpe/core/ISerializable.h>
 #include <ostream>
 
 class Car : public cpe::IModel,

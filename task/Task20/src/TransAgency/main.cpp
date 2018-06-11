@@ -16,7 +16,7 @@ int main() {
     TransAgency::get().loadData(DATA_FILE_NAME);
 
     MainVM vmMain;
-    MainView().showView(vmMain);
+    MainView().showNew(vmMain);
 
     TransAgency::get().saveData(DATA_FILE_NAME);
 

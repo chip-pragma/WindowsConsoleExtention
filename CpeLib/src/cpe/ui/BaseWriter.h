@@ -2,14 +2,14 @@
 
 #include "IWriter.h"
 #include "BaseWriterData.h"
-#include "cpe/ui/BaseCuiElement.h"
+#include "cpe/ui/BaseElement.h"
 
 namespace cpe {
 
 template<class TData>
-class BaseWriter : public BaseCuiElement<TData>,
+class BaseWriter : public BaseElement<TData>,
                    public IWriter {
-    using _BaseCuiElement = BaseCuiElement<TData>;
+    using _BaseCuiElement = BaseElement<TData>;
 public:
     static const int32_t MAX_HEIGHT = 128;
 
@@ -17,7 +17,7 @@ public:
 
     void write(Buffer &buf) final;
 
-    void run(IViewModel &ctrl) final;
+    void run(IController &ctrl) final;
 
     virtual void outputTo(std::ostream &outStream);
 };
@@ -28,7 +28,7 @@ void BaseWriter<TData>::write(Buffer &buf) {
 }
 
 template<class TData>
-void BaseWriter<TData>::run(IViewModel &ctrl) {
+void BaseWriter<TData>::run(IController &ctrl) {
     auto &data = static_cast<IElementData &>(_BaseCuiElement::getData());
     if (!data.getVisible())
         return;

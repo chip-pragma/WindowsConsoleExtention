@@ -6,16 +6,16 @@
 #include "cpe/tool/text.h"
 #include "cpe/ui/output/OutputHelper.h"
 #include "ReaderData.h"
-#include "cpe/ui/BaseCuiElement.h"
+#include "cpe/ui/BaseElement.h"
 #include "IValidator.h"
 #include "ReaderResult.h"
 
 namespace cpe {
 
 template<class TValue, class TData = ReaderData<TValue>, class TResult = ReaderResult<TValue>>
-class BaseReader : public BaseCuiElement<TData> {
+class BaseReader : public BaseElement<TData> {
 
-    using _BaseCuiElement = BaseCuiElement<TData>;
+    using _BaseCuiElement = BaseElement<TData>;
 public:
     template<class TViewModel>
     using ResultReadReceiverFunc = bool (TViewModel::*)(TResult &);
@@ -25,12 +25,12 @@ public:
     template<class TViewModel>
     void bindResult(ResultReadReceiverFunc<TViewModel> func);
 
-    bool fireResult(IViewModel &ctrl, TResult &result);
+    bool fireResult(IController &ctrl, TResult &result);
 
-    void run(IViewModel &ctrl) override;
+    void run(IController &ctrl) override;
 
 protected:
-    using _PureResultReadReceiverFunc  = bool (IViewModel::*)(TResult &);
+    using _PureResultReadReceiverFunc  = bool (IController::*)(TResult &);
 
     _PureResultReadReceiverFunc mResultFunc = nullptr;
 
@@ -46,14 +46,14 @@ void BaseReader<TValue, TData, TResult>::bindResult(BaseReader::ResultReadReceiv
 }
 
 template<class TValue, class TData, class TResult>
-bool BaseReader<TValue, TData, TResult>::fireResult(IViewModel &ctrl, TResult &result) {
+bool BaseReader<TValue, TData, TResult>::fireResult(IController &ctrl, TResult &result) {
     if (mResultFunc)
         return (ctrl.*mResultFunc)(result);
     return true;
 }
 
 template<class TValue, class TData, class TResult>
-void BaseReader<TValue, TData, TResult>::run(IViewModel &ctrl) {
+void BaseReader<TValue, TData, TResult>::run(IController &ctrl) {
     if (!static_cast<IElementData &>(_BaseCuiElement::getData()).getVisible())
         return;
 

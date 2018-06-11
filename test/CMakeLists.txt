@@ -1,7 +1,7 @@
 project(CPE_Test)
 
 add_executable(${CPE_TEST_TARGET}
-               src/main.cpp src/common.cpp src/common.h)
+               src/main.cpp src/common.cpp src/common.h src/main.h src/TestScript.cpp src/TestScript.h)
 
 target_include_directories(${CPE_TEST_TARGET} PRIVATE src)
 target_link_libraries(${CPE_TEST_TARGET} ${CPE_LIB_TARGET})

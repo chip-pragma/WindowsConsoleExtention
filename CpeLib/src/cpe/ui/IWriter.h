@@ -1,6 +1,6 @@
 #pragma once
 
-#include "cpe/ui/ICuiElement.h"
+#include "cpe/ui/IElement.h"
 #include "cpe/ui/output/Buffer.h"
 
 namespace cpe {
