@@ -8,15 +8,15 @@ TestScript::TestScript() {
     using namespace cpe;
 
     {
-        auto &notif = makeChild<Notification>();
+        auto &notif = makeElement<Notification>();
         notif.setCallPause(true);
-        notif.refText().append("ПРОВЕРКА!"_dos);
+        notif.getTextRef().append("ПРОВЕРКА!"_dos);
         notif.addBeforeRunListener(&TestScript::onBeforeRunNotification);
     }
 
 }
 
 void TestScript::onBeforeRunNotification(cpe::Notification &element) {
-    element.refBorder().refColor().refFore() = cpe::Colors::LT_PURPLE;
+    element.getBorderRef().getColorRef().getForeRef() = cpe::Colors::LT_PURPLE;
     this->abort();
 }

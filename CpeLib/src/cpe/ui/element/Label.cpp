@@ -8,12 +8,12 @@ const StyledText &Label::getText() const {
     return mText;
 }
 
-StyledText &Label::getText() {
+StyledText &Label::getTextRef() {
     return mText;
 }
 
 void Label::onWrite(Buffer &buf) {
-    buf.draw(this->getText());
+    buf.draw(this->getTextRef());
 }
 
 }

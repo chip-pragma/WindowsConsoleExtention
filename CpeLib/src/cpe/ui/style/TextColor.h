@@ -18,11 +18,11 @@ public:
 
     const std::optional<Color> &getFore() const;
 
-    std::optional<Color> &refFore();
+    std::optional<Color> &getForeRef();
 
     const std::optional<Color> &getBack() const;
 
-    std::optional<Color> &getBack();
+    std::optional<Color> &getBackRef();
 
     TextColor &operator=(const TextColor &tc);
 

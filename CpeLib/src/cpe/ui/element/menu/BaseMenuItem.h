@@ -8,11 +8,11 @@ class BaseMenuItem : public IMenuItem {
 public:
     const bool &getVisible() const override;
 
-    bool &getVisible() override;
+    void setVisible(bool vis) override;
 
     const StyledText &getText() const;
 
-    StyledText &getText();
+    StyledText &getTextRef();
 
 protected:
     StyledText mText;

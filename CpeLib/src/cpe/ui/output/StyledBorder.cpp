@@ -15,7 +15,7 @@ const TextColor &StyledBorder::getColor() const {
     return mColor;
 }
 
-TextColor &StyledBorder::refColor() {
+TextColor &StyledBorder::getColorRef() {
     return mColor;
 }
 
@@ -23,7 +23,7 @@ const BorderStyle &StyledBorder::getStyle() const {
     return mBorder;
 }
 
-BorderStyle &StyledBorder::getStyle() {
+BorderStyle &StyledBorder::getStyleRef() {
     return mBorder;
 }
 

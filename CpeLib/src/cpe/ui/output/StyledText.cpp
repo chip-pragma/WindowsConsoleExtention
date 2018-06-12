@@ -26,21 +26,21 @@ StyledText &StyledText::setColor(const TextColor &tColor) {
 }
 
 StyledText &StyledText::setFore(const Color &fore) {
-    if (mColors.back().color.refFore() != fore) {
+    if (mColors.back().color.getForeRef() != fore) {
         if (mColors.back().length != 0)
-            mColors.emplace_back(TextColor(fore, mColors.back().color.getBack()), mText.length());
+            mColors.emplace_back(TextColor(fore, mColors.back().color.getBackRef()), mText.length());
         else
-            mColors.back().color.refFore() = fore;
+            mColors.back().color.getForeRef() = fore;
     }
     return *this;
 }
 
 StyledText &StyledText::setBack(const Color &back) {
-    if (mColors.back().color.getBack() != back) {
+    if (mColors.back().color.getBackRef() != back) {
         if (mColors.back().length != 0)
-            mColors.emplace_back(TextColor(mColors.back().color.refFore(), back), mText.length());
+            mColors.emplace_back(TextColor(mColors.back().color.getForeRef(), back), mText.length());
         else
-            mColors.back().color.getBack() = back;
+            mColors.back().color.getBackRef() = back;
     }
     return *this;
 }

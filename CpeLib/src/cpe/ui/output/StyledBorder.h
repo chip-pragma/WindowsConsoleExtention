@@ -16,11 +16,11 @@ public:
 
     const TextColor &getColor() const;
 
-    TextColor &refColor();
+    TextColor &getColorRef();
 
     const BorderStyle& getStyle() const;
 
-    BorderStyle& getStyle();
+    BorderStyle& getStyleRef();
 
     StyledChar at(const BorderStyle::Side &side) const;
 

@@ -25,13 +25,13 @@ public:
 
     const int32_t& getX() const;
 
-    int32_t& getX();
+    int32_t& getXRef();
 
     const int32_t& getY() const;
 
-    int32_t& getY();
+    int32_t& getYRef();
 
-    Location calcLocation() const;
+    Location getLocation() const;
 
     std::string toString() const;
 

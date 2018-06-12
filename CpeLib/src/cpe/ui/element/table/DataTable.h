@@ -2,10 +2,11 @@
 
 #include <string>
 #include <vector>
-#include <unordered_map>
 #include <cmath>
 #include <optional>
+#include <algorithm>
 
+#include "cpe/core/Exception.h"
 #include "cpe/ui/BaseWriter.h"
 #include "cpe/ui/output/StyledBorder.h"
 #include "cpe/ui/IModel.h"
@@ -40,10 +41,10 @@ public:
 
     void setPageNumber(size_t pageNumber);
 
-    template <class TColumn, class ...Args>
-    TColumn& makeColumn(uint32_t fieldId, Args ...args);
+    template<class TColumn, class ...Args>
+    TColumn &makeColumn(uint32_t fieldId, Args ...args);
 
-    void removeColumn(uint32_t fieldId);
+    bool removeColumn(uint32_t fieldId);
 
     bool tryGetColumn(uint32_t fieldId, DataTableColumn<TModel> &outColumn) const;
 
@@ -68,8 +69,8 @@ protected:
 
 template<class TModel>
 DataTable<TModel>::~DataTable() {
-    for (auto col : mColumns)
-        delete col;
+    for (DataTableColumnPair<TModel> col : mColumns)
+        delete col.second;
 }
 
 template<class TModel>
@@ -130,16 +131,32 @@ void DataTable<TModel>::setPageNumber(size_t pageNumber) {
 
 template<class TModel>
 template<class TColumn, class... Args>
-TColumn& DataTable<TModel>::makeColumn(uint32_t fieldId, Args... args) {
-    // TODO только уникальные ID'ы
-    auto column = static_cast<DataTableColumn<TModel>*>(new TColumn());
+TColumn &DataTable<TModel>::makeColumn(uint32_t fieldId, Args... args) {
+    bool anyOf = std::any_of(
+        mColumns.cbegin(), mColumns.cend(),
+        [&](const DataTableColumnPair &pair) {
+            return pair.first == fieldId;
+        });
+    if (anyOf)
+        throw Exception("ID already in use");
+
+    auto column = static_cast<DataTableColumn<TModel> *>(new TColumn());
     mColumns.emplace_back(fieldId, column);
     return *column;
 }
 
 template<class TModel>
-void DataTable<TModel>::removeColumn(uint32_t fieldId) {
-    // TODO удаление столбцов
+bool DataTable<TModel>::removeColumn(uint32_t fieldId) {
+    auto find = std::find_if(
+        mColumns.cbegin(), mColumns.cend(),
+        [&](const DataTableColumnPair<TModel> &pair) {
+            return pair.first == fieldId;
+        });
+    if (find != mColumns.cend()) {
+        mColumns.erase(find);
+        return true;
+    }
+    return false;
 }
 
 template<class TModel>
@@ -199,13 +216,13 @@ void DataTable<TModel>::onWrite(Buffer &buf) {
         colHeaderBuf.draw(extCol.column->getHeader());
 
         curColDrawPos += extCol.width + 1;
-        maxCellHeight = std::max(maxCellHeight, colHeaderBuf.getUsedSize().getY());
+        maxCellHeight = std::max(maxCellHeight, colHeaderBuf.getUsedSize().getYRef());
     }
 
     //endregion
 
     //region [ HEADER UNDERLINE ]
-    buf.getCursorPos() = Point(offset, maxCellHeight);
+    buf.getCursorPosRef() = Point(offset, maxCellHeight);
 
     for (size_t i = 0, n = -1 + extColsVec.size(); i <= n; i++) {
         const StyledBorder &bord = this->refBorder();
@@ -251,20 +268,20 @@ void DataTable<TModel>::onWrite(Buffer &buf) {
             cellBuf.draw(modelDataStr);
 
             curColDrawPos += extColPair.width + 1;
-            maxCellHeight = std::max(maxCellHeight, cellBuf.getUsedSize().getY());
+            maxCellHeight = std::max(maxCellHeight, cellBuf.getUsedSize().getYRef());
         }
 
         //endregion
 
         //region [ GRID ]
 
-        buf.getCursorPos() = Point(offset, usedHeight + maxCellHeight);
+        buf.getCursorPosRef() = Point(offset, usedHeight + maxCellHeight);
         for (size_t j = 0, m = -1 + extColsVec.size(); j <= m; j++) {
             ExtColumn &extCol = extColsVec.at(j);
 
             buf.draw(mBorder.at(BorderStyle::SH), extCol.width);
             if (j < m) {
-                buf.getCursorPos().getY() = usedHeight;
+                buf.getCursorPosRef().getYRef() = usedHeight;
                 buf.draw(mBorder.at(BorderStyle::SV), maxCellHeight, true);
 
                 if (i < n)

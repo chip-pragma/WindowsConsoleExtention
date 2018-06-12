@@ -18,7 +18,7 @@ const int32_t &Point::getX() const {
     return mX;
 }
 
-int32_t &Point::getX() {
+int32_t &Point::getXRef() {
     return mX;
 }
 
@@ -26,11 +26,11 @@ const int32_t &Point::getY() const {
     return mY;
 }
 
-int32_t &Point::getY() {
+int32_t &Point::getYRef() {
     return mY;
 }
 
-Point::Location Point::calcLocation() const {
+Point::Location Point::getLocation() const {
     int8_t result = PL_ZERO;
     if (mX != 0) {
         result |= PL_X;

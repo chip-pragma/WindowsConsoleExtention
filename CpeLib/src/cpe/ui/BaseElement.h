@@ -20,8 +20,11 @@ public:
 
     void setCallPause(bool value) override;
 
+    // TODO список слушателей
     template<class TScript>
     void addBeforeRunListener(BeforeRunListenerFunc<TScript> func);
+
+    // TODO Удаление слушателя
 
 protected:
     using _PureBeforeRunListenerFunc = void (BaseScript::*)(TDerived &);

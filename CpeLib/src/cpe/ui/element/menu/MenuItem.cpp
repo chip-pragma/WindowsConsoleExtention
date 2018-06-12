@@ -36,9 +36,9 @@ void MenuItem::write(cpe::Buffer &buf, const cpe::StyledBorder &sBord, const Tex
         .append(" ");
     buf.draw(coms);
 
-    auto subBuf = buf.extract(buf.getCursorPos(), buf.getSize() - buf.getCursorPos());
+    auto subBuf = buf.extract(buf.getCursorPosRef(), buf.getSize() - buf.getCursorPosRef());
     subBuf.draw(mText);
-    buf.getCursorPos().getY() += subBuf.getUsedSize().getY();
+    buf.getCursorPosRef().getYRef() += subBuf.getUsedSize().getYRef();
 }
 
 }

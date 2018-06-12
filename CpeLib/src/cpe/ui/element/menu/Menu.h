@@ -20,26 +20,26 @@ public:
 
     const StyledBorder &getBorder() const;
 
-    StyledBorder &getBorder();
+    StyledBorder &getBorderRef();
 
     const StyledText &getCaption() const;
 
-    StyledText &getCaption();
+    StyledText &getCaptionRef();
 
     const StyledText &getReaderHint() const;
 
-    StyledText &getReaderHint();
+    StyledText &getReaderHintRef();
 
     const TextColor &getCommandColor() const;
 
-    TextColor &getCommandColor();
+    TextColor &getCommandColorRef();
 
-    void assignReader(MenuReader *reader);
+    void assignReader(MenuReader &reader);
 
-    template<class TItem>
-    void addItem(uint32_t itemId, TItem &item);
+    template<class TItem, class ...Args>
+    TItem & makeItem(uint32_t itemId, Args ...args);
 
-    void removeItem(uint32_t itemId);
+    bool removeItem(uint32_t itemId);
 
     template<class TItem>
     TItem &getItem(uint32_t itemId);
@@ -59,10 +59,20 @@ protected:
     void onAfterRun() override;
 };
 
-template<class TItem>
-void Menu::addItem(uint32_t itemId, TItem &item) {
-    // TODO уникальный ID
-    mItems.emplace_back(itemId, static_cast<IMenuItem *>(&item));
+
+template<class TItem, class ...Args>
+TItem & Menu::makeItem(uint32_t itemId, Args ...args) {
+    bool anyOf = std::any_of(
+        mItems.cbegin(), mItems.cend(),
+        [&](const IMenuItemPair &pair) {
+            return pair.first == itemId;
+        });
+    if (anyOf)
+        throw Exception("ID already in use");
+
+    auto item = new TItem(args...);
+    mItems.emplace_back(itemId, static_cast<IMenuItem *>(item));
+    return *item;
 }
 
 template<class TItem>

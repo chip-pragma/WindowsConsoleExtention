@@ -22,11 +22,11 @@ public:
 
     const TextColor &getReadColor() const;
 
-    TextColor &getColorRead();
+    TextColor &getColorReadRef();
 
     const std::string &getErrorText() const;
 
-    std::string &getErrorText();
+    std::string &getErrorTextRef();
 
     template<class TValidator>
     void addValidator(const TValidator &validator);
@@ -34,8 +34,11 @@ public:
     template<class TValidator>
     void removeValidator(const TValidator &validator);
 
+    // TODO список слушателей
     template<class TScript>
     void addResultReadListener(ResultReadListenerFunc<TScript> func);
+
+    // TODO Удаление слушателя
 
 protected:
 
@@ -62,7 +65,7 @@ const TextColor &BaseReader<TDerived, TValue, TResult>::getReadColor() const {
 }
 
 template<class TDerived, class TValue, class TResult>
-TextColor &BaseReader<TDerived, TValue, TResult>::getColorRead() {
+TextColor &BaseReader<TDerived, TValue, TResult>::getColorReadRef() {
     return mColorRead;
 }
 
@@ -72,7 +75,7 @@ const std::string &BaseReader<TDerived, TValue, TResult>::getErrorText() const {
 }
 
 template<class TDerived, class TValue, class TResult>
-std::string &BaseReader<TDerived, TValue, TResult>::getErrorText() {
+std::string &BaseReader<TDerived, TValue, TResult>::getErrorTextRef() {
     return mErrorText;
 }
 
@@ -118,7 +121,7 @@ void BaseReader<TDerived, TValue, TResult>::run(BaseScript &script) {
     outHelp.beginColorize(std::cout);
     while (true) {
         outHelp.saveState();
-        outHelp.applyColor(this->getColorRead());
+        outHelp.applyColor(this->getColorReadRef());
 
         TResult result;
         onRead(result);
@@ -159,7 +162,7 @@ void BaseReader<TDerived, TValue, TResult>::onRead(TResult &result) {
                 else
                     castedResult.assignInvalid(errorList);
             } else {
-                castedResult.assignError(this->getErrorText());
+                castedResult.assignError(this->getErrorTextRef());
             }
         }
     }

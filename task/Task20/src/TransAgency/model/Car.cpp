@@ -63,7 +63,7 @@ std::string Car::toString() const {
 }
 
 void Car::onSerialize(std::ostream &os) const {
-    // TODO сериализация
+
 }
 
 void Car::onDeserialize(std::istream &is) const {

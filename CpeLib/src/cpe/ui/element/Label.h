@@ -10,7 +10,7 @@ public:
 
     const StyledText &getText() const;
 
-    StyledText &getText();
+    StyledText &getTextRef();
 
 protected:
     StyledText mText;

@@ -11,8 +11,8 @@ void MenuSeparator::write(Buffer &buf,
     {
         auto textBuf = buf.extract(buf.getCursorPos(), buf.getSize() - buf.getCursorPos());
         textBuf.drawLine(getText());
-        buf.getCursorPos() = Point(0, 1);
-        buf.draw(sBord[BS::SL], textBuf.getUsedSize().getY() - 1, true);
+        buf.getCursorPosRef() = Point(0, 1);
+        buf.draw(sBord[BS::SL], textBuf.getUsedSize().getYRef() - 1, true);
     }
 }
 

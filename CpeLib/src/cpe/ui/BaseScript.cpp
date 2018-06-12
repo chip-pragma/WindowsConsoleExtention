@@ -5,9 +5,8 @@
 namespace cpe {
 
 BaseScript::~BaseScript() {
-    for (auto e : mElements) {
+    for (auto e : mElements)
         delete e;
-    }
 }
 
 void BaseScript::run() {

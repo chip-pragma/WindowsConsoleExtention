@@ -21,7 +21,7 @@ public:
     int32_t &getWidth();
 
 protected:
-    int32_t mWidth = term::getBufferSize().getX() - 1;
+    int32_t mWidth = term::getBufferSize().getXRef() - 1;
 
     void run(BaseScript &script) final;
 

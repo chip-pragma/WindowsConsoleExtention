@@ -53,7 +53,7 @@ void CarListView::onInitialize() {
     }
 
     {
-        // FIXME ошибка при уничтожении Label (возможно двойное удаление LabelData)
+        // FIXME ошибка при уничтожении Label (возможно двойное удаление LabelData) (Проверить на новой SM)
         m_lPageOf.bindData(&CarListVM::onLabelPageInit);
         m_lPageOf.getData().setCallPause(true);
     }

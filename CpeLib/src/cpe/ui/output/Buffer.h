@@ -26,7 +26,7 @@ public:
 
     const Point &getCursorPos() const;
 
-    Point &getCursorPos();
+    Point &getCursorPosRef();
 
     const Point & getSize() const;
 
@@ -34,11 +34,11 @@ public:
 
     const uint8_t &getTabLength() const;
 
-    uint8_t &getTabLength();
+    uint8_t &getTabLengthRef();
 
-    const std::string &unfinished() const;
+    const std::string &getUnfinished() const;
 
-    std::string &unfinished();
+    std::string &getUnfinishedRef();
 
     bool hasOwner() const;
 

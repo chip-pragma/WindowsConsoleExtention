@@ -1,8 +1,8 @@
 #include <cpe/core/terminal.h>
 
-#include "TransAgency/TransAgency.h"
 #include "common.h"
-#include "TransAgency/view/MainView.h"
+#include "TransAgency/TransAgency.h"
+#include "TransAgency/scr/MainScript.h"
 
 int main() {
     using namespace cpe;
@@ -13,10 +13,11 @@ int main() {
     term::setTitle("Транспортное Агенство"_dos);
     BorderStyle::FinalEncoding = Encoder(Encoder::CP866);
 
+    term::callPause();
+
     TransAgency::get().loadData(DATA_FILE_NAME);
 
-    MainVM vmMain;
-    MainView().showNew(vmMain);
+    MainScript().run();
 
     TransAgency::get().saveData(DATA_FILE_NAME);
 

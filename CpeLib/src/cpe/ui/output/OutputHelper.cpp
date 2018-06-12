@@ -10,12 +10,12 @@ void OutputHelper::saveState() {
 }
 
 void OutputHelper::goBackState(size_t count) {
-    auto width = term::getBufferSize().getX();
+    auto width = term::getBufferSize().getXRef();
     for (size_t i = 0; i < count && !mStates.empty(); i++) {
         Point last = mStates.top();
         auto curPos = term::getCursorPos();
-        auto yDiff = curPos.getY() - last.getY();
-        int nback = (width - last.getX()) + width * (yDiff - 1) + curPos.getX();
+        auto yDiff = curPos.getYRef() - last.getYRef();
+        int nback = (width - last.getXRef()) + width * (yDiff - 1) + curPos.getXRef();
 
         term::setCursorPos(last);
         std::cout << std::string(static_cast<unsigned int>(nback), ' ');

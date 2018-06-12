@@ -6,15 +6,15 @@ const bool &BaseMenuItem::getVisible() const {
     return mVisible;
 }
 
-bool &BaseMenuItem::getVisible() {
-    return mVisible;
+void BaseMenuItem::setVisible(bool vis) {
+    mVisible = vis;
 }
 
 const StyledText &BaseMenuItem::getText() const {
     return mText;
 }
 
-StyledText &BaseMenuItem::getText() {
+StyledText &BaseMenuItem::getTextRef() {
     return mText;
 }
 

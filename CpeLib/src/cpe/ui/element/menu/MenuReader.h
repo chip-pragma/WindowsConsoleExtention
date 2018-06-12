@@ -16,7 +16,7 @@ class MenuReader : public BaseReader<MenuReader, uint32_t> {
 public:
     ~MenuReader() override;
 
-    void setCommandItems(const MenuItemVector &itemList);
+    void setCommandItems(MenuItemVector &itemList);
 
 protected:
     MenuItemVector mCommandItems;
