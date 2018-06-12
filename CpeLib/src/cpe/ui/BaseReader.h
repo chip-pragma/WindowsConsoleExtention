@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <vector>
+#include <set>
+#include <algorithm>
 
 #include "cpe/tool/text.h"
 #include "cpe/ui/output/OutputHelper.h"
@@ -16,7 +18,7 @@ template<class TDerived, class TValue, class TResult = ReaderResult<TValue>>
 class BaseReader : public BaseElement<TDerived> {
 public:
     template<class TScript>
-    using ResultReadListenerFunc = bool (TScript::*)(TResult &);
+    using ResultReadCallback = bool (TScript::*)(TResult &);
 
     virtual ~BaseReader() { }
 
@@ -34,21 +36,18 @@ public:
     template<class TValidator>
     void removeValidator(const TValidator &validator);
 
-    // TODO список слушателей
     template<class TScript>
-    void addResultReadListener(ResultReadListenerFunc<TScript> func);
+    void addResultReadCallback(ResultReadCallback<TScript> func);
 
-    // TODO Удаление слушателя
+    template<class TScript>
+    void removeResultReadCallback(ResultReadCallback<TScript> func);
 
 protected:
-
-    using _PureResultReadListenerFunc  = bool (BaseScript::*)(TResult &);
-
-    _PureResultReadListenerFunc mResultFunc = nullptr;
-    std::vector<IValidator<TValue> *> mValidators;
+    std::set<IValidator<TValue> *> mValidators;
     TextColor mColorRead;
     std::string mErrorText;
-    bool fireResultRead(BaseScript &script, TResult &result);
+
+    bool callResultRead(BaseScript &script, TResult &result);
 
     void run(BaseScript &script) override;
 
@@ -57,6 +56,11 @@ protected:
     virtual bool onConvert(std::string &srcLine, TValue &convertedValue) = 0;
 
     bool onValidate(const TValue &value, std::vector<std::string> &errorList) const;
+
+private:
+    using _PureResultReadCallback  = bool (BaseScript::*)(TResult &);
+
+    std::vector<_PureResultReadCallback> mResultFuncCallbackVec;
 };
 
 template<class TDerived, class TValue, class TResult>
@@ -82,40 +86,51 @@ std::string &BaseReader<TDerived, TValue, TResult>::getErrorTextRef() {
 template<class TDerived, class TValue, class TResult>
 template<class TValidator>
 void BaseReader<TDerived, TValue, TResult>::addValidator(const TValidator &validator) {
-    mValidators.push_back(static_cast<IValidator<TValue> *>(new TValidator(validator)));
+    mValidators.insert(static_cast<IValidator<TValue> *>(new TValidator(validator)));
 }
 
 template<class TDerived, class TValue, class TResult>
 template<class TValidator>
 void BaseReader<TDerived, TValue, TResult>::removeValidator(const TValidator &validator) {
-    auto finded = std::find(
-        mValidators.begin(),
-        mValidators.end(),
-        static_cast<const IValidator<TValue> *>(&validator));
-    if (finded != mValidators.end())
-        mValidators.erase(finded);
+    mValidators.erase(&validator);
 }
 
 template<class TDerived, class TValue, class TResult>
 template<class TScript>
-void BaseReader<TDerived, TValue, TResult>::addResultReadListener(ResultReadListenerFunc<TScript> func) {
-    mResultFunc = static_cast<_PureResultReadListenerFunc>(func);
+void BaseReader<TDerived, TValue, TResult>::addResultReadCallback(ResultReadCallback<TScript> func) {
+    auto castedFunc = static_cast<_PureResultReadCallback>(func);
+    bool anyOf = std::any_of(
+        mResultFuncCallbackVec.begin(),
+        mResultFuncCallbackVec.end(),
+        [=](const _PureResultReadCallback& f) {
+            return f == castedFunc;
+        });
+    if (anyOf)
+        return;
+    mResultFuncCallbackVec.push_back(castedFunc);
 }
 
 template<class TDerived, class TValue, class TResult>
-bool BaseReader<TDerived, TValue, TResult>::fireResultRead(BaseScript &script, TResult &result) {
-    if (mResultFunc)
-        return (script.*mResultFunc)(result);
-    return true;
+template<class TScript>
+void BaseReader<TDerived, TValue, TResult>::removeResultReadCallback(BaseReader::ResultReadCallback<TScript> func) {
+    auto castedFunc = static_cast<_PureResultReadCallback>(func);
+    auto find = std::find(mResultFuncCallbackVec.begin(), mResultFuncCallbackVec.end(), castedFunc);
+    if (find != mResultFuncCallbackVec.end())
+        mResultFuncCallbackVec.erase(find);
+}
+
+template<class TDerived, class TValue, class TResult>
+bool BaseReader<TDerived, TValue, TResult>::callResultRead(BaseScript &script, TResult &result) {
+    bool callbackResult = true;
+    for (auto callback : mResultFuncCallbackVec)
+        callbackResult &= (script.*callback)(result);
+    return callbackResult;
 }
 
 template<class TDerived, class TValue, class TResult>
 void BaseReader<TDerived, TValue, TResult>::run(BaseScript &script) {
-    if (!this->getVisible())
-        return;
-
     this->onBeforeRun();
-    this->fireBeforeRun(script);
+    this->callBeforeRun(script);
 
     OutputHelper outHelp;
     outHelp.beginColorize(std::cout);
@@ -127,7 +142,7 @@ void BaseReader<TDerived, TValue, TResult>::run(BaseScript &script) {
         onRead(result);
 
         outHelp.resetColor();
-        if (fireResultRead(script, result))
+        if (callResultRead(script, result))
             break;
         outHelp.goBackState();
     }

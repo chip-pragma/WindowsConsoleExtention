@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "IElement.h"
 
 namespace cpe {
@@ -8,7 +10,7 @@ template<class TDerived>
 class BaseElement : public IElement {
 public:
     template<class TScript>
-    using BeforeRunListenerFunc = void (TScript::*)(TDerived &);
+    using BeforeRunCallback = void (TScript::*)(TDerived &);
 
     ~BaseElement() override { };
 
@@ -20,25 +22,25 @@ public:
 
     void setCallPause(bool value) override;
 
-    // TODO список слушателей
     template<class TScript>
-    void addBeforeRunListener(BeforeRunListenerFunc<TScript> func);
+    void addBeforeRunCallback(BeforeRunCallback<TScript> func);
 
-    // TODO Удаление слушателя
+    template<class TScript>
+    void removeBeforeRunCallback(BeforeRunCallback<TScript> func);
 
 protected:
-    using _PureBeforeRunListenerFunc = void (BaseScript::*)(TDerived &);
-
-    void fireBeforeRun(BaseScript &script);
+    void callBeforeRun(BaseScript &script);
 
     void onBeforeRun() override { }
 
     void onAfterRun() override { }
 
 private:
+    using _PureBeforeRunCallback = void (BaseScript::*)(TDerived &);
+
     bool mVisible = true;
     bool mCallPause = false;
-    _PureBeforeRunListenerFunc mBeforeRunListenerFunc = nullptr;
+    std::vector<_PureBeforeRunCallback> mBeforeRunCallbackVec;
 };
 
 template<class TDerived>
@@ -63,14 +65,32 @@ void BaseElement<TDerived>::setCallPause(bool value) {
 
 template<class TDerived>
 template<class TScript>
-void BaseElement<TDerived>::addBeforeRunListener(BeforeRunListenerFunc<TScript> func) {
-    mBeforeRunListenerFunc = static_cast<_PureBeforeRunListenerFunc>(func);
+void BaseElement<TDerived>::addBeforeRunCallback(BeforeRunCallback<TScript> func) {
+    auto castedFunc = static_cast<_PureBeforeRunCallback>(func);
+    bool anyOf = std::any_of(
+        mBeforeRunCallbackVec.begin(),
+        mBeforeRunCallbackVec.end(),
+        [=](const _PureBeforeRunCallback& f) {
+            return f == castedFunc;
+        });
+    if (anyOf)
+        return;
+    mBeforeRunCallbackVec.push_back(castedFunc);
 }
 
 template<class TDerived>
-void BaseElement<TDerived>::fireBeforeRun(BaseScript &script) {
-    if (mBeforeRunListenerFunc)
-        (script.*mBeforeRunListenerFunc)(*static_cast<TDerived*>(this));
+template<class TScript>
+void BaseElement<TDerived>::removeBeforeRunCallback(BaseElement::BeforeRunCallback<TScript> func) {
+    auto castedFunc = static_cast<_PureBeforeRunCallback>(func);
+    auto find = std::find(mBeforeRunCallbackVec.begin(), mBeforeRunCallbackVec.end(), castedFunc);
+    if (find != mBeforeRunCallbackVec.end())
+        mBeforeRunCallbackVec.erase(find);
+}
+
+template<class TDerived>
+void BaseElement<TDerived>::callBeforeRun(BaseScript &script) {
+    for (auto callback : mBeforeRunCallbackVec)
+        (script.*callback)(*static_cast<TDerived*>(this));
 }
 
 }

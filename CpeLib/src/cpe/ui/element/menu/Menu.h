@@ -11,9 +11,6 @@
 
 namespace cpe {
 
-using IMenuItemPair = std::pair<uint32_t, IMenuItem*>;
-using IMenuItemVector = std::vector<IMenuItemPair>;
-
 class Menu : public BaseWriter<Menu> {
 public:
     ~Menu() override;
@@ -45,7 +42,6 @@ public:
     TItem &getItem(uint32_t itemId);
 
 protected:
-    IMenuItemVector mItems;
     MenuReader *mReader = nullptr;
     StyledBorder mBorder;
     StyledText mCaption;
@@ -54,32 +50,36 @@ protected:
 
     void onWrite(Buffer &buf) override;
 
-protected:
-
     void onAfterRun() override;
+
+private:
+    using _IMenuItemPair = std::pair<uint32_t, IMenuItem*>;
+    using _IMenuItemVector = std::vector<_IMenuItemPair>;
+
+    _IMenuItemVector mItemVec;
 };
 
 
 template<class TItem, class ...Args>
 TItem & Menu::makeItem(uint32_t itemId, Args ...args) {
     bool anyOf = std::any_of(
-        mItems.cbegin(), mItems.cend(),
-        [&](const IMenuItemPair &pair) {
+        mItemVec.cbegin(), mItemVec.cend(),
+        [&](const _IMenuItemPair &pair) {
             return pair.first == itemId;
         });
     if (anyOf)
         throw Exception("ID already in use");
 
     auto item = new TItem(args...);
-    mItems.emplace_back(itemId, static_cast<IMenuItem *>(item));
+    mItemVec.emplace_back(itemId, static_cast<IMenuItem *>(item));
     return *item;
 }
 
 template<class TItem>
 TItem &Menu::getItem(uint32_t itemId) {
-    auto finded = std::find(mItems.cbegin(), mItems.cend(),
+    auto finded = std::find(mItemVec.cbegin(), mItemVec.cend(),
                             [&](MenuItemPair &r) { return r.first == itemId; });
-    if (finded == mItems.cend())
+    if (finded == mItemVec.cend())
         throw Exception("Item with this ID not found");
     return static_cast<TItem &>(*finded);
 }

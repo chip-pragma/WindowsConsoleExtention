@@ -11,7 +11,7 @@ TestScript::TestScript() {
         auto &notif = makeElement<Notification>();
         notif.setCallPause(true);
         notif.getTextRef().append("ПРОВЕРКА!"_dos);
-        notif.addBeforeRunListener(&TestScript::onBeforeRunNotification);
+        notif.addBeforeRunCallback(&TestScript::onBeforeRunNotification);
     }
 
 }

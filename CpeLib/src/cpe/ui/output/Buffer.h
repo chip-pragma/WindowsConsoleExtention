@@ -77,11 +77,11 @@ private:
     explicit Buffer(Buffer *parent, const Point &beginPos, const Point &size);
 
     // "Печатает" символ в допустимой области холста
-    void __printChar(const StyledChar &schar);
+    void printChar(const StyledChar &schar);
     // Печатает текстовый символ (с пропуском строки и т.п.)
-    void __printText(const StyledChar &schar);
+    void printTextChar(const StyledChar &schar);
     // Расчет максимальной позиции курсора
-    void __pointWithMaxCrd();
+    void getPointWithMaxCrd();
 };
 
 }

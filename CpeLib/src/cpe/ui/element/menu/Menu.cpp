@@ -3,7 +3,7 @@
 namespace cpe {
 
 Menu::~Menu() {
-    for (auto item : mItems)
+    for (auto item : mItemVec)
         delete item.second;
 }
 
@@ -45,12 +45,12 @@ void Menu::assignReader(MenuReader &reader) {
 
 bool Menu::removeItem(uint32_t itemId) {
     auto find = std::find_if(
-        mItems.cbegin(), mItems.cend(),
-        [&](const IMenuItemPair &pair) {
+        mItemVec.cbegin(), mItemVec.cend(),
+        [&](const _IMenuItemPair &pair) {
             return pair.first == itemId;
         });
-    if (find != mItems.cend()) {
-        mItems.erase(find);
+    if (find != mItemVec.cend()) {
+        mItemVec.erase(find);
         return true;
     }
     return false;
@@ -69,7 +69,7 @@ void Menu::onWrite(Buffer &buf) {
         buf.draw(brd[BS::SL], captionBuf.getUsedSize().getY() - 1, true);
     }
 
-    for (const auto &pair : mItems) {
+    for (const auto &pair : mItemVec) {
         if (!pair.second->getVisible())
             continue;
         auto sumBuf = buf.extract(buf.getCursorPos(), buf.getSize() - buf.getCursorPos());
@@ -90,13 +90,13 @@ void Menu::onWrite(Buffer &buf) {
 
 void Menu::onAfterRun() {
     if (mReader) {
-        MenuItemVector vec;
-        for (auto& item : mItems) {
+        MenuItemSet set;
+        for (auto& item : mItemVec) {
             auto comItem = dynamic_cast<MenuItem*>(item.second);
             if (comItem)
-                vec.emplace_back(item.first, comItem);
+                set.emplace(item.first, comItem);
         }
-        mReader->setCommandItems(vec);
+        mReader->setCommandItems(set);
     }
 }
 

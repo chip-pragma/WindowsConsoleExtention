@@ -34,7 +34,7 @@ public:
 
     std::string &getStateNumber();
 
-    bool getFieldValue(uint32_t idField, std::string &outField) const override;
+    bool tryGetFieldValue(uint32_t idField, std::string &outField) const override;
 
     std::string toString() const override;
 

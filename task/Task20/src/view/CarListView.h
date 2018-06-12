@@ -10,7 +10,7 @@
 #include <cpe/ui/element/menu/MenuSeparator.h>
 #include <cpe/ui/element/Label.h>
 
-#include "../vm/CarListVM.h"
+#include "vm/CarListVM.h"
 
 class CarListView : public cpe::BaseView<CarListVM> {
     cpe::DataTable<Car> m_dtCars;

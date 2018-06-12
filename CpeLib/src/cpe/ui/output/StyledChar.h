@@ -19,7 +19,7 @@ public:
 
     const TextColor &getColor() const;
 
-    TextColor &getColor();
+    TextColor &getColorRef();
 
     char getChar() const;
 

@@ -36,11 +36,15 @@ void BaseScript::onRun() {
     while (true) {
         outHelp.saveState();
         this->onBeforeRun();
+
         for (auto item : mElements) {
+            if (!item->getVisible())
+                continue;
             item->run(*this);
             if (this->isAborted())
                 break;
         }
+
         this->onAfterRun();
         if (this->isAborted())
             break;

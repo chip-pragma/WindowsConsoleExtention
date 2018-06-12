@@ -21,7 +21,7 @@ public:
 
     const StyledBorder &getBorder() const;
 
-    StyledBorder &refBorder();
+    StyledBorder &getBorderRef();
 
     const std::optional<uint32_t> &getSortBy() const;
 
@@ -79,7 +79,7 @@ const StyledBorder &DataTable<TModel>::getBorder() const {
 }
 
 template<class TModel>
-StyledBorder &DataTable<TModel>::refBorder() {
+StyledBorder &DataTable<TModel>::getBorderRef() {
     return mBorder;
 }
 
@@ -213,7 +213,7 @@ void DataTable<TModel>::onWrite(Buffer &buf) {
         auto colHeaderBuf = buf.extract(
             Point(curColDrawPos, 0),
             Point(extCol.width, buf.getSize().getY()));
-        colHeaderBuf.draw(extCol.column->getHeader());
+        colHeaderBuf.draw(extCol.column->getHeaderRef());
 
         curColDrawPos += extCol.width + 1;
         maxCellHeight = std::max(maxCellHeight, colHeaderBuf.getUsedSize().getYRef());
@@ -225,7 +225,7 @@ void DataTable<TModel>::onWrite(Buffer &buf) {
     buf.getCursorPosRef() = Point(offset, maxCellHeight);
 
     for (size_t i = 0, n = -1 + extColsVec.size(); i <= n; i++) {
-        const StyledBorder &bord = this->refBorder();
+        const StyledBorder &bord = this->getBorderRef();
         ExtColumn &extCol = extColsVec.at(i);
 
         buf.draw(bord.at(BorderStyle::ST), extCol.width);
@@ -260,9 +260,9 @@ void DataTable<TModel>::onWrite(Buffer &buf) {
 
             StyledText modelDataStr;
             std::string modelDataField;
-            if (srcDataItem.getFieldValue(extColPair.id, modelDataField)) {
+            if (srcDataItem.tryGetFieldValue(extColPair.id, modelDataField)) {
                 modelDataStr
-                    .setColor(extColPair.column->getCellTextColor())
+                    .setColor(extColPair.column->getCellTextColorRef())
                     .append(modelDataField);
             }
             cellBuf.draw(modelDataStr);
@@ -313,7 +313,7 @@ void DataTable<TModel>::prepareData(std::vector<TModel> &modifiedData) {
                 auto &model = static_cast<const IModel &>(data);
                 for (const DataTableColumnPair<TModel> &colPair : mColumns) {
                     std::string fieldValue = "";
-                    if (model.getFieldValue(colPair.first, fieldValue))
+                    if (model.tryGetFieldValue(colPair.first, fieldValue))
                         if (fieldValue.find(mFilterBy.value()) != std::string::npos)
                             return false;
                 }

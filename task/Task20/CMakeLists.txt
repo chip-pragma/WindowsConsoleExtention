@@ -1,11 +1,11 @@
 project(Task20)
 
 add_executable(${COURSE_TASK_20}
-               src/TransAgency/main.cpp
-               src/TransAgency/model/Car.cpp src/TransAgency/model/Car.h
-               src/TransAgency/common.cpp src/TransAgency/common.h
-               src/TransAgency/TransAgency.cpp src/TransAgency/TransAgency.h
-               src/TransAgency/scr/MainScript.cpp src/TransAgency/scr/MainScript.h)
+               src/main.cpp
+               src/model/Car.cpp src/model/Car.h
+               src/common.cpp src/common.h
+               src/TransAgency.cpp src/TransAgency.h
+               src/scr/MainScript.cpp src/scr/MainScript.h)
 
 target_include_directories(${COURSE_TASK_20} PRIVATE src)
 target_link_libraries(${COURSE_TASK_20} ${CPE_LIB_TARGET})

@@ -36,7 +36,7 @@ std::string &Car::getStateNumber() {
     return mStateNumber;
 }
 
-bool Car::getFieldValue(uint32_t idField, std::string &outField) const {
+bool Car::tryGetFieldValue(uint32_t idField, std::string &outField) const {
     switch (idField) {
         case Fields::CF_MARK:
             outField = mMark;

@@ -1,8 +1,8 @@
 #include <cpe/core/terminal.h>
 
 #include "common.h"
-#include "TransAgency/TransAgency.h"
-#include "TransAgency/scr/MainScript.h"
+#include "TransAgency.h"
+#include "scr/MainScript.h"
 
 int main() {
     using namespace cpe;

@@ -28,15 +28,15 @@ public:
 
     const StyledText &getHeader() const;
 
-    StyledText &getHeader();
+    StyledText &getHeaderRef();
 
     const TextColor &getCellTextColor() const;
 
-    TextColor &getCellTextColor();
+    TextColor &getCellTextColorRef();
 
     const DataTableColumnSortPredicate<TModel> &getSortFunctor() const;
 
-    void setSortFunctor(const DataTableColumnSortPredicate<TModel> &sortFunctor);
+    void setSortPredicate(const DataTableColumnSortPredicate<TModel> &sortPredicate);
 
 protected:
     bool mVisible = true;
@@ -61,7 +61,7 @@ const StyledText &DataTableColumn<TModel>::getHeader() const {
 }
 
 template<class TModel>
-StyledText &DataTableColumn<TModel>::getHeader() {
+StyledText &DataTableColumn<TModel>::getHeaderRef() {
     return mHeader;
 }
 
@@ -71,7 +71,7 @@ const TextColor &DataTableColumn<TModel>::getCellTextColor() const {
 }
 
 template<class TModel>
-TextColor &DataTableColumn<TModel>::getCellTextColor() {
+TextColor &DataTableColumn<TModel>::getCellTextColorRef() {
     return mCellColor;
 }
 
@@ -81,8 +81,8 @@ const DataTableColumnSortPredicate<TModel> &DataTableColumn<TModel>::getSortFunc
 }
 
 template<class TModel>
-void DataTableColumn<TModel>::setSortFunctor(const DataTableColumnSortPredicate<TModel> &sortFunctor) {
-    mSortFunctor = sortFunctor;
+void DataTableColumn<TModel>::setSortPredicate(const DataTableColumnSortPredicate<TModel> &sortPredicate) {
+    mSortFunctor = sortPredicate;
 }
 
 }

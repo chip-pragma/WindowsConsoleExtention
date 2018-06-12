@@ -92,7 +92,7 @@ const ReaderResultType &ReaderResult<TValue>::getType() const {
 template<class TValue>
 const std::string &ReaderResult<TValue>::getCommand() const {
     if (mType != ReaderResultType::COMMAND)
-        throw Exception("Result is not <getCommand>");
+        throw Exception("Result is not <command>");
     return mCommand;
 }
 
@@ -106,14 +106,14 @@ const std::string &ReaderResult<TValue>::getError() const {
 template<class TValue>
 const std::vector<std::string> &ReaderResult<TValue>::getInvalid() const {
     if (mType != ReaderResultType::INVALID)
-        throw Exception("Result is not <getInvalid>");
+        throw Exception("Result is not <invalid>");
     return mInvalid;
 }
 
 template<class TValue>
 const TValue &ReaderResult<TValue>::getValue() const {
     if (mType != ReaderResultType::VALUE)
-        throw Exception("Result is not getValue");
+        throw Exception("Result is not <value>");
     return mValue;
 }
 

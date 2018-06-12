@@ -18,7 +18,7 @@ public:
 
     const int32_t &getWidth() const;
 
-    int32_t &getWidth();
+    void setWidth(int32_t w);
 
 protected:
     int32_t mWidth = term::getBufferSize().getXRef() - 1;
@@ -39,16 +39,14 @@ const int32_t &BaseWriter<TDerived>::getWidth() const {
 }
 
 template<class TDerived>
-int32_t &BaseWriter<TDerived>::getWidth() {
-    return mWidth;
+void BaseWriter<TDerived>::setWidth(int32_t w) {
+    mWidth = w;
 }
 
 template<class TDerived>
 void BaseWriter<TDerived>::run(BaseScript &script) {
-    if (!this->getVisible())
-        return;
     this->onBeforeRun();
-    this->fireBeforeRun(script);
+    this->callBeforeRun(script);
 
     Buffer buf(Point(this->getWidth(), MAX_HEIGHT));
     onWrite(buf);

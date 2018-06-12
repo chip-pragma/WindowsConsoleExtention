@@ -27,7 +27,7 @@ const TextColor &StyledChar::getColor() const {
     return mColor;
 }
 
-TextColor &StyledChar::getColor() {
+TextColor &StyledChar::getColorRef() {
     return mColor;
 }
 

@@ -1,6 +1,6 @@
 #include "MainScript.h"
 
-#include "TransAgency/common.h"
+#include "common.h"
 
 #include <cpe/ui/element/Notification.h>
 #include <cpe/ui/element/menu/Menu.h>
@@ -46,7 +46,7 @@ MainScript::MainScript() {
             .getTextRef().append("Выход из программы"_dos);
 
         auto &d = makeElement<MenuReader>();
-        d.addResultReadListener(onMenuResult);
+        d.addResultReadCallback(onMenuResult);
         d.getColorReadRef() = {Colors::LT_TEAL, Colors::BLUE};
         d.getErrorTextRef() = "Неверный пункт меню"_dos;
 

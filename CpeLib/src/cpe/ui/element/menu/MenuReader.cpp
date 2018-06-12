@@ -4,9 +4,10 @@ namespace cpe {
 
 MenuReader::~MenuReader() { }
 
-void MenuReader::setCommandItems(MenuItemVector &itemList) {
-    mCommandItems.clear();
-    mCommandItems.insert(mCommandItems.cbegin(), itemList.begin(), itemList.end());
+void MenuReader::setCommandItems(MenuItemSet &itemList) {
+//    mCommandItems.clear();
+//    mCommandItems.insert(itemList.begin(), itemList.end());
+    mCommandItems = itemList;
 }
 
 bool MenuReader::onConvert(std::string &srcLine, uint32_t &convertedValue) {

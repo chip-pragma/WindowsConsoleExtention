@@ -1,6 +1,6 @@
 #include "CarListView.h"
 
-#include "../common.h"
+#include "common.h"
 #include "../model/Car.h"
 
 CarListView::CarListView()
@@ -26,23 +26,23 @@ void CarListView::onInitialize() {
         auto &d = m_dtCars.getData();
         d.getBorder().getColor() = BORDER_COLOR;
 
-        m_dtCars_dtcMark.getHeader()
+        m_dtCars_dtcMark.getHeaderRef()
             .setColor(HEADER_COLOR)
             .append("МАРКА"_dos);
 
-        m_dtCars_dtcMaker.getHeader()
+        m_dtCars_dtcMaker.getHeaderRef()
             .setColor(HEADER_COLOR)
             .append("ПРОИЗВОДИТЕЛЬ"_dos);
 
-        m_dtCars_dtcSeats.getHeader()
+        m_dtCars_dtcSeats.getHeaderRef()
             .setColor(HEADER_COLOR)
             .append("СИДЕНИЙ"_dos);
-        m_dtCars_dtcSeats.setSortFunctor(
+        m_dtCars_dtcSeats.setSortPredicate(
             [](const Car &c1, const Car &c2) -> bool {
                 return (c1.getSeats() < c2.getSeats());
             });
 
-        m_dtCars_dtcStateNumber.getHeader()
+        m_dtCars_dtcStateNumber.getHeaderRef()
             .setColor(HEADER_COLOR)
             .append("ГОСНОМЕР"_dos);
 
