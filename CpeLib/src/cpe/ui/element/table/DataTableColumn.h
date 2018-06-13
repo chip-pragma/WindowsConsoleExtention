@@ -34,7 +34,7 @@ public:
 
     TextColor &getCellTextColorRef();
 
-    const DataTableColumnSortPredicate<TModel> &getSortFunctor() const;
+    const DataTableColumnSortPredicate<TModel> &getSortPredicate() const;
 
     void setSortPredicate(const DataTableColumnSortPredicate<TModel> &sortPredicate);
 
@@ -76,7 +76,7 @@ TextColor &DataTableColumn<TModel>::getCellTextColorRef() {
 }
 
 template<class TModel>
-const DataTableColumnSortPredicate<TModel> &DataTableColumn<TModel>::getSortFunctor() const {
+const DataTableColumnSortPredicate<TModel> &DataTableColumn<TModel>::getSortPredicate() const {
     return mSortFunctor;
 }
 

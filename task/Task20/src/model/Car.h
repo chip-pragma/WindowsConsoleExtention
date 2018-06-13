@@ -9,11 +9,11 @@
 class Car : public cpe::IModel,
             public cpe::ISerializable {
 public:
-    enum Fields : uint32_t {
-        CF_MARK,
-        CF_MAKER,
-        CF_SEATS,
-        CF_STATE_NUMBER
+    enum FieldIds : uint32_t {
+        ID_FIELD_MARK,
+        ID_FIELD_MAKER,
+        ID_FIELD_SEATS,
+        ID_FIELD_STATE_NUMBER
     };
 
     ~Car() override;

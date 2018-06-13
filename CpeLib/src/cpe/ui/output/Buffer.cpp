@@ -56,6 +56,7 @@ Buffer::Buffer(const Point &size) {
     mSize = size;
 
     mBuffer = new StyledChar *[size.getY()];
+    // FEATURE создание новых строк по мере необходимости, а не сразу.
     for (int i = 0; i < size.getY(); i++)
         mBuffer[i] = new StyledChar[size.getX()];
 }

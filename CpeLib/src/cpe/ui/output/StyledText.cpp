@@ -78,7 +78,7 @@ StyledText &StyledText::append(const StyledChar &sChar) {
 
 StyledText &StyledText::clear() {
     mText.clear();
-    mColors.clear();
+    mColors = std::vector<_TextColorLine>(1);
     return *this;
 }
 

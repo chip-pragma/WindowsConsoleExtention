@@ -13,14 +13,9 @@ int main() {
     term::setTitle("Транспортное Агенство"_dos);
     BorderStyle::FinalEncoding = Encoder(Encoder::CP866);
 
-    term::callPause();
-
     TransAgency::get().loadData(DATA_FILE_NAME);
-
     MainScript().run();
-
     TransAgency::get().saveData(DATA_FILE_NAME);
 
-    term::callPause();
     return 0;
 }

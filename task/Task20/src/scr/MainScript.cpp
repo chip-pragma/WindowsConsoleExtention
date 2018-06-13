@@ -1,6 +1,7 @@
 #include "MainScript.h"
 
 #include "common.h"
+#include "scr/CarListScript.h"
 
 #include <cpe/ui/element/Notification.h>
 #include <cpe/ui/element/menu/Menu.h>
@@ -10,8 +11,8 @@
 using namespace cpe;
 
 MainScript::MainScript() {
-    Label tlWraps;
-    tlWraps.getTextRef().append("\n\n");
+    Label tempLabelWraps;
+    tempLabelWraps.getTextRef().append("\n\n");
 
     {
         auto& e = makeElement<Notification>();
@@ -24,7 +25,7 @@ MainScript::MainScript() {
         e.getIconRef() = StyledChar('i', {Colors::LT_TEAL, std::nullopt});
     }
 
-    makeElement<Label>(tlWraps);
+    makeElement<Label>(tempLabelWraps);
 
     {
         auto& e = makeElement<Menu>();
@@ -60,7 +61,7 @@ bool MainScript::onMenuResult(cpe::MenuReaderResult &result) {
     if (result.getType() == cpe::ReaderResultType::VALUE) {
         switch (result.getValue()) {
             case ID_MM_CARS: {
-                // CarListScript.run();
+                CarListScript().run();
                 return true;
             }
             case ID_MM_EXIT:

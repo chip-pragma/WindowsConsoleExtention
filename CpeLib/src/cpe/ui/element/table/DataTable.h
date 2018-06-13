@@ -134,7 +134,7 @@ template<class TColumn, class... Args>
 TColumn &DataTable<TModel>::makeColumn(uint32_t fieldId, Args... args) {
     bool anyOf = std::any_of(
         mColumns.cbegin(), mColumns.cend(),
-        [&](const DataTableColumnPair &pair) {
+        [&](const DataTableColumnPair<TModel> &pair) {
             return pair.first == fieldId;
         });
     if (anyOf)
@@ -323,10 +323,26 @@ void DataTable<TModel>::prepareData(std::vector<TModel> &modifiedData) {
 
     if (mSortBy.has_value()) {
         DataTableColumn<TModel> column;
-        if (this->tryGetColumn(mSortBy.value(), column)
-            && column.getVisible()
-            && column.getSortFunctor())
-            std::sort(modifiedData.begin(), modifiedData.end(), column.getSortFunctor());
+        auto sortBy = mSortBy.value();
+        if (this->tryGetColumn(sortBy, column)
+            && column.getVisible()) {
+            if (column.getSortPredicate() != nullptr) {
+                std::sort(modifiedData.begin(), modifiedData.end(), column.getSortPredicate());
+            } else {
+                std::sort(
+                    modifiedData.begin(), modifiedData.end(),
+                    [&](const TModel &c1, const TModel &c2) -> bool {
+                        auto &model1 = static_cast<const IModel &>(c1);
+                        auto &model2 = static_cast<const IModel &>(c2);
+                        std::string f1, f2;
+                        if (model1.tryGetFieldValue(sortBy, f1)
+                            && model2.tryGetFieldValue(sortBy, f2)) {
+                            return f1.compare(f2) < 0;
+                        }
+                        return false;
+                    });
+            }
+        }
     }
 
     if (!mPageItemCount.has_value()) {
