@@ -1,12 +1,10 @@
-project(CPE_Test)
+project(wce_demo)
 
-add_executable(${CPE_TEST_TARGET}
+add_executable(wce_demo
                src/main.cpp src/common.cpp src/common.h src/main.h src/TestScript.cpp src/TestScript.h)
 
-target_include_directories(${CPE_TEST_TARGET} PRIVATE src)
-target_link_libraries(${CPE_TEST_TARGET} ${CPE_LIB_TARGET})
-target_compile_features(${CPE_TEST_TARGET} PUBLIC cxx_std_17)
-
-set_target_properties(${CPE_TEST_TARGET} PROPERTIES
-                      OUTPUT_NAME "CpeTest"
+target_include_directories(wce_demo PRIVATE src)
+target_link_libraries(wce_demo wce_lib)
+set_target_properties(wce_demo PROPERTIES
+                      OUTPUT_NAME "demoWCE"
                       LINK_FLAGS ${STATIC_STD_LINK})

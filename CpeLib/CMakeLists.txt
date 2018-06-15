@@ -1,6 +1,6 @@
-project(ConsolePresentExtention)
+project(wce_lib)
 
-add_library(${CPE_LIB_TARGET} STATIC
+add_library(wce_lib STATIC
             src/cpe/tool/text.cpp src/cpe/tool/text.h src/cpe/core/terminal.cpp src/cpe/core/terminal.h
             src/cpe/tool/Encoder.cpp
             src/cpe/tool/Encoder.h src/cpe/core/draw/Point.cpp src/cpe/core/draw/Point.h src/platform/platform.h
@@ -30,13 +30,10 @@ add_library(${CPE_LIB_TARGET} STATIC
             src/cpe/ui/element/table/DataTableColumn.h
             src/cpe/ui/BaseScript.cpp src/cpe/ui/BaseScript.h)
 
-target_include_directories(${CPE_LIB_TARGET} PUBLIC src)
-target_compile_features(${CPE_LIB_TARGET} PUBLIC cxx_std_17)
+target_include_directories(wce_lib PUBLIC src)
+set_target_properties(wce_lib PROPERTIES
+                      OUTPUT_NAME WCE)
 
-set_target_properties(${CPE_LIB_TARGET} PROPERTIES
-                      OUTPUT_NAME ${CPE_LIB_TARGET}
-                      ARCHIVE_OUTPUT_DIRECTORY ${STATIC_LIB_OUTPUT_DIRECTORY}/${CPE_LIB_TARGET})
-
-file(COPY src/cpe src/platform
-     DESTINATION ${STATIC_LIB_OUTPUT_DIRECTORY}/${CPE_LIB_TARGET}/include
-     FILES_MATCHING PATTERN "*.h*")
+#file(COPY src/cpe src/platform
+#     DESTINATION ${STATIC_LIB_OUTPUT_DIRECTORY}/${CPE_LIB_TARGET}/include
+#     FILES_MATCHING PATTERN "*.h*")
