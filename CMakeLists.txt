@@ -20,7 +20,7 @@ message(STATUS "Add compile options: STATIC_STD_LINK = ${STATIC_STD_LINK}")
 add_subdirectory(CpeLib)
 #Демо приложение
 add_subdirectory(demo)
-add_subdirectory(experiment)
+add_subdirectory(test)
 ##Курсовые
 add_subdirectory(task/Task8)
 add_subdirectory(task/Task20)
