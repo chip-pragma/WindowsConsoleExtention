@@ -22,5 +22,5 @@ add_subdirectory(CpeLib)
 add_subdirectory(demo)
 add_subdirectory(test)
 ##Курсовые
-add_subdirectory(task/Task8)
-add_subdirectory(task/Task20)
+add_subdirectory(cw/Task8)
+add_subdirectory(cw/Task20)
