@@ -12,5 +12,5 @@ target_include_directories(cw_task20 PRIVATE src)
 target_link_libraries(cw_task20 wce_lib)
 
 set_target_properties(cw_task20 PROPERTIES
-                      OUTPUT_NAME TransAgency/cwTask20
+                      OUTPUT_NAME cwTask20
                       LINK_FLAGS ${STATIC_STD_LINK})

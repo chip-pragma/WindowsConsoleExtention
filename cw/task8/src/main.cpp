@@ -1,7 +1,7 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
-#include <Windows.h>
+#include <windows.h>
 
 #include "System.h"
 #include "Item.h"

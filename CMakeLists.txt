@@ -22,5 +22,5 @@ add_subdirectory(lib)
 add_subdirectory(demo)
 add_subdirectory(test)
 ##Курсовые
-add_subdirectory(cw/Task8)
-add_subdirectory(cw/Task20)
+add_subdirectory(cw/task8)
+add_subdirectory(cw/task20)
