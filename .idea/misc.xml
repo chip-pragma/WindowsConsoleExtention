@@ -3,10 +3,10 @@
   <component name="CMakeWorkspace" PROJECT_DIR="$PROJECT_DIR$" />
   <component name="CidrRootsConfiguration">
     <sourceRoots>
-      <file path="$PROJECT_DIR$/CpeLib/src" />
       <file path="$PROJECT_DIR$/cw/Task20/src" />
       <file path="$PROJECT_DIR$/cw/Task8/src" />
       <file path="$PROJECT_DIR$/demo/src" />
+      <file path="$PROJECT_DIR$/lib/src" />
       <file path="$PROJECT_DIR$/test/src" />
     </sourceRoots>
     <libraryRoots>
