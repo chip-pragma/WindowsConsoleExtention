@@ -5,7 +5,7 @@
 
 #include "IElement.h"
 
-namespace cpe {
+namespace wce {
 
 class BaseScript {
 public:

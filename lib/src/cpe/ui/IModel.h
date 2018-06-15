@@ -2,7 +2,7 @@
 
 #include <string>
 
-namespace cpe {
+namespace wce {
 
 class IModel {
 public:

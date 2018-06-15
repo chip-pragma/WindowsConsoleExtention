@@ -3,7 +3,7 @@
 #include "cpe/core/draw/Point.h"
 #include "cpe/core/Exception.h"
 
-namespace cpe {
+namespace wce {
 
 void OutputHelper::saveState() {
     mStates.push(term::getCursorPos());
@@ -31,7 +31,7 @@ size_t OutputHelper::getStateCount() const {
 
 void OutputHelper::beginColorize(std::ostream &outStream) {
     if (mOutStream)
-        throw cpe::Exception("Output has already begined");
+        throw wce::Exception("Output has already begined");
     mOutStream = &outStream;
 
     mOutputAutoFlush = outStream.flags() & std::ios_base::unitbuf;

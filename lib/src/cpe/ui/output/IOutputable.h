@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-namespace cpe {
+namespace wce {
 
 class IOutputable {
 public:

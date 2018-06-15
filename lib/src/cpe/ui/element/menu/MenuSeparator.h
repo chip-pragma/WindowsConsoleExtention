@@ -2,7 +2,7 @@
 
 #include "BaseMenuItem.h"
 
-namespace cpe {
+namespace wce {
 
 class MenuSeparator : public BaseMenuItem {
 public:

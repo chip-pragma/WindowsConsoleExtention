@@ -2,7 +2,7 @@
 
 #include "cpe/ui/BaseReader.h"
 
-namespace cpe {
+namespace wce {
 
 class LineReader : public BaseReader<LineReader, std::string> {
 protected:

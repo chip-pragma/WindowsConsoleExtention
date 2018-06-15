@@ -8,7 +8,7 @@
 #include "cpe/core/draw/Point.h"
 #include "cpe/core/draw/Color.h"
 
-namespace cpe::term {
+namespace wce::term {
 
 void callPause();
 

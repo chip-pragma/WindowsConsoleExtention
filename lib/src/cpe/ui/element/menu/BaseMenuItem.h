@@ -2,7 +2,7 @@
 
 #include "IMenuItem.h"
 
-namespace cpe {
+namespace wce {
 
 class BaseMenuItem : public IMenuItem {
 public:

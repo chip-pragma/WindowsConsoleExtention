@@ -3,13 +3,13 @@
 #include <cpe/ui/BaseScript.h>
 #include <cpe/ui/element/Notification.h>
 
-class TestScript : public cpe::BaseScript {
+class TestScript : public wce::BaseScript {
 public:
     TestScript();
 
 protected:
 
-    void onBeforeRunNotification(cpe::Notification& element);
+    void onBeforeRunNotification(wce::Notification& element);
 };
 
 

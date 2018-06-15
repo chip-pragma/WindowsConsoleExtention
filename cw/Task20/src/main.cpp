@@ -5,11 +5,11 @@
 #include "scr/MainScript.h"
 
 int main() {
-    using namespace cpe;
+    using namespace wce;
     const char* DATA_FILE_NAME = "trance_agency.data";
 
-    term::setBackground(cpe::Colors::BLACK);
-    term::setForeground(cpe::Colors::WHITE);
+    term::setBackground(wce::Colors::BLACK);
+    term::setForeground(wce::Colors::WHITE);
     term::setTitle("Транспортное Агенство"_dos);
     BorderStyle::FinalEncoding = Encoder(Encoder::CP866);
 

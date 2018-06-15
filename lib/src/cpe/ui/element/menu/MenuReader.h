@@ -6,7 +6,7 @@
 #include "cpe/ui/BaseReader.h"
 #include "MenuItem.h"
 
-namespace cpe {
+namespace wce {
 
 using MenuItemPair = std::pair<uint32_t, MenuItem*>;
 using MenuItemSet = std::set<MenuItemPair>;

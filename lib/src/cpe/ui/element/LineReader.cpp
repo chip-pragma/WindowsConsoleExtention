@@ -1,6 +1,6 @@
 #include "LineReader.h"
 
-namespace cpe {
+namespace wce {
 
 LineReader::~LineReader() { }
 

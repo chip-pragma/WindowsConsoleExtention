@@ -10,7 +10,7 @@
 #include "cpe/ui/output/StyledChar.h"
 #include "cpe/ui/output/Buffer.h"
 
-namespace cpe {
+namespace wce {
 
 class Notification : public BaseWriter<Notification> {
 public:

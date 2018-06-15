@@ -1,6 +1,6 @@
 #include "BorderStyle.h"
 
-namespace cpe {
+namespace wce {
 
 std::optional<Encoder> BorderStyle::FinalEncoding = std::nullopt;
 

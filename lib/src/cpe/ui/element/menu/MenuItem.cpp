@@ -2,7 +2,7 @@
 #include "cpe/tool/text.h"
 #include "cpe/core/Exception.h"
 
-namespace cpe {
+namespace wce {
 
 MenuItem::MenuItem(const std::string &commands) {
     text::split(commands, mCommandList, "|");
@@ -14,7 +14,7 @@ const MenuItemCommandList & MenuItem::getCommandList() const {
     return mCommandList;
 }
 
-void MenuItem::write(cpe::Buffer &buf, const cpe::StyledBorder &sBord, const TextColor &commandColor) const {
+void MenuItem::write(wce::Buffer &buf, const wce::StyledBorder &sBord, const TextColor &commandColor) const {
     using BS = BorderStyle;
     buf.draw(sBord[BS::SL]);
 

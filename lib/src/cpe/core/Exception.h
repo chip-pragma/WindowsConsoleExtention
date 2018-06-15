@@ -3,7 +3,7 @@
 #include <exception>
 #include <string>
 
-namespace cpe {
+namespace wce {
 
 class Exception : public std::exception {
 public:

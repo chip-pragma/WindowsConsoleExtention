@@ -1,6 +1,6 @@
 #include "MenuSeparator.h"
 
-namespace cpe {
+namespace wce {
 
 void MenuSeparator::write(Buffer &buf,
                           const StyledBorder &sBord,

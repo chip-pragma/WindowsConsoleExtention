@@ -5,7 +5,7 @@
 #include <sstream>
 #include <cmath>
 
-namespace cpe {
+namespace wce {
 
 namespace {
 
@@ -27,7 +27,7 @@ inline void _pointSectorI(const Point &size) {
     if (size.getLocation() != Point::PL_SECTOR_I) {
         std::stringstream ss;
         ss << "Invalid getWidth " + size.toString();
-        throw cpe::Exception(ss.str());
+        throw wce::Exception(ss.str());
     }
 }
 

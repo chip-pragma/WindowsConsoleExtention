@@ -4,7 +4,7 @@
 
 #include <algorithm>
 
-namespace cpe {
+namespace wce {
 
 StyledText::StyledText()
     : mColors(1) { }

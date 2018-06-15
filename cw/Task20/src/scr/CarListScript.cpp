@@ -8,7 +8,7 @@
 #include "TransAgency.h"
 
 CarListScript::CarListScript() {
-    using namespace cpe;
+    using namespace wce;
 
     TextColor tempHeaderColor(Colors::WHITE, Colors::BLUE);
     TextColor tempBorderColor(Colors::TEAL, std::nullopt);
@@ -53,12 +53,12 @@ CarListScript::CarListScript() {
 
 CarListScript::~CarListScript() { }
 
-void CarListScript::onBeforeRunDataTableCar(cpe::DataTable<Car> &element) {
+void CarListScript::onBeforeRunDataTableCar(wce::DataTable<Car> &element) {
     element.setDataSource(TransAgency::get().getCarList());
     element.setSortBy(Car::ID_FIELD_MARK);
 }
 
-void CarListScript::onBeforeRunLabelPageInfo(cpe::Label &element) {
+void CarListScript::onBeforeRunLabelPageInfo(wce::Label &element) {
     std::stringstream ss;
     ss << "[Страница "
        << m_dtCars->getPageNumber() + 1

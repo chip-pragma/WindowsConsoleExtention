@@ -9,7 +9,7 @@
 #include "BaseMenuItem.h"
 #include "MenuReader.h"
 
-namespace cpe {
+namespace wce {
 
 class Menu : public BaseWriter<Menu> {
 public:

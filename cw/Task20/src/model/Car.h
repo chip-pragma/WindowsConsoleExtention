@@ -6,8 +6,8 @@
 #include <cpe/core/ISerializable.h>
 #include <ostream>
 
-class Car : public cpe::IModel,
-            public cpe::ISerializable {
+class Car : public wce::IModel,
+            public wce::ISerializable {
 public:
     enum FieldIds : uint32_t {
         ID_FIELD_MARK,

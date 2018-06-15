@@ -5,7 +5,7 @@
 
 #include <cstdlib>
 
-namespace cpe::term {
+namespace wce::term {
 
 void callPause() {
 #if defined(CPE_PLATFORM_IS_WINDOWS)

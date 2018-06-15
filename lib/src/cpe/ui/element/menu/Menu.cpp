@@ -1,6 +1,6 @@
 #include "Menu.h"
 
-namespace cpe {
+namespace wce {
 
 Menu::~Menu() {
     for (auto item : mItemVec)

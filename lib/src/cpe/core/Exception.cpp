@@ -1,6 +1,6 @@
 #include "Exception.h"
 
-namespace cpe {
+namespace wce {
 
 Exception::Exception(const std::string &message) : std::exception(),
                                                    mMessage(message) {

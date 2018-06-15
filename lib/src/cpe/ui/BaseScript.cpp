@@ -2,7 +2,7 @@
 
 #include "cpe/ui/output/OutputHelper.h"
 
-namespace cpe {
+namespace wce {
 
 BaseScript::~BaseScript() {
     for (auto e : mElements)

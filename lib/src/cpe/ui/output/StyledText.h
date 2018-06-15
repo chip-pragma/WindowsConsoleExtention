@@ -7,7 +7,7 @@
 #include "StyledChar.h"
 #include "cpe/ui/style/TextColor.h"
 
-namespace cpe {
+namespace wce {
 
 class StyledText : public IOutputable {
     // QUEST Реализовать нормальные итераторы

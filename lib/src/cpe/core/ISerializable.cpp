@@ -1,6 +1,6 @@
 #include "ISerializable.h"
 
-namespace cpe {
+namespace wce {
 std::ostream &operator<<(std::ostream &os, const ISerializable &sObj) {
     sObj.onSerialize(os);
     return os;

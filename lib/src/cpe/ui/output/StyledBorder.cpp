@@ -1,7 +1,7 @@
 #include "StyledBorder.h"
 #include "StyledChar.h"
 
-namespace cpe {
+namespace wce {
 
 StyledBorder::StyledBorder(const BorderStyle &border) : mBorder(border) {
 

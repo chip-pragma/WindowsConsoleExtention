@@ -3,7 +3,7 @@
 #include "cpe/core/draw/Color.h"
 #include "cpe/ui/style/TextColor.h"
 
-namespace cpe {
+namespace wce {
 
 class StyledChar {
 public:

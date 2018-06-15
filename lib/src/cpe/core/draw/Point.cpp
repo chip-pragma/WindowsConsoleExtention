@@ -2,7 +2,7 @@
 
 #include <sstream>
 
-namespace cpe {
+namespace wce {
 
 Point::Point() {
     mX = 0;

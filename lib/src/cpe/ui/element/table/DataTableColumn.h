@@ -6,7 +6,7 @@
 
 #include "cpe/ui/output/StyledText.h"
 
-namespace cpe {
+namespace wce {
 
 template<class TModel>
 class DataTableColumn;

@@ -3,7 +3,7 @@
 
 #include <utility>
 
-namespace cpe {
+namespace wce {
 
 StyledChar::StyledChar() { }
 

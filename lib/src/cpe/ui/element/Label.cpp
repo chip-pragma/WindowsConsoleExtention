@@ -1,6 +1,6 @@
 #include "Label.h"
 
-namespace cpe {
+namespace wce {
 
 Label::~Label() { }
 

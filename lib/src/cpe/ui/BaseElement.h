@@ -4,7 +4,7 @@
 
 #include "IElement.h"
 
-namespace cpe {
+namespace wce {
 
 template<class TDerived>
 class BaseElement : public IElement {

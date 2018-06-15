@@ -1,7 +1,7 @@
 #include "Notification.h"
 #include "cpe/tool/Encoder.h"
 
-namespace cpe {
+namespace wce {
 
 const StyledBorder &Notification::getBorder() const {
     return mBorder;

@@ -1,6 +1,6 @@
 #pragma once
 
-namespace cpe {
+namespace wce {
 
 enum class TableBorder : char {
     NONE = 0,

@@ -4,7 +4,7 @@
 
 // QUEST доделать Rectangle
 
-namespace cpe {
+namespace wce {
 
 class Rectangle {
 public:

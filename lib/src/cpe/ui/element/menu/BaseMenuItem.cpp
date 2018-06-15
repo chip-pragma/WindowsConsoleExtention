@@ -1,6 +1,6 @@
 #include "BaseMenuItem.h"
 
-namespace cpe {
+namespace wce {
 
 const bool &BaseMenuItem::getVisible() const {
     return mVisible;

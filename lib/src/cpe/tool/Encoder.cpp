@@ -1,6 +1,6 @@
 #include "Encoder.h"
 
-namespace cpe {
+namespace wce {
 
 Encoder::Encoder(Encoding encodingCp) : mCp(encodingCp) {
 

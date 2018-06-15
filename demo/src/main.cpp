@@ -7,7 +7,7 @@
 #include "common.h"
 #include "TestScript.h"
 
-using namespace cpe;
+using namespace wce;
 
 int main() {
     term::setTitle("Текст консоли"_dos);

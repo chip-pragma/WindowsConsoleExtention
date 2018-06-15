@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-namespace cpe {
+namespace wce {
 
 class Color {
 public:

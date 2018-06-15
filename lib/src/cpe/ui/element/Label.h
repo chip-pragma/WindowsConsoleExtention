@@ -2,7 +2,7 @@
 
 #include "cpe/ui/BaseWriter.h"
 
-namespace cpe {
+namespace wce {
 
 class Label : public BaseWriter<Label> {
 public:

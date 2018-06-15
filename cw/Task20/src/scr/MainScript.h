@@ -3,7 +3,7 @@
 #include <cpe/ui/BaseScript.h>
 #include <cpe/ui/element/menu/MenuReader.h>
 
-class MainScript : public cpe::BaseScript {
+class MainScript : public wce::BaseScript {
 public:
     enum : uint32_t {
         ID_MM_EXIT = 0,
@@ -19,7 +19,7 @@ public:
     ~MainScript() override;
 
 protected:
-    bool onMenuResult(cpe::MenuReaderResult& result);
+    bool onMenuResult(wce::MenuReaderResult& result);
 };
 
 

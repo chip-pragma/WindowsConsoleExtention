@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-namespace cpe {
+namespace wce {
 
 class ISerializable {
     friend std::ostream &operator<<(std::ostream &os, const ISerializable &sObj);

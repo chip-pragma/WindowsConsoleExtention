@@ -1,6 +1,6 @@
 #include "Rectangle.h"
 
-namespace cpe {
+namespace wce {
 
 
 

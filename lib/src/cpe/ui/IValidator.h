@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 
-namespace cpe {
+namespace wce {
 
 template<class TValue>
 class IValidator {

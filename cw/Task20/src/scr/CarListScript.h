@@ -6,18 +6,18 @@
 
 #include "model/Car.h"
 
-class CarListScript : public cpe::BaseScript {
+class CarListScript : public wce::BaseScript {
 public:
     CarListScript();
 
     ~CarListScript() override;
 
 protected:
-    cpe::DataTable<Car> *m_dtCars;
+    wce::DataTable<Car> *m_dtCars;
 
-    void onBeforeRunDataTableCar(cpe::DataTable<Car> &element);
+    void onBeforeRunDataTableCar(wce::DataTable<Car> &element);
 
-    void onBeforeRunLabelPageInfo(cpe::Label &element);
+    void onBeforeRunLabelPageInfo(wce::Label &element);
 };
 
 

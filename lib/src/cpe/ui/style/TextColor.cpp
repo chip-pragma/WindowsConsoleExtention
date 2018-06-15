@@ -2,7 +2,7 @@
 
 #include <utility>
 
-namespace cpe {
+namespace wce {
 
 TextColor::TextColor() {
 

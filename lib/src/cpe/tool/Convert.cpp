@@ -7,7 +7,7 @@
 #include <sstream>
 #include <iomanip>
 
-namespace cpe::convert {
+namespace wce::convert {
 
 bool toInt(const std::string &src, int &dest) {
     try {

@@ -1,6 +1,6 @@
 #include "MenuReader.h"
 
-namespace cpe {
+namespace wce {
 
 MenuReader::~MenuReader() { }
 

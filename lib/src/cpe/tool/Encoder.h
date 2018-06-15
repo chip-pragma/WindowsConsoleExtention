@@ -4,7 +4,7 @@
 
 #include "platform/platform.h"
 
-namespace cpe {
+namespace wce {
 
 class Encoder {
 public:

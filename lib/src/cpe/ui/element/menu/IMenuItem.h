@@ -5,7 +5,7 @@
 #include "cpe/ui/output/Buffer.h"
 #include "cpe/ui/output/StyledBorder.h"
 
-namespace cpe {
+namespace wce {
 
 class IMenuItem {
 public:

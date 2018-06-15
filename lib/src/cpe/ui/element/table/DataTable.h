@@ -12,7 +12,7 @@
 #include "cpe/ui/IModel.h"
 #include "DataTableColumn.h"
 
-namespace cpe {
+namespace wce {
 
 template<class TModel>
 class DataTable : public BaseWriter<DataTable<TModel>> {

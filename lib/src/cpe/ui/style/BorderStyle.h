@@ -7,7 +7,7 @@
 #include "cpe/tool/Encoder.h"
 
 
-namespace cpe {
+namespace wce {
 
 class BorderStyle {
 public:

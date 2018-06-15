@@ -8,7 +8,7 @@
 #include <cpe/ui/element/Label.h>
 #include <cpe/ui/element/menu/MenuSeparator.h>
 
-using namespace cpe;
+using namespace wce;
 
 MainScript::MainScript() {
     Label tempLabelWraps;
@@ -57,8 +57,8 @@ MainScript::MainScript() {
 
 MainScript::~MainScript() { }
 
-bool MainScript::onMenuResult(cpe::MenuReaderResult &result) {
-    if (result.getType() == cpe::ReaderResultType::VALUE) {
+bool MainScript::onMenuResult(wce::MenuReaderResult &result) {
+    if (result.getType() == wce::ReaderResultType::VALUE) {
         switch (result.getValue()) {
             case ID_MM_CARS: {
                 CarListScript().run();
@@ -72,10 +72,10 @@ bool MainScript::onMenuResult(cpe::MenuReaderResult &result) {
         }
     }
 
-    cpe::StyledText()
-        .setFore(cpe::Colors::LT_RED)
+    wce::StyledText()
+        .setFore(wce::Colors::LT_RED)
         .append("Неверная комадна меню\n"_dos)
         .outputTo(std::cout);
-    cpe::term::callPause();
+    wce::term::callPause();
     return false;
 }

@@ -4,7 +4,7 @@
 
 #include "cpe/core/draw/Color.h"
 
-namespace cpe {
+namespace wce {
 
 class TextColor {
 public:

@@ -28,19 +28,19 @@ SHORT bufferAttributeColorComponent(uint8_t component, BitColor comp) noexcept {
 
 }
 
-inline cpe::Point toPoint(const COORD &coord) {
-    return cpe::Point(coord.X, coord.Y);
+inline wce::Point toPoint(const COORD &coord) {
+    return wce::Point(coord.X, coord.Y);
 }
 
-inline COORD fromPoint(const cpe::Point &point) {
+inline COORD fromPoint(const wce::Point &point) {
     return COORD{
             .X = static_cast<SHORT>(point.getX()),
             .Y = static_cast<SHORT>(point.getY())
     };
 }
 
-inline cpe::Color toColor(SHORT bufferAttributes) {
-    cpe::Color result;
+inline wce::Color toColor(SHORT bufferAttributes) {
+    wce::Color result;
     const uint8_t MIN = 128;
     const uint8_t PLUS = 127;
     auto i = MIN;
@@ -55,7 +55,7 @@ inline cpe::Color toColor(SHORT bufferAttributes) {
     return result;
 }
 
-inline SHORT fromColor(cpe::Color color) {
+inline SHORT fromColor(wce::Color color) {
     SHORT pc =
         bufferAttributeColorComponent(color.getR(), BitColor::RED)
             | bufferAttributeColorComponent(color.getG(), BitColor::GREEN)

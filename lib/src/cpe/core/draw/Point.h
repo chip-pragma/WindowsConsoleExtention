@@ -3,7 +3,7 @@
 #include <string>
 #include <cstdint>
 
-namespace cpe {
+namespace wce {
 
 class Point {
 public:

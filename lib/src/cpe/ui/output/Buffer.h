@@ -15,7 +15,7 @@
 #include "StyledChar.h"
 #include "StyledText.h"
 
-namespace cpe {
+namespace wce {
 
 class Buffer : public IOutputable {
 public:

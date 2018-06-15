@@ -4,7 +4,7 @@
 
 #include "BaseMenuItem.h"
 
-namespace cpe {
+namespace wce {
 
 using MenuItemCommandList = std::vector<std::string>;
 

@@ -5,7 +5,7 @@
 #include "cpe/ui/output/Buffer.h"
 #include "cpe/ui/BaseElement.h"
 
-namespace cpe {
+namespace wce {
 
 template<class TDerived>
 class BaseWriter : public BaseElement<TDerived> {

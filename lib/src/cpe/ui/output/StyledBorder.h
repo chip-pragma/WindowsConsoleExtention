@@ -4,7 +4,7 @@
 #include "cpe/ui/style/BorderStyle.h"
 #include "StyledChar.h"
 
-namespace cpe {
+namespace wce {
 
 class StyledBorder {
 public:

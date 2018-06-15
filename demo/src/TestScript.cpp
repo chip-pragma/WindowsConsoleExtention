@@ -5,7 +5,7 @@
 #include <cpe/ui/element/Notification.h>
 
 TestScript::TestScript() {
-    using namespace cpe;
+    using namespace wce;
 
     {
         auto &notif = makeElement<Notification>();
@@ -16,7 +16,7 @@ TestScript::TestScript() {
 
 }
 
-void TestScript::onBeforeRunNotification(cpe::Notification &element) {
-    element.getBorderRef().getColorRef().getForeRef() = cpe::Colors::LT_PURPLE;
+void TestScript::onBeforeRunNotification(wce::Notification &element) {
+    element.getBorderRef().getColorRef().getForeRef() = wce::Colors::LT_PURPLE;
     this->abort();
 }

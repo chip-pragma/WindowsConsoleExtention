@@ -7,7 +7,7 @@
 
 #include "cpe/core/Exception.h"
 
-namespace cpe {
+namespace wce {
 
 enum class ReaderResultType : uint8_t {
     UNDEFINED,

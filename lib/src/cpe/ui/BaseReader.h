@@ -12,7 +12,7 @@
 #include "IValidator.h"
 #include "ReaderResult.h"
 
-namespace cpe {
+namespace wce {
 
 template<class TDerived, class TValue, class TResult = ReaderResult<TValue>>
 class BaseReader : public BaseElement<TDerived> {

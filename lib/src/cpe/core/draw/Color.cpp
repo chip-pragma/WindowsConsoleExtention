@@ -1,6 +1,6 @@
 #include "Color.h"
 
-namespace cpe {
+namespace wce {
 
 Color::Color(uint8_t r, uint8_t g, uint8_t b) noexcept {
     this->mRed = r;

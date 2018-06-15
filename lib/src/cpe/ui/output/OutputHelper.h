@@ -6,7 +6,7 @@
 #include "cpe/core/terminal.h"
 
 
-namespace cpe {
+namespace wce {
 
 class TextColor;
 class Point;
