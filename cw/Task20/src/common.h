@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cpe/tool/Encoder.h>
+#include <wce/tool/Encoder.h>
 #include <string>
 
 std::string operator "" _dos(const char *src, size_t size);

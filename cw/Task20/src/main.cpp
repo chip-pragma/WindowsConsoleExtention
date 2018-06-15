@@ -1,4 +1,4 @@
-#include <cpe/core/terminal.h>
+#include <wce/core/terminal.h>
 
 #include "common.h"
 #include "TransAgency.h"

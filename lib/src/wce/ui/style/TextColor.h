@@ -1,0 +1,42 @@
+#pragma once
+
+#include <optional>
+
+#include "wce/core/draw/Color.h"
+
+namespace wce {
+
+class TextColor {
+public:
+    TextColor();
+
+    TextColor(const TextColor &tc);
+
+    TextColor(TextColor &&tc) noexcept;
+
+    TextColor(std::optional<Color> fore, std::optional<Color> back);
+
+    const std::optional<Color> &getFore() const;
+
+    std::optional<Color> &getForeRef();
+
+    const std::optional<Color> &getBack() const;
+
+    std::optional<Color> &getBackRef();
+
+    TextColor &operator=(const TextColor &tc);
+
+    bool operator==(const TextColor &rhs) const;
+
+    bool operator!=(const TextColor &rhs) const;
+
+private:
+    std::optional<Color> mFore = std::nullopt;
+    std::optional<Color> mBack = std::nullopt;
+};
+
+}
+
+
+
+

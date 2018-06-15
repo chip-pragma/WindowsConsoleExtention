@@ -2,7 +2,7 @@
 
 #include "common.h"
 
-#include <cpe/ui/element/Notification.h>
+#include <wce/ui/element/Notification.h>
 
 TestScript::TestScript() {
     using namespace wce;

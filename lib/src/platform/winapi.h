@@ -3,8 +3,8 @@
 #include <windows.h>
 #include <cstdint>
 
-#include "cpe/core/draw/Point.h"
-#include "cpe/core/draw/Color.h"
+#include "wce/core/draw/Point.h"
+#include "wce/core/draw/Color.h"
 
 namespace _winapi {
 

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <cpe/ui/BaseScript.h>
-#include <cpe/ui/element/Notification.h>
+#include <wce/ui/BaseScript.h>
+#include <wce/ui/element/Notification.h>
 
 class TestScript : public wce::BaseScript {
 public:

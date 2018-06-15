@@ -1,7 +1,7 @@
 #pragma once
 
-#include <cpe/ui/BaseScript.h>
-#include <cpe/ui/element/menu/MenuReader.h>
+#include <wce/ui/BaseScript.h>
+#include <wce/ui/element/menu/MenuReader.h>
 
 class MainScript : public wce::BaseScript {
 public:

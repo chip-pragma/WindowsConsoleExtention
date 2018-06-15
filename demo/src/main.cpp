@@ -1,8 +1,8 @@
 #include "main.h"
 
-#include <cpe/core/terminal.h>
-#include <cpe/ui/style/BorderStyle.h>
-#include <cpe/tool/Encoder.h>
+#include <wce/core/terminal.h>
+#include <wce/ui/style/BorderStyle.h>
+#include <wce/tool/Encoder.h>
 
 #include "common.h"
 #include "TestScript.h"

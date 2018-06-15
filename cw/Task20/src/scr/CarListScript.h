@@ -1,8 +1,8 @@
 #pragma once
 
-#include <cpe/ui/BaseScript.h>
-#include <cpe/ui/element/table/DataTable.h>
-#include <cpe/ui/element/Label.h>
+#include <wce/ui/BaseScript.h>
+#include <wce/ui/element/table/DataTable.h>
+#include <wce/ui/element/Label.h>
 
 #include "model/Car.h"
 

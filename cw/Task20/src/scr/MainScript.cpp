@@ -3,10 +3,10 @@
 #include "common.h"
 #include "scr/CarListScript.h"
 
-#include <cpe/ui/element/Notification.h>
-#include <cpe/ui/element/menu/Menu.h>
-#include <cpe/ui/element/Label.h>
-#include <cpe/ui/element/menu/MenuSeparator.h>
+#include <wce/ui/element/Notification.h>
+#include <wce/ui/element/menu/Menu.h>
+#include <wce/ui/element/Label.h>
+#include <wce/ui/element/menu/MenuSeparator.h>
 
 using namespace wce;
 

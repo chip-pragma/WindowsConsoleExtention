@@ -2,8 +2,8 @@
 
 #include <string>
 
-#include <cpe/ui/IModel.h>
-#include <cpe/core/ISerializable.h>
+#include <wce/ui/IModel.h>
+#include <wce/core/ISerializable.h>
 #include <ostream>
 
 class Car : public wce::IModel,
