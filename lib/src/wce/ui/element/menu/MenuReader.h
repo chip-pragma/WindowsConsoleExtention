@@ -19,7 +19,7 @@ public:
     void setCommandItems(MenuItemSet &itemList);
 
 protected:
-    MenuItemSet mCommandItems;
+    MenuItemSet m_commandItems;
 
     bool onConvert(std::string &srcLine, uint32_t &convertedValue) override;
 };

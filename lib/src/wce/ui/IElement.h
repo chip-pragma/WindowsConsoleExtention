@@ -8,17 +8,10 @@ class IElement {
     friend class BaseScript;
 
 public:
+    bool visible = true;
+    bool waitAnyKey = false;
+
     virtual~IElement() { };
-
-    virtual const bool &getVisible() const = 0;
-
-    virtual void setVisible(bool value) = 0;
-
-    virtual const bool &isCallPause() const = 0;
-
-    virtual void setCallPause(bool value) = 0;
-
-
 
 protected:
     virtual void run(BaseScript &script) = 0;

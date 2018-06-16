@@ -3,8 +3,7 @@
 #include <iostream>
 #include <stack>
 
-#include "wce/core/terminal.h"
-
+#include "wce/core/console.h"
 
 namespace wce {
 
@@ -13,6 +12,8 @@ class Point;
 
 class OutputHelper {
 public:
+    OutputHelper();
+
     void saveState();
 
     void goBackState(size_t count = 1);
@@ -28,11 +29,11 @@ public:
     void resetColor();
 
 private:
-    std::stack<Point> mStates;
-    std::ostream *mOutStream = nullptr;
-    bool mOutputAutoFlush;
-    Color mOutputFore;
-    Color mOutputBack;
+    std::stack<Point> m_states;
+    std::ostream *m_outStream = nullptr;
+    bool m_outputAutoFlush;
+    ColorIndex m_outputFore;
+    ColorIndex m_outputBack;
 };
 
 }

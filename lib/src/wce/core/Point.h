@@ -19,17 +19,12 @@ public:
         PL_SECTOR_VI = PL_X | PL_Y | PL_NEGATIVE_Y,
     };
 
+    int32_t x;
+    int32_t y;
+
     Point();
 
     Point(int32_t x, int32_t y);
-
-    const int32_t& getX() const;
-
-    int32_t& getXRef();
-
-    const int32_t& getY() const;
-
-    int32_t& getYRef();
 
     Location getLocation() const;
 
@@ -62,10 +57,6 @@ public:
     bool operator==(const Point &point) const;
 
     bool operator!=(const Point &point) const;
-
-protected:
-    int32_t mX;
-    int32_t mY;
 };
 
 }

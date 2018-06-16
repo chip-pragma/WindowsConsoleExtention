@@ -8,40 +8,24 @@ namespace wce {
 StyledChar::StyledChar() { }
 
 StyledChar::StyledChar(char c)
-    : mChar(c) { }
+    : character(c) { }
 
 StyledChar::StyledChar(char c, const TextColor &color)
-    : mChar(c), mColor(color) {}
+    : character(c), color(color) { }
 
 StyledChar::StyledChar(const StyledChar &sch) {
-    mChar = sch.mChar;
-    mColor = sch.mColor;
+    character = sch.character;
+    color = sch.color;
 }
 
 StyledChar::StyledChar(StyledChar &&sch) noexcept {
-    mChar = sch.mChar;
-    mColor = sch.mColor;
-}
-
-const TextColor &StyledChar::getColor() const {
-    return mColor;
-}
-
-TextColor &StyledChar::getColorRef() {
-    return mColor;
-}
-
-char StyledChar::getChar() const {
-    return mChar;
-}
-
-void StyledChar::setChar(char aChar) {
-    mChar = aChar;
+    character = sch.character;
+    color = sch.color;
 }
 
 StyledChar &StyledChar::operator=(const StyledChar &sch) {
-    mChar = sch.mChar;
-    mColor = sch.mColor;
+    character = sch.character;
+    color = sch.color;
     return *this;
 }
 

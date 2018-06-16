@@ -5,14 +5,14 @@
 namespace wce {
 
 BaseScript::~BaseScript() {
-    for (auto e : mElements)
+    for (auto e : m_elements)
         delete e;
 }
 
 void BaseScript::run() {
-    term::clear();
+    console::clear();
     onRun();
-    term::clear();
+    console::clear();
 }
 
 void BaseScript::runAppend(bool clearBefore) {
@@ -24,11 +24,11 @@ void BaseScript::runAppend(bool clearBefore) {
 }
 
 void BaseScript::abort() {
-    mAborted = true;
+    m_aborted = true;
 }
 
 bool BaseScript::isAborted() const {
-    return mAborted;
+    return m_aborted;
 }
 
 void BaseScript::onRun() {
@@ -37,8 +37,8 @@ void BaseScript::onRun() {
         outHelp.saveState();
         this->onBeforeRun();
 
-        for (auto item : mElements) {
-            if (!item->getVisible())
+        for (auto item : m_elements) {
+            if (!item->visible)
                 continue;
             item->run(*this);
             if (this->isAborted())

@@ -5,41 +5,25 @@
 namespace wce {
 
 Point::Point() {
-    mX = 0;
-    mY = 0;
+    x = 0;
+    y = 0;
 }
 
 Point::Point(int32_t x, int32_t y) {
-    this->mX = x;
-    this->mY = y;
-}
-
-const int32_t &Point::getX() const {
-    return mX;
-}
-
-int32_t &Point::getXRef() {
-    return mX;
-}
-
-const int32_t &Point::getY() const {
-    return mY;
-}
-
-int32_t &Point::getYRef() {
-    return mY;
+    this->x = x;
+    this->y = y;
 }
 
 Point::Location Point::getLocation() const {
     int8_t result = PL_ZERO;
-    if (mX != 0) {
+    if (x != 0) {
         result |= PL_X;
-        if (mX < 0)
+        if (x < 0)
             result |= PL_NEGATIVE_X;
     }
-    if (mY != 0) {
+    if (y != 0) {
         result |= PL_Y;
-        if (mY < 0)
+        if (y < 0)
             result |= PL_NEGATIVE_Y;
     }
     return static_cast<Location>(result);
@@ -47,73 +31,73 @@ Point::Location Point::getLocation() const {
 
 std::string Point::toString() const {
     std::stringstream ss;
-    ss << "(x=" << mX << "; y=" << mY << ")";
+    ss << "(x=" << x << "; y=" << y << ")";
     return ss.str();
 }
 
 Point &Point::operator+=(const Point &p1) {
-    mX += p1.mX;
-    mY += p1.mY;
+    x += p1.x;
+    y += p1.y;
     return *this;
 }
 
 Point Point::operator+(const Point &p1) const {
-    return Point(mX + p1.mX, mY + p1.mY);
+    return Point(x + p1.x, y + p1.y);
 }
 
 Point &Point::operator-=(const Point &p1) {
-    mX -= p1.mX;
-    mY -= p1.mY;
+    x -= p1.x;
+    y -= p1.y;
     return *this;
 }
 
 Point Point::operator-(const Point &p1) const {
-    return Point(mX - p1.mX, mY - p1.mY);
+    return Point(x - p1.x, y - p1.y);
 }
 
 Point &Point::operator+=(int32_t k) {
-    mX += k;
-    mY += k;
+    x += k;
+    y += k;
     return *this;
 }
 
 Point Point::operator+(int32_t k) const {
-    return Point(mX + k, mY + k);
+    return Point(x + k, y + k);
 }
 
 Point &Point::operator-=(int32_t k) {
-    mX -= k;
-    mY -= k;
+    x -= k;
+    y -= k;
     return *this;
 }
 
 Point Point::operator-(int32_t k) const {
-    return Point(mX - k, mY - k);
+    return Point(x - k, y - k);
 }
 
 Point &Point::operator*=(int32_t k) {
-    mX *= k;
-    mY *= k;
+    x *= k;
+    y *= k;
     return *this;
 }
 
 Point Point::operator*(int32_t k) const {
-    return Point(mX * k, mY * k);
+    return Point(x * k, y * k);
 }
 
 Point &Point::operator/=(int32_t k) {
-    mX /= k;
-    mY /= k;
+    x /= k;
+    y /= k;
     return *this;
 }
 
 Point Point::operator/(int32_t k) const {
-    return Point(mX / k, mY / k);
+    return Point(x / k, y / k);
 }
 
 bool Point::operator==(const Point &point) const {
-    return mX == point.mX &&
-           mY == point.mY;
+    return x == point.x &&
+           y == point.y;
 }
 
 bool Point::operator!=(const Point &point) const {

@@ -1,4 +1,4 @@
-#include <wce/core/terminal.h>
+#include <wce/core/console.h>
 
 #include "common.h"
 #include "TransAgency.h"
@@ -6,12 +6,15 @@
 
 int main() {
     using namespace wce;
-    const char* DATA_FILE_NAME = "trance_agency.data";
+    const char *DATA_FILE_NAME = "trance_agency.data";
 
-    term::setBackground(wce::Colors::BLACK);
-    term::setForeground(wce::Colors::WHITE);
-    term::setTitle("Транспортное Агенство"_dos);
-    BorderStyle::FinalEncoding = Encoder(Encoder::CP866);
+    // TODO styleTemplates
+
+    console::resetColorTable();
+    console::setBackground(console::cBlack);
+    console::setForeground(console::cWhite);
+    console::setTitle("Транспортное Агенство"_dos);
+    BorderStyle::finalEncoding = Encoder(Encoder::CP866);
 
     TransAgency::get().loadData(DATA_FILE_NAME);
     MainScript().run();

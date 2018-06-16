@@ -21,7 +21,7 @@ public:
     void setWidth(int32_t w);
 
 protected:
-    int32_t mWidth = term::getBufferSize().getXRef() - 1;
+    int32_t m_width = console::getBufferSize().x - 1;
 
     void run(BaseScript &script) final;
 
@@ -35,12 +35,12 @@ BaseWriter<TDerived>::BaseWriter() {
 
 template<class TDerived>
 const int32_t &BaseWriter<TDerived>::getWidth() const {
-    return mWidth;
+    return m_width;
 }
 
 template<class TDerived>
 void BaseWriter<TDerived>::setWidth(int32_t w) {
-    mWidth = w;
+    m_width = w;
 }
 
 template<class TDerived>
@@ -52,8 +52,8 @@ void BaseWriter<TDerived>::run(BaseScript &script) {
     onWrite(buf);
     buf.outputTo(std::cout);
 
-    if (this->isCallPause())
-        term::callPause();
+    if (this->waitAnyKey)
+        console::waitAnyKey();
     this->onAfterRun();
 }
 

@@ -8,48 +8,32 @@ TextColor::TextColor() {
 
 }
 
-TextColor::TextColor(const std::optional<Color> fore, const std::optional<Color> back) {
-    mFore = fore;
-    mBack = back;
+TextColor::TextColor(const std::optional<ColorIndex> fore, const std::optional<ColorIndex> back) {
+    foreground = fore;
+    background = back;
 }
 
 TextColor::TextColor(const TextColor &tc) {
-    mFore = tc.mFore;
-    mBack = tc.mBack;
+    foreground = tc.foreground;
+    background = tc.background;
 }
 
 TextColor::TextColor(TextColor &&tc) noexcept {
-    mFore = tc.mFore;
-    mBack = tc.mBack;
-    tc.mFore = std::nullopt;
-    tc.mBack = std::nullopt;
-}
-
-const std::optional<Color> &TextColor::getFore() const {
-    return mFore;
-}
-
-std::optional<Color> &TextColor::getForeRef() {
-    return mFore;
-}
-
-const std::optional<Color> &TextColor::getBack() const {
-    return mBack;
-}
-
-std::optional<Color> &TextColor::getBackRef() {
-    return mBack;
+    foreground = tc.foreground;
+    background = tc.background;
+    tc.foreground = std::nullopt;
+    tc.background = std::nullopt;
 }
 
 TextColor &TextColor::operator=(const TextColor &tc) {
-    mFore = tc.mFore;
-    mBack = tc.mBack;
+    foreground = tc.foreground;
+    background = tc.background;
     return *this;
 }
 
 bool TextColor::operator==(const TextColor &rhs) const {
-    return mFore == rhs.mFore &&
-           mBack == rhs.mBack;
+    return foreground == rhs.foreground &&
+           background == rhs.background;
 }
 
 bool TextColor::operator!=(const TextColor &rhs) const {

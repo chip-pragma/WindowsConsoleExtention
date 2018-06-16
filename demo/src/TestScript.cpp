@@ -9,14 +9,14 @@ TestScript::TestScript() {
 
     {
         auto &notif = makeElement<Notification>();
-        notif.setCallPause(true);
-        notif.getTextRef().append("ПРОВЕРКА!"_dos);
+        notif.waitAnyKey = true;
+        notif.text.append("ПРОВЕРКА!"_dos);
         notif.addBeforeRunCallback(&TestScript::onBeforeRunNotification);
     }
 
 }
 
 void TestScript::onBeforeRunNotification(wce::Notification &element) {
-    element.getBorderRef().getColorRef().getForeRef() = wce::Colors::LT_PURPLE;
+    element.border.color.foreground = wce::console::cPurpleLt;
     this->abort();
 }

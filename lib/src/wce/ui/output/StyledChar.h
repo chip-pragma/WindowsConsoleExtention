@@ -1,15 +1,17 @@
 #pragma once
 
-#include "wce/core/draw/Color.h"
 #include "wce/ui/style/TextColor.h"
 
 namespace wce {
 
 class StyledChar {
 public:
+    TextColor color;
+    char character = ' ';
+
     StyledChar();
 
-    StyledChar(char c);
+    StyledChar(char c); // NOLINT
 
     StyledChar(char c, const TextColor& color);
 
@@ -17,19 +19,7 @@ public:
 
     StyledChar(StyledChar &&sch) noexcept;
 
-    const TextColor &getColor() const;
-
-    TextColor &getColorRef();
-
-    char getChar() const;
-
-    void setChar(char aChar);
-
     StyledChar &operator=(const StyledChar &sch);
-
-private:
-    TextColor mColor;
-    char mChar = ' ';
 };
 
 }

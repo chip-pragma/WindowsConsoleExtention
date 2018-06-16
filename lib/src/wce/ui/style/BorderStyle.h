@@ -34,7 +34,7 @@ public:
         SC
     };
 
-    static std::optional<Encoder> FinalEncoding;
+    static std::optional<Encoder> finalEncoding;
 
     BorderStyle();
 
@@ -49,9 +49,9 @@ public:
     char operator[](const Side &side) const;
 
 private:
-    std::map<Side, std::string> mSides;
-    DualBorder mLastApplied = DB_NONE;
-    Encoder mEncFrom;
+    std::map<Side, std::string> m_sides;
+    DualBorder m_lastApplied = DB_NONE;
+    Encoder m_encFrom;
 };
 
 }

@@ -13,23 +13,12 @@ namespace wce {
 
 class Menu : public BaseWriter<Menu> {
 public:
+    StyledBorder border;
+    StyledText caption;
+    StyledText readerHint;
+    TextColor commandColor;
+
     ~Menu() override;
-
-    const StyledBorder &getBorder() const;
-
-    StyledBorder &getBorderRef();
-
-    const StyledText &getCaption() const;
-
-    StyledText &getCaptionRef();
-
-    const StyledText &getReaderHint() const;
-
-    StyledText &getReaderHintRef();
-
-    const TextColor &getCommandColor() const;
-
-    TextColor &getCommandColorRef();
 
     void assignReader(MenuReader &reader);
 
@@ -42,11 +31,8 @@ public:
     TItem &getItem(uint32_t itemId);
 
 protected:
-    MenuReader *mReader = nullptr;
-    StyledBorder mBorder;
-    StyledText mCaption;
-    StyledText mReaderHint;
-    TextColor mCommandColor;
+    MenuReader *m_reader = nullptr;
+
 
     void onWrite(Buffer &buf) override;
 
@@ -56,14 +42,14 @@ private:
     using _IMenuItemPair = std::pair<uint32_t, IMenuItem*>;
     using _IMenuItemVector = std::vector<_IMenuItemPair>;
 
-    _IMenuItemVector mItemVec;
+    _IMenuItemVector m_itemVec;
 };
 
 
 template<class TItem, class ...Args>
 TItem & Menu::makeItem(uint32_t itemId, Args ...args) {
     bool anyOf = std::any_of(
-        mItemVec.cbegin(), mItemVec.cend(),
+        m_itemVec.cbegin(), m_itemVec.cend(),
         [&](const _IMenuItemPair &pair) {
             return pair.first == itemId;
         });
@@ -71,15 +57,15 @@ TItem & Menu::makeItem(uint32_t itemId, Args ...args) {
         throw Exception("ID already in use");
 
     auto item = new TItem(args...);
-    mItemVec.emplace_back(itemId, static_cast<IMenuItem *>(item));
+    m_itemVec.emplace_back(itemId, static_cast<IMenuItem *>(item));
     return *item;
 }
 
 template<class TItem>
 TItem &Menu::getItem(uint32_t itemId) {
-    auto finded = std::find(mItemVec.cbegin(), mItemVec.cend(),
+    auto finded = std::find(m_itemVec.cbegin(), m_itemVec.cend(),
                             [&](MenuItemPair &r) { return r.first == itemId; });
-    if (finded == mItemVec.cend())
+    if (finded == m_itemVec.cend())
         throw Exception("Item with this ID not found");
     return static_cast<TItem &>(*finded);
 }

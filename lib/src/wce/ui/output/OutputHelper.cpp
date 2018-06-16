@@ -1,66 +1,70 @@
 #include "OutputHelper.h"
 #include "wce/ui/style/TextColor.h"
-#include "wce/core/draw/Point.h"
+#include "wce/core/Point.h"
 #include "wce/core/Exception.h"
 
 namespace wce {
 
+OutputHelper::OutputHelper()
+    : m_outputFore(console::getForeground()),
+      m_outputBack(console::getBackground()) { }
+
 void OutputHelper::saveState() {
-    mStates.push(term::getCursorPos());
+    m_states.push(console::getCursorPos());
 }
 
 void OutputHelper::goBackState(size_t count) {
-    auto width = term::getBufferSize().getXRef();
-    for (size_t i = 0; i < count && !mStates.empty(); i++) {
-        Point last = mStates.top();
-        auto curPos = term::getCursorPos();
-        auto yDiff = curPos.getYRef() - last.getYRef();
-        int nback = (width - last.getXRef()) + width * (yDiff - 1) + curPos.getXRef();
+    auto width = console::getBufferSize().x;
+    for (size_t i = 0; i < count && !m_states.empty(); i++) {
+        Point last = m_states.top();
+        auto curPos = console::getCursorPos();
+        auto yDiff = curPos.y - last.y;
+        int nback = (width - last.x) + width * (yDiff - 1) + curPos.x;
 
-        term::setCursorPos(last);
+        console::setCursorPos(last);
         std::cout << std::string(static_cast<unsigned int>(nback), ' ');
-        term::setCursorPos(last);
+        console::setCursorPos(last);
 
-        mStates.pop();
+        m_states.pop();
     }
 }
 
 size_t OutputHelper::getStateCount() const {
-    return mStates.size();
+    return m_states.size();
 }
 
 void OutputHelper::beginColorize(std::ostream &outStream) {
-    if (mOutStream)
+    if (m_outStream)
         throw wce::Exception("Output has already begined");
-    mOutStream = &outStream;
+    m_outStream = &outStream;
 
-    mOutputAutoFlush = outStream.flags() & std::ios_base::unitbuf;
-    if (mOutputAutoFlush)
+    m_outputAutoFlush = outStream.flags() & std::ios_base::unitbuf;
+    if (m_outputAutoFlush)
         outStream << std::nounitbuf;
 
-    mOutputFore = term::getForeground();
-    mOutputBack = term::getBackground();
+    m_outputFore = console::getForeground();
+    m_outputBack = console::getBackground();
 }
 
 void OutputHelper::endColorize() {
     resetColor();
 
-    if (mOutputAutoFlush)
-        (*mOutStream) << std::unitbuf;
+    if (m_outputAutoFlush)
+        (*m_outStream) << std::unitbuf;
 
-    mOutStream = nullptr;
+    m_outStream = nullptr;
 }
 
 void OutputHelper::applyColor(const TextColor &color) {
-    if (color.getFore()) term::setForeground(*color.getFore());
-    else term::setForeground(mOutputFore);
-    if (color.getBack()) term::setBackground(*color.getBack());
-    else term::setBackground(mOutputBack);
+    if (color.foreground) console::setForeground(*color.foreground);
+    else console::setForeground(m_outputFore);
+    if (color.background) console::setBackground(*color.background);
+    else console::setBackground(m_outputBack);
 }
 
 void OutputHelper::resetColor() {
-    term::setForeground(mOutputFore);
-    term::setBackground(mOutputBack);
+    console::setForeground(m_outputFore);
+    console::setBackground(m_outputBack);
 }
 
 }

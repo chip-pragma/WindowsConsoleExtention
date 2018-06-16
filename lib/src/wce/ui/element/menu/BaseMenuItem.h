@@ -6,17 +6,9 @@ namespace wce {
 
 class BaseMenuItem : public IMenuItem {
 public:
-    const bool &getVisible() const override;
+    StyledText text;
 
-    void setVisible(bool vis) override;
-
-    const StyledText &getText() const;
-
-    StyledText &getTextRef();
-
-protected:
-    StyledText mText;
-    bool mVisible = true;
+    ~BaseMenuItem() override;
 };
 
 }

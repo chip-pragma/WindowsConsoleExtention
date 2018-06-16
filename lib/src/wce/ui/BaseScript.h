@@ -33,23 +33,23 @@ protected:
     virtual void onAfterRun() { };
 
 private:
-    std::vector<IElement *> mElements;
-    bool mAborted = false;
+    std::vector<IElement *> m_elements;
+    bool m_aborted = false;
 };
 
 template<class TElement, class ...Args>
 TElement &BaseScript::makeElement(Args ...args) {
     auto element = new TElement(args...);
-    mElements.push_back(static_cast<IElement *>(element));
+    m_elements.push_back(static_cast<IElement *>(element));
     return *element;
 }
 
 template<class TElement>
 bool BaseScript::removeElement(const TElement &elem) {
     auto baseElem = static_cast<IElement *>(*elem);
-    auto find = std::find(mElements.cbegin(), mElements.cend(), baseElem);
-    if (find != mElements.cend()) {
-        mElements.erase(find);
+    auto find = std::find(m_elements.cbegin(), m_elements.cend(), baseElem);
+    if (find != m_elements.cend()) {
+        m_elements.erase(find);
         return true;
     }
     return false;

@@ -10,8 +10,8 @@
 CarListScript::CarListScript() {
     using namespace wce;
 
-    TextColor tempHeaderColor(Colors::WHITE, Colors::BLUE);
-    TextColor tempBorderColor(Colors::TEAL, std::nullopt);
+    TextColor tempHeaderColor(console::cWhite, console::cBlue);
+    TextColor tempBorderColor(console::cTeal, std::nullopt);
 
     {
         using Column = DataTableColumn<Car>;
@@ -19,35 +19,35 @@ CarListScript::CarListScript() {
         auto &e = makeElement<DataTable<Car>>();
         m_dtCars = &e;
         e.addBeforeRunCallback(onBeforeRunDataTableCar);
-        e.getBorderRef().getColorRef() = tempBorderColor;
+        e.border.color = tempBorderColor;
 
         e.makeColumn<Column>(Car::ID_FIELD_MARK)
-            .getHeaderRef()
+            .header
             .setColor(tempHeaderColor).append("МАРКА"_dos);
 
         e.makeColumn<Column>(Car::ID_FIELD_MAKER)
-            .getHeaderRef()
+            .header
             .setColor(tempHeaderColor).append("ПРОИЗВОДИТЕЛЬ"_dos);
 
         e.makeColumn<Column>(Car::ID_FIELD_SEATS)
-            .getHeaderRef()
+            .header
             .setColor(tempHeaderColor).append("СИДЕНИЙ"_dos);
 
         {
             auto &ec = e.makeColumn<Column>(Car::ID_FIELD_STATE_NUMBER);
-            ec.getHeaderRef()
+            ec.header
                 .setColor(tempHeaderColor).append("ГОСНОМЕР"_dos);
-            ec.setSortPredicate(
+            ec.sortPredicate =
                 [](const Car &c1, const Car &c2) -> bool {
                     return (c1.getSeats() < c2.getSeats());
-                });
+                };
         }
     }
 
     {
         auto &e = makeElement<Label>();
         e.addBeforeRunCallback(onBeforeRunLabelPageInfo);
-        e.setCallPause(true);
+        e.waitAnyKey = true;
     }
 }
 
@@ -55,17 +55,17 @@ CarListScript::~CarListScript() { }
 
 void CarListScript::onBeforeRunDataTableCar(wce::DataTable<Car> &element) {
     element.setDataSource(TransAgency::get().getCarList());
-    element.setSortBy(Car::ID_FIELD_MARK);
+    element.sortBy = Car::ID_FIELD_MARK;
 }
 
 void CarListScript::onBeforeRunLabelPageInfo(wce::Label &element) {
     std::stringstream ss;
     ss << "[Страница "
-       << m_dtCars->getPageNumber() + 1
+       << m_dtCars->pageNumber + 1
        << " из "
        << m_dtCars->getPageCount()
        << "]\n";
-    element.getTextRef()
+    element.text
         .clear().append(fromUtf8ToDos866(ss.str()));
     this->abort();
 }

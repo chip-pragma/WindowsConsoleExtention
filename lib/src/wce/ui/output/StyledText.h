@@ -20,9 +20,9 @@ public:
 
     StyledText &setColor(const TextColor &tColor);
 
-    StyledText &setFore(const Color &fore);
+    StyledText &setFore(const ColorIndex &fore);
 
-    StyledText &setBack(const Color &back);
+    StyledText &setBack(const ColorIndex &back);
 
     StyledText &resetColor();
 
@@ -70,8 +70,8 @@ protected:
         size_t length = 0;
     };
 
-    std::string mText;
-    std::vector<_TextColorLine> mColors;
+    std::string m_text;
+    std::vector<_TextColorLine> m_colors;
 
 };
 

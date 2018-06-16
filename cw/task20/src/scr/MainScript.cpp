@@ -12,44 +12,44 @@ using namespace wce;
 
 MainScript::MainScript() {
     Label tempLabelWraps;
-    tempLabelWraps.getTextRef().append("\n\n");
+    tempLabelWraps.text.append("\n\n");
 
     {
         auto& e = makeElement<Notification>();
-        e.getBorderRef().getStyleRef().apply(BorderStyle::DB_ALL);
-        e.getTextRef()
-            .setFore(Colors::LT_GREEN)
+        e.border.style.apply(BorderStyle::DB_ALL);
+        e.text
+            .setFore(console::cGreenLt)
             .append("СИСТЕМА УПРАВЛЕНИЯ ДАННЫМИ\n"_dos)
-            .setFore(Colors::LT_YELLOW)
+            .setFore(console::cYellowLt)
             .append("ТРАНСПОРТНОГО АГЕНСТВА\n"_dos);
-        e.getIconRef() = StyledChar('i', {Colors::LT_TEAL, std::nullopt});
+        e.icon = StyledChar('i', {console::cTealLt, std::nullopt});
     }
 
     makeElement<Label>(tempLabelWraps);
 
     {
         auto& e = makeElement<Menu>();
-        e.getCommandColorRef().getForeRef() = Colors::LT_PURPLE;
-        e.getCaptionRef().append("Главное меню"_dos);
-        auto &eb = e.getBorderRef();
-        eb.getStyleRef().apply(BorderStyle::DB_OUT_H);
-        eb.getColorRef().getForeRef() = Colors::LT_TEAL;
-        e.getReaderHintRef().append("Выберите действие"_dos);
+        e.commandColor.foreground = console::cGreenLt;
+        e.caption.append("Главное меню"_dos);
+        auto &eb = e.border;
+        eb.style.apply(BorderStyle::DB_OUT_H);
+        eb.color.foreground = console::cTealLt;
+        e.readerHint.append("Выберите действие"_dos);
 
         e.makeItem<MenuItem>(ID_MM_CARS, "1|t")
-            .getTextRef().append("Управление транспортом"_dos);
+            .text.append("Управление транспортом"_dos);
         e.makeItem<MenuItem>(ID_MM_CLIENTS, "2|c")
-            .getTextRef().append("Управление клиентами"_dos);
+            .text.append("Управление клиентами"_dos);
         e.makeItem<MenuItem>(ID_MM_RENT, "3|r")
-            .getTextRef().append("Управление арендой"_dos);
+            .text.append("Управление арендой"_dos);
         e.makeItem<MenuSeparator>(ID_MM_SEP1);
         e.makeItem<MenuItem>(ID_MM_EXIT, "0|q")
-            .getTextRef().append("Выход из программы"_dos);
+            .text.append("Выход из программы"_dos);
 
         auto &d = makeElement<MenuReader>();
         d.addResultReadCallback(onMenuResult);
-        d.getColorReadRef() = {Colors::LT_TEAL, Colors::BLUE};
-        d.getErrorTextRef() = "Неверный пункт меню"_dos;
+        d.color = {console::cTealLt, console::cBlue};
+        d.errorText = "Неверный пункт меню"_dos;
 
         e.assignReader(d);
     }
@@ -73,9 +73,9 @@ bool MainScript::onMenuResult(wce::MenuReaderResult &result) {
     }
 
     wce::StyledText()
-        .setFore(wce::Colors::LT_RED)
+        .setFore(wce::console::cRedLt)
         .append("Неверная комадна меню\n"_dos)
         .outputTo(std::cout);
-    wce::term::callPause();
+    wce::console::waitAnyKey();
     return false;
 }

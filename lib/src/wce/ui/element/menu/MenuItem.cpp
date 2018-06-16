@@ -4,6 +4,10 @@
 
 namespace wce {
 
+MenuItem::~MenuItem() {
+
+}
+
 MenuItem::MenuItem(const std::string &commands) {
     text::split(commands, mCommandList, "|");
     if (mCommandList.empty())
@@ -25,7 +29,7 @@ void MenuItem::write(wce::Buffer &buf, const wce::StyledBorder &sBord, const Tex
     for (auto it = list.cbegin();;) {
         coms.setColor(commandColor)
             .append(*it)
-            .setColor(sBord.getColor());
+            .setColor(sBord.color);
         if (++it != list.cend())
             coms.append(",");
         else
@@ -36,9 +40,9 @@ void MenuItem::write(wce::Buffer &buf, const wce::StyledBorder &sBord, const Tex
         .append(" ");
     buf.draw(coms);
 
-    auto subBuf = buf.extract(buf.getCursorPosRef(), buf.getSize() - buf.getCursorPosRef());
-    subBuf.draw(mText);
-    buf.getCursorPosRef().getYRef() += subBuf.getUsedSize().getYRef();
+    auto subBuf = buf.extract(buf.cursorPosition, buf.getSize() - buf.cursorPosition);
+    subBuf.draw(text);
+    buf.cursorPosition.y += subBuf.getUsedSize().y;
 }
 
 }

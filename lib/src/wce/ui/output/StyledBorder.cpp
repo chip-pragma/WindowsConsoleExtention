@@ -3,32 +3,12 @@
 
 namespace wce {
 
-StyledBorder::StyledBorder(const BorderStyle &border) : mBorder(border) {
+StyledBorder::StyledBorder(const BorderStyle &border) : style(border) { }
 
-}
-
-StyledBorder::StyledBorder(const BorderStyle &border, const TextColor &color) : mBorder(border), mColor(color) {
-
-}
-
-const TextColor &StyledBorder::getColor() const {
-    return mColor;
-}
-
-TextColor &StyledBorder::getColorRef() {
-    return mColor;
-}
-
-const BorderStyle &StyledBorder::getStyle() const {
-    return mBorder;
-}
-
-BorderStyle &StyledBorder::getStyleRef() {
-    return mBorder;
-}
+StyledBorder::StyledBorder(const BorderStyle &border, const TextColor &color) : style(border), color(color) { }
 
 StyledChar StyledBorder::at(const BorderStyle::Side &side) const {
-    return StyledChar(mBorder.at(side), mColor);
+    return StyledChar(style.at(side), color);
 }
 
 StyledChar StyledBorder::operator[](const BorderStyle::Side &side) const {

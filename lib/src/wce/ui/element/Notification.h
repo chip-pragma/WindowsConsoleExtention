@@ -14,31 +14,14 @@ namespace wce {
 
 class Notification : public BaseWriter<Notification> {
 public:
+    StyledBorder border;
+    std::optional<StyledChar> icon;
+    std::optional<StyledText> caption;
+    StyledText text;
+
     ~Notification() override { };
 
-    const StyledBorder &getBorder() const;
-
-    StyledBorder &getBorderRef();
-
-    const std::optional<StyledText> &getCaption() const;
-
-    std::optional<StyledText> &getCaptionRef();
-
-    const StyledText &getText() const;
-
-    StyledText &getTextRef();
-
-    const std::optional<StyledChar> &getIcon() const;
-
-    std::optional<StyledChar> &getIconRef();
-
 protected:
-    StyledBorder mBorder;
-    std::optional<StyledChar> mIcon;
-    std::optional<StyledText> mCaption;
-    StyledText mText;
-    bool mWait = false;
-
     void onWrite(Buffer &cvs) override;
 };
 

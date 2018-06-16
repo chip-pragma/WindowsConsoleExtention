@@ -2,13 +2,13 @@
 
 namespace wce {
 
-std::optional<Encoder> BorderStyle::FinalEncoding = std::nullopt;
+std::optional<Encoder> BorderStyle::finalEncoding = std::nullopt;
 
-BorderStyle::BorderStyle() : mEncFrom(Encoder::UTF8) {
+BorderStyle::BorderStyle() : m_encFrom(Encoder::UTF8) {
     apply(DualBorder::DB_NONE);
 }
 
-BorderStyle::BorderStyle(const DualBorder &dualBorder) : mEncFrom(Encoder::UTF8) {
+BorderStyle::BorderStyle(const DualBorder &dualBorder) : m_encFrom(Encoder::UTF8) {
     apply(dualBorder);
 }
 
@@ -37,102 +37,102 @@ void BorderStyle::apply(int8_t db) {
 
     using Db = DualBorder;
 
-    mLastApplied = static_cast<DualBorder>(db);
+    m_lastApplied = static_cast<DualBorder>(db);
 
-    mSides[SL] = "\u2502";
-    mSides[SR] = "\u2502";
-    mSides[ST] = "\u2500";
-    mSides[SB] = "\u2500";
+    m_sides[SL] = "\u2502";
+    m_sides[SR] = "\u2502";
+    m_sides[ST] = "\u2500";
+    m_sides[SB] = "\u2500";
 
-    mSides[SLT] = "\u250C";
-    mSides[SRT] = "\u2510";
-    mSides[SLB] = "\u2514";
-    mSides[SRB] = "\u2518";
+    m_sides[SLT] = "\u250C";
+    m_sides[SRT] = "\u2510";
+    m_sides[SLB] = "\u2514";
+    m_sides[SRB] = "\u2518";
 
-    mSides[SV] = "\u2502";
-    mSides[SH] = "\u2500";
+    m_sides[SV] = "\u2502";
+    m_sides[SH] = "\u2500";
 
-    mSides[SLH] = "\u251C";
-    mSides[SRH] = "\u2524";
-    mSides[STV] = "\u252C";
-    mSides[SBV] = "\u2534";
+    m_sides[SLH] = "\u251C";
+    m_sides[SRH] = "\u2524";
+    m_sides[STV] = "\u252C";
+    m_sides[SBV] = "\u2534";
 
-    mSides[SC] = "\u253C";
+    m_sides[SC] = "\u253C";
 
     // Прямые (боковые)
     if ((db & Db::DB_LEFT) != 0) {
-        mSides[SL] = "\u2551";
-        mSides[SLT] = "\u2553";
-        mSides[SLB] = "\u2559";
-        mSides[SLH] = "\u255F";
+        m_sides[SL] = "\u2551";
+        m_sides[SLT] = "\u2553";
+        m_sides[SLB] = "\u2559";
+        m_sides[SLH] = "\u255F";
     }
     if ((db & Db::DB_RIGHT) != 0) {
-        mSides[SR] = "\u2551";
-        mSides[SRT] = "\u2556";
-        mSides[SRB] = "\u255C";
-        mSides[SRH] = "\u2562";
+        m_sides[SR] = "\u2551";
+        m_sides[SRT] = "\u2556";
+        m_sides[SRB] = "\u255C";
+        m_sides[SRH] = "\u2562";
     }
     if ((db & Db::DB_TOP) != 0) {
-        mSides[ST] = "\u2550";
-        mSides[SLT] = "\u2552";
-        mSides[SRT] = "\u2555";
-        mSides[STV] = "\u2564";
+        m_sides[ST] = "\u2550";
+        m_sides[SLT] = "\u2552";
+        m_sides[SRT] = "\u2555";
+        m_sides[STV] = "\u2564";
     }
     if ((db & Db::DB_BOTTOM) != 0) {
-        mSides[SB] = "\u2550";
-        mSides[SLB] = "\u2558";
-        mSides[SRB] = "\u255B";
-        mSides[SBV] = "\u2567";
+        m_sides[SB] = "\u2550";
+        m_sides[SLB] = "\u2558";
+        m_sides[SRB] = "\u255B";
+        m_sides[SBV] = "\u2567";
     }
 
     // Углы
     if ((db & (Db::DB_LEFT | Db::DB_TOP)) == 5)
-        mSides[SLT] = "\u2554";
+        m_sides[SLT] = "\u2554";
     if ((db & (Db::DB_RIGHT | Db::DB_TOP)) == 6)
-        mSides[SRT] = "\u2557";
+        m_sides[SRT] = "\u2557";
     if ((db & (Db::DB_LEFT | Db::DB_BOTTOM)) == 9)
-        mSides[SLB] = "\u255A";
+        m_sides[SLB] = "\u255A";
     if ((db & (Db::DB_RIGHT | Db::DB_BOTTOM)) == 10)
-        mSides[SRB] = "\u255D";
+        m_sides[SRB] = "\u255D";
 
     // Прямые (внутренние)
     if ((db & Db::DB_IN_V) != 0) {
-        mSides[SV] = "\u2551";
-        mSides[STV] = "\u2565";
-        mSides[SBV] = "\u2568";
-        mSides[SC] = "\u256B";
+        m_sides[SV] = "\u2551";
+        m_sides[STV] = "\u2565";
+        m_sides[SBV] = "\u2568";
+        m_sides[SC] = "\u256B";
     }
     if ((db & Db::DB_IN_H) != 0) {
-        mSides[SH] = "\u2550";
-        mSides[SLH] = "\u255E";
-        mSides[SRH] = "\u2561";
-        mSides[SC] = "\u256A";
+        m_sides[SH] = "\u2550";
+        m_sides[SLH] = "\u255E";
+        m_sides[SRH] = "\u2561";
+        m_sides[SC] = "\u256A";
     }
 
     // Тройник
     if ((db & (Db::DB_IN_V | Db::DB_TOP)) == 20)
-        mSides[STV] = "\u2566";
+        m_sides[STV] = "\u2566";
     if ((db & (Db::DB_IN_V | Db::DB_BOTTOM)) == 24)
-        mSides[SBV] = "\u2569";
+        m_sides[SBV] = "\u2569";
     if ((db & (Db::DB_IN_H | Db::DB_LEFT)) == 33)
-        mSides[SLH] = "\u2560";
+        m_sides[SLH] = "\u2560";
     if ((db & (Db::DB_IN_H | Db::DB_RIGHT)) == 34)
-        mSides[SRH] = "\u2563";
+        m_sides[SRH] = "\u2563";
 
     // Перекрестье
     if ((db & (Db::DB_IN_H | Db::DB_IN_V)) == 48)
-        mSides[SC] = "\u256C";
+        m_sides[SC] = "\u256C";
 
 }
 
 const BorderStyle::DualBorder &BorderStyle::getCurrent() const {
-    return mLastApplied;
+    return m_lastApplied;
 }
 
 char BorderStyle::at(const BorderStyle::Side &side) const {
-    auto sym = mSides.at(side);
-    if (BorderStyle::FinalEncoding.has_value())
-        return BorderStyle::FinalEncoding->to(mEncFrom.from(sym)).at(0);
+    auto sym = m_sides.at(side);
+    if (BorderStyle::finalEncoding.has_value())
+        return BorderStyle::finalEncoding->to(m_encFrom.from(sym)).at(0);
     return sym.at(0);
 }
 

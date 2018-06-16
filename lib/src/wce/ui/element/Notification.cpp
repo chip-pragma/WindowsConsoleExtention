@@ -3,38 +3,6 @@
 
 namespace wce {
 
-const StyledBorder &Notification::getBorder() const {
-    return mBorder;
-}
-
-StyledBorder &Notification::getBorderRef() {
-    return mBorder;
-}
-
-const std::optional<StyledText> &Notification::getCaption() const {
-    return mCaption;
-}
-
-std::optional<StyledText> &Notification::getCaptionRef() {
-    return mCaption;
-}
-
-const StyledText &Notification::getText() const {
-    return mText;
-}
-
-StyledText &Notification::getTextRef() {
-    return mText;
-}
-
-const std::optional<StyledChar> &Notification::getIcon() const {
-    return mIcon;
-}
-
-std::optional<StyledChar> &Notification::getIconRef() {
-    return mIcon;
-}
-
 void Notification::onWrite(Buffer &cvs) {
     using BS = BorderStyle;
 
@@ -47,45 +15,45 @@ void Notification::onWrite(Buffer &cvs) {
     }
 
     Buffer text = cvs.extract(margin / 2 + Point(1, 1), textBlockSize, false);
-    text.draw(this->getTextRef());
+    text.draw(this->text);
     Point textBlockUsedSize = text.getUsedSize() + margin;
 
-    auto &brd = this->getBorderRef();
+    auto &brd = this->border;
 
     cvs.draw(brd[BS::SLT]);
-    cvs.draw(brd[BS::ST], textBlockUsedSize.getXRef(), false);
+    cvs.draw(brd[BS::ST], textBlockUsedSize.x, false);
     cvs.draw(brd[BS::SRT]);
 
-    cvs.getCursorPosRef() = Point(0, 1);
-    cvs.draw(brd[BS::SL], textBlockUsedSize.getYRef(), true);
-    cvs.getCursorPosRef() = Point(textBlockUsedSize.getXRef() + 1, 1);
-    cvs.draw(brd[BS::SR], textBlockUsedSize.getYRef(), true);
+    cvs.cursorPosition = Point(0, 1);
+    cvs.draw(brd[BS::SL], textBlockUsedSize.y, true);
+    cvs.cursorPosition = Point(textBlockUsedSize.x + 1, 1);
+    cvs.draw(brd[BS::SR], textBlockUsedSize.y, true);
 
-    cvs.getCursorPosRef() = Point(0, textBlockUsedSize.getYRef() + 1);
+    cvs.cursorPosition = Point(0, textBlockUsedSize.y + 1);
     cvs.draw(brd[BS::SLB]);
-    cvs.draw(brd[BS::SB], textBlockUsedSize.getXRef(), false);
+    cvs.draw(brd[BS::SB], textBlockUsedSize.x, false);
     cvs.draw(brd[BS::SRB]);
 
     // Open
-    cvs.getCursorPosRef() = Point(1, 0);
+    cvs.cursorPosition = Point(1, 0);
 
-    if (this->getIconRef().has_value()) {
-        cvs.getCursorPosRef().getXRef()++;
-        cvs.draw(StyledChar('[', brd.getColorRef()));
-        cvs.draw(this->getIconRef().value());
-        cvs.draw(StyledChar(']', brd.getColorRef()));
+    if (this->icon.has_value()) {
+        cvs.cursorPosition.x++;
+        cvs.draw(StyledChar('[', brd.color));
+        cvs.draw(this->icon.value());
+        cvs.draw(StyledChar(']', brd.color));
     }
 
-    if (this->getCaptionRef().has_value()
-        && (cvs.getCursorPosRef().getXRef() + 3 < cvs.getSize().getX() - 2)) {
-        cvs.getCursorPosRef().getXRef()++;
-        cvs.draw(StyledChar('[', brd.getColorRef()));
-        auto captionWidth = cvs.getSize().getX() - cvs.getCursorPosRef().getXRef() - 3;
-        auto caption = cvs.extract(cvs.getCursorPosRef(),
+    if (this->caption.has_value()
+        && (cvs.cursorPosition.x + 3 < cvs.getSize().x - 2)) {
+        cvs.cursorPosition.x++;
+        cvs.draw(StyledChar('[', brd.color));
+        auto captionWidth = cvs.getSize().x - cvs.cursorPosition.x - 3;
+        auto caption = cvs.extract(cvs.cursorPosition,
                                    Point(captionWidth, 1));
-        caption.draw(this->getCaptionRef().value());
-        cvs.getCursorPosRef().getXRef() += captionWidth;
-        cvs.draw(StyledChar(']', brd.getColorRef()));
+        caption.draw(this->caption.value());
+        cvs.cursorPosition.x += captionWidth;
+        cvs.draw(StyledChar(']', brd.color));
     }
 }
 

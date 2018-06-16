@@ -9,9 +9,9 @@ namespace wce {
 
 class IMenuItem {
 public:
-    virtual const bool& getVisible() const = 0;
+    bool visible = true;
 
-    virtual void setVisible(bool vis) = 0;
+    virtual ~IMenuItem() { }
 
     virtual void write(Buffer &buf, const StyledBorder &sBord, const TextColor &commandColor) const = 0;
 };

@@ -6,15 +6,11 @@ namespace wce {
 
 class Label : public BaseWriter<Label> {
 public:
+    StyledText text;
+
     ~Label() override;
 
-    const StyledText &getText() const;
-
-    StyledText &getTextRef();
-
 protected:
-    StyledText mText;
-
     void onWrite(Buffer &buf) override;
 };
 

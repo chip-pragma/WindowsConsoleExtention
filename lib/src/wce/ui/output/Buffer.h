@@ -6,9 +6,8 @@
 #include <cstdint>
 #include <algorithm>
 
-#include "wce/core/terminal.h"
-#include "wce/core/draw/Color.h"
-#include "wce/core/draw/Point.h"
+#include "wce/core/console.h"
+#include "wce/core/Point.h"
 #include "wce/ui/style/TextColor.h"
 #include "IOutputable.h"
 #include "OutputHelper.h"
@@ -19,30 +18,21 @@ namespace wce {
 
 class Buffer : public IOutputable {
 public:
+    uint8_t tabLength = 5;
+    std::string unfinished = "<~>";
+    Point cursorPosition;
 
     explicit Buffer(const Point &size);
 
     ~Buffer() override;
 
-    const Point &getCursorPos() const;
-
-    Point &getCursorPosRef();
-
-    const Point & getSize() const;
+    const Point &getSize() const;
 
     Point getUsedSize() const;
 
-    const uint8_t &getTabLength() const;
-
-    uint8_t &getTabLengthRef();
-
-    const std::string &getUnfinished() const;
-
-    std::string &getUnfinishedRef();
-
     bool hasOwner() const;
 
-    const Buffer& getOwner() const;
+    const Buffer &getOwner() const;
 
     Buffer extract(Point begin, Point size, bool clean = true);
 
@@ -65,21 +55,20 @@ public:
     StyledChar &operator[](const Point &pos);
 
 private:
-    Point mCursorPos;
-    StyledChar** mBuffer;
-    Buffer* mOwner = nullptr;
-    Point mBeginPosFromOwner;
-    Point mSize;
-    Point mMaxCurPos;
-    uint8_t mTabLength = 5;
-    std::string mUnfinished = "<~>";
+    StyledChar **m_buffer;
+    Buffer *m_owner = nullptr;
+    Point m_beginPosFromOwner;
+    Point m_size;
+    Point m_maxCurPos;
 
     explicit Buffer(Buffer *parent, const Point &beginPos, const Point &size);
 
     // "Печатает" символ в допустимой области холста
     void printChar(const StyledChar &schar);
+
     // Печатает текстовый символ (с пропуском строки и т.п.)
     void printTextChar(const StyledChar &schar);
+
     // Расчет максимальной позиции курсора
     void getPointWithMaxCrd();
 };

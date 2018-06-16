@@ -2,8 +2,6 @@
 
 #include <string>
 
-#include "platform/platform.h"
-
 namespace wce {
 
 class Encoder {

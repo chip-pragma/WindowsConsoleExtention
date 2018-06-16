@@ -17,29 +17,15 @@ namespace wce {
 template<class TModel>
 class DataTable : public BaseWriter<DataTable<TModel>> {
 public:
+    StyledBorder border;
+    std::optional<uint32_t> sortBy = std::nullopt;
+    std::optional<std::string> filterBy = std::nullopt;
+    std::optional<size_t> pageItemCount = std::nullopt;
+    size_t pageNumber = 0;
+
     ~DataTable() override;
 
-    const StyledBorder &getBorder() const;
-
-    StyledBorder &getBorderRef();
-
-    const std::optional<uint32_t> &getSortBy() const;
-
-    void setSortBy(const std::optional<uint32_t> &sortBy);
-
-    const std::optional<std::string> &getFilterBy() const;
-
-    void setFilterBy(const std::optional<std::string> &filterBy);
-
-    const std::optional<size_t> &getPageItemCount() const;
-
-    void setPageItemCount(const std::optional<size_t> &pageItemCount);
-
     size_t getPageCount() const;
-
-    size_t getPageNumber() const;
-
-    void setPageNumber(size_t pageNumber);
 
     template<class TColumn, class ...Args>
     TColumn &makeColumn(uint32_t fieldId, Args ...args);
@@ -53,14 +39,10 @@ public:
     const std::vector<TModel> &getDataSource() const;
 
 protected:
-    StyledBorder mBorder;
-    DataTableColumnVector<TModel> mColumns;
-    std::optional<uint32_t> mSortBy = std::nullopt;
-    std::optional<std::string> mFilterBy = std::nullopt;
-    std::optional<size_t> mPageItemCount = std::nullopt;
-    size_t mPageCount = 0;
-    size_t mPageNumber = 0;
-    const std::vector<TModel> *mDataSource = nullptr;
+    DataTableColumnVector<TModel> m_columns;
+    size_t m_pageCount = 0;
+
+    const std::vector<TModel> *m_dataSource = nullptr;
 
     void onWrite(Buffer &buf) override;
 
@@ -69,71 +51,20 @@ protected:
 
 template<class TModel>
 DataTable<TModel>::~DataTable() {
-    for (DataTableColumnPair<TModel> col : mColumns)
+    for (DataTableColumnPair<TModel> col : m_columns)
         delete col.second;
 }
 
 template<class TModel>
-const StyledBorder &DataTable<TModel>::getBorder() const {
-    return mBorder;
-}
-
-template<class TModel>
-StyledBorder &DataTable<TModel>::getBorderRef() {
-    return mBorder;
-}
-
-
-template<class TModel>
-const std::optional<uint32_t> &DataTable<TModel>::getSortBy() const {
-    return mSortBy;
-}
-
-template<class TModel>
-void DataTable<TModel>::setSortBy(const std::optional<uint32_t> &sortBy) {
-    mSortBy = sortBy;
-}
-
-template<class TModel>
-const std::optional<std::string> &DataTable<TModel>::getFilterBy() const {
-    return mFilterBy;
-}
-
-template<class TModel>
-void DataTable<TModel>::setFilterBy(const std::optional<std::string> &filterBy) {
-    mFilterBy = filterBy;
-}
-
-template<class TModel>
-const std::optional<size_t> &DataTable<TModel>::getPageItemCount() const {
-    return mPageItemCount;
-}
-
-template<class TModel>
-void DataTable<TModel>::setPageItemCount(const std::optional<size_t> &pageItemCount) {
-    mPageItemCount = pageItemCount;
-}
-
-template<class TModel>
 size_t DataTable<TModel>::getPageCount() const {
-    return mPageCount;
-}
-
-template<class TModel>
-size_t DataTable<TModel>::getPageNumber() const {
-    return mPageNumber;
-}
-
-template<class TModel>
-void DataTable<TModel>::setPageNumber(size_t pageNumber) {
-    mPageNumber = std::clamp(pageNumber, size_t(0), mPageCount);
+    return m_pageCount;
 }
 
 template<class TModel>
 template<class TColumn, class... Args>
 TColumn &DataTable<TModel>::makeColumn(uint32_t fieldId, Args... args) {
     bool anyOf = std::any_of(
-        mColumns.cbegin(), mColumns.cend(),
+        m_columns.cbegin(), m_columns.cend(),
         [&](const DataTableColumnPair<TModel> &pair) {
             return pair.first == fieldId;
         });
@@ -141,19 +72,19 @@ TColumn &DataTable<TModel>::makeColumn(uint32_t fieldId, Args... args) {
         throw Exception("ID already in use");
 
     auto column = static_cast<DataTableColumn<TModel> *>(new TColumn());
-    mColumns.emplace_back(fieldId, column);
+    m_columns.emplace_back(fieldId, column);
     return *column;
 }
 
 template<class TModel>
 bool DataTable<TModel>::removeColumn(uint32_t fieldId) {
     auto find = std::find_if(
-        mColumns.cbegin(), mColumns.cend(),
+        m_columns.cbegin(), m_columns.cend(),
         [&](const DataTableColumnPair<TModel> &pair) {
             return pair.first == fieldId;
         });
-    if (find != mColumns.cend()) {
-        mColumns.erase(find);
+    if (find != m_columns.cend()) {
+        m_columns.erase(find);
         return true;
     }
     return false;
@@ -161,8 +92,8 @@ bool DataTable<TModel>::removeColumn(uint32_t fieldId) {
 
 template<class TModel>
 bool DataTable<TModel>::tryGetColumn(uint32_t fieldId, DataTableColumn<TModel> &outColumn) const {
-    auto iter = std::find_if(mColumns.begin(),
-                             mColumns.end(),
+    auto iter = std::find_if(m_columns.begin(),
+                             m_columns.end(),
                              [&](const DataTableColumnPair<TModel> &pair) {
                                  bool equal = (pair.first == fieldId);
                                  if (equal)
@@ -170,17 +101,17 @@ bool DataTable<TModel>::tryGetColumn(uint32_t fieldId, DataTableColumn<TModel> &
                                  return equal;
                              }
     );
-    return (iter != mColumns.end());
+    return (iter != m_columns.end());
 }
 
 template<class TModel>
 void DataTable<TModel>::setDataSource(const std::vector<TModel> &dataSource) {
-    mDataSource = &dataSource;
+    m_dataSource = &dataSource;
 }
 
 template<class TModel>
 const std::vector<TModel> &DataTable<TModel>::getDataSource() const {
-    return mDataSource;
+    return m_dataSource;
 }
 
 template<class TModel>
@@ -197,10 +128,10 @@ void DataTable<TModel>::onWrite(Buffer &buf) {
     int maxCellHeight = 0;
 
     //region [ HEADER ]
-    auto srcColsCount = static_cast<int>(mColumns.size());
-    int colDrawWidth = buf.getSize().getX() - srcColsCount;
+    auto srcColsCount = static_cast<int>(m_columns.size());
+    int colDrawWidth = buf.getSize().x - srcColsCount;
 
-    for (DataTableColumnPair<TModel> &colPair : mColumns) {
+    for (DataTableColumnPair<TModel> &colPair : m_columns) {
         ExtColumn extCol{
             extCol.id = colPair.first,
             extCol.column = colPair.second
@@ -212,20 +143,20 @@ void DataTable<TModel>::onWrite(Buffer &buf) {
 
         auto colHeaderBuf = buf.extract(
             Point(curColDrawPos, 0),
-            Point(extCol.width, buf.getSize().getY()));
-        colHeaderBuf.draw(extCol.column->getHeaderRef());
+            Point(extCol.width, buf.getSize().y));
+        colHeaderBuf.draw(extCol.column->header);
 
         curColDrawPos += extCol.width + 1;
-        maxCellHeight = std::max(maxCellHeight, colHeaderBuf.getUsedSize().getYRef());
+        maxCellHeight = std::max(maxCellHeight, colHeaderBuf.getUsedSize().y);
     }
 
     //endregion
 
     //region [ HEADER UNDERLINE ]
-    buf.getCursorPosRef() = Point(offset, maxCellHeight);
+    buf.cursorPosition = Point(offset, maxCellHeight);
 
     for (size_t i = 0, n = -1 + extColsVec.size(); i <= n; i++) {
-        const StyledBorder &bord = this->getBorderRef();
+        const StyledBorder &bord = this->border;
         ExtColumn &extCol = extColsVec.at(i);
 
         buf.draw(bord.at(BorderStyle::ST), extCol.width);
@@ -251,43 +182,43 @@ void DataTable<TModel>::onWrite(Buffer &buf) {
         curColDrawPos = offset;
 
         for (ExtColumn &extColPair : extColsVec) {
-            if (!extColPair.column->getVisible())
+            if (!extColPair.column->visible)
                 continue;
 
             auto cellBuf = buf.extract(
                 Point(curColDrawPos, usedHeight),
-                Point(extColPair.width, buf.getSize().getY() - usedHeight));
+                Point(extColPair.width, buf.getSize().y - usedHeight));
 
             StyledText modelDataStr;
             std::string modelDataField;
             if (srcDataItem.tryGetFieldValue(extColPair.id, modelDataField)) {
                 modelDataStr
-                    .setColor(extColPair.column->getCellTextColorRef())
+                    .setColor(extColPair.column->cellColor)
                     .append(modelDataField);
             }
             cellBuf.draw(modelDataStr);
 
             curColDrawPos += extColPair.width + 1;
-            maxCellHeight = std::max(maxCellHeight, cellBuf.getUsedSize().getYRef());
+            maxCellHeight = std::max(maxCellHeight, cellBuf.getUsedSize().y);
         }
 
         //endregion
 
         //region [ GRID ]
 
-        buf.getCursorPosRef() = Point(offset, usedHeight + maxCellHeight);
+        buf.cursorPosition = Point(offset, usedHeight + maxCellHeight);
         for (size_t j = 0, m = -1 + extColsVec.size(); j <= m; j++) {
             ExtColumn &extCol = extColsVec.at(j);
 
-            buf.draw(mBorder.at(BorderStyle::SH), extCol.width);
+            buf.draw(border.at(BorderStyle::SH), extCol.width);
             if (j < m) {
-                buf.getCursorPosRef().getYRef() = usedHeight;
-                buf.draw(mBorder.at(BorderStyle::SV), maxCellHeight, true);
+                buf.cursorPosition.y = usedHeight;
+                buf.draw(border.at(BorderStyle::SV), maxCellHeight, true);
 
                 if (i < n)
-                    buf.draw(mBorder.at(BorderStyle::SC));
+                    buf.draw(border.at(BorderStyle::SC));
                 else
-                    buf.draw(mBorder.at(BorderStyle::SBV));
+                    buf.draw(border.at(BorderStyle::SBV));
             }
         }
 
@@ -300,34 +231,36 @@ void DataTable<TModel>::onWrite(Buffer &buf) {
 
 template<class TModel>
 void DataTable<TModel>::prepareData(std::vector<TModel> &modifiedData) {
-    if (!mDataSource)
+    if (!m_dataSource)
         return;
 
-    modifiedData.insert(modifiedData.cend(), mDataSource->begin(), mDataSource->end());
+    pageNumber = std::clamp(pageNumber, size_t(0), m_pageCount);
 
-    if (mFilterBy.has_value()) {
+    modifiedData.insert(modifiedData.cend(), m_dataSource->begin(), m_dataSource->end());
+
+    if (filterBy.has_value()) {
         std::remove_if(
             modifiedData.begin(),
             modifiedData.end(),
             [&](const TModel &data) {
                 auto &model = static_cast<const IModel &>(data);
-                for (const DataTableColumnPair<TModel> &colPair : mColumns) {
+                for (const DataTableColumnPair<TModel> &colPair : m_columns) {
                     std::string fieldValue = "";
                     if (model.tryGetFieldValue(colPair.first, fieldValue))
-                        if (fieldValue.find(mFilterBy.value()) != std::string::npos)
+                        if (fieldValue.find(filterBy.value()) != std::string::npos)
                             return false;
                 }
                 return true;
             });
     }
 
-    if (mSortBy.has_value()) {
+    if (sortBy.has_value()) {
         DataTableColumn<TModel> column;
-        auto sortBy = mSortBy.value();
+        auto sortBy = this->sortBy.value();
         if (this->tryGetColumn(sortBy, column)
-            && column.getVisible()) {
-            if (column.getSortPredicate() != nullptr) {
-                std::sort(modifiedData.begin(), modifiedData.end(), column.getSortPredicate());
+            && column.visible) {
+            if (column.sortPredicate != nullptr) {
+                std::sort(modifiedData.begin(), modifiedData.end(), column.sortPredicate);
             } else {
                 std::sort(
                     modifiedData.begin(), modifiedData.end(),
@@ -345,15 +278,15 @@ void DataTable<TModel>::prepareData(std::vector<TModel> &modifiedData) {
         }
     }
 
-    if (!mPageItemCount.has_value()) {
-        mPageCount = 1;
-        mPageNumber = 0;
+    if (!pageItemCount.has_value()) {
+        m_pageCount = 1;
+        pageNumber = 0;
     } else {
-        auto items = mPageItemCount.value();
-        mPageCount = modifiedData.size() / items + 1;
-        mPageNumber = std::clamp(mPageNumber, size_t(0), mPageCount - 1);
+        auto items = pageItemCount.value();
+        m_pageCount = modifiedData.size() / items + 1;
+        pageNumber = std::clamp(pageNumber, size_t(0), m_pageCount - 1);
 
-        auto begin = mPageNumber * items;
+        auto begin = pageNumber * items;
         auto end = std::min(begin + items, modifiedData.size());
         modifiedData = std::vector<TModel>(modifiedData.begin() + begin, modifiedData.begin() + end);
     }

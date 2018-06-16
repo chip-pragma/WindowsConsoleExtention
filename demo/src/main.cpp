@@ -1,6 +1,6 @@
 #include "main.h"
 
-#include <wce/core/terminal.h>
+#include <wce/core/console.h>
 #include <wce/ui/style/BorderStyle.h>
 #include <wce/tool/Encoder.h>
 
@@ -10,21 +10,21 @@
 using namespace wce;
 
 int main() {
-    term::setTitle("Текст консоли"_dos);
-    term::setForeground(Colors::WHITE);
-    term::setBackground(Colors::BLACK);
+    console::setTitle("Текст консоли"_dos);
+    console::setForeground(console::cWhite);
+    console::setBackground(console::cBlack);
 
-    term::callPause();
+    console::waitAnyKey();
 
     onTesting();
 
-    term::callPause();
+    console::waitAnyKey();
 
     return 0;
 }
 
 void onTesting() {
-    BorderStyle::FinalEncoding = Encoder(Encoder::CP866);
+    BorderStyle::finalEncoding = Encoder(Encoder::CP866);
 
     TestScript testScr;
     testScr.run();
