@@ -11,8 +11,8 @@ using namespace wce;
 
 int main() {
     console::setTitle("Текст консоли"_dos);
-    console::setForeground(console::cWhite);
-    console::setBackground(console::cBlack);
+    console::setForeground(console::C_WHITE);
+    console::setBackground(console::C_BLACK);
 
     console::waitAnyKey();
 

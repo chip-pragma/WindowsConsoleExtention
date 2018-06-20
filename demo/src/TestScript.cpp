@@ -17,6 +17,6 @@ TestScript::TestScript() {
 }
 
 void TestScript::onBeforeRunNotification(wce::Notification &element) {
-    element.border.color.foreground = wce::console::cPurpleLt;
+    element.border.color.foreground = wce::console::C_LT_PURPLE;
     this->abort();
 }

@@ -132,22 +132,22 @@ ColorTable getColorTable() {
 
 bool resetColorTable() {
     ColorTable table;
-    table.setColor(WceStdColors::cBlack, Color(0, 0, 0));
-    table.setColor(WceStdColors::cRed, Color(200, 0, 0));
-    table.setColor(WceStdColors::cGreen, Color(78, 154, 6));
-    table.setColor(WceStdColors::cYellow, Color(196, 160, 0));
-    table.setColor(WceStdColors::cBlue, Color(52, 101, 164));
-    table.setColor(WceStdColors::cPurple, Color(117, 80, 123));
-    table.setColor(WceStdColors::cTeal, Color(6, 152, 154));
-    table.setColor(WceStdColors::cGrayLt, Color(211, 215, 207));
-    table.setColor(WceStdColors::cGray, Color(85, 87, 83));
-    table.setColor(WceStdColors::cRedLt, Color(239, 41, 41));
-    table.setColor(WceStdColors::cGreenLt, Color(138, 226, 52));
-    table.setColor(WceStdColors::cYellowLt, Color(252, 233, 79));
-    table.setColor(WceStdColors::cBlueLt, Color(114, 159, 207));
-    table.setColor(WceStdColors::cPurpleLt, Color(173, 127, 168));
-    table.setColor(WceStdColors::cTealLt, Color(52, 226, 226));
-    table.setColor(WceStdColors::cWhite, Color(238, 238, 236));
+    table.setColor(WceStdColors::C_BLACK, Color(0, 0, 0));
+    table.setColor(WceStdColors::C_DK_RED, Color(200, 0, 0));
+    table.setColor(WceStdColors::C_DK_GREEN, Color(78, 154, 6));
+    table.setColor(WceStdColors::C_DK_YELLOW, Color(196, 160, 0));
+    table.setColor(WceStdColors::C_DK_BLUE, Color(52, 101, 164));
+    table.setColor(WceStdColors::C_DK_PURPLE, Color(117, 80, 123));
+    table.setColor(WceStdColors::C_DK_TEAL, Color(6, 152, 154));
+    table.setColor(WceStdColors::C_DK_GRAY, Color(211, 215, 207));
+    table.setColor(WceStdColors::C_LT_GRAY, Color(85, 87, 83));
+    table.setColor(WceStdColors::C_LT_RED, Color(239, 41, 41));
+    table.setColor(WceStdColors::C_LT_GREEN, Color(138, 226, 52));
+    table.setColor(WceStdColors::C_LT_YELLOW, Color(252, 233, 79));
+    table.setColor(WceStdColors::C_LT_BLUE, Color(114, 159, 207));
+    table.setColor(WceStdColors::C_LT_PURPLE, Color(173, 127, 168));
+    table.setColor(WceStdColors::C_LT_TEAL, Color(52, 226, 226));
+    table.setColor(WceStdColors::C_WHITE, Color(238, 238, 236));
     return setColorTable(table);
 }
 

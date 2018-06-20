@@ -15,25 +15,23 @@ MainScript::MainScript() {
     tempLabelWraps.text.append("\n\n");
 
     {
-        auto& e = makeElement<Notification>();
-        e.border.style.apply(BorderStyle::DB_ALL);
+        auto& e = makeElement<Notification>(templates::infoNotification());
         e.text
-            .setFore(console::cGreenLt)
+            .setFore(console::C_LT_GREEN)
             .append("СИСТЕМА УПРАВЛЕНИЯ ДАННЫМИ\n"_dos)
-            .setFore(console::cYellowLt)
+            .setFore(console::C_LT_YELLOW)
             .append("ТРАНСПОРТНОГО АГЕНСТВА\n"_dos);
-        e.icon = StyledChar('i', {console::cTealLt, std::nullopt});
     }
 
     makeElement<Label>(tempLabelWraps);
 
     {
         auto& e = makeElement<Menu>();
-        e.commandColor.foreground = console::cGreenLt;
+        e.commandColor.foreground = console::C_LT_GREEN;
         e.caption.append("Главное меню"_dos);
         auto &eb = e.border;
         eb.style.apply(BorderStyle::DB_OUT_H);
-        eb.color.foreground = console::cTealLt;
+        eb.color.foreground = console::C_LT_TEAL;
         e.readerHint.append("Выберите действие"_dos);
 
         e.makeItem<MenuItem>(ID_MM_CARS, "1|t")
@@ -48,7 +46,7 @@ MainScript::MainScript() {
 
         auto &d = makeElement<MenuReader>();
         d.addResultReadCallback(onMenuResult);
-        d.color = {console::cTealLt, console::cBlue};
+        d.color = {console::C_LT_TEAL, console::C_DK_BLUE};
         d.errorText = "Неверный пункт меню"_dos;
 
         e.assignReader(d);
@@ -73,7 +71,7 @@ bool MainScript::onMenuResult(wce::MenuReaderResult &result) {
     }
 
     wce::StyledText()
-        .setFore(wce::console::cRedLt)
+        .setFore(wce::console::C_LT_RED)
         .append("Неверная комадна меню\n"_dos)
         .outputTo(std::cout);
     wce::console::waitAnyKey();

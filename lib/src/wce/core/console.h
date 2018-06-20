@@ -8,22 +8,22 @@
 namespace wce::console {
 
 enum WceStdColors {
-    cBlack,
-    cRed,
-    cGreen,
-    cYellow,
-    cBlue,
-    cPurple,
-    cTeal,
-    cGray,
-    cGrayLt,
-    cRedLt,
-    cGreenLt,
-    cYellowLt,
-    cBlueLt,
-    cPurpleLt,
-    cTealLt,
-    cWhite
+    C_BLACK,
+    C_DK_RED,
+    C_DK_GREEN,
+    C_DK_YELLOW,
+    C_DK_BLUE,
+    C_DK_PURPLE,
+    C_DK_TEAL,
+    C_LT_GRAY,
+    C_DK_GRAY,
+    C_LT_RED,
+    C_LT_GREEN,
+    C_LT_YELLOW,
+    C_LT_BLUE,
+    C_LT_PURPLE,
+    C_LT_TEAL,
+    C_WHITE
 };
 
 void waitAnyKey();

@@ -10,8 +10,8 @@
 CarListScript::CarListScript() {
     using namespace wce;
 
-    TextColor tempHeaderColor(console::cWhite, console::cBlue);
-    TextColor tempBorderColor(console::cTeal, std::nullopt);
+    TextColor tempHeaderColor(console::C_WHITE, console::C_DK_BLUE);
+    TextColor tempBorderColor(console::C_DK_TEAL, std::nullopt);
 
     {
         using Column = DataTableColumn<Car>;
