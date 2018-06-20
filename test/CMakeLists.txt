@@ -6,4 +6,4 @@ add_executable(wce_test
 target_include_directories(wce_test PRIVATE src)
 set_target_properties(wce_test PROPERTIES
                       OUTPUT_NAME testWCE
-                      LINK_FLAGS ${STATIC_STD_LINK})
+                      LINK_FLAGS ${WCE_LINK_FLAGS})

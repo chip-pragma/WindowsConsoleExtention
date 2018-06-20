@@ -9,4 +9,4 @@ target_include_directories(wce_demo PRIVATE src)
 target_link_libraries(wce_demo wce_lib)
 set_target_properties(wce_demo PROPERTIES
                       OUTPUT_NAME "demoWCE"
-                      LINK_FLAGS ${STATIC_STD_LINK})
+                      LINK_FLAGS ${WCE_LINK_FLAGS})
