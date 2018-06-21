@@ -11,43 +11,32 @@
 using namespace wce;
 
 MainScript::MainScript() {
-    Label tempLabelWraps;
-    tempLabelWraps.text.append("\n\n");
-
     {
         auto& e = makeElement<Notification>(templates::infoNotification());
         e.text
             .setFore(console::C_LT_GREEN)
             .append("СИСТЕМА УПРАВЛЕНИЯ ДАННЫМИ\n"_dos)
-            .setFore(console::C_LT_YELLOW)
+            .setFore(console::C_LT_BLUE)
             .append("ТРАНСПОРТНОГО АГЕНСТВА\n"_dos);
     }
 
-    makeElement<Label>(tempLabelWraps);
+    makeElement<Label>(templates::wrapLabel(2));
 
     {
-        auto& e = makeElement<Menu>();
-        e.commandColor.foreground = console::C_LT_GREEN;
-        e.caption.append("Главное меню"_dos);
-        auto &eb = e.border;
-        eb.style.apply(BorderStyle::DB_OUT_H);
-        eb.color.foreground = console::C_LT_TEAL;
-        e.readerHint.append("Выберите действие"_dos);
+        auto& e = makeElement<Menu>(templates::simpleMenu());
 
-        e.makeItem<MenuItem>(ID_MM_CARS, "1|t")
+        e.makeItem<MenuItem>(ID_MENU_CARS, "1|t")
             .text.append("Управление транспортом"_dos);
-        e.makeItem<MenuItem>(ID_MM_CLIENTS, "2|c")
+        e.makeItem<MenuItem>(ID_MENU_CLIENTS, "2|c")
             .text.append("Управление клиентами"_dos);
-        e.makeItem<MenuItem>(ID_MM_RENT, "3|r")
+        e.makeItem<MenuItem>(ID_MENU_RENT, "3|r")
             .text.append("Управление арендой"_dos);
-        e.makeItem<MenuSeparator>(ID_MM_SEP1);
-        e.makeItem<MenuItem>(ID_MM_EXIT, "0|q")
+        e.makeItem<MenuSeparator>(ID_MENU_SEP1);
+        e.makeItem<MenuItem>(ID_MENU_EXIT, "0|q")
             .text.append("Выход из программы"_dos);
 
-        auto &d = makeElement<MenuReader>();
+        auto &d = makeElement<MenuReader>(templates::simpleMenuReader());
         d.addResultReadCallback(onMenuResult);
-        d.color = {console::C_LT_TEAL, console::C_DK_BLUE};
-        d.errorText = "Неверный пункт меню"_dos;
 
         e.assignReader(d);
     }
@@ -55,14 +44,14 @@ MainScript::MainScript() {
 
 MainScript::~MainScript() { }
 
-bool MainScript::onMenuResult(wce::MenuReaderResult &result) {
-    if (result.getType() == wce::ReaderResultType::VALUE) {
+bool MainScript::onMenuResult(MenuReaderResult &result) {
+    if (result.getState() == ReaderResultState::VALUE_READ) {
         switch (result.getValue()) {
-            case ID_MM_CARS: {
+            case ID_MENU_CARS: {
                 CarListScript().run();
                 return true;
             }
-            case ID_MM_EXIT:
+            case ID_MENU_EXIT:
                 this->abort();
                 return true;
             default:
@@ -70,10 +59,15 @@ bool MainScript::onMenuResult(wce::MenuReaderResult &result) {
         }
     }
 
-    wce::StyledText()
-        .setFore(wce::console::C_LT_RED)
-        .append("Неверная комадна меню\n"_dos)
+    std::string errorText = "Ошибка!";
+    if (result.getState() == ReaderResultState::CONVERT_FAIL)
+        errorText = result.getConvertFail();
+
+    StyledText()
+        .setFore(console::C_LT_RED)
+        .append(errorText)
         .outputTo(std::cout);
-    wce::console::waitAnyKey();
+    console::waitAnyKey();
+
     return false;
 }

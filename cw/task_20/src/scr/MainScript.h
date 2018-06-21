@@ -6,12 +6,12 @@
 class MainScript : public wce::BaseScript {
 public:
     enum : uint32_t {
-        ID_MM_EXIT = 0,
-        ID_MM_CARS,
-        ID_MM_CLIENTS,
-        ID_MM_RENT,
-        ID_MM_SEP1,
-        ID_MM_SEP2,
+        ID_MENU_EXIT = 0,
+        ID_MENU_CARS,
+        ID_MENU_CLIENTS,
+        ID_MENU_RENT,
+        ID_MENU_SEP1,
+        ID_MENU_SEP2,
     };
 
     MainScript();

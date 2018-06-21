@@ -148,9 +148,9 @@ void BaseReader<TDerived, TValue, TResult>::onRead(TResult &result) {
                 if (this->onValidate(convertedValue, errorList))
                     castedResult.assignValue(convertedValue);
                 else
-                    castedResult.assignInvalid(errorList);
+                    castedResult.assignValidateFail(errorList);
             } else {
-                castedResult.assignError(this->errorText);
+                castedResult.assignConvertFail(this->errorText);
             }
         }
     }

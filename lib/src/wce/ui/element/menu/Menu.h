@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <optional>
 
 #include "wce/core/Exception.h"
 #include "wce/ui/BaseWriter.h"
@@ -25,6 +26,9 @@ public:
     template<class TItem, class ...Args>
     TItem & makeItem(uint32_t itemId, Args ...args);
 
+    template<class TItem, class ...Args>
+    TItem & makeItem(Args ...args);
+
     bool removeItem(uint32_t itemId);
 
     template<class TItem>
@@ -39,7 +43,7 @@ protected:
     void onAfterRun() override;
 
 private:
-    using _IMenuItemPair = std::pair<uint32_t, IMenuItem*>;
+    using _IMenuItemPair = std::pair<std::optional<uint32_t>, IMenuItem*>;
     using _IMenuItemVector = std::vector<_IMenuItemPair>;
 
     _IMenuItemVector m_itemVec;
@@ -58,6 +62,13 @@ TItem & Menu::makeItem(uint32_t itemId, Args ...args) {
 
     auto item = new TItem(args...);
     m_itemVec.emplace_back(itemId, static_cast<IMenuItem *>(item));
+    return *item;
+}
+
+template<class TItem, class... Args>
+TItem &Menu::makeItem(Args... args) {
+    auto item = new TItem(args...);
+    m_itemVec.emplace_back(std::nullopt, static_cast<IMenuItem *>(item));
     return *item;
 }
 
