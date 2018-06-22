@@ -9,23 +9,29 @@ class BaseDelegate {
 public:
     virtual ~BaseDelegate() { }
 
-    virtual TReturn invoke(TParams...) = 0;
+    virtual TReturn invoke(TParams &...) const = 0;
 
-    TReturn operator()(TParams... params) {
+    TReturn operator()(TParams &... params) const {
         return invoke(params...);
     }
 
     virtual bool isSet() const = 0;
 
-    bool operator==(std::nullptr_t) {
+    bool operator==(std::nullptr_t) const {
         return !isSet();
     }
 
-    bool operator!=(std::nullptr_t) {
+    bool operator!=(std::nullptr_t) const {
         return isSet();
     }
 
-    operator bool() { // NOLINT
+    virtual bool operator==(const BaseDelegate<TReturn, TParams...> &rhs) const = 0;
+
+    bool operator!=(const BaseDelegate<TReturn, TParams...> &rhs) const {
+        return !this->operator==(rhs);
+    }
+
+    operator bool() const{ // NOLINT
         return isSet();
     }
 
