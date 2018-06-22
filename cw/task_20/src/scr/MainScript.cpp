@@ -1,7 +1,7 @@
 #include "MainScript.h"
 
 #include "common.h"
-#include "scr/CarListScript.h"
+#include "scr/TransportListScript.h"
 
 #include <wce/ui/element/Notification.h>
 #include <wce/ui/element/menu/Menu.h>
@@ -25,14 +25,14 @@ MainScript::MainScript() {
     {
         auto& e = makeElement<Menu>(templates::simpleMenu());
 
-        e.makeItem<MenuItem>(ID_MENU_CARS, "1|t")
+        e.makeItem<MenuItem>(MENU_ID_TRANSPORT, "1|t")
             .text.append("Управление транспортом"_dos);
-        e.makeItem<MenuItem>(ID_MENU_CLIENTS, "2|c")
+        e.makeItem<MenuItem>(MENU_ID_CLIENTS, "2|c")
             .text.append("Управление клиентами"_dos);
-        e.makeItem<MenuItem>(ID_MENU_RENT, "3|r")
+        e.makeItem<MenuItem>(MENU_ID_RENT, "3|r")
             .text.append("Управление арендой"_dos);
         e.makeItem<MenuSeparator>(ID_MENU_SEP1);
-        e.makeItem<MenuItem>(ID_MENU_EXIT, "0|q")
+        e.makeItem<MenuItem>(MENU_ID_EXIT, "0|q")
             .text.append("Выход из программы"_dos);
 
         auto &d = makeElement<MenuReader>(templates::simpleMenuReader());
@@ -47,11 +47,11 @@ MainScript::~MainScript() { }
 bool MainScript::onMenuResult(MenuReaderResult &result) {
     if (result.getState() == ReaderResultState::VALUE_READ) {
         switch (result.getValue()) {
-            case ID_MENU_CARS: {
-                CarListScript().run();
+            case MENU_ID_TRANSPORT: {
+                TransportListScript().run();
                 return true;
             }
-            case ID_MENU_EXIT:
+            case MENU_ID_EXIT:
                 this->abort();
                 return true;
             default:

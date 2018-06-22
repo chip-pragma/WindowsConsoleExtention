@@ -13,6 +13,10 @@ public:
     template<class TScript>
     using BeforeRunCallback = void (TScript::*)(TDerived &);
 
+    BaseElement() = default;
+
+    BaseElement(const BaseElement<TDerived>& elem);
+
     ~BaseElement() override { };
 
     template<class TScript>
@@ -33,6 +37,14 @@ private:
 
     std::vector<_PureBeforeRunCallback> m_beforeRunCallbackVec;
 };
+
+template<class TDerived>
+BaseElement<TDerived>::BaseElement(const BaseElement<TDerived> &elem) {
+    for (auto& e : elem.m_beforeRunCallbackVec) {
+        // FIXME не копируется указатель на функцию-член
+        this->m_beforeRunCallbackVec.push_back(e);
+    }
+}
 
 template<class TDerived>
 template<class TScript>

@@ -61,8 +61,8 @@ void Menu::onAfterRun() {
         MenuItemSet set;
         for (auto &item : m_itemVec) {
             auto comItem = dynamic_cast<MenuItem*>(item.second);
-            if (comItem)
-                set.emplace(item.first, comItem);
+            if (comItem && item.first.has_value())
+                set.emplace(item.first.value(), comItem);
         }
         m_reader->setCommandItems(set);
     }
