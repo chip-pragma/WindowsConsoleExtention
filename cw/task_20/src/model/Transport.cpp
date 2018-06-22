@@ -1,42 +1,42 @@
-#include "Car.h"
+#include "Transport.h"
 
 #include <sstream>
 
-Car::~Car() { }
+Transport::~Transport() { }
 
-const std::string &Car::getMark() const {
+const std::string &Transport::getMark() const {
     return mMark;
 }
 
-std::string &Car::getMark() {
+std::string &Transport::getMark() {
     return mMark;
 }
 
-const std::string &Car::getMaker() const {
+const std::string &Transport::getMaker() const {
     return mMaker;
 }
 
-std::string &Car::getMaker() {
+std::string &Transport::getMaker() {
     return mMaker;
 }
 
-const uint32_t &Car::getSeats() const {
+const uint32_t &Transport::getSeats() const {
     return mSeats;
 }
 
-uint32_t &Car::getSeats() {
+uint32_t &Transport::getSeats() {
     return mSeats;
 }
 
-const std::string &Car::getStateNumber() const {
+const std::string &Transport::getStateNumber() const {
     return mStateNumber;
 }
 
-std::string &Car::getStateNumber() {
+std::string &Transport::getStateNumber() {
     return mStateNumber;
 }
 
-bool Car::tryGetFieldValue(uint32_t idField, std::string &outField) const {
+bool Transport::tryGetFieldValue(uint32_t idField, std::string &outField) const {
     switch (idField) {
         case FieldIds::ID_FIELD_MARK:
             outField = mMark;
@@ -56,16 +56,16 @@ bool Car::tryGetFieldValue(uint32_t idField, std::string &outField) const {
     return true;
 }
 
-std::string Car::toString() const {
+std::string Transport::toString() const {
     std::stringstream ss;
     ss << mMaker << " " << mMark << "(" << mStateNumber << ")";
     return ss.str();
 }
 
-void Car::onSerialize(std::ostream &os) const {
+void Transport::onSerialize(std::ostream &os) const {
 
 }
 
-void Car::onDeserialize(std::istream &is) const {
+void Transport::onDeserialize(std::istream &is) const {
 
 }

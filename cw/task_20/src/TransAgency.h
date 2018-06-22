@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include <model/Car.h>
+#include "model/Transport.h"
 
 class TransAgency;
 using TransAgencyDestroyHandler = void(TransAgency::*)();
@@ -27,7 +27,7 @@ public:
 
     static TransAgency &get();
 
-    std::vector<Car>& getCarList();
+    std::vector<Transport>& getCarList();
 
     void saveData(std::string fileName);
 
@@ -44,7 +44,7 @@ private:
     static TransAgency *mInstance;
     static TransAgencyDestroyer mDestroyer;
 
-    std::vector<Car> mCarList;
+    std::vector<Transport> mCarList;
 };
 
 

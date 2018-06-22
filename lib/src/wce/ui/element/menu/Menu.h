@@ -24,10 +24,7 @@ public:
     void assignReader(MenuReader &reader);
 
     template<class TItem, class ...Args>
-    TItem & makeItem(uint32_t itemId, Args ...args);
-
-    template<class TItem, class ...Args>
-    TItem & makeItem(Args ...args);
+    TItem & makeItem(std::optional<uint32_t> itemId, Args ...args);
 
     bool removeItem(uint32_t itemId);
 
@@ -36,7 +33,6 @@ public:
 
 protected:
     MenuReader *m_reader = nullptr;
-
 
     void onWrite(Buffer &buf) override;
 
@@ -51,11 +47,11 @@ private:
 
 
 template<class TItem, class ...Args>
-TItem & Menu::makeItem(uint32_t itemId, Args ...args) {
+TItem & Menu::makeItem(std::optional<uint32_t> itemId, Args ...args) {
     bool anyOf = std::any_of(
         m_itemVec.cbegin(), m_itemVec.cend(),
         [&](const _IMenuItemPair &pair) {
-            return pair.first == itemId;
+            return itemId.has_value() && pair.first.has_value() && pair.first == itemId;
         });
     if (anyOf)
         throw Exception("ID already in use");
@@ -65,15 +61,9 @@ TItem & Menu::makeItem(uint32_t itemId, Args ...args) {
     return *item;
 }
 
-template<class TItem, class... Args>
-TItem &Menu::makeItem(Args... args) {
-    auto item = new TItem(args...);
-    m_itemVec.emplace_back(std::nullopt, static_cast<IMenuItem *>(item));
-    return *item;
-}
-
 template<class TItem>
 TItem &Menu::getItem(uint32_t itemId) {
+    // TODO что делать с nullopt ?
     auto finded = std::find(m_itemVec.cbegin(), m_itemVec.cend(),
                             [&](MenuItemPair &r) { return r.first == itemId; });
     if (finded == m_itemVec.cend())

@@ -6,7 +6,7 @@
 #include <wce/core/ISerializable.h>
 #include <ostream>
 
-class Car : public wce::IModel,
+class Transport : public wce::IModel,
             public wce::ISerializable {
 public:
     enum FieldIds : uint32_t {
@@ -16,7 +16,7 @@ public:
         ID_FIELD_STATE_NUMBER
     };
 
-    ~Car() override;
+    ~Transport() override;
 
     const std::string &getMark() const;
 

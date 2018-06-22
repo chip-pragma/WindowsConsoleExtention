@@ -16,7 +16,7 @@ void TransAgencyDestroyer::initialize(TransAgency *instance, TransAgencyDestroyH
 TransAgency *TransAgency::mInstance = nullptr;
 TransAgencyDestroyer TransAgency::mDestroyer;
 
-std::vector<Car>& TransAgency::getCarList() {
+std::vector<Transport>& TransAgency::getCarList() {
     return mCarList;
 }
 
@@ -34,7 +34,7 @@ void TransAgency::saveData(std::string fileName) {
 
 void TransAgency::loadData(std::string fileName) {
     {
-        Car car;
+        Transport car;
         car.getMark() = "Рено"_dos;
         car.getMaker() = "2";
         car.getSeats() = 2;
@@ -42,7 +42,7 @@ void TransAgency::loadData(std::string fileName) {
         getCarList().push_back(car);
     }
     {
-        Car car;
+        Transport car;
         car.getMark() = "Пежо"_dos;
         car.getMaker() = "1";
         car.getSeats() = 1;
@@ -50,7 +50,7 @@ void TransAgency::loadData(std::string fileName) {
         getCarList().push_back(car);
     }
     {
-        Car car;
+        Transport car;
         car.getMark() = "Ягуар"_dos;
         car.getMaker() = "5";
         car.getSeats() = 5;
@@ -58,7 +58,7 @@ void TransAgency::loadData(std::string fileName) {
         getCarList().push_back(car);
     }
     {
-        Car car;
+        Transport car;
         car.getMark() = "Лексус"_dos;
         car.getMaker() = "4";
         car.getSeats() = 4;
@@ -66,7 +66,7 @@ void TransAgency::loadData(std::string fileName) {
         getCarList().push_back(car);
     }
     {
-        Car car;
+        Transport car;
         car.getMark() = "Вольво"_dos;
         car.getMaker() = "3";
         car.getSeats() = 3;

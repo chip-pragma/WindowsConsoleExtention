@@ -6,11 +6,11 @@
 class MainScript : public wce::BaseScript {
 public:
     enum : uint32_t {
-        ID_MENU_EXIT = 0,
-        ID_MENU_CARS,
-        ID_MENU_CLIENTS,
-        ID_MENU_RENT,
-        ID_MENU_SEP1,
+        MENU_ID_EXIT = 0,
+        MENU_ID_TRANSPORT,
+        MENU_ID_CLIENTS,
+        MENU_ID_RENT,
+        ID_MENU_SEP1, // TODO убрать ID для безкомандных пунктов меню
         ID_MENU_SEP2,
     };
 
