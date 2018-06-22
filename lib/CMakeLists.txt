@@ -28,7 +28,7 @@ add_library(wce_lib STATIC
             src/wce/core/Rectangle.cpp src/wce/core/Rectangle.h src/wce/core/ISerializable.cpp
             src/wce/core/ISerializable.h src/wce/ui/element/table/DataTable.h
             src/wce/ui/element/table/DataTableColumn.h
-            src/wce/ui/BaseScript.cpp src/wce/ui/BaseScript.h src/wce/core/ColorIndex.cpp src/wce/core/ColorIndex.h src/wce/core/ColorTable.cpp src/wce/core/ColorTable.h)
+            src/wce/ui/BaseScript.cpp src/wce/ui/BaseScript.h src/wce/core/ColorIndex.cpp src/wce/core/ColorIndex.h src/wce/core/ColorTable.cpp src/wce/core/ColorTable.h src/wce/core/property/Property.h src/wce/core/property/BaseProperty.h src/wce/core/property/WriteProperty.h)
 
 target_include_directories(wce_lib PUBLIC src)
 set_target_properties(wce_lib PROPERTIES

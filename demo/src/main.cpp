@@ -5,7 +5,6 @@
 #include <wce/tool/Encoder.h>
 
 #include "common.h"
-#include "TestScript.h"
 
 using namespace wce;
 
@@ -26,6 +25,5 @@ int main() {
 void onTesting() {
     BorderStyle::finalEncoding = Encoder(Encoder::CP866);
 
-    TestScript testScr;
-    testScr.run();
+
 }
