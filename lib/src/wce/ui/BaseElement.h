@@ -19,6 +19,8 @@ public:
 
     ~BaseElement() override { };
 
+    // TODO разработать систему событий
+
     template<class TScript>
     void addBeforeRunCallback(BeforeRunCallback<TScript> func);
 

@@ -28,7 +28,11 @@ add_library(wce_lib STATIC
             src/wce/core/graphics/Rectangle.cpp src/wce/core/graphics/Rectangle.h src/wce/core/ISerializable.cpp
             src/wce/core/ISerializable.h src/wce/ui/element/table/DataTable.h
             src/wce/ui/element/table/DataTableColumn.h
-            src/wce/ui/BaseScript.cpp src/wce/ui/BaseScript.h src/wce/core/graphics/ColorIndex.cpp src/wce/core/graphics/ColorIndex.h src/wce/core/graphics/ColorTable.cpp src/wce/core/graphics/ColorTable.h src/wce/core/property/Property.h src/wce/core/property/BaseProperty.h src/wce/core/property/WriteProperty.h src/wce/core/functional/BaseCallback.h src/wce/core/functional/BaseCallback.cpp src/wce/core/functional/PtrCallback.h)
+            src/wce/ui/BaseScript.cpp src/wce/ui/BaseScript.h src/wce/core/graphics/ColorIndex.cpp
+            src/wce/core/graphics/ColorIndex.h src/wce/core/graphics/ColorTable.cpp src/wce/core/graphics/ColorTable.h
+            src/wce/core/property/Property.h src/wce/core/property/BaseProperty.h src/wce/core/property/WriteProperty.h
+            src/wce/core/functional/BaseDelegate.h src/wce/core/functional/FunctionDelegate.h
+            src/wce/core/functional/MemberDelegate.h)
 
 target_include_directories(wce_lib PUBLIC src)
 set_target_properties(wce_lib PROPERTIES
