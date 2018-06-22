@@ -1,6 +1,6 @@
 #include "OutputHelper.h"
 #include "wce/ui/style/TextColor.h"
-#include "wce/core/Point.h"
+#include "wce/core/graphics/Point.h"
 #include "wce/core/Exception.h"
 
 namespace wce {

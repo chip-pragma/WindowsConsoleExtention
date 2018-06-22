@@ -40,9 +40,10 @@ private:
 
 template<class TDerived>
 BaseElement<TDerived>::BaseElement(const BaseElement<TDerived> &elem) {
-    for (auto& e : elem.m_beforeRunCallbackVec) {
-        // FIXME не копируется указатель на функцию-член
-        this->m_beforeRunCallbackVec.push_back(e);
+    // FIXME не копируется указатель на функцию-член
+    auto elemVecData = elem.m_beforeRunCallbackVec.data();
+    for (size_t i = 0; i < elem.m_beforeRunCallbackVec.size(); ++i) {
+        this->m_beforeRunCallbackVec.push_back(elemVecData[i]);
     }
 }
 

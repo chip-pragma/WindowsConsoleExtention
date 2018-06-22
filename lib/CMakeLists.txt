@@ -3,10 +3,10 @@ project(wce_lib)
 add_library(wce_lib STATIC
             src/wce/tool/text.cpp src/wce/tool/text.h src/wce/core/console.cpp src/wce/core/console.h
             src/wce/tool/Encoder.cpp
-            src/wce/tool/Encoder.h src/wce/core/Point.cpp src/wce/core/Point.h
-            src/wce/core/Color.cpp src/wce/core/Color.cpp src/wce/ui/style/BorderStyle.h
+            src/wce/tool/Encoder.h src/wce/core/graphics/Point.cpp src/wce/core/graphics/Point.h
+            src/wce/core/graphics/Color.cpp src/wce/core/graphics/Color.cpp src/wce/ui/style/BorderStyle.h
             src/wce/ui/style/BorderStyle.cpp
-            src/wce/core/Color.h src/wce/core/Exception.cpp src/wce/core/Exception.h
+            src/wce/core/graphics/Color.h src/wce/core/Exception.cpp src/wce/core/Exception.h
             src/wce/ui/output/Buffer.cpp src/wce/ui/output/Buffer.h
             src/wce/ui/output/OutputHelper.cpp src/wce/ui/output/OutputHelper.h src/wce/ui/output/StyledChar.cpp
             src/wce/ui/output/StyledChar.h src/wce/ui/style/TextColor.cpp
@@ -25,10 +25,10 @@ add_library(wce_lib STATIC
             src/wce/ui/element/menu/BaseMenuItem.h
             src/wce/ui/element/menu/MenuReader.cpp src/wce/ui/element/menu/MenuReader.h
             src/wce/ui/element/menu/MenuSeparator.cpp src/wce/ui/element/menu/MenuSeparator.h
-            src/wce/core/Rectangle.cpp src/wce/core/Rectangle.h src/wce/core/ISerializable.cpp
+            src/wce/core/graphics/Rectangle.cpp src/wce/core/graphics/Rectangle.h src/wce/core/ISerializable.cpp
             src/wce/core/ISerializable.h src/wce/ui/element/table/DataTable.h
             src/wce/ui/element/table/DataTableColumn.h
-            src/wce/ui/BaseScript.cpp src/wce/ui/BaseScript.h src/wce/core/ColorIndex.cpp src/wce/core/ColorIndex.h src/wce/core/ColorTable.cpp src/wce/core/ColorTable.h src/wce/core/property/Property.h src/wce/core/property/BaseProperty.h src/wce/core/property/WriteProperty.h)
+            src/wce/ui/BaseScript.cpp src/wce/ui/BaseScript.h src/wce/core/graphics/ColorIndex.cpp src/wce/core/graphics/ColorIndex.h src/wce/core/graphics/ColorTable.cpp src/wce/core/graphics/ColorTable.h src/wce/core/property/Property.h src/wce/core/property/BaseProperty.h src/wce/core/property/WriteProperty.h src/wce/core/functional/BaseCallback.h src/wce/core/functional/BaseCallback.cpp src/wce/core/functional/PtrCallback.h)
 
 target_include_directories(wce_lib PUBLIC src)
 set_target_properties(wce_lib PROPERTIES

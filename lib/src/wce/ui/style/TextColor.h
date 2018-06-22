@@ -2,7 +2,7 @@
 
 #include <optional>
 
-#include "wce/core/ColorIndex.h"
+#include "wce/core/graphics/ColorIndex.h"
 
 namespace wce {
 

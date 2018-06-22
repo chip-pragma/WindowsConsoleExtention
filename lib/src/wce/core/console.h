@@ -2,8 +2,8 @@
 #include <string>
 #include <cstdint>
 
-#include "Point.h"
-#include "ColorTable.h"
+#include "wce/core/graphics/Point.h"
+#include "wce/core/graphics/ColorTable.h"
 
 namespace wce::console {
 

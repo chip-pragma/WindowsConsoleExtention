@@ -2,7 +2,7 @@
 
 #include "Point.h"
 
-// QUEST доделать Rectangle
+// FEATURE доделать Rectangle
 
 namespace wce {
 

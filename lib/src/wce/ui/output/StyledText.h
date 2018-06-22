@@ -10,7 +10,7 @@
 namespace wce {
 
 class StyledText : public IOutputable {
-    // QUEST Реализовать нормальные итераторы
+    // TODO Реализовать нормальные итераторы
 public:
     StyledText();
 

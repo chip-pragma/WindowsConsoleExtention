@@ -1,6 +1,6 @@
 #include "ColorIndex.h"
 
-#include "Exception.h"
+#include "wce/core/Exception.h"
 
 namespace wce {
 

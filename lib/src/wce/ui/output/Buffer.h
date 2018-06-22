@@ -7,7 +7,7 @@
 #include <algorithm>
 
 #include "wce/core/console.h"
-#include "wce/core/Point.h"
+#include "wce/core/graphics/Point.h"
 #include "wce/ui/style/TextColor.h"
 #include "IOutputable.h"
 #include "OutputHelper.h"
