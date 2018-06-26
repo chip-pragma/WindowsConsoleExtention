@@ -48,14 +48,17 @@ void split(const std::string &src,
     }
 }
 
-int replace(std::string &source, const std::string &from, const std::string &to) {
+size_t replace(std::string &source, const std::string &from, const std::string &to) {
     if(from.empty())
         return 0;
-    size_t start_pos = 0;
-    while((start_pos = source.find(from, start_pos)) != std::string::npos) {
-        source.replace(start_pos, from.length(), to);
-        start_pos += to.length();
+    size_t startPos = 0;
+    size_t replaceCount = 0;
+    while((startPos = source.find(from, startPos)) != std::string::npos) {
+        source.replace(startPos, from.length(), to);
+        startPos += to.length();
+        replaceCount++;
     }
+    return replaceCount;
 }
 
 }

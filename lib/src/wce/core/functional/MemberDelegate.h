@@ -17,7 +17,7 @@ public:
 
     ~MemberDelegate() override { }
 
-    TReturn invoke(TParams&... params) const override;
+    TReturn invoke(TParams... params) const override;
 
     void set(InstanceType &instance, MemberType memFunc);
 
@@ -39,7 +39,7 @@ MemberDelegate<TIns, TReturn, TParams...>::MemberDelegate(InstanceType &instance
 }
 
 template<class TIns, class TReturn, class... TParams>
-TReturn MemberDelegate<TIns, TReturn, TParams...>::invoke(TParams&... params) const {
+TReturn MemberDelegate<TIns, TReturn, TParams...>::invoke(TParams... params) const {
     if (!isSet())
         throw Exception("Delegate is unset");
     return (m_instance->*m_function)(params...);

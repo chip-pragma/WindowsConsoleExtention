@@ -21,6 +21,6 @@ void split(const std::string &src,
            std::vector<std::string> &dest,
            const std::string &anyDelim);
 
-int replace(std::string& source, const std::string& from, const std::string& to);
+size_t replace(std::string &source, const std::string &from, const std::string &to);
 };
 

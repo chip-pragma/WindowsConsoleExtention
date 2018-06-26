@@ -16,7 +16,7 @@ public:
 
     ~FunctionDelegate() override { }
 
-    TReturn invoke(TParams &... params) const override;
+    TReturn invoke(TParams... params) const override;
 
     void set(FuncType memFunc);
 
@@ -36,7 +36,7 @@ FunctionDelegate<TReturn, TParams...>::FunctionDelegate(FunctionDelegate::FuncTy
 }
 
 template<class TReturn, class... TParams>
-TReturn FunctionDelegate<TReturn, TParams...>::invoke(TParams &... params) const {
+TReturn FunctionDelegate<TReturn, TParams...>::invoke(TParams... params) const {
     if (!isSet())
         throw Exception("Delegate is unset");
     return (*m_function)(params...);

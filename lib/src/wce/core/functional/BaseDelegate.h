@@ -9,9 +9,9 @@ class BaseDelegate {
 public:
     virtual ~BaseDelegate() { }
 
-    virtual TReturn invoke(TParams &...) const = 0;
+    virtual TReturn invoke(TParams...) const = 0;
 
-    TReturn operator()(TParams &... params) const {
+    TReturn operator()(TParams... params) const {
         return invoke(params...);
     }
 
