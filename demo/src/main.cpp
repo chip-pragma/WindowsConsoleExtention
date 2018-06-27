@@ -26,7 +26,7 @@ public:
     }
 
     void onSetValue(int oldVal, int newVal) {
-        std::cout << "S] OLD:" << oldVal << " NEW:" << newVal << "\n";
+        std::cout << "3] OLD:" << oldVal << " => " << newVal << "\n";
     }
 
 private:
@@ -60,6 +60,7 @@ void onTesting() {
 
     auto &event = t1.ValueChanged;
     auto delegate = make::delegate(onValueChanged);
+    delegate.set(onValueChanged2);
     event += delegate;
 
     t1.ValueChanged += delegate;
