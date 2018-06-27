@@ -10,6 +10,7 @@
 namespace wce {
 
 enum class ReaderResultState : uint8_t {
+    // TODO только Value, Command, Error
     UNDEFINED,
     EMPTY_READ,
     COMMAND_READ,

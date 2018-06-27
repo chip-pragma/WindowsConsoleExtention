@@ -32,7 +32,7 @@ add_library(wce_lib STATIC
             src/wce/core/graphics/ColorIndex.h src/wce/core/graphics/ColorTable.cpp src/wce/core/graphics/ColorTable.h
             src/wce/core/property/Property.h src/wce/core/property/BaseProperty.h src/wce/core/property/WriteProperty.h
             src/wce/core/functional/BaseDelegate.h src/wce/core/functional/FunctionDelegate.h
-            src/wce/core/functional/MemberDelegate.h src/wce/core/functional/Event.h)
+            src/wce/core/functional/MemberDelegate.h src/wce/core/Event.h src/wce/core/BaseEventArgs.h)
 
 target_include_directories(wce_lib PUBLIC src)
 set_target_properties(wce_lib PROPERTIES

@@ -3,7 +3,7 @@
 #include <vector>
 #include <algorithm>
 
-#include "BaseDelegate.h"
+#include "wce/core/functional/BaseDelegate.h"
 
 namespace wce {
 
@@ -31,7 +31,7 @@ public:
     void operator-=(const TDelegate &delegate);
 
 protected:
-    virtual void invoke(TArgs...args);
+    virtual void fire(TArgs...args);
 
 private:
     std::vector<Handler *> m_handlers;
@@ -85,7 +85,7 @@ void Event<TOwner, TArgs...>::operator-=(const TDelegate &delegate) {
 }
 
 template<class TOwner, class... TArgs>
-void Event<TOwner, TArgs...>::invoke(TArgs... args) {
+void Event<TOwner, TArgs...>::fire(TArgs... args) {
     for (Handler *handler : m_handlers)
         handler->invoke(args...);
 }
