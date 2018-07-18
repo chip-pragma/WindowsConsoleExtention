@@ -46,7 +46,6 @@ void BaseWriter<TDerived>::setWidth(int32_t w) {
 template<class TDerived>
 void BaseWriter<TDerived>::run(BaseScript &script) {
     this->onBeforeRun();
-    this->callBeforeRun(script);
 
     Buffer buf(Point(this->getWidth(), MAX_HEIGHT));
     onWrite(buf);

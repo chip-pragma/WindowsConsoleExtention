@@ -4,7 +4,7 @@
 #include <wce/core/console.h>
 #include <wce/ui/style/BorderStyle.h>
 #include <wce/tool/Encoder.h>
-#include <wce/ui/element/menu/Menu.h>
+#include <wce/core/functional/FunctionDelegate.h>
 
 #include <iostream>
 
@@ -22,6 +22,15 @@ int main() {
     return 0;
 }
 
+void testFuncToDelegate(int testParam) {
+    std::cout << "testParam=" << testParam;
+}
+
 void onTesting() {
     BorderStyle::finalEncoding = Encoder(Encoder::CP866);
+
+    auto d = make::delegate(testFuncToDelegate);
+    auto d2 = d;
+    d(3);
+    d(5);
 }

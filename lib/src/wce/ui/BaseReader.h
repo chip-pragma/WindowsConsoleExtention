@@ -163,7 +163,7 @@ void BaseReader<TDerived, TValue, TResult>::onRead(TResult &result) {
         }
     }
 
-    this->eventValueRead.fire(*this, result);
+    this->eventValueRead.invoke(*this, result);
 }
 
 template<class TDerived, class TValue, class TResult>

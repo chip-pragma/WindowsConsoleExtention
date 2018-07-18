@@ -14,6 +14,10 @@ class Event {
 public:
     using Handler = BaseDelegate<void, TArgs...>;
 
+    Event(const Event<TOwner, TArgs...> &event);
+
+    // TODO: конструкторы копирования (копирование делегатов), перемещения (удалить возможность).
+
     ~Event();
 
     template<class TDelegate>
@@ -31,11 +35,21 @@ public:
     void operator-=(const TDelegate &delegate);
 
 protected:
-    virtual void fire(TArgs...args);
+    virtual void invoke(TArgs...args);
 
 private:
     std::vector<Handler *> m_handlers;
+
+    Event() = default;
 };
+
+template<class TOwner, class... TArgs>
+Event<TOwner, TArgs...>::Event(const Event<TOwner, TArgs...> &event) {
+    this->clearHandlers();
+    for (const auto handler : event.m_handlers) {
+        this->m_handlers.push_back(static_cast<Handler *>(new TDelegate(&handler)));
+    }
+}
 
 template<class TOwner, class... TArgs>
 Event<TOwner, TArgs...>::~Event() {
@@ -85,7 +99,7 @@ void Event<TOwner, TArgs...>::operator-=(const TDelegate &delegate) {
 }
 
 template<class TOwner, class... TArgs>
-void Event<TOwner, TArgs...>::fire(TArgs... args) {
+void Event<TOwner, TArgs...>::invoke(TArgs... args) {
     for (Handler *handler : m_handlers)
         handler->invoke(args...);
 }
